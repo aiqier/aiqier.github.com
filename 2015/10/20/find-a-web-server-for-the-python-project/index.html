@@ -1,0 +1,685 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python,web," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="当你用python写了一个web应用，你就不得不将其布置到一个web的服务器上，这篇博客将列举下可以使用的web服务器有哪些。
+在这之前先简单的介绍一下其它知识。
+wsgiWSGI 的官方定义是，the Python Web Server Gateway Interface
+Gateway是一个网关。网关的作用就是在协议之间进行转换。那么wsgi用来做什么之间的转换呢？它实际上定义一种协议，使得实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为python web项目找一个服务器">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/10/20/find-a-web-server-for-the-python-project/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="当你用python写了一个web应用，你就不得不将其布置到一个web的服务器上，这篇博客将列举下可以使用的web服务器有哪些。
+在这之前先简单的介绍一下其它知识。
+wsgiWSGI 的官方定义是，the Python Web Server Gateway Interface
+Gateway是一个网关。网关的作用就是在协议之间进行转换。那么wsgi用来做什么之间的转换呢？它实际上定义一种协议，使得实">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为python web项目找一个服务器">
+<meta name="twitter:description" content="当你用python写了一个web应用，你就不得不将其布置到一个web的服务器上，这篇博客将列举下可以使用的web服务器有哪些。
+在这之前先简单的介绍一下其它知识。
+wsgiWSGI 的官方定义是，the Python Web Server Gateway Interface
+Gateway是一个网关。网关的作用就是在协议之间进行转换。那么wsgi用来做什么之间的转换呢？它实际上定义一种协议，使得实">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 为python web项目找一个服务器 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              为python web项目找一个服务器
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-20T00:00:00+08:00" content="2015-10-20">
+            2015-10-20
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/20/find-a-web-server-for-the-python-project/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/20/find-a-web-server-for-the-python-project/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>当你用python写了一个web应用，你就不得不将其布置到一个web的服务器上，这篇博客将列举下可以使用的web服务器有哪些。</p>
+<p>在这之前先简单的介绍一下其它知识。</p>
+<h2 id="wsgi"><a href="#wsgi" class="headerlink" title="wsgi"></a>wsgi</h2><p>WSGI 的官方定义是，the Python Web Server Gateway Interface</p>
+<p>Gateway是一个网关。网关的作用就是在协议之间进行转换。<br>那么wsgi用来做什么之间的转换呢？它实际上定义一种协议，使得实现wsgi的web框架(app)和实现wsgi的web服务器可以进行“插拔”。<br>这就是为什么我之前的flask项目可以直接部署到tornado上去运行。所以说以下介绍的web服务器，之所以可以部署python的web项目，是因为它们都实现了wsgi。顺便说一句，wsgi这个思想，应该是从java的servlet中借鉴过来的。</p>
+<a id="more"></a>
+<h2 id="轻量级"><a href="#轻量级" class="headerlink" title="轻量级"></a>轻量级</h2><p>轻量级就是个很扯淡的东西，所谓轻量级就是什么都没有。大多数python web框架都说自己轻量级，那只不过是因为自己几乎没什么功能罢了。所以开发起来基本就是造轮子。</p>
+<h2 id="tornado"><a href="#tornado" class="headerlink" title="tornado"></a>tornado</h2><p>第一个列举tornado是因为，这是我使用的最多也最熟练的web服务器了。这个服务器被很多脑残pythoner炒的热火，还说这个能处理高并发，实际上其本身并没有传说的那么邪乎，而且很多人也是没看懂文档就瞎用。我以后可能会专门写一篇博客讲讲tornado的相关故事，这里主要就讲讲它的异步非阻塞了。</p>
+<p>首先你要明白tornado其实是由两部分构成的，web框架的部分其实类似于web.py，而web服务器是在内部使用了epoll，轮询io复用，非阻塞IO。而到底是使用多线程还是使用io复用，一直是一个长久争议的话题。目前我的理解是，多线程适合做“重业务”的需求，也就是说对于一个请求而言，业务处理是重要的过程，比如说提交一个表单，逻辑处理，入库，返回之类。而轮询io复用，适合于处理“轻业务”的需求，类似于web在线聊天，处理大量请求转发。同时向数以万计的用户推送消息服务。我觉得它们的业务都是很轻的。甚至可以说是短连接适合开线程，长连接适合用非阻塞io，我之所以这样说因为我觉得，短连接需要cpu，而长连接更需要io。当然这是我目前的看法，以后可能还会有更深的理解。</p>
+<p>总之用tornado你要考虑一点的是，如果你的处理逻辑中途阻塞了，那么你的整个服务器都堵塞了，这样你的服务器是无法处理其它请求的。而多线程是不用考虑此问题的，因为每来一个请求会开一个线程，而你的epoll，从头到尾就只有一个线程，它要拿出准备好的io，还要处理逻辑，这也就是为什么适合做一个类似“反向代理”的服务，因为它有一个异步客户端，用来将http请求，也扔到这个ioloop里。</p>
+<p>所以如果是一个轻业务的web服务，tornado还是很适合的。</p>
+<h2 id="uwsgi"><a href="#uwsgi" class="headerlink" title="uwsgi"></a>uwsgi</h2><p>uwsgi其实是业界普遍用的做法了，flask和django一般都会部署在uwsgi，前面可能还会部署一个nginx，用来做负载均衡和提供静态文件访问。</p>
+<p>uwsgi处理请求的做法就是，来一个请求打开一个进程。很多人认为开销大，但其实uwsgi开进程的开销并不大，而且一般每个进程里也只开一个线程，因为python的线程确实不好使。像我之前说的，开进程让你把心思放在业务处理上，而不是想，“这里会不会阻塞服务器”。</p>
+<p>我之前开发的项目，就是使用flask进行开发的，最后就是使用uwsgi进行部署的。flask算是我除了tornado之后，最熟悉的python web框架了，我觉得业务系统用flask是一个很好的选择，功能基本齐全，还有些方便的第三方插件，项目做大了也还算能hold住，django本身又太重，换个orm都费劲。所以我的基本搭配就是nginx+uwsgi+flask+sqlalchemy+mysql</p>
+<h2 id="apache"><a href="#apache" class="headerlink" title="apache"></a>apache</h2><p>python的服务是可以部署到apache服务器上的，后期直接开发django和tornado的同学可能认识不到这一点。因为他们可能不知道在早期做web开发的前辈们在用的一种叫cgi的技术。</p>
+<p>有了cgi，才算是从静态web进化到动态web页面。你写好的cgi程序，其实就是用来给apache来使用CGI协议来解释python文件。</p>
+<p>每当客户请求CGI的时候，WEB服务器就请求操作系统生成一个新的CGI解释器进程(如php-cgi.exe)，CGI 的一个进程则处理完一个请求后退出，下一个请求来时再创建新进程。</p>
+<p>而django本身内部其实也是在玩cgi。所以也会把django部署到apache上，这其实是mod_python，是apache的内置模块。<br>不过现在好像很少看见有人这么玩了。</p>
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p>之前提到cgi每次请求来了都要去fork，非常的花时间。而FastCGI像是一个常驻(long-live)型的CGI，它可以一直执行着，只要激活后，不会每次都要花费时间去fork一次。</p>
+<p>很常见的做法就是将fastcgi部署到nginx上。不过还要有flup模块来配合，我实际并没有操作过，不好评价。</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>这里不是说其它的部署方式，实际上，目前而言，我所使用或知道的部署方式就只有这些了。在这里我还想讨论一下之前和同事讨论的一个问题。</p>
+<p>之前说到tornado，我跟他们说过，tornado是单线程的，业务复杂搞不好就堵了，尽量用flask+uwsgi，但是他们给我的解决方案，居然是同时部署多台就可以了，然后用nginx挡在前面。首先不得不说uwsgi，才是服务器本身处理一个请求的解决方案，而部署多台，已经到运维级别的解决方案了，部署多态本身是用来防止有服务中途挂掉，或者通过负载均衡来保证更高的处理量，但是我们谈论的其实并不是运维级的部署方案。</p>
+<p>以上就是可供选择的python web服务器，像其它类似什么CherryPy，或者是bottle自带的服务器之类的就不多说了，没意义。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+            <a href="/tags/web/" rel="tag">#web</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/24/b-tree-and-b+-tree/" rel="prev">b树和b+树</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/15/start-uml-with-meizi/" rel="next">使用uml学习把妹基础</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/10/20/find-a-web-server-for-the-python-project/"
+     data-title="为python web项目找一个服务器"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/10/20/find-a-web-server-for-the-python-project/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/20/find-a-web-server-for-the-python-project/"
+                   data-title="为python web项目找一个服务器" data-url="http://www.pulpcode.cn/2015/10/20/find-a-web-server-for-the-python-project/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#wsgi"><span class="nav-number">1.</span> <span class="nav-text">wsgi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#轻量级"><span class="nav-number">2.</span> <span class="nav-text">轻量级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tornado"><span class="nav-number">3.</span> <span class="nav-text">tornado</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uwsgi"><span class="nav-number">4.</span> <span class="nav-text">uwsgi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apache"><span class="nav-number">5.</span> <span class="nav-text">apache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-number">6.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它"><span class="nav-number">7.</span> <span class="nav-text">其它</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="考古,c,java," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言：之前有朋友跟我讨论过一个问题，他问在java中，i=1;i=i++;之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。
+我先在《c+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当i = i++时，究竟发生了什么？">
+<meta property="og:url" content="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="前言：之前有朋友跟我讨论过一个问题，他问在java中，i=1;i=i++;之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。
+我先在《c+">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.798Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="当i = i++时，究竟发生了什么？">
+<meta name="twitter:description" content="前言：之前有朋友跟我讨论过一个问题，他问在java中，i=1;i=i++;之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。
+我先在《c+">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 当i = i++时，究竟发生了什么？ | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              当i = i++时，究竟发生了什么？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2012-10-19T00:00:00+08:00" content="2012-10-19">
+            2012-10-19
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2012/10/19/what-happen-when-i-assign-increase/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2012/10/19/what-happen-when-i-assign-increase/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>之前有朋友跟我讨论过一个问题，他问在java中，<code>i=1;i=i++;</code>之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。</p>
+<p>我先在《c++ primer》上看见这样的解释：“++i的效率要比i++的效率高，因为i++必须要有一个临时变量来存放i本身的值“，那么我之前只说对了临时变量，但原因是临时变量先用来存放i的值，然后i本身自增，之后，临时变量赋值给左边，这时，i的值又被 自己之前的值覆盖了，所以又变成1,但这只是个推测，再说c语言中为什么是2？所以不得不反编译了。。。<br><a id="more"></a></p>
+<p>java的jdk自带一个工具，javap，可以反编译，我们用它java编译器生成的“jvm版汇编码”，我会写下两段代码用来做对比，一种是i=i++;一种常见的<code>j=i++;</code>注意，我使用2作为初始值（也就是说它会被自增为3），因为1太特殊了，它在字节码中的变量名随处可见，而且++不是加1么，所以我用2做初值，也方便查找。。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">  <span class="keyword">int</span> i = <span class="number">2</span>;</div><div class="line">  i = i++;</div><div class="line">  System.out.println(i);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>javap -c Test</code> 的字节码如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class Test extends java.lang.Object&#123;</div><div class="line">public Test();</div><div class="line">  Code:</div><div class="line">   0:	aload_0</div><div class="line">   1:	invokespecial	#1; //Method java/lang/Object."&lt;init&gt;":()V</div><div class="line">   4:	return</div><div class="line"></div><div class="line">public static void main(java.lang.String[]);</div><div class="line">  Code:</div><div class="line">   0:	iconst_2</div><div class="line">   1:	istore_1</div><div class="line">   2:	iload_1</div><div class="line">   3:	iinc	1, 1</div><div class="line">   6:	istore_1</div><div class="line">   7:	getstatic	#2; //Field java/lang/System.out:Ljava/io/PrintStream;</div><div class="line">   10:	iload_1</div><div class="line">   11:	invokevirtual	#3; //Method java/io/PrintStream.println:(I)V</div><div class="line">   14:	return</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code>0:   iconst_2   //将int型的常量2压栈
+1:   istore_1   //将int型值存入变量1中
+</code></pre><p>就是定义并初始化i的值。</p>
+<p>关键是这里:</p>
+<pre><code>2:   iload_1  //保存变量1的值
+3:  iinc   1, 1 //将变量1的值自增（i现在是3了）
+6:  istore //将之前的保存值放入变量i中（i现在又变成2了。。）
+</code></pre><p>其实在2:  iload_1 时，i变量的值被放在了栈中，这就是我们说的临时存储。。之后，又被赋了过来</p>
+<p>看看Test2,你就会明白正常的运作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test2</span></span>&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">  <span class="keyword">int</span> i = <span class="number">2</span>;</div><div class="line">  <span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">  j = i++;</div><div class="line">  System.out.println(j);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>javap -c Test2</code> 的字节码如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class Test2 extends java.lang.Object&#123;</div><div class="line">public Test2();</div><div class="line">  Code:</div><div class="line">   0:	aload_0</div><div class="line">   1:	invokespecial	#1; //Method java/lang/Object."&lt;init&gt;":()V</div><div class="line">   4:	return</div><div class="line"></div><div class="line">public static void main(java.lang.String[]);</div><div class="line">  Code:</div><div class="line">   0:	iconst_2</div><div class="line">   1:	istore_1</div><div class="line">   2:	iconst_0</div><div class="line">   3:	istore_2</div><div class="line">   4:	iload_1</div><div class="line">   5:	iinc	1, 1</div><div class="line">   8:	istore_2</div><div class="line">   9:	getstatic	#2; //Field java/lang/System.out:Ljava/io/PrintStream;</div><div class="line">   12:	iload_2</div><div class="line">   13:	invokevirtual	#3; //Method java/io/PrintStream.println:(I)V</div><div class="line">   16:	return</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code>4: iload_1   //变量1的值被保存（入栈）
+5: iinc  1,1  //i自增
+8 istore_2  // 弹栈，赋值给变量2.。。
+</code></pre><p>现在明白了吧，，到底发生了什么。。</p>
+<p>但是还没完，，，，，我们还没解释在c语言中发生了什么。。。</p>
+<p>在gcc中，编译一个c程序要四个阶段，预处理，编译，汇编，链接。我们在编译阶段后停下，这样会得到AT&amp;T的汇编码，</p>
+<p>我们写下两种代码，类似于java版</p>
+<p>先看正常情况:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> i = <span class="number">2</span>;</div><div class="line">    <span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">    j = i++;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"j = %d\n"</span>,j);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译成汇编码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">  .file	<span class="string">"test.c"</span></div><div class="line">  .section	.rodata</div><div class="line">.LC0:</div><div class="line">  .string	<span class="string">"j = %d\n"</span></div><div class="line">  .text</div><div class="line">.globl main</div><div class="line">  .type	main, @<span class="keyword">function</span></div><div class="line">main:</div><div class="line">  pushl	%ebp</div><div class="line">  movl	%esp, %ebp</div><div class="line">  andl	$-16, %esp</div><div class="line">  subl	<span class="variable">$32</span>, %esp</div><div class="line">  movl	<span class="variable">$2</span>, 28(%esp)</div><div class="line">  movl	<span class="variable">$0</span>, 24(%esp)</div><div class="line">  movl	28(%esp), %eax</div><div class="line">  movl	%eax, 24(%esp)</div><div class="line">  addl	<span class="variable">$1</span>, 28(%esp)</div><div class="line">  movl	$.LC0, %eax</div><div class="line">  movl	24(%esp), %edx</div><div class="line">  movl	%edx, 4(%esp)</div><div class="line">  movl	%eax, (%esp)</div><div class="line">  call	<span class="built_in">printf</span></div><div class="line">  movl	<span class="variable">$0</span>, %eax</div><div class="line">  leave</div><div class="line">  ret</div><div class="line">  .size	main, .-main</div><div class="line">  .ident	<span class="string">"GCC: (Ubuntu 4.4.3-4ubuntu5.1) 4.4.3"</span></div><div class="line">  .section	.note.GNU-stack,<span class="string">""</span>,@progbits</div></pre></td></tr></table></figure>
+<p>包括 <code>movl    $.LC0, %eax</code> 和之后语句的都和输出有关了。<br>我们再把初始化有关的除去，关键的部分是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">movl    28(%esp), %eax</div><div class="line">movl    %eax, 24(%esp)</div><div class="line">addl    <span class="variable">$1</span>, 28(%esp)</div></pre></td></tr></table></figure>
+<p>保存了i的值，（放在eax中），之后又放入j中，i再自增，这就很符合大家心里的答案，那么如果是i=i++时自然就是i被赋值，再自增。。。也就是大家心中的答案了，但是真是这样么？我们继续看。。。。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">int</span> i = <span class="number">2</span>;</div><div class="line">i = i++;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"i = %d\n"</span>,i);</div><div class="line"><span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对应的汇编码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">  .file	<span class="string">"test2.c"</span></div><div class="line">  .section	.rodata</div><div class="line">.LC0:</div><div class="line">  .string	<span class="string">"i = %d\n"</span></div><div class="line">  .text</div><div class="line">.globl main</div><div class="line">  .type	main, @<span class="keyword">function</span></div><div class="line">main:</div><div class="line">  pushl	%ebp</div><div class="line">  movl	%esp, %ebp</div><div class="line">  andl	$-16, %esp</div><div class="line">  subl	<span class="variable">$32</span>, %esp</div><div class="line">  movl	<span class="variable">$2</span>, 28(%esp)</div><div class="line">  addl	<span class="variable">$1</span>, 28(%esp)</div><div class="line">  movl	$.LC0, %eax</div><div class="line">  movl	28(%esp), %edx</div><div class="line">  movl	%edx, 4(%esp)</div><div class="line">  movl	%eax, (%esp)</div><div class="line">  call	<span class="built_in">printf</span></div><div class="line">  movl	<span class="variable">$0</span>, %eax</div><div class="line">  leave</div><div class="line">  ret</div><div class="line">  .size	main, .-main</div><div class="line">  .ident	<span class="string">"GCC: (Ubuntu 4.4.3-4ubuntu5.1) 4.4.3"</span></div><div class="line">  .section	.note.GNU-stack,<span class="string">""</span>,@progbits</div></pre></td></tr></table></figure>
+<p>关键部分就省一句了    addl    $1, 28(%esp)这简直就是。。。。看我的test3.c吧。。。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">int</span> i = <span class="number">2</span>;</div><div class="line">i++;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"i = %d\n"</span>,i);</div><div class="line"><span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>产生的汇编码</p>
+<p><code>aiqier@aiqier-laptop:~/c/test3$ cat test3.s</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">  .file	<span class="string">"test3.c"</span></div><div class="line">  .section	.rodata</div><div class="line">.LC0:</div><div class="line">  .string	<span class="string">"i = %d\n"</span></div><div class="line">  .text</div><div class="line">.globl main</div><div class="line">  .type	main, @<span class="keyword">function</span></div><div class="line">main:</div><div class="line">  pushl	%ebp</div><div class="line">  movl	%esp, %ebp</div><div class="line">  andl	$-16, %esp</div><div class="line">  subl	<span class="variable">$32</span>, %esp</div><div class="line">  movl	<span class="variable">$2</span>, 28(%esp)</div><div class="line">  addl	<span class="variable">$1</span>, 28(%esp)</div><div class="line">  movl	$.LC0, %eax</div><div class="line">  movl	28(%esp), %edx</div><div class="line">  movl	%edx, 4(%esp)</div><div class="line">  movl	%eax, (%esp)</div><div class="line">  call	<span class="built_in">printf</span></div><div class="line">  movl	<span class="variable">$0</span>, %eax</div><div class="line">  leave</div><div class="line">  ret</div><div class="line">  .size	main, .-main</div><div class="line">  .ident	<span class="string">"GCC: (Ubuntu 4.4.3-4ubuntu5.1) 4.4.3"</span></div><div class="line">  .section	.note.GNU-stack,<span class="string">""</span>,@progbits</div></pre></td></tr></table></figure>
+<p>恩，在c语言中<code>i=i++</code>;居然跟<code>i++</code>;的汇编代码一样，按正常的逻辑（我们之前的分析），<code>i=2;i=i++;</code>i的值时3,已经没问题了，但是gcc会对编译器做一些优化，所以保存i的值，在赋值给i，这两条语句自然是鸡肋了，就被优化掉了。</p>
+<p>总结，我们发现对于i++保存的临时值，java中是自增在返回临时值，而c语言中是返回临时值后，在自增，所以这就是为什么<code>i=i++</code>在这两种语言中不同的结果了，c#我就不知道了，有兴趣的同学可以试试，python么，没有++啦，呵呵，如果我的分析有什么不对之初，希望能与你一起探讨。。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考古/" rel="tag">#考古</a>
+          
+            <a href="/tags/c/" rel="tag">#c</a>
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/11/13/talk-about-quick-sort/" rel="prev">聊聊快速排序</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/09/25/how-we-study-program/" rel="next">我们应该如何学习编程</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2012/10/19/what-happen-when-i-assign-increase/"
+     data-title="当i = i++时，究竟发生了什么？"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2012/10/19/what-happen-when-i-assign-increase/"
+                   data-title="当i = i++时，究竟发生了什么？" data-url="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言："><span class="nav-number">1.</span> <span class="nav-text">前言：</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

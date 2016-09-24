@@ -1,0 +1,687 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="c#,编程心得," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。
+我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭">
+<meta property="og:type" content="article">
+<meta property="og:title" content="临时变量应该叫啥?">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/07/15/local-value-name/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。
+我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.756Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="临时变量应该叫啥?">
+<meta name="twitter:description" content="没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。
+我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 临时变量应该叫啥? | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              临时变量应该叫啥?
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-07-15T00:00:00+08:00" content="2014-07-15">
+            2014-07-15
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/07/15/local-value-name/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/15/local-value-name/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。<br>同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。</p>
+<p>我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。<br>如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭问题呢？我觉得就是<strong>大多数临时变量就没必要命名</strong>。<br>等你明白我的这句话，就会发现你<strong>命名的好坏，表示你会不会用临时变量，而这临时变量又和你的代码结构，代码的简练程度息息相关</strong>。</p>
+<a id="more"></a>
+<p>首先你要明白为什么要为一个变量命名。</p>
+<ul>
+<li>你要使用这个变量不止一次。</li>
+<li>名称本身是自解释的。</li>
+</ul>
+<p>所以我们可以根据这些，定义如下几条规则：</p>
+<ul>
+<li>如果一个变量只使用一次，那么不要为它命名，除非为它赋值很长。（如果只是用一次，完全可以不要它）</li>
+<li>不要乱缩写。result不要写成 res，department 不要写成 depart（降低可读性）</li>
+<li>打死不用 aa，bb，a1，a2。（完全没有自解释，降低可读性）</li>
+</ul>
+<p>下面是几个实际的例子:</p>
+<h4 id="只使用一次的没有必要为其命名。"><a href="#只使用一次的没有必要为其命名。" class="headerlink" title="只使用一次的没有必要为其命名。"></a>只使用一次的没有必要为其命名。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// bad</div><div class="line">result = dosomething();</div><div class="line">return result;</div><div class="line">// good</div><div class="line">return dosomething();</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="能用三目运算符不用逻辑判断语句-if-else"><a href="#能用三目运算符不用逻辑判断语句-if-else" class="headerlink" title="能用三目运算符不用逻辑判断语句(if else)"></a>能用三目运算符不用逻辑判断语句(if else)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// bad</div><div class="line">string oddeven(int value)</div><div class="line">&#123;</div><div class="line">    string result = &quot;&quot;;</div><div class="line">    if(value % 2==0)</div><div class="line">    &#123;</div><div class="line">        result = &quot;even&quot;;</div><div class="line">    &#125;else</div><div class="line">    &#123;</div><div class="line">        result = &quot;odd&quot;;</div><div class="line">    &#125;</div><div class="line">    return result;</div><div class="line">&#125;</div><div class="line">// good</div><div class="line">string oddeven(int value)</div><div class="line">&#123;</div><div class="line">    return value % 2 == 0 ? &quot;even&quot;: &quot;odd&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？"><a href="#如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？" class="headerlink" title="如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？"></a>如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// bad</div><div class="line">amount1 = os.query&lt;Porjectstaff&gt;.where(1).count();</div><div class="line">amount2 = os.query&lt;Projectstaff&gt;.where(2).count();</div><div class="line">amount3 = os.query&lt;Porjectstaff&gt;.where(3).count();</div><div class="line">projectAmount = amount1 + amount2 + amount3;</div><div class="line">// good</div><div class="line">projectAmount  = os.query&lt;Porjectstaff&gt;.where(1).count();</div><div class="line">projectAmount += os.query&lt;Projectstaff&gt;.where(2).count();</div><div class="line">projectAmount += os.query&lt;Projectstaff&gt;.where(3).count();</div></pre></td></tr></table></figure>
+<p>amount1，amount2，amount3这样为每个临时变量命名，其实根本就没必要。</p>
+<hr>
+<p><strong>有个性与没个性，（有个性的单独命名，没个性的放在容器）</strong></p>
+<p>你可能会问我，什么叫有个性，什么叫没个性？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">int []a = &#123;1, 2, 3, 4&#125;;</div><div class="line">a[0] ...</div><div class="line">a[1] ...</div><div class="line">a[2] ...</div><div class="line">a[3] ...</div><div class="line">// 这四个变量是通过数组访问的，它们并没有名字，所以叫&quot;没个性&quot;</div><div class="line"></div><div class="line">int one   = 1;</div><div class="line">int two   = 2;</div><div class="line">int three = 3;</div><div class="line">int four  = 4;</div><div class="line">// 这四个变量每一个有自己的名字，所以它们&quot;有个性&quot;</div></pre></td></tr></table></figure>
+<p>比如前段时间，我写过一个代码，提取四段字符串来生成一个项目编号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">string department   =  Department.Abbr;                         // 部门缩写</div><div class="line">string projecttype  =  ProjectType.Name;                        // 项目类型缩写</div><div class="line">string serialnumber =  string.Format(&quot;&#123;0000&#125;&quot;, SerialNumber);   // 流水号</div><div class="line">string year         =  StartDate.year;                          // 项目年份</div><div class="line"></div><div class="line">ProjectNumber       =  string.Format(&quot;&#123;0&#125;-&#123;1&#125;-&#123;2&#125;-&#123;3&#125;&quot;,</div><div class="line">                       department, projecttype, serialnumber, year);</div></pre></td></tr></table></figure>
+<p>就像我之前说的那样，这种”个性”命名根本就没有必要，后面已经能够读的出来了。<br>所以这是我的新的写法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">string []symbol = string&#123;</div><div class="line">	Department.Abbr,</div><div class="line">	ProjectType.Name,</div><div class="line">	string.Format(&quot;&#123;0000&#125;&quot;, SerialNumber),</div><div class="line">	StartDate.year</div><div class="line">&#125;</div><div class="line">ProjectNumber = string.Format(&quot;&#123;0&#125;-&#123;1&#125;-&#123;2&#125;-&#123;3&#125;&quot;, symbol);</div></pre></td></tr></table></figure>
+<p><strong>好的命名它本身的可读性。连注释都省了</strong>。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag">#c#</a>
+          
+            <a href="/tags/编程心得/" rel="tag">#编程心得</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/08/04/write-code-if-statement/" rel="prev">关于If的几种写法</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/07/05/enum-post/" rel="next">使用位掩码来表示多个职位</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/07/15/local-value-name/"
+     data-title="临时变量应该叫啥?"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2014/07/15/local-value-name/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2014/07/15/local-value-name/"
+                   data-title="临时变量应该叫啥?" data-url="http://www.pulpcode.cn/2014/07/15/local-value-name/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#只使用一次的没有必要为其命名。"><span class="nav-number">1.</span> <span class="nav-text">只使用一次的没有必要为其命名。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#能用三目运算符不用逻辑判断语句-if-else"><span class="nav-number">2.</span> <span class="nav-text">能用三目运算符不用逻辑判断语句(if else)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？"><span class="nav-number">3.</span> <span class="nav-text">如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

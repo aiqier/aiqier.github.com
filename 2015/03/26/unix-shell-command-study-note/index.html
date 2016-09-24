@@ -1,0 +1,729 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="linux,shell," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="我一直所理解的学习模式是：尝试 --&amp;gt; 实用熟练 --&amp;gt; 探究原理 --&amp;gt; 总结均衡，选择性忽略。
+新公司的开发环境是mac，再一次从win开发回到了linux开发模式，好多命令基本都忘记了，是时候重新总结了。
+这篇博客会不断更新，主要总结常用场景下的命令。
+删除命令将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)find . -type d -name">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unix shell 命令行总结">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/03/26/unix-shell-command-study-note/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="我一直所理解的学习模式是：尝试 --&amp;gt; 实用熟练 --&amp;gt; 探究原理 --&amp;gt; 总结均衡，选择性忽略。
+新公司的开发环境是mac，再一次从win开发回到了linux开发模式，好多命令基本都忘记了，是时候重新总结了。
+这篇博客会不断更新，主要总结常用场景下的命令。
+删除命令将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)find . -type d -name">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.792Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="unix shell 命令行总结">
+<meta name="twitter:description" content="我一直所理解的学习模式是：尝试 --&amp;gt; 实用熟练 --&amp;gt; 探究原理 --&amp;gt; 总结均衡，选择性忽略。
+新公司的开发环境是mac，再一次从win开发回到了linux开发模式，好多命令基本都忘记了，是时候重新总结了。
+这篇博客会不断更新，主要总结常用场景下的命令。
+删除命令将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)find . -type d -name">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> unix shell 命令行总结 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              unix shell 命令行总结
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-03-26T00:00:00+08:00" content="2015-03-26">
+            2015-03-26
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/03/26/unix-shell-command-study-note/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/26/unix-shell-command-study-note/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>我一直所理解的学习模式是：<code>尝试 --&gt; 实用熟练 --&gt; 探究原理 --&gt; 总结均衡，选择性忽略。</code></p>
+<p>新公司的开发环境是mac，再一次从win开发回到了linux开发模式，好多命令基本都忘记了，是时候重新总结了。</p>
+<p>这篇博客会不断更新，主要总结常用场景下的命令。</p>
+<h2 id="删除命令"><a href="#删除命令" class="headerlink" title="删除命令"></a>删除命令</h2><h4 id="将当前文件夹下的名字以mode结尾的文件夹全部删除-注意此命令结尾的写法"><a href="#将当前文件夹下的名字以mode结尾的文件夹全部删除-注意此命令结尾的写法" class="headerlink" title="将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)"></a>将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)</h4><pre><code>find . -type d -name &quot;*mode&quot;  -exec rm -rf {} \;
+</code></pre><h2 id="查找进程"><a href="#查找进程" class="headerlink" title="查找进程"></a>查找进程</h2><h4 id="查开80号端口被哪个进程占用"><a href="#查开80号端口被哪个进程占用" class="headerlink" title="查开80号端口被哪个进程占用"></a>查开80号端口被哪个进程占用</h4><pre><code>netstat -anp | grep 80
+</code></pre><h4 id="查找一个叫tornado的进程"><a href="#查找一个叫tornado的进程" class="headerlink" title="查找一个叫tornado的进程"></a>查找一个叫tornado的进程</h4><pre><code>ps aux | grep tornado
+</code></pre><a id="more"></a>
+<h4 id="关闭这个找到的进程"><a href="#关闭这个找到的进程" class="headerlink" title="关闭这个找到的进程"></a>关闭这个找到的进程</h4><pre><code>kill 进程号
+</code></pre><h2 id="日志操作"><a href="#日志操作" class="headerlink" title="日志操作"></a>日志操作</h2><h4 id="把filename里最尾部的内容显示在屏幕上，并且不断刷新，使你看到最新的文件内容。"><a href="#把filename里最尾部的内容显示在屏幕上，并且不断刷新，使你看到最新的文件内容。" class="headerlink" title="把filename里最尾部的内容显示在屏幕上，并且不断刷新，使你看到最新的文件内容。"></a>把filename里最尾部的内容显示在屏幕上，并且不断刷新，使你看到最新的文件内容。</h4><pre><code>tail -f filename
+</code></pre><h4 id="要指定从末尾20行开始读取notes文件："><a href="#要指定从末尾20行开始读取notes文件：" class="headerlink" title="要指定从末尾20行开始读取notes文件："></a>要指定从末尾20行开始读取notes文件：</h4><pre><code>tail -n 20 filename
+</code></pre><h4 id="输出m行到n行之间的文本"><a href="#输出m行到n行之间的文本" class="headerlink" title="输出m行到n行之间的文本"></a>输出m行到n行之间的文本</h4><pre><code>sed -ne &apos;m,n p&apos; test.py
+</code></pre><h2 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h2><p>.tar.gz 和 .tgz</p>
+<p>解压：tar zxvf FileName.tar.gz<br>压缩：tar zcvf FileName.tar.gz DirName</p>
+<h2 id="查看系统"><a href="#查看系统" class="headerlink" title="查看系统"></a>查看系统</h2><h4 id="查看系统空间占用："><a href="#查看系统空间占用：" class="headerlink" title="查看系统空间占用："></a>查看系统空间占用：</h4><p>df -h</p>
+<h4 id="列出当前目录下所有文件夹所占空间"><a href="#列出当前目录下所有文件夹所占空间" class="headerlink" title="列出当前目录下所有文件夹所占空间"></a>列出当前目录下所有文件夹所占空间</h4><p>du -sh *</p>
+<h2 id="远程拷贝文件"><a href="#远程拷贝文件" class="headerlink" title="远程拷贝文件"></a>远程拷贝文件</h2><h4 id="拷贝本机至远程主机-目录"><a href="#拷贝本机至远程主机-目录" class="headerlink" title="拷贝本机至远程主机(目录)"></a>拷贝本机至远程主机(目录)</h4><p>本机目录：/home/administrator/test</p>
+<p>远程目录：192.168.1.100/root</p>
+<p>scp -r /home/administrator/test/ root@192.168.1.100:/root/</p>
+<h4 id="拷贝本机至远程主机-文件"><a href="#拷贝本机至远程主机-文件" class="headerlink" title="拷贝本机至远程主机(文件)"></a>拷贝本机至远程主机(文件)</h4><p>本机文件：/home/administrator/Desktop/old/driver/test/test.txt</p>
+<p>远程目录：root@192.168.1.100:/root/</p>
+<p>scp /home/administrator/Desktop/old/driver/test/test.txt</p>
+<p>root@192.168.1.100:/root/</p>
+<h4 id="远程文件-文件夹下载"><a href="#远程文件-文件夹下载" class="headerlink" title="远程文件/文件夹下载"></a>远程文件/文件夹下载</h4><p>远程目录：root@192.168.62.10:/root/</p>
+<p>本机目录：/home/administrator/Desktop/new/</p>
+<p>scp -r root@192.168.62.10:/root/ /home/administrator/Desktop/new/</p>
+<h2 id="环境变量与配置"><a href="#环境变量与配置" class="headerlink" title="环境变量与配置"></a>环境变量与配置</h2><h4 id="source命令"><a href="#source命令" class="headerlink" title="source命令"></a>source命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">source</span> FileName</div></pre></td></tr></table></figure>
+<p>source命令将在当前bash环境下读取并执行FileName中的命令，该命令通常用命令“.”来替代。</p>
+<p>提到source命令是因为，我们常常会在脚本中包含修改环境变量的代码，比如要添加一个PYTHONPATH，或是其它的。而如果你以普通的脚本运行方式来运行此脚本，会发现然而没什么卵用。<br>环境变量并没有被修改，因为source在当前bash环境下执行命令，而scripts是启动一个子shell来执行命令。这样如果把设置环境变量（或alias等等）的命令写进scripts中，就只会影响子shell,无法改变当前的bash，所以通过文件（命令列）设置环境变量时，要用source 命令</p>
+<h4 id="profile和bashrc"><a href="#profile和bashrc" class="headerlink" title="profile和bashrc"></a>profile和bashrc</h4><p>etc/xxxx 是对所有用户都会生效的东西</p>
+<p>~/.xxxx 是对单个用户才生效的东西</p>
+<p>profile是在用户登录时，该文件会被执行一次。而bashrc会在每次bash被打开时，执行一次。</p>
+<p>export PATH=”$PATH:$JAVA_HOME/bin”</p>
+<p>还有一点要特别注意的，你的shell是bash还是zsh，不同的shell，载入的配置文件并不相同，比如bashrc对于zsh来说，是每什么卵用的。</p>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><h4 id="在-etc下查找“-log”的文件"><a href="#在-etc下查找“-log”的文件" class="headerlink" title="在/etc下查找“*.log”的文件"></a>在/etc下查找“*.log”的文件</h4><pre><code>find /etc -name “*.log”
+</code></pre><h4 id="在某个路径下查找所有包含”hello”字符串的文件。"><a href="#在某个路径下查找所有包含”hello”字符串的文件。" class="headerlink" title="在某个路径下查找所有包含”hello”字符串的文件。"></a>在某个路径下查找所有包含”hello”字符串的文件。</h4><pre><code>find /etc -name &quot;*&quot; | xargs grep &quot;hello&quot;
+</code></pre><h4 id="emacs"><a href="#emacs" class="headerlink" title="emacs"></a>emacs</h4><p>emacs 的查找字符串就是c-s</p>
+<p>首先要注意的是，emacs的查找是不区分大小写的。</p>
+<p>emacs 有两种方式来替换字符串，一种是询问式的，一种是非询问式的。</p>
+<p>replace-string就是非询问式的:</p>
+<p>M-x replace-string, replace-regexp。</p>
+<p>询问式的M-%，会一个个的输入y或者n，根据自己的选择进行替换。</p>
+<p>而且emacs还可以用set mark，圈住一部分字符串之后，再进行替换。</p>
+<p>emacs列操作：</p>
+<p>c-x r k 剪贴一个矩形块</p>
+<p>c-x r t 在所有行前面插入</p>
+<p>当然如果是为了注释，我不会使用上一种方法，C-c，C-b能够做的更好。</p>
+<h4 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h4><p>将每一行的foo替换为bar</p>
+<p>sed ‘s/foo/bar/g’ pp.txt</p>
+<p>s 代表替换,g表示一行上的替换所有的匹配。</p>
+<p>sed 在每一行的末尾添加一个分号;</p>
+<p>sed ‘s/$/;/g’ pp.txt</p>
+<p>sed 在每一行的开头加一个注释</p>
+<p>sed ‘s/^/#/g’ pp.txt</p>
+<p>不过我一般不使用此操作来注释，emacs的C-c C-b,可以根据语言来选择注释。</p>
+<p>正则表达式中得圆括号代表:拿出来以后再使用：</p>
+<p>sed ‘s/<i>(.*)&lt;\/i&gt;/[\1]/g’ f</i></p>
+<p>将每一行的：<i>xxx</i>替换为[xxx]</p>
+<h4 id="几点说明："><a href="#几点说明：" class="headerlink" title="几点说明："></a>几点说明：</h4><p><code>grep &quot;sys&quot; test.py</code> 在test.py中查找字符串”sys”</p>
+<p><code>grep &quot;sys&quot; *</code> 在当前目录的文件中查找字符串”sys”</p>
+<p>grep的参数部分接受文件命，grep的输入管道接受一个字符串缓冲区。</p>
+<p>xargs是一条Unix和类Unix操作系统的常用命令。它的作用是将参数列表转换成小块分段传递给其他命令，用来对付那些不能通过管道传递的内容(参数)。</p>
+<p>xargs 可以读入 stdin 的资料，并且以空白字元或断行字元作为分辨，将 stdin 的资料分隔成为 arguments</p>
+<p>通配符（通配符不是正则表达式）:</p>
+<p><code>test*</code>             *表示后面不论接几个字符都接受（没有字符也接受）</p>
+<p><code>test?</code>             ?表示后面当且仅当接一个字符时才接受</p>
+<p><code>test[1~5]</code>         test1, test2, test3, test4, test5</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/shell/" rel="tag">#shell</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/04/beijing-3-weeks/" rel="prev">在北京的第三周</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/08/data-struct-tree/" rel="next">数据结构总结之tree</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/03/26/unix-shell-command-study-note/"
+     data-title="unix shell 命令行总结"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/03/26/unix-shell-command-study-note/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/03/26/unix-shell-command-study-note/"
+                   data-title="unix shell 命令行总结" data-url="http://www.pulpcode.cn/2015/03/26/unix-shell-command-study-note/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#删除命令"><span class="nav-number">1.</span> <span class="nav-text">删除命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将当前文件夹下的名字以mode结尾的文件夹全部删除-注意此命令结尾的写法"><span class="nav-number">1.0.1.</span> <span class="nav-text">将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找进程"><span class="nav-number">2.</span> <span class="nav-text">查找进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查开80号端口被哪个进程占用"><span class="nav-number">2.0.1.</span> <span class="nav-text">查开80号端口被哪个进程占用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找一个叫tornado的进程"><span class="nav-number">2.0.2.</span> <span class="nav-text">查找一个叫tornado的进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭这个找到的进程"><span class="nav-number">2.0.3.</span> <span class="nav-text">关闭这个找到的进程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志操作"><span class="nav-number">3.</span> <span class="nav-text">日志操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#把filename里最尾部的内容显示在屏幕上，并且不断刷新，使你看到最新的文件内容。"><span class="nav-number">3.0.1.</span> <span class="nav-text">把filename里最尾部的内容显示在屏幕上，并且不断刷新，使你看到最新的文件内容。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#要指定从末尾20行开始读取notes文件："><span class="nav-number">3.0.2.</span> <span class="nav-text">要指定从末尾20行开始读取notes文件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出m行到n行之间的文本"><span class="nav-number">3.0.3.</span> <span class="nav-text">输出m行到n行之间的文本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压缩"><span class="nav-number">4.</span> <span class="nav-text">解压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看系统"><span class="nav-number">5.</span> <span class="nav-text">查看系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统空间占用："><span class="nav-number">5.0.1.</span> <span class="nav-text">查看系统空间占用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出当前目录下所有文件夹所占空间"><span class="nav-number">5.0.2.</span> <span class="nav-text">列出当前目录下所有文件夹所占空间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程拷贝文件"><span class="nav-number">6.</span> <span class="nav-text">远程拷贝文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝本机至远程主机-目录"><span class="nav-number">6.0.1.</span> <span class="nav-text">拷贝本机至远程主机(目录)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝本机至远程主机-文件"><span class="nav-number">6.0.2.</span> <span class="nav-text">拷贝本机至远程主机(文件)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#远程文件-文件夹下载"><span class="nav-number">6.0.3.</span> <span class="nav-text">远程文件/文件夹下载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量与配置"><span class="nav-number">7.</span> <span class="nav-text">环境变量与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#source命令"><span class="nav-number">7.0.1.</span> <span class="nav-text">source命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#profile和bashrc"><span class="nav-number">7.0.2.</span> <span class="nav-text">profile和bashrc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找"><span class="nav-number">8.</span> <span class="nav-text">查找</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在-etc下查找“-log”的文件"><span class="nav-number">8.0.1.</span> <span class="nav-text">在/etc下查找“*.log”的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在某个路径下查找所有包含”hello”字符串的文件。"><span class="nav-number">8.0.2.</span> <span class="nav-text">在某个路径下查找所有包含”hello”字符串的文件。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#emacs"><span class="nav-number">8.0.3.</span> <span class="nav-text">emacs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sed"><span class="nav-number">8.0.4.</span> <span class="nav-text">sed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#几点说明："><span class="nav-number">8.0.5.</span> <span class="nav-text">几点说明：</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="读书笔记," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》
+它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。
+如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。
+但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。
+我在读此书的时候，读到两个地方，作者的思想和我在程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员对《故事》的两点思考?">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/11/02/program-think-about-story/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》
+它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。
+如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。
+但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。
+我在读此书的时候，读到两个地方，作者的思想和我在程">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.763Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="程序员对《故事》的两点思考?">
+<meta name="twitter:description" content="最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》
+它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。
+如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。
+但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。
+我在读此书的时候，读到两个地方，作者的思想和我在程">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 程序员对《故事》的两点思考? | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              程序员对《故事》的两点思考?
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-11-02T00:00:00+08:00" content="2014-11-02">
+            2014-11-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/11/02/program-think-about-story/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/02/program-think-about-story/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》</p>
+<p>它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。</p>
+<p>如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。</p>
+<p>但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。</p>
+<p>我在读此书的时候，读到两个地方，作者的思想和我在程序员职业生涯中的感想如出一辙，所以想把它们写下来。</p>
+<h2 id="一-大情节与反情节"><a href="#一-大情节与反情节" class="headerlink" title="一 大情节与反情节"></a>一 大情节与反情节</h2><p>作者提到大多数票房热卖的电影多是经典情节，或者叫大情节。但也有一些另辟蹊径，巧夺天工的电影，它们与经典情节不同，被称为小情节，或者反情节。</p>
+<a id="more"></a>
+<p>一下是我摘抄作者的原话：</p>
+<pre><code>如果你也想像罗布特-格里耶一样写作小情节或反情节，并能找到非好莱坞的制作人以低预算投拍，即使赚钱不多也能自得其乐，那好，你可以去干。但是，如果你想给好莱坞写作，一个低预算的本子则不是什么资产。
+老谋深算的专业人员读到你的最小注意作品或反结构作品，也许会为你的影像处理喝彩，但将会婉言拒绝染指，因为经验已经告诉他们，如果故事阳春白雪，那么观众也必定会曲高和寡。
+
+作者在后面提到：**优秀的作家**必须精通经典形式。
+
+若想炮制小情节或反情节作品，作家必须顺应或者反着这一预期来进行操作。只有精心而富有创见地将经典形式揉碎或弯曲，艺术家才能导引观众感知到潜藏在小情节中的内才生活或接受反情节的荒诞冷酷。
+
+伯格曼写作和导演了二十年的爱情故事和社会历史正剧才敢开始进入《沉默》的最小主义和《假面》的反结构。
+
+大师，首先必须精通大情节。我很同情那种想使其银幕处女作读起来就像是《假面》般血气方刚的欲望。但是，跻身先锋派的梦想必须要等到你自己也精通了经典形式之后，一如在你之前的许多艺术家一样。
+只有当你确定能写出像样的作品之后，才敢说自己已经理解。作家需要不断磨练技巧。直到只是从左脑滑向右脑，直到智力感悟变成一种谋生手段。
+</code></pre><p>我在起初学习编程，或者在编写一个软件的时候，也总想来个什么<strong>奇招</strong>。还总孤芳自赏，认为现在的太多东西过于空洞，没有创新。等到时间久了，编程水平提高之后，才发现自己早些年自己以为是创新的作品，其实就是一堆shit，基本没什么含金量，而且考虑问题也过于简单。<strong>奇招</strong>本身也是为了不同而不同，而不是从解决问题的角度出发，打破常规的创新。</p>
+<p>我也常跟朋友调侃说：”<strong>我现在写程序基本就看前辈的代码，多看书，很少自己去设计个什么结构了，因为我知道我们大多数年轻人不是有想法，而是书读的太少，想太多。</strong>“</p>
+<h2 id="二-作家必须相信他所写的东西"><a href="#二-作家必须相信他所写的东西" class="headerlink" title="二 作家必须相信他所写的东西"></a>二 作家必须相信他所写的东西</h2><p>还是关于之前的反结构。作者在这里阐释了，<strong> 为什么这些反结构，最小主义的电影结构如此吸引着年轻的作家。</strong></p>
+<pre><code>我怀疑，对许多人来说，并不是因为这种形式的内在意义引起了他们的兴趣，而是因为这种形式所代表的外在的东西。
+
+年轻人被教诲说，好莱坞和艺术是相对的。因此，那些初出茅庐者为了被人视为艺术家，便落进了这个圈套，他们写作剧本的目的并不是因为它是什么，而是因为它不是什么。
+他们为了避免商业主义的污染，便回避了闭合结局，主动人物，时空顺序以及因果关系。结果，其作品便被矫揉造作所荼毒。
+
+就像一个生活在强大父亲阴影中的孩子，你打破好莱坞的“规则”，是因为这样能给你一种自由感。但是，对父权的愤怒反抗并不是创造力，而是为了博取关注的忤逆行为。为不同而不同就像对商业法则的盲从一样空洞。
+</code></pre><p>在大学的时候，自学linux也是这个原因。为了和别人不懂，为了使自己成为一个黑客似的人物。从此仇视windows，都尝试过那些蹩脚恶心的linux游戏。</p>
+<p>直到最近在Windows上开发，才觉得vs很好很强大，c#是一款很人性化的语言。</p>
+<p>就开发而言，问题永远不会是，你用vim敲代码，我用vs自动生成，你就比我牛逼。如果背后的编译原理我们都知道，何必浪费那些时间？</p>
+<p>那些使用vim和emacs的人，如果你是为了不同而不同，那么还是放下这些工具吧。最脑残的莫过于用vim开发c#。</p>
+<p>实际上，大多数折腾linux的人，也是为了不同而不同。自称喜欢开源，我就纳闷，linux是开源，但是读过源码的能有几个？不是不读而是读不懂罢了。只是拘泥于表面的叛逆，永远都成不了高手。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/读书笔记/" rel="tag">#读书笔记</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/11/06/c-sharp-event-delegate/" rel="prev">c#事件处理之委托</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/11/01/sql-subquery/" rel="next">sql知识总结之子查询</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/11/02/program-think-about-story/"
+     data-title="程序员对《故事》的两点思考?"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2014/11/02/program-think-about-story/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2014/11/02/program-think-about-story/"
+                   data-title="程序员对《故事》的两点思考?" data-url="http://www.pulpcode.cn/2014/11/02/program-think-about-story/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-大情节与反情节"><span class="nav-number">1.</span> <span class="nav-text">一 大情节与反情节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-作家必须相信他所写的东西"><span class="nav-number">2.</span> <span class="nav-text">二 作家必须相信他所写的东西</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

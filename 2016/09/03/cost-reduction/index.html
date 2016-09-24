@@ -1,0 +1,672 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="思考," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="火枪在一开始是中国宋朝就发明了，但是这东西制造的成本太高，所以没啥关键性变革。后来欧洲有了工业革命，导致生产火枪的成本降低，他们便开始量产。其实火枪这东西一开始的杀伤力，射程和精准度比弓箭差远了。但是这种东西还能被接受的原因就是，与训练出一个弓箭手相比，训练一个火枪手的成本低多了。
+看来我们无时无刻在玩这种“降低成本”的把戏，这也是我最近在阅读和思考中体会到的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="降低成本">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/09/03/cost-reduction/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="火枪在一开始是中国宋朝就发明了，但是这东西制造的成本太高，所以没啥关键性变革。后来欧洲有了工业革命，导致生产火枪的成本降低，他们便开始量产。其实火枪这东西一开始的杀伤力，射程和精准度比弓箭差远了。但是这种东西还能被接受的原因就是，与训练出一个弓箭手相比，训练一个火枪手的成本低多了。
+看来我们无时无刻在玩这种“降低成本”的把戏，这也是我最近在阅读和思考中体会到的。">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="降低成本">
+<meta name="twitter:description" content="火枪在一开始是中国宋朝就发明了，但是这东西制造的成本太高，所以没啥关键性变革。后来欧洲有了工业革命，导致生产火枪的成本降低，他们便开始量产。其实火枪这东西一开始的杀伤力，射程和精准度比弓箭差远了。但是这种东西还能被接受的原因就是，与训练出一个弓箭手相比，训练一个火枪手的成本低多了。
+看来我们无时无刻在玩这种“降低成本”的把戏，这也是我最近在阅读和思考中体会到的。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 降低成本 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              降低成本
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-09-03T00:00:00+08:00" content="2016-09-03">
+            2016-09-03
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/思考/" itemprop="url" rel="index">
+                  <span itemprop="name">思考</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/09/03/cost-reduction/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/cost-reduction/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>火枪在一开始是中国宋朝就发明了，但是这东西制造的成本太高，所以没啥关键性变革。后来欧洲有了工业革命，导致生产火枪的成本降低，他们便开始量产。其实火枪这东西一开始的杀伤力，射程和精准度比弓箭差远了。但是这种东西还能被接受的原因就是，与训练出一个弓箭手相比，训练一个火枪手的成本低多了。</p>
+<p>看来我们无时无刻在玩这种“降低成本”的把戏，这也是我最近在阅读和思考中体会到的。</p>
+<a id="more"></a>
+<h2 id="郭德纲"><a href="#郭德纲" class="headerlink" title="郭德纲"></a>郭德纲</h2><p>我不谈郭德纲的相声低俗，实际上我能够猜到，早期的相声，比如清朝时候，绝对也是各种荤段子，高雅不到哪里去。<br>我觉得郭德纲相声之所以成功，也是因为他的相声把作品的门槛放低了很多。他的搞笑方式，用现在的话来说，就是“性价比”很高。你可以去比较早期的经典相声或者小品，比如 《虎口脱险》，比如《打扑克》，这种能用完整连贯的故事，幽默中透着讽刺的作品才能被称之为佳作。但是这种佳作的制作成本简直是太高了，也很难大量生产。你再去听听郭德纲的相声，故事很不连贯，跳跃很大，就算是被网友津津乐道的作品，比如 《西征梦》，比如《托妻献子》，也是东一棒子，西一棒子，很随意。完全是性价比抖包袱。赵本山后期的作品也是这样，动不动就表演才艺，猜脑筋急转弯了。当然很多观众会说，我不管好不好，能让我笑就行了，对啊，这就是他成功的地方啊，降低了生产相声作品的门槛。所以郭德纲在发展德云社的时候有那么多作品产出。但我觉得一个好的作品，是由故事驱动的，我们始终要学会去讲一个故事，而不是学会去搞笑。</p>
+<h2 id="交往成本"><a href="#交往成本" class="headerlink" title="交往成本"></a>交往成本</h2><p>在刚毕业的时候，很多人在度过迷茫期的时候，回去联系自己的各种同学，初中高中大学，无论是找同性建立人脉还是找异性当备胎，企图跟进一步发展关系，之所以这样也是因为，这样的成本要低很多，相比你去认识新的人，又要花时间去了解对方。人家也要话时间了解你，不如就对熟人下手了。</p>
+<p>很多情侣一直分分合合也是因为，相比于认识新的人，从旧的人中下手，成本也低了很多。说道分手这件事也是如此，对于一些不想分手的人来说，只是分手的成本太高。而对于想分手的人而言，他们真的不在乎这些成本。</p>
+<h2 id="降低成本"><a href="#降低成本" class="headerlink" title="降低成本"></a>降低成本</h2><p>目前我能想到的降低成本的做法，一个就是引入新的技术，比如从工业革命到火枪，当然降低成本是相对的，火枪虽然降低了人力成本，但却增加了对这个世界的能源消耗，也就是说这个世界的“墒”更大了。</p>
+<p>还有一种就是标准化。这就像学习一样，你一开始不知道如何学习。后来你渐渐的建立了自己的学习方法，学习自然快了很多，很多人都说一些人学习好是智商高，实际上没有那么邪乎，学习快的人，往往都是养成了良好的学习习惯，这种在学校收益的学习方式，就是一种标准化的手段，相比于不会学的人，往往都是各种浪费精力却又学不好，这样他们在学习的时候，花费的成本比别人要少很多。而流程化标准化的学习方式，都需要从小培养。家庭，老师，都不可少。那么过剩的时间，他们既可以去学习其他的知识，或者用来玩，这也就是为什么，常说的，为啥学习越好的人，什么都懂，或者说什么，他总是玩，学习却那么好。</p>
+<p>这种标准化的学习习惯和思维方式，能够降低的时间成本和精力成本，人与人之间简直差别太大了，而且城市和县城，县城和农村，差别都很大。当然有人会反驳我说，有的人家里穷依旧学习好。就算有你说的那种，但是你见过，家里穷，但是学习好，长得又帅，性格又好，又会玩的人么？穷人做不到，但是富人可以，因为他能有方式降低自己学习的成本，然后去干别的事。</p>
+<p>企业也一样，能够挣钱的企业，往往有流水线的生产流程，就算是互联网公司，从项目的创建到实施到后期维护迭代，也都有标准化的管理办法。而很对创业公司，在试水的时候，往往就是各种弯路各种试。所以大部分公司没有找到自己挣钱的方式就这样死了，而那些找到挣钱方式的公司，也是靠慢慢的流程化，标准化，降低成本。</p>
+<p>这种寻找流程化而降低成本的方式，是一个漫长的过程。比如我最近买了一个菠萝，实际上我只是尝试新鲜事物，因为原来我不怎么吃菠萝，之后我发现一个人根本吃不完一个菠萝，然后就浪费了一大部分，类似于你有了一部分钱，要通过消费让这部分钱在你生活中流动起来，这也是一个漫长的过程，不可避免的试错和调整，才能找到属于自己的流程化，走捷径可以找老司机带你。</p>
+<p>别的行业我不清楚，但是互联网行业这几年的技术更新是很快的，降低了很多的人力成本，不仅仅降低了别的行业的人力成本，本行业的内部的成本也在降低，比如更好的机器配置，比如流程化的管理工具，降低程序员学习门槛的框架。</p>
+<p>说道企业，就要提提为什么大企业要收购公司。如果你只需要利用另一个公司帮你做一次事，或者较少次数，那么对于这些公司任务外包过去就行了，但如果是长时间的使用，那就收购过来了。因为这就降低了企业与企业之间的“沟通”的成本，类似你要找人帮忙一次两次，那你可能要找朋友的朋友，如果经常要帮，那就干脆和他做朋友算了，这样不就降低了沟通的成本吗？</p>
+<h2 id="动了别人的蛋糕"><a href="#动了别人的蛋糕" class="headerlink" title="动了别人的蛋糕"></a>动了别人的蛋糕</h2><p>实际上降低成本是一部分人愿意看到，另一部分不愿意看到的事。</p>
+<p>比如80后靠前左右人，不满于当代的扩招，大学生太多。因为他们觉得自己大学考起来麻烦，现在简单了。当然他们不关心未来的发展趋势，或者教育的目的，关心的只是自己财产不要贬值。</p>
+<p>早一批程序员也有类似的想法，那个时候，他们精通各种底层技术，从汇编到高级语言，后来出来的这些“傻瓜”语言和开发框架工具，当然是他们不能接受的，因为之前只能他们做的东西，如今都自动化了。</p>
+<p>有趣的是，最近dota圈子中也听到类似的事，一些老一批电竞选手抱怨冰蛙（dota作者）把游戏改的太简单了，降低了这个游戏的门槛和个人发挥的空间。可惜冰蛙觉得这个游戏的核心是团队配合和战略，而不是一个carry的独家秀。dota2中插眼提示，也降低了游戏的门槛，同时另一些花时间琢磨过这个技巧的人，也觉得不高兴了，因为他们那点可以装逼的地方没了。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/思考/" rel="tag">#思考</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/24/why-sleep-in-rain-so-happy/" rel="prev">为什么下雨天睡觉这么爽？</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/27/use-add-not-sub/" rel="next">做加法不做减法</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/09/03/cost-reduction/"
+     data-title="降低成本"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2016/09/03/cost-reduction/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/09/03/cost-reduction/"
+                   data-title="降低成本" data-url="http://www.pulpcode.cn/2016/09/03/cost-reduction/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#郭德纲"><span class="nav-number">1.</span> <span class="nav-text">郭德纲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交往成本"><span class="nav-number">2.</span> <span class="nav-text">交往成本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#降低成本"><span class="nav-number">3.</span> <span class="nav-text">降低成本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动了别人的蛋糕"><span class="nav-number">4.</span> <span class="nav-text">动了别人的蛋糕</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

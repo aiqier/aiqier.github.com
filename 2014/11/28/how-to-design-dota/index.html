@@ -1,0 +1,734 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="dota," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言其实我早就想写一篇这样的博客了，但我又知道写这样一篇文章只能是“献丑”而已。我是没开发过游戏，更没设计过游戏，我只是把我对Dota的一些思考总结出来而已。题目叫“如何设计一款Dota类的游戏”，这句话也许太狂了。叫“我对Dota的一些理解”也许更好。
+
+开发方式首先dota的开发过程很是像开源软件的开发过程。我的意思不是说dota是开源的，而是说dota是冰蛙在与玩家一次一次的交流中逐渐开发成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何设计一款dota类的游戏">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/11/28/how-to-design-dota/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="前言其实我早就想写一篇这样的博客了，但我又知道写这样一篇文章只能是“献丑”而已。我是没开发过游戏，更没设计过游戏，我只是把我对Dota的一些思考总结出来而已。题目叫“如何设计一款Dota类的游戏”，这句话也许太狂了。叫“我对Dota的一些理解”也许更好。
+
+开发方式首先dota的开发过程很是像开源软件的开发过程。我的意思不是说dota是开源的，而是说dota是冰蛙在与玩家一次一次的交流中逐渐开发成">
+<meta property="og:image" content="http://www.pulpcode.cn/img/dota.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/bingwa.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/djtyjs.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/tufu.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/leishen.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/ajilisi.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/aidehuadiqi.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/banshen.jpg">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.750Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何设计一款dota类的游戏">
+<meta name="twitter:description" content="前言其实我早就想写一篇这样的博客了，但我又知道写这样一篇文章只能是“献丑”而已。我是没开发过游戏，更没设计过游戏，我只是把我对Dota的一些思考总结出来而已。题目叫“如何设计一款Dota类的游戏”，这句话也许太狂了。叫“我对Dota的一些理解”也许更好。
+
+开发方式首先dota的开发过程很是像开源软件的开发过程。我的意思不是说dota是开源的，而是说dota是冰蛙在与玩家一次一次的交流中逐渐开发成">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/dota.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 如何设计一款dota类的游戏 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              如何设计一款dota类的游戏
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-11-28T00:00:00+08:00" content="2014-11-28">
+            2014-11-28
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/游戏/" itemprop="url" rel="index">
+                  <span itemprop="name">游戏</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/11/28/how-to-design-dota/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/28/how-to-design-dota/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>其实我早就想写一篇这样的博客了，但我又知道写这样一篇文章只能是“献丑”而已。我是没开发过游戏，更没设计过游戏，我只是把我对Dota的一些思考总结出来而已。<br>题目叫“如何设计一款Dota类的游戏”，这句话也许太狂了。叫“我对Dota的一些理解”也许更好。</p>
+<p><img src="/img/dota.jpg" alt="Dota"></p>
+<h4 id="开发方式"><a href="#开发方式" class="headerlink" title="开发方式"></a>开发方式</h4><p>首先dota的开发过程很是像开源软件的开发过程。我的意思不是说dota是开源的，而是说<strong>dota是冰蛙在与玩家一次一次的交流中逐渐开发成型的</strong>。</p>
+<a id="more"></a>
+<p><img src="/img/bingwa.jpg" alt="冰蛙"></p>
+<p>我在读《大教堂与集市》的时候发现，作者<strong>Eric S.Raymond</strong>在开发fetchmail的时候，也有类似的经历，Eric就是在不停的接受用户的邮件，然后将合理的建议，真实的实施在fetchmail上，进行迭代开发。这样的好处是，可以与使用者有更多的交流，集思广益。作者提到他有时还会对提出建议的用户，回复Email耐心的解释，为什么他的这个建议不合理。</p>
+<p><img src="/img/djtyjs.jpg" alt="大教堂与集市"></p>
+<p>冰蛙在开发dota的时候，也会在每个版本，不停的修复bug，改动平衡，加入新的元素。作为一个doter，你应该会记忆犹新dota启动界面的这两句话：</p>
+<pre><code>请不要在公共场合讨论任何bug
+如果你对下个版本有什么意见请给我发email
+</code></pre><p>而且dota并不是一款从头开发的游戏，它只能说是一个war3的mod。这也是dota在开发过程时，比较有意思的一个地方。</p>
+<p>也许像lol这样的游戏，设计师们在设计游戏时会先考虑：“恩，我的游戏中要有那些人物？一个斯巴达？一个埃及死神？一个魔术师？一个木乃伊？”</p>
+<p>而dota不同，它是模型驱动开发的。也就是说设计者在看到这些war3中已有的模型时，再去设计人物，他们可能会这样思考：“嗯，这个阿卡蒙德像个狼人，嗯，这个娜迦像美杜莎，这个山丘像个宙斯”。</p>
+<p>我在阅读有关设计类的图书时，总会听到这样一个理念:</p>
+<pre><code>“如果给你太多的自由，会扼杀你的想象力和创意（因为你根本无从下手），但是给你一些限制，反而能激发你更多创意。”
+</code></pre><p>dota因为在war3的地图编辑器中进行开发，所以本身就对开发者限制了许多，而这些限制反而启发了设计者的思路。</p>
+<p>当然大部分技能会直接从模型中继承，一部分原因也是此技能是模型特有的，比如剑圣风暴。</p>
+<h4 id="几则故事"><a href="#几则故事" class="headerlink" title="几则故事"></a>几则故事</h4><p>dota开局的那声号角，来自于war3的《混乱之治》，这个号角声不是最后法玛里奥召唤小精灵的那声号角，因为那已经是过场动画了。应该是之前的任务中，法玛里奥唤醒其它德鲁伊的号角。</p>
+<p>war3地图编辑器上传的自定义音乐，只能“公放”，不能设置成只让你一个人听到。所以dota中英雄说话的声音很多是重复使用，因为没有多余的声音资源使用。所以为什么屠夫的这句“fresh meat！”和“first  blood， double kill”一样，可以被大家都听到。因为是自定义上传的声音，而非war3资源包中自带的。还有一点有趣的，屠夫的这句“fresh meat！”来源于暴雪的另一款经典游戏–《暗黑破坏神1》，大多数80后玩家，都对这个屠夫记忆犹新，那句“fresh meat！”，当年也吓坏了不少玩家。</p>
+<p><img src="/img/tufu.jpg" alt="屠夫"></p>
+<p>屠夫和复仇之魂，不能带跳刀，不是因为出跳刀变态（出跳刀比他们变态的英雄多了去了），是因为这两个英雄能将对方英雄位移到一个无法移动的死路，这样就会成为一些“坏玩家”利用的bug。不过最近的版本，复仇之魂和屠夫能够使用跳刀了，因为在新版本中如果一个单位被移动到不可移动的位置，那么他将在一定时间内的无视地形。</p>
+<h4 id="如何设计一个英雄？"><a href="#如何设计一个英雄？" class="headerlink" title="如何设计一个英雄？"></a>如何设计一个英雄？</h4><p>简单的来说，你先要给这个英雄分配一个属性，然后在根据这个属性，提供相应的技能。</p>
+<p>你会发现这类魔幻类的作品，他们的人物有大量的雷同，因为就像<strong>煎蛋网</strong>说的那样“地球上没有新鲜事 。”</p>
+<p>比如就拿火属性来说吧，你能在火影中找到：“宇智波一族。”，海贼王：”火拳艾斯“。那么在x战警，西游记，封神榜，lol，魔兽世界，植物大战僵尸，等等，你都能找到相应的角色。</p>
+<p>如果将这些风，火，雷，电，水，冰，作为元素，你就可以设计出一堆角色了，有了这些元素，设计技能也就简单多了，什么火拳火球高伤害呀，冰冻减速之类的。</p>
+<p>当然还有其它的元素可以使用，比如能控制时间的，或者能使用刀，使用箭的，使用毒的。</p>
+<p>能够有这样的设计离不开一定的阅读量，比如北欧神话体系，希腊神话体系等等。用闪电击人的宙斯，让人石化的美杜莎，会唱歌迷惑路人的海妖，以他们为原型,将这些经典俗套的人物翻新。</p>
+<p><img src="/img/leishen.jpg" alt="雷神"><br><img src="/img/ajilisi.jpg" alt="阿基里斯"></p>
+<p>其它一些魔幻类作品中你也可以找到很多这样的人物原型，狼人，僵尸，木乃伊，魔术师，小丑，魔法师，恶魔，吸血鬼，祭祀，骑士，牧师，忍者，狙击手，猎人，海盗。</p>
+<p>你会发现在lol中，设计者们把能用的都用了。</p>
+<p>其实多数魔幻，科幻类作品都是有人物原型的，比如《海贼王》里面几乎每一个海盗，都有其真实的人物原型，比如<strong>爱德华.蒂奇</strong>就是世界航海史上最臭名昭彰的海盗之一，<br>他被作者尾田将名字一拆为二，爱德华.纽盖特和马歇尔.D.蒂奇，也就是白胡子和黑胡子。而在《加勒比海盗3》中直接把这个名字搬过来了。</p>
+<p><img src="/img/aidehuadiqi.jpg" alt="爱德华蒂奇"></p>
+<p>而从使用的角度来说，英雄一般会分为适合冲锋的，适合输出的，适合辅助的。</p>
+<p>不过你也可以用另一种分类，将他们分成专业性的和娱乐性的，但这并没有严格的界限，比如很多专业性英雄，也有娱乐的打法,比较娱乐的英雄也会出现在比赛场上，比如Dendi的屠夫。</p>
+<p>娱乐性英雄常常是具有不确定因素的英雄，类似于蓝胖这种，因为人生来好赌。</p>
+<p>还有另外一种娱乐英雄。就是“适合玩命的”。为什么这么说？因为你会发现，游戏中总会设计一种刺激的英雄，他们常常是以血换血，让一些玩家寻找挑战，比如dota中的神灵武士，三国杀中的黄盖。</p>
+<h4 id="什么样的英雄，才是好英雄？"><a href="#什么样的英雄，才是好英雄？" class="headerlink" title="什么样的英雄，才是好英雄？"></a>什么样的英雄，才是好英雄？</h4><p>首先，我给出我认为是好的英雄的定义：</p>
+<pre><code>有一个好的故事背景，其技能和操作风格都与故事背景（人物属性）完美结合。
+</code></pre><p>我先讲这么一个故事吧，我记得那是很早玩dota的一次，我们伙一个赏金不会玩，另一个玩的好的就骂道：“你刚才为啥不标记？你说说你为啥叫赏金！”</p>
+<p>你看这句话骂的多好！赏金就是一个忍者，所以技能都与暗杀有关，比如隐形，飞镖，尤其是大招，跟他的名字完美搭配–赏金猎人。</p>
+<p>还有船长这个英雄，能够召唤洪流，有把传奇的宝剑名叫“潮汐使者”，还有类似藏宝图一般的地图标记，还能召唤神秘的幽灵船。这一切搭配让人感觉很贴切。</p>
+<p>还有些类似的英雄设计的也很贴切。</p>
+<pre><code>暗夜魔王，(夜晚)
+血魔，(血液)
+影魔（灵魂)
+树精卫士（自然）
+祸乱之源(梦魇)
+等等...
+</code></pre><p>所以说，火女这个英雄就有点扯淡，你一个火属性的英雄，其它的三个技能都是火，为啥最后的绝技是闪电？</p>
+<p>当然英雄有<strong>巧妙的技能</strong>也很重要，如果都是与直接攻击有关的技能会过于“功力化”，丧失许多的变数和乐趣。</p>
+<p>像类似与白虎的箭，屠夫的钩子，拉比克偷技能,召唤师组合技能，等等被玩家熟知的奇技淫巧我就不再重复了。</p>
+<p>我要说这样一个技能，它被改进过，而且改的很妙，就是巨牙海民的雪球。</p>
+<p>一开始它是一种被动的滚，对于自己和玩家都是，而在新版中的设计就不同了， 玩家需要两次操作才会滚动，<br>这样自己可以选择出发时间，同时可以让其它玩家选择是否愿意滚过去，这就带来一定的自由度。</p>
+<p>还有类似的设计是lol中的锁魂典狱长，他的灯笼就可以让队友“选择”过来支援，我特别强调“选择”，相比于dota中的光法，圣骑，小精灵，他们的支援方式，就没有选择这么一说。</p>
+<h4 id="dota的缺点"><a href="#dota的缺点" class="headerlink" title="dota的缺点"></a>dota的缺点</h4><p>因为是从war3上进行开发的，所以因为平台本身而产生了<strong>太多限制</strong>。比如合成物品的时候，如果包栏不够用了，常常要将物品拿出来。商店过多，对于初学者而言入门很难，常常会忘记某个物品在哪个商店。这些不好的设计，在dota2和lol中都有修改。</p>
+<p>还有就是<strong>英雄太多</strong>，使得<strong>技能重叠</strong>的太多，那些aoe，暴击，幻象，眩晕大量的重叠。</p>
+<p>相比之下，一些<strong>灵活的技能太少</strong>了。我只的灵活技能不仅仅是我之前说的“巧妙的技能”。而是从其他方式来扩大优势的技能。比如后版本的树精卫士，因为他可以修塔，这就是相当于提供了扩大优势的方式。dota里的地形不能修改，否则是想一下一个英雄如果能够修改地形，那么将更会怎样？</p>
+<p>我记得《半神》（一款dota类的单机游戏，其设计者设计过《地牢围攻》和《横扫千军》）中有一个英雄设计的就比较好，它的技能都和塔有关，比如制造塔，修塔，而且它自己本身就是一个可以移动的塔，身体会自动向外射箭。</p>
+<p><img src="/img/banshen.jpg" alt="半神巨人"></p>
+<p><strong>玩法会单调</strong>，因为多数情况你只能控制一个英雄，仅仅靠使用技能和物品，而且在前期和后期，都有一段时间的打钱期，这对游戏的竞技性和观赏性都会大打折扣。尤其是后期，团战会越来越小心，因为死不起。其实当年war3比赛就没有dota这么多真空期，比赛很紧凑。但是war3还是以1v1为主的，缺少配合，2v2的比赛都很少，其实我当时就很喜欢看2v2的比赛，所以我曾经幻想，如果将war3对战中的人口限制改小比如只有五十人口，做成一款英雄带兵打仗的dota类游戏。而不是自动兵线，会不会更有意思？</p>
+<p><strong>地图太少</strong>，dota是一个mod，所以它只能是一张地图，开发新的地图意味着所有东西都要新写，代价太大了。</p>
+<p><strong>没有故事背景</strong>，虽然dota的故事是有一部分借鉴魔兽，而且你还可以在选择英雄时，观察他的介绍。但是却没有自带的rpg路线来梳理这段历史，lol和dota2中此处同样空洞。这也是为什么暴雪的游戏都那么迷人，因为玩家确实是在游戏中走过这段历史的。</p>
+<p>先写这么多了，如果以后我有更多的想法，一定会更新这篇文章的</p>
+<hr>
+<p>2014-11-28</p>
+<hr>
+<p>2014-12-01 修改一部分描述方式</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dota/" rel="tag">#dota</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/12/06/think-about-Shawshank/" rel="prev">另一种角度思考《肖申克的救赎》</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/11/18/use-CSharp-linq-and-python-funcprogram-operator-collection/" rel="next">使用c#的linq和python的函数式编程操作集合</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/11/28/how-to-design-dota/"
+     data-title="如何设计一款dota类的游戏"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2014/11/28/how-to-design-dota/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2014/11/28/how-to-design-dota/"
+                   data-title="如何设计一款dota类的游戏" data-url="http://www.pulpcode.cn/2014/11/28/how-to-design-dota/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开发方式"><span class="nav-number">2.</span> <span class="nav-text">开发方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#几则故事"><span class="nav-number">3.</span> <span class="nav-text">几则故事</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何设计一个英雄？"><span class="nav-number">4.</span> <span class="nav-text">如何设计一个英雄？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么样的英雄，才是好英雄？"><span class="nav-number">5.</span> <span class="nav-text">什么样的英雄，才是好英雄？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dota的缺点"><span class="nav-number">6.</span> <span class="nav-text">dota的缺点</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

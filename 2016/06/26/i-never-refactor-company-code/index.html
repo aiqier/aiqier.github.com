@@ -1,0 +1,670 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="思考," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="想当救世主这种情结在电影电视剧上可能很常见吧。类似你来到一个新公司，这团如淤泥一般的代码，被你接手之后，马上神奇的绽放出光彩，然后你顿时赢得了别人的尊重，但是实际上真实情况是，新人进入一家公司，对老人报以各种不满和怨言，愤世嫉俗，看不惯这个，看不惯那个，觉得这个技术用的搓，那个设计差，然后慢慢的深入理解这个系统，这个新人满满的就会变成老人，开始明白为啥老人会这样。因为你的那点鸟优化，修改出来，影">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我从来不重构公司代码">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/06/26/i-never-refactor-company-code/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="想当救世主这种情结在电影电视剧上可能很常见吧。类似你来到一个新公司，这团如淤泥一般的代码，被你接手之后，马上神奇的绽放出光彩，然后你顿时赢得了别人的尊重，但是实际上真实情况是，新人进入一家公司，对老人报以各种不满和怨言，愤世嫉俗，看不惯这个，看不惯那个，觉得这个技术用的搓，那个设计差，然后慢慢的深入理解这个系统，这个新人满满的就会变成老人，开始明白为啥老人会这样。因为你的那点鸟优化，修改出来，影">
+<meta property="og:image" content="http://www.pulpcode.cn/img/badcode.jpg">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.754Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我从来不重构公司代码">
+<meta name="twitter:description" content="想当救世主这种情结在电影电视剧上可能很常见吧。类似你来到一个新公司，这团如淤泥一般的代码，被你接手之后，马上神奇的绽放出光彩，然后你顿时赢得了别人的尊重，但是实际上真实情况是，新人进入一家公司，对老人报以各种不满和怨言，愤世嫉俗，看不惯这个，看不惯那个，觉得这个技术用的搓，那个设计差，然后慢慢的深入理解这个系统，这个新人满满的就会变成老人，开始明白为啥老人会这样。因为你的那点鸟优化，修改出来，影">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/badcode.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 我从来不重构公司代码 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              我从来不重构公司代码
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-06-26T00:00:00+08:00" content="2016-06-26">
+            2016-06-26
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/06/26/i-never-refactor-company-code/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/26/i-never-refactor-company-code/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p><img src="/img/badcode.jpg" alt="badcode"></p>
+<h2 id="想当救世主"><a href="#想当救世主" class="headerlink" title="想当救世主"></a>想当救世主</h2><p>这种情结在电影电视剧上可能很常见吧。类似你来到一个新公司，这团如淤泥一般的代码，被你接手之后，马上神奇的绽放出光彩，然后你顿时赢得了别人的尊重，但是实际上真实情况是，新人进入一家公司，对老人报以各种不满和怨言，愤世嫉俗，看不惯这个，看不惯那个，觉得这个技术用的搓，那个设计差，然后慢慢的深入理解这个系统，这个新人满满的就会变成老人，开始明白为啥老人会这样。因为你的那点鸟优化，修改出来，影响简直九牛一毛。他们早都想过了，后来他们也是懒的折腾了。</p>
+<p>实际的优化是一个很难的过程，没有从业务和技术深入理解一个系统的人，很难做出一个质变的优化，比如你吐槽python运算慢，gil全局锁，单进程不能利用多核，或是其他的，那只能说你从来都没有吐槽到点子上。很多人做事都是自己知道什么做什么，而不是分析当前局势在做，这也就是为什么有些人看着博学其实一事无成，因为他们只能以他们理解的方式去思考问题。</p>
+<a id="more"></a>
+<h2 id="丑陋的代码"><a href="#丑陋的代码" class="headerlink" title="丑陋的代码"></a>丑陋的代码</h2><p>要么是你之前为了赶进度，自己写的傻逼代码，然后标识了一个TODO，打算将来做，当然这就是个谎言。<br>要么就是你看见别人写的傻逼代码，然后忍不住大改一番。<br>当然你觉得别人的傻逼的代码，很有可能就是pm催着他加需求，然后rd信手拈来的。<br>那句话怎么说来着，<strong>你看众人皆傻逼，众人看你如是乎。</strong>你觉得你写程序屌，可能另一个人并不以为然。</p>
+<p>实际上很多代码都是因为进度的原因强推上去的，这些看似不合理的代码，其实非常合理。</p>
+<p>因为侧重点不一样，你看到github，那些所谓美观的代码，本来就是为了给人看的，那么写起来自然美观大方，结构清晰。但是业务代码本来就是以使用为主的，当然不用太好看。而且对于比较大的工程，比如企业级开发等等，这些项目的主框架设计好了，即使内部代码写的在烂也没有问题，有那个闲工夫优美代码，不如多写单测，提高覆盖度了。看似重构让代码可读性增强使其易维护和提高单测的覆盖度，两者都有用，但是为啥工程代码偏向第二种？因为这种成本低！能够有制定指标和流程化的东西，自然操作起来容易。就像你和一个人比较，你要比他牛逼，那就学生比学习，工作比收入吧，简单粗暴的进行了比较和区分。但是你要是比善良，比性格，比快乐，那特么怎么比。你说你代码写的好，封装的好，这也许能验证，但太难了吧？</p>
+<p>还有一个原因是业务代码不好封装，实际上业务这个东西，不像是什么ui，或者标准库，你能把它们标准化，或者是数学化，来把它们建模。如果可以，那ok没问题，你一定能建立良好的抽象和封装，但是业务代码不是让你推倒github上的，不需要美观，也不需要用各种牛逼的装饰器或者元编程，因为看你代码的人，也不是写标准库那群牛逼的人。</p>
+<h2 id="如何重构"><a href="#如何重构" class="headerlink" title="如何重构"></a>如何重构</h2><p>就算是封装，很多程序员也不会封装，他们打着“封装”的旗号，写了一大堆鸟函数，你从命名上就可以看出，都叫什么”gen_data“, “parser_data”。<br>那么好的封装是什么？你要进行业务级别的封装啊，这个我之前的博客讨论过了，在不讨论此事。</p>
+<p>我来公司接手的一个python项目，动态变量各种包之间引用（我在之前的博客提到过，应该在一个统一的地方初始化这些变量，然后作为单例使用），写一个单测麻烦的要死。所有业务逻辑，一个handler到底，那么我怎么“重构的”？我只挑出了比较容易出错的几个业务（注意不是所有），把他们封装成函数，对于上下文，我怎么做？我把这些上下文都“塞给”一个参数去，然后我就初始化这个参数，然后就写单测了。简单又粗暴。</p>
+<p>所以我现在接手的这个项目，基本上没有做什么本质的优化，我只改过一些就是把一些重复的代码移动到一个基础库去了，因为实在是太麻烦了。<br>在最多就是改改代码结构，能够更快的响应需求，或者发现几个极微小的bug，实质上，就算是优化都是跟业务挂钩的，而非技术本身。</p>
+<h2 id="我只能干这些"><a href="#我只能干这些" class="headerlink" title="我只能干这些"></a>我只能干这些</h2><p>很多人为什么拿到代码就喜欢修改命名变量，调整代码结构，因为他们只能干这个。<br>这个甚至类比于某些pm的某些需求，有的人做产品，动不动就换ui，实际上交互设计和ui美观是一个大公司为了提高门槛而做的一件锦上添花的事，不是每个公司都有资本这么做，而且也不一定能做好。<br>所以其实很多人说的，“我把代码重构了一遍”，他们说的是什么呢?实际上，他们就是把代码重写成为他们能够理解的样子，这样呢，他们维护起来也比较容易方便。仅此而已。所以下一个人来了之后，还要再重构。</p>
+<p>也就是说你重构只是为了让自己看上去很忙，在做很多事情而已。实际上却是没有特别的意义。</p>
+<p>我理解的重构，最起码要么你重构了，要真实的解决使用上的问题，比如现在的效率慢了，你重构了之后，对于效率提升了一些，或者重构了之后，你在扩展新的功能方便了一些，或者测试起来方便了很多。</p>
+<p>当然我见过很多人，来的时候说要大干一场，然后半途而废，有的甚至慌张的就跑了。<br>怎么说呢，一个系统跑了这么久，本身就有很多的“智慧”在里面，她被qa测过、用户验证过。最起码是稳定的，你想到的那些优化点，别人早都想到了，要么是受益太小，要么是实践太复杂而已</p>
+<h2 id="成本博弈"><a href="#成本博弈" class="headerlink" title="成本博弈"></a>成本博弈</h2><p>其实那些在公司的老人本身也不愿意把代码写的很好，为什么？因为他们想让问题暴露的时候再改，为什么会这样，因为这样才能体现出价值啊，否则你什么都做得很好，这样只会让别人觉得一切都是理所应当的。从开发成本上考虑，业务系统这么烂是理所应当的。你看数据库，和标准库，这些基本都没bug，为啥，因为他们进行了大量的测试，而且写标准库的这些人，他们对编程都理解的很透彻，数学学的好，代码非常严谨。你看数据库，为了维护数据的一致性。衍生出一大堆复杂的概念，这就是成本和门槛。我们的业务系统之所以动不动数据错了，比如我之前有个限价的服务，动不动限制不住了，原因是什么？就是因为数据不一致。那么如何设计的严谨，照着数据库那一套来设计？呵呵，你考虑过成本么。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/思考/" rel="tag">#思考</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/30/force-use-bash/" rel="prev">暴力的使用bash</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/20/guess-jay-song/" rel="next">记一次朋友圈猜歌曲</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/06/26/i-never-refactor-company-code/"
+     data-title="我从来不重构公司代码"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2016/06/26/i-never-refactor-company-code/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/06/26/i-never-refactor-company-code/"
+                   data-title="我从来不重构公司代码" data-url="http://www.pulpcode.cn/2016/06/26/i-never-refactor-company-code/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#想当救世主"><span class="nav-number">1.</span> <span class="nav-text">想当救世主</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#丑陋的代码"><span class="nav-number">2.</span> <span class="nav-text">丑陋的代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何重构"><span class="nav-number">3.</span> <span class="nav-text">如何重构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我只能干这些"><span class="nav-number">4.</span> <span class="nav-text">我只能干这些</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成本博弈"><span class="nav-number">5.</span> <span class="nav-text">成本博弈</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

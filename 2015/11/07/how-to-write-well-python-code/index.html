@@ -1,0 +1,691 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="Introduction本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。
+实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。
+多考虑前期需求分析和设计之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何写出有质量的python代码">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/11/07/how-to-write-well-python-code/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="Introduction本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。
+实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。
+多考虑前期需求分析和设计之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.753Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何写出有质量的python代码">
+<meta name="twitter:description" content="Introduction本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。
+实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。
+多考虑前期需求分析和设计之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 如何写出有质量的python代码 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              如何写出有质量的python代码
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-11-07T00:00:00+08:00" content="2015-11-07">
+            2015-11-07
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/07/how-to-write-well-python-code/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/07/how-to-write-well-python-code/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。</p>
+<p>实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。</p>
+<h2 id="多考虑前期需求分析和设计"><a href="#多考虑前期需求分析和设计" class="headerlink" title="多考虑前期需求分析和设计"></a>多考虑前期需求分析和设计</h2><p>之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（uml和文档），花一两天去实现。这件事，编码的年龄越大，领悟越透彻。</p>
+<h2 id="写好异常"><a href="#写好异常" class="headerlink" title="写好异常"></a>写好异常</h2><p>异常本身不算是python特有的，这本身算是编程的基本功了，那我就从异常本身和python特性两方面，来谈谈异常。</p>
+<a id="more"></a>
+<h4 id="不要乱打"><a href="#不要乱打" class="headerlink" title="不要乱打"></a>不要乱打</h4><p>不要所有错误都打异常，如果你现在连，if else，异常，和断言的区别都不清楚，那就要好好恶补了。实际上异常是用来抓住那些未知错误的，也就是那些不确定的错误，你的代码里如果有逻辑错误，那是不能用异常去抓的。类似：“文件读写，网络操作，数据库操作等”，这些需要跟硬件打交道的，才需要异常处理。这也就是说，你的代码中如果有上述的处理，那么一定要写好每一个<code>try catch</code>， 但是实际情况是大多人的代码都是“裸操作”。</p>
+<p>常见的使用异常错误是：</p>
+<ol>
+<li>把异常写到最外面，然后catch一个异常基类。如果这样，那你就把所有异常都抓了！我建议每个异常处理，只抓一个操作。</li>
+<li>抓住一个A异常，要么不做任何处理，要么抛出一个B异常，这些都是思路不清晰的做法。既没有处理好异常，也没有暴露问题，既没有在运行时发现问题，还增加了调试的难度。</li>
+<li>把异常直接返回给客户端，这一来不友好，二来，让人知道你的系统内部怎样设计的。实际上在我的server里，请求我，如果出现异常，我都是：打异常日志，报警，然后返回给客户端的结果为：“服务器处理中”或者“服务器内部错误”。</li>
+</ol>
+<p>在实践中，你就会发现，如果你想做好这几点非常难，而且做好这几点，又能把代码写漂亮的，就更难了。当然要优先考虑业务实现，再考虑代码封装。</p>
+<h4 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h4><figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用Python的requests库做http请求</span></div><div class="line">try:</div><div class="line">    <span class="attr">r</span> = requests.post(url, <span class="attr">headers=headers,</span> <span class="attr">data=data,</span> <span class="attr">timeout=timeout)</span></div><div class="line">    r.raise_for_status()</div><div class="line">except requests.RequestException:</div><div class="line">    logging.error('网络访问异常', <span class="attr">exc_info=True)</span></div><div class="line">    ......</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    logger.info(<span class="string">"签名请求返回成功:&#123;&#125;"</span>.format(r.content))</div><div class="line">    ......</div></pre></td></tr></table></figure>
+<p>还有需要注意的是，我很鄙视那些写<code>print e</code>的人，知不知道什么叫异常栈啊,你这样打出来的东西，能分析个卵啊？如果是我，我会这样处理。<br>如果是日志：<code>logging.error(&#39;xxxxxxx&#39;, exc_info=True)</code><br>如果是直接打印到屏幕，那就：<code>traceback.print_exc()</code></p>
+<h4 id="明白异常不算主流程"><a href="#明白异常不算主流程" class="headerlink" title="明白异常不算主流程"></a>明白异常不算主流程</h4><p>实际上异常是要考虑，但是你要明白真正的异常状况所发成的频率到底是多少，你自己想想，一年自己去过几次医院？</p>
+<h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><p>数据库的异常部分，我上面已经描述了，这里提一下：<strong>update</strong></p>
+<p>对于一个<code>update</code>操作，除了之前提到的<code>try和catch</code>,一定要在update之后，检查一下<code>row change</code>的个数，很多bug，最后才发现数据库状态并没有改变，就是因为没有检查<code>row change</code>,还有一个在业务级别需要考虑的是，修改类似，状态status这样的字段时，一定要先判断当前状态再去改变，以符合状态机流程。</p>
+<p>还有些细节问题，就是不要拼sql。保证自己代码安全。</p>
+<h2 id="挡住输入"><a href="#挡住输入" class="headerlink" title="挡住输入"></a>挡住输入</h2><p>如果你得到的输入，不是你程序内部产生的，而是从文件，从客户端的请求中获取到的，那么你一定要对输入进行筛选和校验。类似字段校验，类型校验，长度范围校验。动态语言，更要考虑这些。</p>
+<h2 id="不要把QA当单测"><a href="#不要把QA当单测" class="headerlink" title="不要把QA当单测"></a>不要把QA当单测</h2><p>很多人根本没想过自己的代码为什么写的这么烂，原因就是把QA当单测，实际上你的代码质量，只能靠你自己来保证。</p>
+<h2 id="动态语言"><a href="#动态语言" class="headerlink" title="动态语言"></a>动态语言</h2><p>“不是语言的问题，是人的问题”，这是很多高估自己的软件工程师，爱说的一句话。实际上，java和c#不适合互联网行业，但是传统软件行业，是离不开这种静态语言的。天生的静态类型检查和诸多限制，是维持行业稳定的标志。而python缺这个，所以它开发快，但是代码要差很多。实际上会python的人，编码差距也大很多（牛人很贵的好么？），比如某个牛人走了之后，后来的那个人，根本不知道如何维护，大多数情况就是重写。如果项目上了一个几十万行的数量级，那个时候只能通过工具分析的错误时，python就傻了。</p>
+<p>你的类属性和方法不用像java那样通过继承得来，也就说没有编译期的类型检查。你那些乱扔进去的属性，IDE都智能补全不了。你的接口也只能通过扔NotImplement的方式让其强制继承。很多java需要实现的设计模式，在python中实现，也变得随意很多。</p>
+<p>写业务快，带来的后果就是项目做大，这个“空中楼阁”就难以维护了。当然，你可以继续说：“是人的问题”，那么你为啥不用lisp去写呢？</p>
+<p>我觉得先要明白python是什么，适合做什么。</p>
+<h2 id="多做业务级别的封装，而非代码级别的封装"><a href="#多做业务级别的封装，而非代码级别的封装" class="headerlink" title="多做业务级别的封装，而非代码级别的封装"></a>多做业务级别的封装，而非代码级别的封装</h2><p>这个问题也是我最近在编写代码是思考和改进的地方，我们在封装代码的时候，大部分人的封装都是代码级别的，而非业务级别的，你从你函数，或者类的命名就可以发现，如果总是写parsedata，gendata，dataformat的函数。说明你的框架在做的也是代码级别的重用和封装，那么什么才是业务级别的封装呢？我觉得大概是这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通知上层系统</span></div><div class="line">notify_upper_system</div><div class="line"></div><div class="line"><span class="comment"># 获取一条待处理收款记录</span></div><div class="line">fetch_collect_record_processing</div></pre></td></tr></table></figure>
+<h2 id="符合python的特性"><a href="#符合python的特性" class="headerlink" title="符合python的特性"></a>符合python的特性</h2><p>举个栗子吧，对于一个这样的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> c <span class="keyword">not</span> <span class="keyword">in</span> d:</div><div class="line">    <span class="keyword">return</span> n</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">return</span> d[c]</div></pre></td></tr></table></figure>
+<p>这样写就可以了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d.get(c, n)</div><div class="line">`</div></pre></td></tr></table></figure></p>
+<p>如果你不知道python的这些特性，自然“用python写c代码”。</p>
+<h2 id="写好python注释"><a href="#写好python注释" class="headerlink" title="写好python注释"></a>写好python注释</h2><h2 id="不要玩代码"><a href="#不要玩代码" class="headerlink" title="不要玩代码"></a>不要玩代码</h2><p>我们大多数的代码是业务代码，不是github上的开源项目，或者教学代码，或者博客上的实例代码。所以，不要有递归，不要有装饰器，不要有猴子补丁，不要有元类，不要用这些证明自己很屌，除非你会用那就直接用，如果你仅仅知道这个东西，仅仅想用在你的项目中时，你还是不要用了。</p>
+<p>其它的如何打好日志，如何设计好项目结构，如何用好第三方库的，我的博客都有写，不在叙述。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/12/single-core-cpu-multithreading/" rel="prev">对于单核 cpu 而言, 开多线程的目的难倒只能是为了防止阻塞么? </a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/24/b-tree-and-b+-tree/" rel="next">b树和b+树</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/11/07/how-to-write-well-python-code/"
+     data-title="如何写出有质量的python代码"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/11/07/how-to-write-well-python-code/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/11/07/how-to-write-well-python-code/"
+                   data-title="如何写出有质量的python代码" data-url="http://www.pulpcode.cn/2015/11/07/how-to-write-well-python-code/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多考虑前期需求分析和设计"><span class="nav-number">2.</span> <span class="nav-text">多考虑前期需求分析和设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写好异常"><span class="nav-number">3.</span> <span class="nav-text">写好异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不要乱打"><span class="nav-number">3.0.1.</span> <span class="nav-text">不要乱打</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#几个例子"><span class="nav-number">3.0.2.</span> <span class="nav-text">几个例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#明白异常不算主流程"><span class="nav-number">3.0.3.</span> <span class="nav-text">明白异常不算主流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库操作"><span class="nav-number">4.</span> <span class="nav-text">数据库操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#挡住输入"><span class="nav-number">5.</span> <span class="nav-text">挡住输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不要把QA当单测"><span class="nav-number">6.</span> <span class="nav-text">不要把QA当单测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态语言"><span class="nav-number">7.</span> <span class="nav-text">动态语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多做业务级别的封装，而非代码级别的封装"><span class="nav-number">8.</span> <span class="nav-text">多做业务级别的封装，而非代码级别的封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#符合python的特性"><span class="nav-number">9.</span> <span class="nav-text">符合python的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写好python注释"><span class="nav-number">10.</span> <span class="nav-text">写好python注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不要玩代码"><span class="nav-number">11.</span> <span class="nav-text">不要玩代码</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

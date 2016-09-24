@@ -1,0 +1,728 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="考古,编程心得," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。可是每每当自己在写 if语句 和看到一些同事写的 很糟糕的if语句 时，我就忍不住去想：怎样写才好？
+目录
+
+if … if  和 if … else if … else if … else
+if … else 和三元运算符
+return 的 if
+e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于If的几种写法">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/08/04/write-code-if-statement/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。可是每每当自己在写 if语句 和看到一些同事写的 很糟糕的if语句 时，我就忍不住去想：怎样写才好？
+目录
+
+if … if  和 if … else if … else if … else
+if … else 和三元运算符
+return 的 if
+e">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.799Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于If的几种写法">
+<meta name="twitter:description" content="好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。可是每每当自己在写 if语句 和看到一些同事写的 很糟糕的if语句 时，我就忍不住去想：怎样写才好？
+目录
+
+if … if  和 if … else if … else if … else
+if … else 和三元运算符
+return 的 if
+e">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 关于If的几种写法 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              关于If的几种写法
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-08-04T00:00:00+08:00" content="2014-08-04">
+            2014-08-04
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/08/04/write-code-if-statement/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/04/write-code-if-statement/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。<br>可是每每当自己在写 <strong>if语句</strong> 和看到一些同事写的 <strong>很糟糕的if语句</strong> 时，我就忍不住去想：怎样写才好？</p>
+<p><strong>目录</strong></p>
+<ul>
+<li><a href="#if-if-and-if-else-if-else-if-else">if … if  和 if … else if … else if … else</a></li>
+<li><a href="#if-else-and-Three-binary-operators">if … else 和三元运算符</a></li>
+<li><a href="#return-and-if">return 的 if</a></li>
+<li><a href="#else">else处女座最后的纠结</a></li>
+</ul>
+<h2 id="if-…-if-和-if-…-else-if-…-else-if-…-else"><a href="#if-…-if-和-if-…-else-if-…-else-if-…-else" class="headerlink" title="if … if  和 if … else if … else if … else"></a><a name="if-if-and-if-else-if-else-if-else">if … if  和 if … else if … else if … else</a></h2><p>这其实并不是写法的问题，其实我发现真的有人会把该用 <code>if ... else if ... else if ... else</code> 的地方写成 <code>if ... if</code>。表面上看起来没问题，其实他们确实是误打误撞，当出错的时候原因是什么都不知道。</p>
+<p>首先请看下面两段代码：</p>
+<a id="more"></a>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// if ... if 形式</span></div><div class="line"><span class="keyword">if</span>(a == <span class="number">5</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"FIVE"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(a == <span class="number">6</span>)&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"SIX"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(a == <span class="number">7</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"SEVEN"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// if ... else if ... else if ... else 形式</span></div><div class="line"><span class="keyword">if</span>( a == <span class="number">5</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"FIVE"</span>;</div><div class="line"></div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>( a == <span class="number">6</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"SIX"</span>;</div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>( a == <span class="number">7</span> )</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"SEVEN"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这两断代码执行起来是一样的，为什么？因为它们 <strong>判断的条件自身是互斥的</strong> ，a只能等于这些数中的一个，等于5就不能等于6了，所以也确实没什么问题。</p>
+<p>但是下面两段代码就不同了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// if ... if 形式</span></div><div class="line"><span class="keyword">if</span>(a &lt; <span class="number">3</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Three"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(a &lt; <span class="number">5</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Five"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(a &lt; <span class="number">7</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Seven"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// if ... else if ... else if ... else 形式</span></div><div class="line"><span class="keyword">if</span>(a &lt; <span class="number">3</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Three "</span>;</div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(a &lt; <span class="number">5</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Five and greater than or equal Three"</span>;</div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(a &lt; <span class="number">7</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Seven and greater than or equal Five"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以一些人的if语句会产生bug，就是把本应该 <strong>相互关联的条件分开判断</strong> 了。<br>他们在发现自己的代码不能按照期望执行时往往会用加断点进行调试，然后查看自己的代码是否执行正常，最后常常发现一些不应该执行if语句的被执行了。<br>而且有些人并没有发现 <code>if ... else if ... else if ... else</code> 本身是互斥，还在写这种代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(a &lt; <span class="number">3</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Three "</span>;</div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">3</span>&lt;=a &amp;&amp; a&lt;<span class="number">5</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Five and greater than or equal Three"</span>;</div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">5</span>&lt;=a &amp;&amp; a&lt;<span class="number">7</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"less than Seven and greater than or equal Five"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>它们是关联的if，只会执行其中的一个，所以你多余的判断，根本没必要。</p>
+<p><strong>多余判断还算好，更要命的是如果你在代码中还修改了条件变量的值。</strong></p>
+<p>比如如下代码:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span>(a &gt; <span class="number">3</span>)&#123;</div><div class="line">    a = <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (a&lt;=<span class="number">3</span>)&#123;</div><div class="line">    a++;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>代码本来是判断a是否大于3如果是就归零，否则自增。可惜因为条件并不是互斥的，所以结果在归零后 ，马上又执行了下面的语句。</p>
+<p>下面的这种写法会好很多：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span>(a &gt; <span class="number">3</span>)&#123;</div><div class="line">    a = <span class="number">0</span>;</div><div class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (a&lt;=<span class="number">3</span>)&#123;</div><div class="line">    a++;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以我的建议就是：如果你在判断一个互斥条件，那么既然这些条件是相互关联的，就应该用  <code>if ... else if ...</code> 连起来。<br>尤其是判断对象是否等于某个值，这种能用switch写的东西，用 <code>if ... else lf ...</code> 写其实挺好的。当然如果是选择的数量比较多时，用switch才会更好些。</p>
+<p>比如我最近写的一段代码要判读拥有某些职位的人是否存在，存在的话就加到队列里发消息。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">messageSeq = <span class="keyword">new</span> List&lt;Employee&gt;();</div><div class="line"></div><div class="line"><span class="keyword">if</span>(zhuren != null)</div><div class="line">&#123;</div><div class="line">    seq.add(zhuren);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(fuzhuren != null)</div><div class="line">&#123;</div><div class="line">    seq.add(fuzhuren);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(yuanzhang != null)</div><div class="line">&#123;</div><div class="line">    seq.add(fuzhuren);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看！这些if之间本身并没有“任何关系”。</p>
+<h4 id="if-…-if-和-if-…-else-if-…-else-if-…-else-总结"><a href="#if-…-if-和-if-…-else-if-…-else-if-…-else-总结" class="headerlink" title="if … if  和 if … else if … else if … else 总结"></a>if … if  和 if … else if … else if … else 总结</h4><ul>
+<li><code>if ... else if ... else if ... else</code> 这样的写法，if条件之间是存在某种关系的，而且这些关系是互斥的，也就是说它们之中只能有一个执行。</li>
+<li><code>if ... if</code> 是两段“毫无关系”的代码，只不过被你写的近而已。</li>
+</ul>
+<h2 id="if-…-else-和三元运算符"><a href="#if-…-else-和三元运算符" class="headerlink" title=" if … else 和三元运算符"></a><a name="if-else-and-Three-binary-operators"> if … else 和三元运算符</a></h2><p>其实有的时候，它们真的在表达一个东西：</p>
+<p>看下面两段代码，将a和b中较大的赋给max</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(a &gt; b)</div><div class="line">&#123;</div><div class="line">    max = a;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span></div><div class="line">&#123;</div><div class="line">    max = b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">max = a&gt;b ? a:b;</div></pre></td></tr></table></figure>
+<p>你要问我有什么区别，我现在的水平只能告诉你，<code>if...else</code> 是在执行一些语句，而三元运算符却是个能够返回值的表达式。所以只有是在赋值，或者其它一些能够返回值的代码，这两种写法都行，而且三元运算符写起来确实很短小精悍。<br>但是当你要通过if条件判断去执行一些do something的语句时，你确实不得不用 <code>if ... else</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(con)</div><div class="line">&#123;</div><div class="line">    dosomething();</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span></div><div class="line">&#123;</div><div class="line">    dootherthing();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="return-的-if"><a href="#return-的-if" class="headerlink" title="return 的 if"></a><a name="return-and-if">return 的 if</a></h2><p>我发现不仅仅是我，在读王垠大神的博客时，发现他也想过这个问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(con)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> True;</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> False;</div></pre></td></tr></table></figure>
+<p>有的人（比如王垠大神）就是纠结应该写成这样:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(con)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> True;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> False;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我觉得还是第一种好，为什么？</p>
+<ol>
+<li>第一种短</li>
+<li>大多数程序员都用第一种写法</li>
+<li>其实有的很长的函数在最开始处判断条件不符合直接就return了</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(prject == null)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 很多很复杂的代码</span></div><div class="line">xxx;</div><div class="line">xxx;</div><div class="line">xxx;</div><div class="line">xxx;</div></pre></td></tr></table></figure>
+<p>你觉得你配个else再加缩进会好看么？</p>
+<h2 id="else处女座最后的纠结"><a href="#else处女座最后的纠结" class="headerlink" title="else处女座最后的纠结"></a><a name="else">else处女座最后的纠结</a></h2><p>其实还有一点纠结的事，就是这个else这个东西。<br><code>if ... else</code> 看上去像是“平起平坐”的两种线，只不过else里面不用写条件了。其实我觉得根本不是那样。</p>
+<p>else其实真的就在 <code>if ... else if ... else ...</code> 的最后面，就像是switch的default。<br>而且python的for语句是可以接else的，其作用是在for循环中，如果没有从任何一个break中退出，则会执行for后面的else。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> seq:</div><div class="line">    <span class="keyword">if</span> i == <span class="number">5</span>:</div><div class="line">        <span class="keyword">break</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"not has five"</span></div></pre></td></tr></table></figure>
+<p>所以你可以这样理解else：它真的就是来做”收尾”工作的。</p>
+<p>这就是我对if的理解。BTW,我是水瓶座的…</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/考古/" rel="tag">#考古</a>
+          
+            <a href="/tags/编程心得/" rel="tag">#编程心得</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/08/11/why-html-commenting/" rel="prev">html的代码注释为什么只能是这个样子的？</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/07/15/local-value-name/" rel="next">临时变量应该叫啥?</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/08/04/write-code-if-statement/"
+     data-title="关于If的几种写法"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2014/08/04/write-code-if-statement/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2014/08/04/write-code-if-statement/"
+                   data-title="关于If的几种写法" data-url="http://www.pulpcode.cn/2014/08/04/write-code-if-statement/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#if-…-if-和-if-…-else-if-…-else-if-…-else"><span class="nav-number">1.</span> <span class="nav-text">if … if  和 if … else if … else if … else</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#if-…-if-和-if-…-else-if-…-else-if-…-else-总结"><span class="nav-number">1.0.1.</span> <span class="nav-text">if … if  和 if … else if … else if … else 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-…-else-和三元运算符"><span class="nav-number">2.</span> <span class="nav-text"> if … else 和三元运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#return-的-if"><span class="nav-number">3.</span> <span class="nav-text">return 的 if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#else处女座最后的纠结"><span class="nav-number">4.</span> <span class="nav-text">else处女座最后的纠结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

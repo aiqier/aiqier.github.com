@@ -1,0 +1,707 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。
+我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。
+我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊python装饰器">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/03/31/talk-about-python-decorator/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="前言实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。
+我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。
+我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聊聊python装饰器">
+<meta name="twitter:description" content="前言实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。
+我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。
+我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 聊聊python装饰器 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              聊聊python装饰器
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-31T00:00:00+08:00" content="2016-03-31">
+            2016-03-31
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/03/31/talk-about-python-decorator/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/31/talk-about-python-decorator/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。</p>
+<p>我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。</p>
+<p>我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。</p>
+<a id="more"></a>
+<h2 id="闭包与装饰器"><a href="#闭包与装饰器" class="headerlink" title="闭包与装饰器"></a>闭包与装饰器</h2><p>什么是闭包？能够捕获状态的函数或者方法就叫做闭包。</p>
+<p>得力与python的函数是“一阶公民”，使得函数可以被当成一个对象被赋值，被当做函数参数，在函数中定义一个函数并返回。</p>
+<p>外层函数为内层函数创建了一个上下文，当内层函数返回后，它就有一个属于自己的上下文环境。这就是它能保存的状态。这个功能用来教学的话，经常是验证这个函数被调用了几次的例子。</p>
+<p>你仔细想一下，能够生成函数的函数，将其称之为函数工厂，我们通过传入的参数，让其生成我们想要的函数，这带来了灵活性和可定制型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">addn</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(m)</span>:</span></div><div class="line">        <span class="keyword">return</span> n+m</div><div class="line">    <span class="keyword">return</span> wrapper</div></pre></td></tr></table></figure>
+<p>我们再来说说函数一阶公民，如果一个函数a被当成参数传入，我们在其内部定义另一个函数b，b函数在调用a的同时，做了些别的事情。这样的话a函数就把a函数“包装”了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@decorator</div><div class="line">def function()</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>其实这等价于:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">function = decorator(function)</div></pre></td></tr></table></figure>
+<p>我觉得装饰器的好处之一是你不用修改源代码。比如你在很多地方都调用了这个函数，现在仅仅在函数的定义部分，给它“装饰”一下，就可以添加新的功能。</p>
+<p>而且装饰器本身的命名，也为代码带来了一定的可读性，这使得装饰器更像是一种注解。不过我觉得做的不好的是tornado的这个装饰器，它的命名就带来很大的误导性，不过还是要怪那些人不看文档。</p>
+<p>不过你纳闷这和闭包这个概念有什么关系？因为装饰器和闭包，就可以实现带有参数的装饰器。</p>
+<h2 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h2><p>之前的段落提到了带有参数的装饰器。你会发现带有参数的装饰器，它实际上有两层，外面的那一层，就是一个闭包，而里面那一层，才定义了一个装饰器函数，这也就是所谓的二级封装。<br>大概的写法是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">aaa</span><span class="params">(arg1, arg2)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_wrapper</span><span class="params">(func)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__wrapper</span><span class="params">(*args, **kw)</span>:</span></div><div class="line">            <span class="keyword">return</span> func(*args, **kw)</div><div class="line">        <span class="keyword">return</span> __wrapper</div><div class="line">    <span class="keyword">return</span> _wrapper</div></pre></td></tr></table></figure>
+<p>就像刚才那个例子。你可以想想，带参数的装饰器，实际上等价于</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@decorator(*args, **kwargs)</div><div class="line">def function()</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">function = decorator(*args, **kwargs)(function)</div></pre></td></tr></table></figure>
+<h4 id="参数带来的一个小细节"><a href="#参数带来的一个小细节" class="headerlink" title="参数带来的一个小细节"></a>参数带来的一个小细节</h4><p>你会发现，作为参数，就可以直接当作闭包，完全不需要：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span><span class="params">(b)</span>:</span></div><div class="line">    c = b</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(func)</span>:</span></div><div class="line">        c....</div><div class="line">        func()</div><div class="line">    <span class="keyword">return</span> wrapper()</div></pre></td></tr></table></figure>
+<p>你要理解python中的变量就是内存块，变量名只不过是一个标签而已。不过这个b如果要当作一个容器，那就要注意它的默认值一定要设置为b=None,而不是b=[],你可以打印一下这个函数的内建属性：func_defaults，就明白我说的是什么了。</p>
+<h2 id="一些工具"><a href="#一些工具" class="headerlink" title="一些工具"></a>一些工具</h2><p>使用python的functools.wraps可以不让函数的<strong>name</strong>，和<strong>doc</strong>属性被替换。</p>
+<p>因为你“包装”了一个函数之后，它其实已经是另一个函数了，所以函数的一些自省的属性也就丢失了，functools.wraps就可以帮助你解决这个问题。</p>
+<h2 id="装饰器与装饰器模式"><a href="#装饰器与装饰器模式" class="headerlink" title="装饰器与装饰器模式"></a>装饰器与装饰器模式</h2><p>相似的东西，总会拿来做对比，更有趣的是，即使这两个东西仅仅是名字相同，<br>比如java和javascrip，再比如重写和重载这两个其实根本没啥关系的东西，也常拿出来做比较。当然，装饰器和装饰器模式还是很有关系的。</p>
+<p>对于设计模式中的装饰器模式，可以在不用改变原类文件和原用继承的情况下，动态的扩展一个对象的功能，通过一个包装对象，也就是装饰器来包裹一个真实的对象。那么你可以说，你的原函数是独立于装饰函数。装饰函数，仅仅在做扩展而已。这也就是aop面向切面编程。</p>
+<p>实际上python的装饰器，就是使python在语法层面上就支持装饰器模式，也就我刚才所说的，装饰器可以在一个函数调用前做一些事情，在调用后做一些事情。</p>
+<p>我甚至理解，装饰器实际上类似于宏，在做一件用代码生成代码的事情，当然，这本身是不对的，我仅仅是想想而已，它却是仅仅是函数嵌套调用的关系，而非真正的代码级别的替换。</p>
+<h2 id="实用主义"><a href="#实用主义" class="headerlink" title="实用主义"></a>实用主义</h2><p>我喜欢做一个实用主义，所以每次看到一些讲装饰器的原理和能干什么的时候，我就想问一句，那么我能用它来做什么呢？接下来我就带你去看看，装饰器散布在python编程的哪些方面。</p>
+<h4 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span><span class="params">(object)</span>:</span></div><div class="line"><span class="meta">    @classmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(cls)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"CLASS: %s"</span> % cls</div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"static method"</span></div></pre></td></tr></table></figure>
+<p>在python中，经常会看到这样的定义，声明这是一个类方法，那是一个静态方法，<br>我起初一直不能理解类方法与静态方法有什么区别，现在我只能说，类方法算是一个绑定在类这个对象上的方法，而静态方法，就是简单的封装到类的命名空间的方法。与类无关系。</p>
+<p>还有property这样的装饰器，使你的函数看起来像是一个属性，你在c#或者java中建模的时候，经常会用到这个方法来建模，写一些被称为是访问器的东西。</p>
+<h4 id="web框架"><a href="#web框架" class="headerlink" title="web框架"></a>web框架</h4><p>flask里面的路由就用到了装饰器,这就是我之前提到的带有参数的装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@app.route('/')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> render_template(<span class="string">'home.html'</span>)</div></pre></td></tr></table></figure>
+<p>tornado中的异步也用到了装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@asynchronous</span></div><div class="line"><span class="meta">@gen.coroutine</span></div></pre></td></tr></table></figure>
+<p>第一个装饰器是让连接变成长连接，第二个装饰器能够使得框架和你的yield进行通讯,这实际上算是修改调用时的上下文,这个如果不理解yield将非常苦涩难懂。</p>
+<p>之前我写过一个验证用户登陆才能显示此页面的代码,使得这个handler必须要有xx的权限，才能够登录,装饰器使得,这个验证功能就像是“贴”上去。</p>
+<h4 id="缓存设计"><a href="#缓存设计" class="headerlink" title="缓存设计"></a>缓存设计</h4><p>这里先写一个python的斐波那契数列,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</div></pre></td></tr></table></figure>
+<p>你知道对于斐波那契数列,这种树形递归的程序，实际上它进行了大量的重复计算。</p>
+<p>那么我可以用一个memory（缓存）来将那些已经计算过的值写入到memory中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">memory = &#123;&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> memory:</div><div class="line">        <span class="keyword">return</span> memory[n]</div><div class="line">    r = fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>)</div><div class="line">    memory[n] = r</div><div class="line">    <span class="keyword">return</span> r</div></pre></td></tr></table></figure>
+<p>当然这个时候，我们可以做一个装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">memorized</span><span class="params">(func)</span>:</span></div><div class="line">    memory = &#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(n)</span>:</span></div><div class="line">        <span class="keyword">if</span> n <span class="keyword">in</span> memory:</div><div class="line">            <span class="keyword">return</span> memory[n]</div><div class="line">        r = func(n<span class="number">-1</span>) + func(n<span class="number">-2</span>)</div><div class="line">        memory[n] = r</div><div class="line">        <span class="keyword">return</span> r</div><div class="line">    <span class="keyword">return</span> wrapper</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@memorized</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</div></pre></td></tr></table></figure>
+<p>这里有一个python的wiki介绍了python装饰器的各种妙用。<a href="https://wiki.python.org/moin/PythonDecoratorLibrary" target="_blank" rel="external">https://wiki.python.org/moin/PythonDecoratorLibrary</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/25/my-story-with-game-01/" rel="prev">我和游戏的故事01</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/06/tornado-yield-futures-run-in-parallel/" rel="next">tornado并行执行多个异步的原理</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/03/31/talk-about-python-decorator/"
+     data-title="聊聊python装饰器"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2016/03/31/talk-about-python-decorator/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/03/31/talk-about-python-decorator/"
+                   data-title="聊聊python装饰器" data-url="http://www.pulpcode.cn/2016/03/31/talk-about-python-decorator/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包与装饰器"><span class="nav-number">2.</span> <span class="nav-text">闭包与装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有参数的装饰器"><span class="nav-number">3.</span> <span class="nav-text">带有参数的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参数带来的一个小细节"><span class="nav-number">3.0.1.</span> <span class="nav-text">参数带来的一个小细节</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些工具"><span class="nav-number">4.</span> <span class="nav-text">一些工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器与装饰器模式"><span class="nav-number">5.</span> <span class="nav-text">装饰器与装饰器模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实用主义"><span class="nav-number">6.</span> <span class="nav-text">实用主义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类定义"><span class="nav-number">6.0.1.</span> <span class="nav-text">类定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#web框架"><span class="nav-number">6.0.2.</span> <span class="nav-text">web框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存设计"><span class="nav-number">6.0.3.</span> <span class="nav-text">缓存设计</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

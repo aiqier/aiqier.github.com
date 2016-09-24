@@ -1,0 +1,738 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。
+我也会在以后学习中，不断的修改此篇博客。
+这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。
+str与字节码首先，我们完全不谈unicode。
+1s = &quot;人生苦短&quot;
+s是个字符串，它本身存储的就是字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python中的str与unicode处理方法">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/12/23/python-encode/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。
+我也会在以后学习中，不断的修改此篇博客。
+这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。
+str与字节码首先，我们完全不谈unicode。
+1s = &quot;人生苦短&quot;
+s是个字符串，它本身存储的就是字">
+<meta property="og:image" content="http://www.pulpcode.cn/img/encode.jpg">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.766Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python中的str与unicode处理方法">
+<meta name="twitter:description" content="python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。
+我也会在以后学习中，不断的修改此篇博客。
+这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。
+str与字节码首先，我们完全不谈unicode。
+1s = &quot;人生苦短&quot;
+s是个字符串，它本身存储的就是字">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/encode.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> python中的str与unicode处理方法 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              python中的str与unicode处理方法
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-12-23T00:00:00+08:00" content="2014-12-23">
+            2014-12-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/23/python-encode/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/23/python-encode/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。</p>
+<p>我也会在以后学习中，不断的修改此篇博客。</p>
+<p>这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。</p>
+<h2 id="str与字节码"><a href="#str与字节码" class="headerlink" title="str与字节码"></a>str与字节码</h2><p>首先，我们完全不谈unicode。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">"人生苦短"</span></div></pre></td></tr></table></figure>
+<p>s是个字符串，它本身存储的就是字节码。那么这个字节码是什么格式的？</p>
+<a id="more"></a>
+<p>如果这段代码是在解释器上输入的，那么这个s的格式就是解释器的编码格式，对于windows的cmd而言，就是gbk。</p>
+<p>如果将段代码是保存后才执行的，比如存储为utf-8，那么在解释器载入这段程序的时候，就会将s初始化为utf-8编码。</p>
+<h2 id="unicode与str"><a href="#unicode与str" class="headerlink" title="unicode与str"></a>unicode与str</h2><p>我们知道unicode是一种编码标准，具体的实现标准可能是utf-8，utf-16，gbk ……</p>
+<p>python 在内部使用两个字节来存储一个unicode，使用unicode对象而不是str的好处，就是unicode方便于跨平台。</p>
+<p>你可以用如下两种方式定义一个unicode:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s1 = <span class="string">u"人生苦短"</span></div><div class="line">s2 = unicode(<span class="string">"人生苦短"</span>, <span class="string">"utf-8"</span>)</div></pre></td></tr></table></figure>
+<h2 id="encode与decode"><a href="#encode与decode" class="headerlink" title="encode与decode"></a>encode与decode</h2><p>在python中的编码解码是这样的：</p>
+<p><img src="/img/encode.jpg" alt="encode-decode"></p>
+<p>所以我们可以写这样的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line">su = <span class="string">"人生苦短"</span></div><div class="line"><span class="comment"># ： su是一个utf-8格式的字节串</span></div><div class="line">u  = s.decode(<span class="string">"utf-8"</span>)</div><div class="line"><span class="comment"># ： s被解码为unicode对象，赋给u</span></div><div class="line">sg = u.encode(<span class="string">"gbk"</span>)</div><div class="line"><span class="comment"># ： u被编码为gbk格式的字节串，赋给sg</span></div><div class="line"><span class="keyword">print</span> sg</div><div class="line"><span class="comment"># 打印sg</span></div></pre></td></tr></table></figure>
+<p>但是事实情况要比这个复杂，比如看如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">"人生苦短"</span></div><div class="line">s.encode(<span class="string">'gbk'</span>)</div></pre></td></tr></table></figure>
+<p>看！str也能编码，(事实上unicode对象也能解码，但是意义不大)</p>
+<p>这样为什么可以？看上图的编码流程的箭头，你就能想到原理，当对str进行编码时，会先用<strong>默认编码</strong>将自己解码为unicode，然后在将unicode编码为你指定编码。</p>
+<p><strong>这就引出了python2.x中在处理中文时，大多数出现错误的原因所在：</strong><code>python的默认编码，defaultencoding是ascii</code></p>
+<p>看这个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line">s = <span class="string">"人生苦短"</span></div><div class="line">s.encode(<span class="string">'gbk'</span>)</div></pre></td></tr></table></figure>
+<p>上面的代码会报错，错误信息：<code>UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte ......</code></p>
+<p>因为你没有指定defaultencoding,所以它其实在做这样的事情:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line">s = <span class="string">"人生苦短"</span></div><div class="line">s.decode(<span class="string">'ascii'</span>).encode(<span class="string">'gbk'</span>)</div></pre></td></tr></table></figure>
+<h2 id="设置defaultencoding"><a href="#设置defaultencoding" class="headerlink" title="设置defaultencoding"></a>设置defaultencoding</h2><p>设置defaultencoding的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reload(sys)</div><div class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</div></pre></td></tr></table></figure>
+<p>如果你在python中进行编码和解码的时候，不指定编码方式，那么python就会使用defaultencoding。</p>
+<p>比如上一节例子中将str编码为另一种格式，就会使用defaultencoding。</p>
+<p><code>s.encode(&quot;utf-8&quot;) 等价于 s.decode(defaultencoding).encode(&quot;utf-8&quot;)</code></p>
+<p>再比如你使用str创建unicode对象时，如果不说明这个str的编码格式，那么程序也会使用defaultencoding。</p>
+<p><code>u = unicode(&quot;人生苦短&quot;) 等价于 u = unicode(&quot;人生苦短&quot;,defaultencoding)</code></p>
+<p>默认的defaultcoding：ascii是许多错误的原因，所以早早的设置defaultencoding是一个好习惯。</p>
+<h2 id="文件头声明编码的作用。"><a href="#文件头声明编码的作用。" class="headerlink" title="文件头声明编码的作用。"></a>文件头声明编码的作用。</h2><p>这要感谢这篇<a href="http://blog.csdn.net/kiki113/article/details/4062063" target="_blank" rel="external">博客</a>关于python文件头部分知识的讲解。</p>
+<p>顶部的:<code># -*- coding: utf-8 -*-</code>目前看来有三个作用。</p>
+<ol>
+<li>如果代码中有中文注释，就需要此声明</li>
+<li>比较高级的编辑器（比如我的emacs），会根据头部声明，将此作为代码文件的格式。</li>
+<li>程序会通过头部声明，解码初始化 u”人生苦短”，这样的unicode对象，（所以头部声明和代码的存储格式要一致）</li>
+</ol>
+<h2 id="关于requests库"><a href="#关于requests库" class="headerlink" title="关于requests库"></a>关于requests库</h2><p><code>requests</code>是一个很实用的Python HTTP客户端库，编写爬虫和测试服务器响应数据时经常会用到。</p>
+<p>其中的<code>Request</code>对象在访问服务器后会返回一个<code>Response</code>对象，这个对象将返回的Http响应字节码保存到<code>content</code>属性中。</p>
+<p>但是如果你访问另一个属性<code>text</code>时，会返回一个<code>unicode</code>对象，<em>乱码问题就会常常发成在这里</em>。</p>
+<p>因为<code>Response</code>对象会通过另一个属性<code>encoding</code>来将字节码编码成<code>unicode</code>，而这个<code>encoding</code>属性居然是<code>responses</code>自己<strong>猜</strong>出来的。</p>
+<p>官方文档：</p>
+<pre><code>text
+Content of the response, in unicode.
+
+If Response.encoding is None, encoding will be guessed using chardet.
+
+The encoding of the response content is determined based solely on HTTP headers, following RFC 2616 to the letter. If you can take advantage of non-HTTP knowledge to make a better guess at the encoding, you should set r.encoding appropriately before accessing this property.
+</code></pre><p>所以要么你直接使用<code>content</code>(字节码)，要么记得把<code>encoding</code>设置正确，比如我获取了一段gbk编码的网页,就需要以下方法才能得到正确的<code>unicode</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> requests</div><div class="line">url = <span class="string">"http://xxx.xxx.xxx"</span></div><div class="line"></div><div class="line">response = requests.get(url)</div><div class="line">response.encoding = <span class="string">'gbk'</span></div><div class="line"><span class="keyword">print</span> response.text</div></pre></td></tr></table></figure>
+<h2 id="不仅仅要原理，更要使用方法！"><a href="#不仅仅要原理，更要使用方法！" class="headerlink" title="不仅仅要原理，更要使用方法！"></a>不仅仅要原理，更要使用方法！</h2><p>如果是早期的我写博客，那么我一定会写这样的例子：</p>
+<p>如果现在的文件编码为gbk,然后文件头为：<code># -*- coding: utf-8 -*-</code>，再将默认编码设置为xxx，那么如下程序的结果会是……</p>
+<p>这就类似于，当年学c的时候，用各种优先级，结合性，指针来展示自己水平的代码。</p>
+<p>实际上这些根本就不实用，谁会在真正的工作中写这样的代码呢？我在这里想谈谈实用的处理中文的python方法。</p>
+<h4 id="基本设置"><a href="#基本设置" class="headerlink" title="基本设置"></a>基本设置</h4><p>主动设置defaultencoding。（默认的是ascii）</p>
+<p>代码文件的保存格式要与文件头部的# coding:xxx一致</p>
+<p>如果是中文，程序内部尽量使用unicode，而不用str</p>
+<h4 id="关于打印"><a href="#关于打印" class="headerlink" title="关于打印"></a>关于打印</h4><p>你在打印str的时候，实际就是直接将字节流发送给shell。如果你的字节流编码格式与shell的编码格式不相同，就会乱码。</p>
+<p>而你在打印unicode的时候，系统自动将其编码为shell的编码格式，是不会出现乱码的。</p>
+<h4 id="程序内外要统一"><a href="#程序内外要统一" class="headerlink" title="程序内外要统一"></a>程序内外要统一</h4><p>如果说程序内部要保证只用unicode，那么在从外部读如字节流的时候，一定要将这些字节流转化为unicode，在后面的代码中去处理unicode，而不是str。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">"test"</span>) <span class="keyword">as</span> f:</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> f:</div><div class="line">        <span class="comment"># 将读入的utf-8字节流进行解码</span></div><div class="line">        u = i.decode(<span class="string">'utf-8'</span>)</div><div class="line">        ....</div></pre></td></tr></table></figure>
+<p>如果把连接程序内外的这段数据流比喻成通道的的话，那么与其将通道开为字节流，读入后进行解码，不如直接将通道开为unicode的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用codecs直接开unicode通道</span></div><div class="line">file = codecs.open(<span class="string">"test"</span>, <span class="string">"r"</span>, <span class="string">"utf-8"</span>)</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> file:</div><div class="line">    <span class="keyword">print</span> type(i)</div><div class="line">    <span class="comment"># i的类型是unicode的</span></div></pre></td></tr></table></figure>
+<p>所以python处理中文编码问题的关键是你要清晰的明白，自己在干什么，打算读入什么格式的编码，声明的的这些字节是什么格式的，str到unicode是如何转换的，str的一种编码到另一种编码又是如何进行的。<br>还有，你不能把问题变得混乱，要自己主动去维护一种统一。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/12/24/fast-editor-emacs/" rel="prev">高效的emacs</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/12/15/calculate-cash/" rel="next">关于几个金融计算中会用到的公式</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/12/23/python-encode/"
+     data-title="python中的str与unicode处理方法"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2014/12/23/python-encode/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2014/12/23/python-encode/"
+                   data-title="python中的str与unicode处理方法" data-url="http://www.pulpcode.cn/2014/12/23/python-encode/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#str与字节码"><span class="nav-number">1.</span> <span class="nav-text">str与字节码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode与str"><span class="nav-number">2.</span> <span class="nav-text">unicode与str</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encode与decode"><span class="nav-number">3.</span> <span class="nav-text">encode与decode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置defaultencoding"><span class="nav-number">4.</span> <span class="nav-text">设置defaultencoding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件头声明编码的作用。"><span class="nav-number">5.</span> <span class="nav-text">文件头声明编码的作用。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于requests库"><span class="nav-number">6.</span> <span class="nav-text">关于requests库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不仅仅要原理，更要使用方法！"><span class="nav-number">7.</span> <span class="nav-text">不仅仅要原理，更要使用方法！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本设置"><span class="nav-number">7.0.1.</span> <span class="nav-text">基本设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于打印"><span class="nav-number">7.0.2.</span> <span class="nav-text">关于打印</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序内外要统一"><span class="nav-number">7.0.3.</span> <span class="nav-text">程序内外要统一</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

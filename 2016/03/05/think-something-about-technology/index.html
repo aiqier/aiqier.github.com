@@ -1,0 +1,669 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="编程," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="实际上我早已养成这样的习惯，每隔一段时间，就会去写一篇这样的博客，思考下如何做技术，而且每隔一段时间，去阅读之前写的东西，都会觉得自己好幼稚。知道过去的自己是傻逼，这样挺好的。
+不学lisp， 不学haskell在《第三种猩猩》这本书中，有一章叫“为什么麻醉自己—烟酒和毒品”，有一个被成为”动物发送讯号”的一般理论。大概意思就是说，抽烟喝酒这种事情，能够给别人带来一种信号：“我的身体很好，这些东西">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于技术的几点思考">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/03/05/think-something-about-technology/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="实际上我早已养成这样的习惯，每隔一段时间，就会去写一篇这样的博客，思考下如何做技术，而且每隔一段时间，去阅读之前写的东西，都会觉得自己好幼稚。知道过去的自己是傻逼，这样挺好的。
+不学lisp， 不学haskell在《第三种猩猩》这本书中，有一章叫“为什么麻醉自己—烟酒和毒品”，有一个被成为”动物发送讯号”的一般理论。大概意思就是说，抽烟喝酒这种事情，能够给别人带来一种信号：“我的身体很好，这些东西">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.786Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于技术的几点思考">
+<meta name="twitter:description" content="实际上我早已养成这样的习惯，每隔一段时间，就会去写一篇这样的博客，思考下如何做技术，而且每隔一段时间，去阅读之前写的东西，都会觉得自己好幼稚。知道过去的自己是傻逼，这样挺好的。
+不学lisp， 不学haskell在《第三种猩猩》这本书中，有一章叫“为什么麻醉自己—烟酒和毒品”，有一个被成为”动物发送讯号”的一般理论。大概意思就是说，抽烟喝酒这种事情，能够给别人带来一种信号：“我的身体很好，这些东西">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 关于技术的几点思考 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              关于技术的几点思考
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-05T00:00:00+08:00" content="2016-03-05">
+            2016-03-05
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/技术思考/" itemprop="url" rel="index">
+                  <span itemprop="name">技术思考</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/03/05/think-something-about-technology/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/05/think-something-about-technology/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>实际上我早已养成这样的习惯，每隔一段时间，就会去写一篇这样的博客，思考下如何做技术，而且每隔一段时间，去阅读之前写的东西，都会觉得自己好幼稚。知道过去的自己是傻逼，这样挺好的。</p>
+<h2 id="不学lisp，-不学haskell"><a href="#不学lisp，-不学haskell" class="headerlink" title="不学lisp， 不学haskell"></a>不学lisp， 不学haskell</h2><p>在《第三种猩猩》这本书中，有一章叫“为什么麻醉自己—烟酒和毒品”，有一个被成为”动物发送讯号”的一般理论。大概意思就是说，抽烟喝酒这种事情，能够给别人带来一种信号：“我的身体很好，这些东西伤不了我”。类似的事情，还有在羚羊中，有一些羚羊在被豹子追的时候，有意会放慢自己的速度，跳着前进，这种看似作死的做法，实际上是给豹子传递一种信号，我的速度很快，玩着跑，你也追不上我，还是别追我了。这个有趣的地方是，那些不自量力的羚羊，也会模仿这种“风骚的”做法，结果就把自己玩死了。这无形中构成了一种筛选模式。类似于钻石这种东西，实际上，钻石本身确实没什么用，但是能够买得起，确实是表示自己的经济实力。这就是一种传播讯号的方式，让妹子知道，我很有钱，很吊。</p>
+<a id="more"></a>
+<p>那么这个为什么会说道这个问题呢，实际上在大学的时候，我学过一段时间的lisp和haskell，实际上不仅仅是大学，工作之后的一段时间，我也会琢磨这些乱七八糟的东西，包括协程，函数式编程，元编程之类的，直到有一天我才发现，就我目前所处的地带，并不适合学这些，我发现那些真正玩这些大神，从小就在类似书香门第的家庭，而且初中就开始写代码，他们的编程和数学的底子非常好，也就是说我的思维其实本末倒置了，是他们编程本来就很牛逼，然后他们刚好去学习了lisp，haskell这些东西，而不是他们去学了这些东西，然后他们变得牛逼了。我觉得这些东西能散发出来的讯号也是，“我这些都玩的这么吊，我的编程很牛逼”。可惜以我所在的环境，可没有那么多的资源去折腾这些，对于我而言，多去学会写好代码，少写bug，多聆听pm的需求，多去优化，重构自己的代码，可能比那些东西更实用于我现在所处的模型，所以“不学lisp，不学haskll。”因为有些东西从来就不是为你准备的，不是给你玩的。</p>
+<h2 id="枯燥的编程"><a href="#枯燥的编程" class="headerlink" title="枯燥的编程"></a>枯燥的编程</h2><p>我一直好奇,那些说编程有趣的人，到底会不会编程，或者说生活是有多么的无趣。实际上我觉得打游戏或者撩妹比编程有趣多了，编程也就在拿到工资，或者美女pm夸你这个问题解决的好的时候，才能产生巴多胺。还有一部分人天天扯什么，我们从小到大一直学着我们不喜欢的东西，干着我们一直不喜欢的工作，我了个擦，你有没有想过，如果一件事情，越学越有意思，那何来的门槛，那是不是是个人就能学啊？</p>
+<p>再说你爱学的，富人家的孩子也爱学，那么你觉得你有可能玩的过他们么？多亏了我国教育部把教育和高考弄得如此枯燥，才有我们上升的一部分空间，否则，你这辈子都别想了。编程也一样，我觉得现在挺好的，天天枯燥的写写代码，每天下个班都要块十点了，要是编程这东西，又好玩，挣的钱又多，那我估计这辈子都没饭吃了。<br>所以我想说，你在做一件事儿的时候，一定要明白。你做别人也在做，你给你的竞争对手能留下什么门槛？才能让你活的这么滋润。</p>
+<h2 id="等待神秘人"><a href="#等待神秘人" class="headerlink" title="等待神秘人"></a>等待神秘人</h2><p>之前看过一个人的说法，我一直很赞同。他说在二三线城市，很多人都像找个稳定的对象，很多人以为是甘愿平庸，但是实际上不是甘愿平庸，而是期望那个找到的稳定的对象，能够把你所有的难题都解决了。类似于期望一个神秘人出现，把你所有的难题一一化解，这就是他们嘴里的稳定的对象。</p>
+<p>实际上在工作中也会这样，这就是我所说的主动工作和被动工作。什么是被动工作呢，类似于，有一天pm觉得这个系统可以优化，然后让你出数据，然后你就出了，然后pm按照你出的数据，加了修改方案，然后你按照他的设计改了。然后没效果，这事儿就这么过去了。</p>
+<p>为什么没效果呢？怎么可能会有效果，实际上pm可能根本不懂这个系统设计成什么样了，rd也不去关心pm到底想要什么，这种就类似于期待神秘人的出现，这个问题会不知不觉的就解决好了。pm和rd都把对方当成了神秘人。实际上要解决一个问题，必须有人主动的担当，牵头所有的事儿，对这个系统有足够的了解，而不是你被动等我的数据，我被动等你的解决方案。</p>
+<p>说句实话，解决一个问题，从头到尾的发现问题，分析问题，找到解决方案，再到实施，麻烦复杂着呢，不是什么神秘人随便就能解决的。</p>
+<p>不仅仅是技术这一块，很多男女之间的感情，最后也是因为没有好好的维护，把对方当成神秘人，结果到最后分手了，比如妹子期待男友是个神秘人，能解决所有生活难题。男的也期待这个妹子是个神秘人，无时无刻的不支持自己的事业。</p>
+<p>当然很多人也期待政府是神秘人，突然所有的生活问题都解决了。</p>
+<h2 id="这一年的方向"><a href="#这一年的方向" class="headerlink" title="这一年的方向"></a>这一年的方向</h2><p>我这一年并没有打算多看技术的书，或者开阔自己的思维。我想让自己的很多“漂浮”的技术和想法变得踏实下来，所以我可能会尝试多去总结思考工作中遇到的问题和困难，比较贴近现实，少去关注一些“操作系统，编译原理”的底层知识，或者是函数式，之类的奇技淫巧。从工程的角度，多去优化和重构自己的代码，和设计思路。我最近特别喜欢“设计”这个词，它代变一种思路，一种更好的解决方案，一种在原有基础上的抽象。一种对模型的熟练掌握。一种对不需要事物的精简。</p>
+<p>先去尝试做一件事儿，然后是熟悉它，把它做好。最后才是精简它，开始设计它。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag">#编程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/06/tornado-yield-futures-run-in-parallel/" rel="prev">tornado并行执行多个异步的原理</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/20/lzjd/" rel="next">交大回忆录</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/03/05/think-something-about-technology/"
+     data-title="关于技术的几点思考"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2016/03/05/think-something-about-technology/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/03/05/think-something-about-technology/"
+                   data-title="关于技术的几点思考" data-url="http://www.pulpcode.cn/2016/03/05/think-something-about-technology/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#不学lisp，-不学haskell"><span class="nav-number">1.</span> <span class="nav-text">不学lisp， 不学haskell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枯燥的编程"><span class="nav-number">2.</span> <span class="nav-text">枯燥的编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待神秘人"><span class="nav-number">3.</span> <span class="nav-text">等待神秘人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#这一年的方向"><span class="nav-number">4.</span> <span class="nav-text">这一年的方向</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

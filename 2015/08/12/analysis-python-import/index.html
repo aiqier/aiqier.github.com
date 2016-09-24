@@ -1,0 +1,715 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="之前写过一篇博客:从几个实验来分析python import,但这篇博客过于简陋，而且在工作中也发现，很多人都对此处知识存在很多盲区,所以这里想去写一篇比较专业的。
+从哪开始找当你import一个模块时，将通过以下路径，对模块进行搜索。
+
+在当前目录下搜索该模块
+在环境变量PYTHONPATH中指定的路径列表中依次搜索
+在python的安装路径中搜索
+
+如果你想看一下你python的包搜索路径，不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解python import">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/08/12/analysis-python-import/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="之前写过一篇博客:从几个实验来分析python import,但这篇博客过于简陋，而且在工作中也发现，很多人都对此处知识存在很多盲区,所以这里想去写一篇比较专业的。
+从哪开始找当你import一个模块时，将通过以下路径，对模块进行搜索。
+
+在当前目录下搜索该模块
+在环境变量PYTHONPATH中指定的路径列表中依次搜索
+在python的安装路径中搜索
+
+如果你想看一下你python的包搜索路径，不">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.726Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="详解python import">
+<meta name="twitter:description" content="之前写过一篇博客:从几个实验来分析python import,但这篇博客过于简陋，而且在工作中也发现，很多人都对此处知识存在很多盲区,所以这里想去写一篇比较专业的。
+从哪开始找当你import一个模块时，将通过以下路径，对模块进行搜索。
+
+在当前目录下搜索该模块
+在环境变量PYTHONPATH中指定的路径列表中依次搜索
+在python的安装路径中搜索
+
+如果你想看一下你python的包搜索路径，不">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 详解python import | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              详解python import
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-12T00:00:00+08:00" content="2015-08-12">
+            2015-08-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/12/analysis-python-import/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/12/analysis-python-import/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>之前写过一篇博客:从几个实验来分析python import,但这篇博客过于简陋，而且在工作中也发现，很多人都对此处知识存在很多盲区,所以这里想去写一篇比较专业的。</p>
+<h2 id="从哪开始找"><a href="#从哪开始找" class="headerlink" title="从哪开始找"></a>从哪开始找</h2><p>当你import一个模块时，将通过以下路径，对模块进行搜索。</p>
+<ol>
+<li>在当前目录下搜索该模块</li>
+<li>在环境变量PYTHONPATH中指定的路径列表中依次搜索</li>
+<li>在python的安装路径中搜索</li>
+</ol>
+<p>如果你想看一下你python的包搜索路径，不妨使用如下命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line">print(sys.path)</div></pre></td></tr></table></figure>
+<p>那么，如果你想把某个路径添加到python的搜索路径怎么办呢？</p>
+<a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PYTHONPATH=<span class="variable">$PYTHONPATH</span>:/xxx/xxx</div></pre></td></tr></table></figure>
+<p>注: <code>/xxx/xxx</code>就是你的路径。</p>
+<h2 id="package"><a href="#package" class="headerlink" title="package"></a>package</h2><h4 id="module"><a href="#module" class="headerlink" title="module"></a>module</h4><p>在python中，一个包(package)其实就是一个目录，它里面可以有一个module，或者另一个包。</p>
+<p>还有一个关键的东西，就是<code>__init__.py</code>,此文件的目的就是用来告诉python解释器将该目录当成一个内容包，即该目录是一个包，里面包含了python模块。</p>
+<p>那么在python解释器执行的时候，会将模块一个一个的导入进来，放到sys.modules中,这是一个字典。</p>
+<p>你可以打印<code>sys.modules</code>来一看究竟</p>
+<h4 id="从module到当前local"><a href="#从module到当前local" class="headerlink" title="从module到当前local"></a>从module到当前local</h4><p>我先告诉你一件事情，你别看你在你的代码中写了<code>import sys</code>,但其实sys早就导入了。</p>
+<p>我们的代码在<code>import sys</code>的时候，实际上不会重复再加载一次sys,而是将sys模块的名字引入到当前命名空间。</p>
+<h4 id="from-future-import-absolute-import"><a href="#from-future-import-absolute-import" class="headerlink" title="from future import absolute_import"></a>from <strong>future</strong> import absolute_import</h4><p>如果你阅读过python源码，那么你可能经常会看见作者在开头写了这样一句话:<code>from __future__ import absolute_import</code></p>
+<p>字面意思感觉像是import此模块，就可以用“绝对的方式”进行导入了。但其实这就像tornado的<code>@tornado.web.asynchronous</code>命名一样，坑了不少人。</p>
+<p>此句import的真实目的是禁用 <code>implicit relative import</code>, 但并不会禁掉 <code>explicit relative import</code></p>
+<p>那么它们有什么区别呢，首先我想告诉你，什么才是完整的包?<br>比如下面就是一个完整的包:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">things</div><div class="line">├── __init__.py</div><div class="line">├── books</div><div class="line">│   ├── __init__.py</div><div class="line">│   ├── adventure.py</div><div class="line">│   ├── history.py</div><div class="line">│   ├── horror.py</div><div class="line">│   └── lovestory.py</div><div class="line">└── furniture</div><div class="line">    ├── __init__.py</div><div class="line">    ├── armchair.py</div><div class="line">    ├── bench.py</div><div class="line">    ├── screen.py</div><div class="line">    └── stool.py</div></pre></td></tr></table></figure></p>
+<p>那么如果你在stool中引用bench，有如下几种方式:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> bench <span class="comment"># 此为implicit relative import</span></div><div class="line"><span class="keyword">from</span> . <span class="keyword">import</span> bench <span class="comment"># 此为 explicit relative import</span></div><div class="line"><span class="keyword">from</span> furniture <span class="keyword">import</span> bench <span class="comment"># 此为 absolute import</span></div></pre></td></tr></table></figure></p>
+<p>实际上只有第三种，才是官方推荐的，第一种是官方强烈不推荐的，python3中已经不可以使用了，我们的from <strong>future</strong> import absolute_import也就是为了禁用这种方式。</p>
+<p>当然有些读者觉得，我即使加上这句话，还是可以导入，那是因为，我们讨论都是基于包内的，那么什么是包，首先，包内之间需要引用，而对于主控，应该是包外部的，由它来引用包。</p>
+<p>所以你直接来两个文件，然后在a.py中直接<code>import b</code>来引用b.py，然后执行a.py没问题。这完全没有在我们的讨论的问题之内，所谓完整的包，包内和包外是有一个边界的。</p>
+<p>比如你的main.py就是你的主控，它在你的main在things下，那么这个包并不能被成为完整的包。</p>
+<h4 id="两个错误"><a href="#两个错误" class="headerlink" title="两个错误"></a>两个错误</h4><p>沿用上一节提到的包目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">things</div><div class="line">├── __init__.py</div><div class="line">├── books</div><div class="line">│   ├── __init__.py</div><div class="line">│   ├── adventure.py</div><div class="line">│   ├── history.py</div><div class="line">│   ├── horror.py</div><div class="line">│   └── lovestory.py</div><div class="line">└── furniture</div><div class="line">    ├── __init__.py</div><div class="line">    ├── armchair.py</div><div class="line">    ├── bench.py</div><div class="line">    ├── screen.py</div><div class="line">    └── stool.py</div></pre></td></tr></table></figure>
+<p>我们在stool.py中编写:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> .. books <span class="keyword">import</span> horror</div></pre></td></tr></table></figure>
+<p>然后执行stool.py文件,就会报错:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"stool.py"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">      from .. books import horror</div><div class="line">      ValueError: Attempted relative import <span class="keyword">in</span> non-package</div></pre></td></tr></table></figure></p>
+<p>但是假如你把main放到things目录下，那么就会包这种错：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"main.py"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">    from furniture import stool</div><div class="line">  File <span class="string">"/Users/liuaiqi/laboratory/package/things/furniture/stool.py"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">    from .. books import horror</div><div class="line">ValueError: Attempted relative import beyond toplevel package</div></pre></td></tr></table></figure></p>
+<p>实际上就是说，如果你的主控在包中，那么你的包内相对引用就会出现问题,就像我在上一小节描述的“完整的包”</p>
+<h4 id="name"><a href="#name" class="headerlink" title="name"></a><strong>name</strong></h4><p>首先你在每个模块下都试着打印<code>__name__</code>,而如果你在包内使用相对引用, 你试着将主控放到不同的地方去引用这些包，你会发现，它们打印出来的结果是不一样的。</p>
+<p>这是因为<code>__name__</code>来决定它在包结构中的位置</p>
+<h2 id="reloads"><a href="#reloads" class="headerlink" title="reloads"></a>reloads</h2><p>比如你现在在一个解释器中，你对一个源码进行修改，然后你想重新加载这个模块，这时候，你就需要reload。<br>reload实际上会擦出底层字典的内容，并通过重新执行模块的源代码来刷新它.</p>
+<h4 id="setdefaultencoding为什么要reloads"><a href="#setdefaultencoding为什么要reloads" class="headerlink" title="setdefaultencoding为什么要reloads?"></a>setdefaultencoding为什么要reloads?</h4><p>在python2.x中，默认编码是ascii的，这也是人们在编写转码类代码时,会报错的原因:<code>UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte ......</code></p>
+<p>然后你就需要将这三行代码引进来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line">reload(sys)</div><div class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</div></pre></td></tr></table></figure>
+<p>虽然我们知道reload的作用，但是为什么要<code>reload</code>?因为在python2.5以后，sys初始化之后，会删除sys.setdefaulting方法。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/18/myself-time-class-zentime/" rel="prev">自己写了一个好用的时间类</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/10/different-between-newline-and-return/" rel="next">换行和回车的区别</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/08/12/analysis-python-import/"
+     data-title="详解python import"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/08/12/analysis-python-import/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/12/analysis-python-import/"
+                   data-title="详解python import" data-url="http://www.pulpcode.cn/2015/08/12/analysis-python-import/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从哪开始找"><span class="nav-number">1.</span> <span class="nav-text">从哪开始找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#package"><span class="nav-number">2.</span> <span class="nav-text">package</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#module"><span class="nav-number">2.0.1.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从module到当前local"><span class="nav-number">2.0.2.</span> <span class="nav-text">从module到当前local</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#from-future-import-absolute-import"><span class="nav-number">2.0.3.</span> <span class="nav-text">from future import absolute_import</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两个错误"><span class="nav-number">2.0.4.</span> <span class="nav-text">两个错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#name"><span class="nav-number">2.0.5.</span> <span class="nav-text">name</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reloads"><span class="nav-number">3.</span> <span class="nav-text">reloads</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#setdefaultencoding为什么要reloads"><span class="nav-number">3.0.1.</span> <span class="nav-text">setdefaultencoding为什么要reloads?</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

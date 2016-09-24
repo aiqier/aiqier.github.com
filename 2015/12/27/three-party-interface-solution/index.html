@@ -1,0 +1,710 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python,装饰器," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言之前的工作任务，大多一直在做这样一件事，请求第三方接口，并将接口数据进行解析成固定格式后返回。之后在做业务处理，包括更新数据库状态之类的。
+这里想展示一种解决方案，能够解决以下的问题，包括:
+
+请求出现异常，包括链接超时，解析异常，请求错误的处理。
+方便的进行单元测试。
+方便的进行扩展。
+
+注意第3条是指数据来源可能是不同的url，请求和相应格式都不同，但是要做的业务逻辑却是相同的，如何做到方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="请求三方接口的解决方案">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/12/27/three-party-interface-solution/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="前言之前的工作任务，大多一直在做这样一件事，请求第三方接口，并将接口数据进行解析成固定格式后返回。之后在做业务处理，包括更新数据库状态之类的。
+这里想展示一种解决方案，能够解决以下的问题，包括:
+
+请求出现异常，包括链接超时，解析异常，请求错误的处理。
+方便的进行单元测试。
+方便的进行扩展。
+
+注意第3条是指数据来源可能是不同的url，请求和相应格式都不同，但是要做的业务逻辑却是相同的，如何做到方">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.788Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="请求三方接口的解决方案">
+<meta name="twitter:description" content="前言之前的工作任务，大多一直在做这样一件事，请求第三方接口，并将接口数据进行解析成固定格式后返回。之后在做业务处理，包括更新数据库状态之类的。
+这里想展示一种解决方案，能够解决以下的问题，包括:
+
+请求出现异常，包括链接超时，解析异常，请求错误的处理。
+方便的进行单元测试。
+方便的进行扩展。
+
+注意第3条是指数据来源可能是不同的url，请求和相应格式都不同，但是要做的业务逻辑却是相同的，如何做到方">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 请求三方接口的解决方案 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              请求三方接口的解决方案
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-27T00:00:00+08:00" content="2015-12-27">
+            2015-12-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/27/three-party-interface-solution/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/27/three-party-interface-solution/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前的工作任务，大多一直在做这样一件事，请求第三方接口，并将接口数据进行解析成固定格式后返回。之后在做业务处理，包括更新数据库状态之类的。</p>
+<p>这里想展示一种解决方案，能够解决以下的问题，包括:</p>
+<ol>
+<li>请求出现异常，包括链接超时，解析异常，请求错误的处理。</li>
+<li>方便的进行单元测试。</li>
+<li>方便的进行扩展。</li>
+</ol>
+<p>注意第3条是指数据来源可能是不同的url，请求和相应格式都不同，但是要做的业务逻辑却是相同的，如何做到方便扩展，接入新的三方时，不用该业务代码。</p>
+<p>还有第2点，特别提到了单元测试，这里我是指模拟测试，因为在真实情况下，这些类似于创建订单的接口，不是你想调用就调用的，甚至是有些接口，比如银行的服务，在调用的时候都是有成本的，这个时候使用模拟类来完成单元测试就非常有必要了。在这个例子中我们使用的python的mock对象。</p>
+<p>下面我会写一个假的例子，来讲解我的解决方案，实际上我们大多数调用的三方接口，并不是走查询这么简单，其实更多是一些post接口，包括下单，和通知。就算是查询接口，可能也不会走get，而是走的post协议。</p>
+<a id="more"></a>
+<h2 id="假设例子"><a href="#假设例子" class="headerlink" title="假设例子"></a>假设例子</h2><p>我们假设有两个公司提供天气的查询服务，一个公司叫如风，一个公司叫烟云。<br>如风公司返回的数据类似于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"weatherinfo"</span>: &#123;</div><div class="line">  <span class="string">"city"</span>: <span class="string">"北京"</span>,</div><div class="line">  <span class="string">"cityid"</span>: <span class="string">"101010100"</span>,</div><div class="line">  <span class="string">"weather"</span>: <span class="string">"多云"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>烟云公司返回的格式类似于:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span><span class="meta">?&gt;</span></span></div><div class="line"><span class="tag">&lt;<span class="name">weatherinfo</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">city</span>&gt;</span>北京<span class="tag">&lt;/<span class="name">city</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">cityid</span>&gt;</span>101010100<span class="tag">&lt;/<span class="name">cityid</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">weather</span>&gt;</span>多云<span class="tag">&lt;/<span class="name">weather</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">weatherinfo</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这样我就要写一个三方接入基类，然后每次接入新的基类，只需要继承此基类，实现相应的接口，当然你可以说python的鸭子类型根本不需要继承，但是之所以继承还是考虑到一些重用的部分，包括打印日志(维护一个日志对象)之类的。只不过这些不算这篇博客的重点罢了，所以你会发现这个例子直接使用类对象，调用类方法就行了，根本没有必要创建对象，因为你没有什么状态需要维护的，那其实是我精简了很多东西罢了。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Weather</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate_request</span><span class="params">(self, params)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        生成发送的请求报文</div><div class="line">        """</div><div class="line">        <span class="keyword">raise</span> NotImplementedError</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parser_response</span><span class="params">(self, response)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        解析三方响应报文</div><div class="line">        """</div><div class="line">        <span class="keyword">raise</span> NotImplementedError</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_request</span><span class="params">(self, request)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        发送请求给服务器</div><div class="line">        """</div><div class="line">        <span class="keyword">raise</span> NotImplementedError</div></pre></td></tr></table></figure>
+<p>你看，我把这三个接口拿出来，就是为了方便的替换。</p>
+<ol>
+<li>generate_request(params)</li>
+<li>parser_response(response)</li>
+<li>send_request(request)</li>
+</ol>
+<p>这里需要说明的是，generate_request的params和parser_response的返回体，都是标准的结构，在java中可能是一个类，在python中可能为了方便，字典就够了，之所以说标准是因为，标准才能使你的业务代码不被修改，就能接入新的三方。</p>
+<p>而且你可能会说generate和send这两个方法也是可以合并到一起的，我之所以分开是因为send的方式可能会有所不同，我的请求库可能既要在flask上使用，又要在tornado上使用，而在tornado上使用的是异步客户端去实现了，这个时候send的代码自然不同了。</p>
+<p>还有我没有使用python的abc类，而是使用了NotImplementedError，我觉得这个方式简单粗暴。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RuFengWeather</span><span class="params">(Weather)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate_request</span><span class="params">(self, params)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        通过传入城市代码，返回请求url,和请求体。</div><div class="line">        :return url, body:</div><div class="line">        """</div><div class="line">        <span class="keyword">return</span> <span class="string">"http://www.rufeng.com/weather/&#123;&#125;"</span>.format(params[<span class="string">"city_code"</span>]), <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parser_response</span><span class="params">(self, response)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        解析返回数据，返回格式为json:</div><div class="line">        &#123;"weatherinfo": &#123;</div><div class="line">            "city": "北京",</div><div class="line">            "cityid": "101010100",</div><div class="line">            "weather": "多云"</div><div class="line">        &#125;</div><div class="line">        :params response: 请求返回体</div><div class="line">        :return 是否解析成功, 解析结果:</div><div class="line">        True, 解析结果</div><div class="line">        False, None</div><div class="line">        """</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = json.loads(response)</div><div class="line">            <span class="keyword">return</span> <span class="keyword">True</span>, response[<span class="string">"weatherinfo"</span>][<span class="string">"weather"</span>]</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span>, <span class="string">u"解析返回结果异常"</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_request</span><span class="params">(self, url, body)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.get(url)</div><div class="line">            <span class="keyword">return</span> <span class="keyword">True</span>, response.content</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span>, <span class="string">u"请求服务器错误"</span></div></pre></td></tr></table></figure>
+<p>我们实现了如风的天气处理类，这里的generate_request,返回了两部分，分别是请求的url和请求的body体。当然因为我们这个例子走的是比较简单的get，所以body体就是None了。</p>
+<p>之前看过我博客的同学也一定理解，操作结果+业务结果，这样的双返回逻辑，这里就不再重复了。</p>
+<p>另一个三方这里就不再写了，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_weather</span><span class="params">(weather, city_code)</span>:</span></div><div class="line">    params = &#123;<span class="string">"city_code"</span>: city_code&#125;</div><div class="line">    url, body = weather.generate_request(params)</div><div class="line">    response = weather.send_request(url, body)</div><div class="line">    <span class="keyword">return</span> weather.parser_response(response)</div></pre></td></tr></table></figure>
+<p>我再不想写任何类了，这里写一个简单函数来返回查询结果。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_well_send_request_success</span><span class="params">()</span>:</span></div><div class="line">    d = &#123;<span class="string">"weatherinfo"</span>: &#123;</div><div class="line">            <span class="string">"city"</span>: <span class="string">"北京"</span>,</div><div class="line">            <span class="string">"cityid"</span>: <span class="string">"101010100"</span>,</div><div class="line">            <span class="string">"weather"</span>: <span class="string">"多云"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    send_request = mock.Mock()</div><div class="line">    send_request.return_value = json.dumps(d)</div><div class="line">    weather = RuFengWeather()</div><div class="line">    weather.send_request = send_request</div><div class="line">    expect = (<span class="keyword">True</span>, <span class="string">u"多云"</span>)</div><div class="line">    actual = get_weather(weather, <span class="string">"101010100"</span>)</div><div class="line">    <span class="keyword">assert</span> expect == actual</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_bad_send_request_fail</span><span class="params">()</span>:</span></div><div class="line">    d = <span class="string">"xxxx"</span></div><div class="line">    send_request = mock.Mock()</div><div class="line">    send_request.return_value = json.dumps(d)</div><div class="line">    weather = RuFengWeather()</div><div class="line">    weather.send_request = send_request</div><div class="line">    expect = (<span class="keyword">False</span>, <span class="string">u"解析返回结果异常"</span>)</div><div class="line">    actual = get_weather(weather, <span class="string">"101010100"</span>)</div><div class="line">    <span class="keyword">assert</span> expect == actual</div></pre></td></tr></table></figure>
+<p>注意，这里我写了两个单元测试，使用了python的nosetest，还有一个是Mock对象来模拟接口的返回值。你会发现我测试了正常的返回结果和乱七八糟的返回结果。包括一些写单测的心得，我会在之后写博客单独讨论，这里不再重复。</p>
+<p>这样就满足了我说的那三个需求。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+            <a href="/tags/装饰器/" rel="tag">#装饰器</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/10/python-deque/" rel="prev">python双端队列</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/26/python-web-design-pattern/" rel="next">python web开发中的设计模式</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/12/27/three-party-interface-solution/"
+     data-title="请求三方接口的解决方案"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/12/27/three-party-interface-solution/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/12/27/three-party-interface-solution/"
+                   data-title="请求三方接口的解决方案" data-url="http://www.pulpcode.cn/2015/12/27/three-party-interface-solution/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#假设例子"><span class="nav-number">2.</span> <span class="nav-text">假设例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试"><span class="nav-number">4.</span> <span class="nav-text">单元测试</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

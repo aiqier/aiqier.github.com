@@ -1,0 +1,691 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python,二维码," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="使用python生成二维码需要用到qrcode库，但是此库会依赖到其它库，请按照如下步骤安装:
+安装 pil1sudo easy_install pil
+如果出现如下错误:12345_imagingft.c:73:10: fatal error: &apos;freetype/fterrors.h&apos; file not found#include &amp;lt;freetype/fterrors.h&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用python操作二维码">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/11/14/qr-code-with-python/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="使用python生成二维码需要用到qrcode库，但是此库会依赖到其它库，请按照如下步骤安装:
+安装 pil1sudo easy_install pil
+如果出现如下错误:12345_imagingft.c:73:10: fatal error: &apos;freetype/fterrors.h&apos; file not found#include &amp;lt;freetype/fterrors.h&amp;gt;">
+<meta property="og:image" content="http://www.pulpcode.cn/img/qrstarbucks.png">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用python操作二维码">
+<meta name="twitter:description" content="使用python生成二维码需要用到qrcode库，但是此库会依赖到其它库，请按照如下步骤安装:
+安装 pil1sudo easy_install pil
+如果出现如下错误:12345_imagingft.c:73:10: fatal error: &apos;freetype/fterrors.h&apos; file not found#include &amp;lt;freetype/fterrors.h&amp;gt;">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/qrstarbucks.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 使用python操作二维码 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              使用python操作二维码
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-11-14T00:00:00+08:00" content="2015-11-14">
+            2015-11-14
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/14/qr-code-with-python/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/14/qr-code-with-python/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>使用python生成二维码需要用到qrcode库，但是此库会依赖到其它库，请按照如下步骤安装:</p>
+<h2 id="安装-pil"><a href="#安装-pil" class="headerlink" title="安装 pil"></a>安装 pil</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo easy_install pil</div></pre></td></tr></table></figure>
+<p>如果出现如下错误:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">_imagingft.c:73:10: fatal error: <span class="string">'freetype/fterrors.h'</span> file not found</div><div class="line"><span class="comment">#include &lt;freetype/fterrors.h&gt;</span></div><div class="line">         ^</div><div class="line">1 error generated.</div><div class="line">error: Setup script exited with error: <span class="built_in">command</span> <span class="string">'cc'</span> failed with <span class="built_in">exit</span> status 1</div></pre></td></tr></table></figure></p>
+<p>是因为Mac 下所依赖的  FreeType 链接变更问题，解决如下：<br><a id="more"></a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ln <span class="_">-s</span> /usr/<span class="built_in">local</span>/include/freetype2 /usr/<span class="built_in">local</span>/include/freetype</div><div class="line">sudo easy_install -U pil</div></pre></td></tr></table></figure>
+<h2 id="安装qrcode"><a href="#安装qrcode" class="headerlink" title="安装qrcode"></a>安装qrcode</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo easy_install qrcode</div></pre></td></tr></table></figure>
+<p>打开解释器, <code>import qrcode</code> 无误，则安装成功</p>
+<p>可以在shell用如下命令生成一个简单的二维码。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">qr <span class="string">"www.pulpcode.cn"</span> &gt; test.png</div><div class="line">qr —<span class="built_in">help</span></div></pre></td></tr></table></figure>
+<p>在python中的类似实现是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> qrcode</div><div class="line">img = qrcode.make(<span class="string">'www.pulpcode.cn'</span>)</div></pre></td></tr></table></figure>
+<h2 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> qrcode</div><div class="line">qr = qrcode.QRCode(</div><div class="line">    version=<span class="number">1</span>,</div><div class="line">    error_correction=qrcode.constants.ERROR_CORRECT_L,</div><div class="line">    box_size=<span class="number">10</span>,</div><div class="line">    border=<span class="number">4</span>,</div><div class="line">)</div><div class="line">qr.add_data(<span class="string">'www.pulpcode.cn'</span>)</div><div class="line">qr.make(fit=<span class="keyword">True</span>)</div><div class="line"></div><div class="line">img = qr.make_image()</div></pre></td></tr></table></figure>
+<h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析:"></a>参数解析:</h4><p>参数version表示二维码的尺寸大小，范围是1~40，会生成<strong>17+n*4</strong>尺寸大小的二维码，比如version是1，尺寸是21，version是，2尺寸是25。<br>我们一般在手机上生成的二维码，就是version1，也就是 尺寸21。</p>
+<p>error_correction是指容错系数，二维码容错率即是指二维码图标被遮挡多少后，仍可以被扫描出来的能力。容错率越高，因为编码过程本身是有沉余的，这也就是为什么有些二维码中间可以有照片，则二维码图片能被遮挡的部分越多。二维码容错率用字母表示，容错能力等级分为：L、M、Q、H四级。</p>
+<ol>
+<li>ERROR_CORRECT_L: 7%的字码可被容错</li>
+<li>ERROR_CORRECT_M: 15%的字码可被容错</li>
+<li>ERROR_CORRECT_Q: 25%的字码可被容错</li>
+<li>ERROR_CORRECT_H: 30%的字码可被容错</li>
+</ol>
+<p>大多数情况下，建议采用30%的容错率。</p>
+<p>box_size 表示二维码里每个格子的像素大小</p>
+<p>border参数控制边框的厚度（默认是4，这是最低的规格）</p>
+<h4 id="可以带有图片的二维码"><a href="#可以带有图片的二维码" class="headerlink" title="可以带有图片的二维码"></a>可以带有图片的二维码</h4><p>之前提到了容错系数，我们需要在二维码的中央方一个图片，就需要将容错系数设置成:ERROR_CORRECT_H</p>
+<p>而且二维码的数据主要保存在图片的四个角上，所以一般将图片放在二维码的中央，而且过大的图片是会影响到图片识别的，在程序中我们也进行了缩放。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="keyword">import</span> Image</div><div class="line"><span class="keyword">import</span> qrcode</div><div class="line"> </div><div class="line">qr = qrcode.QRCode(</div><div class="line">    version=<span class="number">2</span>,</div><div class="line">    error_correction=qrcode.constants.ERROR_CORRECT_H,</div><div class="line">    box_size=<span class="number">10</span>,</div><div class="line">    border=<span class="number">1</span></div><div class="line">)</div><div class="line">qr.add_data(<span class="string">"http://www.pulpcode.cn"</span>)</div><div class="line">qr.make(fit=<span class="keyword">True</span>)</div><div class="line"> </div><div class="line">qrimg = qr.make_image()</div><div class="line">qrimg = qrimg.convert(<span class="string">"RGB"</span>)</div><div class="line"></div><div class="line"><span class="comment"># build in image</span></div><div class="line">bi_img = Image.open(<span class="string">"starbucks.png"</span>)</div><div class="line"></div><div class="line"><span class="comment"># 修正大小</span></div><div class="line">qrimg_w, qrimg_h = qrimg.size</div><div class="line">factor = <span class="number">4</span></div><div class="line">size_w = int(qrimg_w / factor)</div><div class="line">size_h = int(qrimg_h / factor)</div><div class="line"></div><div class="line">bi_w, bi_h = bi_img.size</div><div class="line">bi_w = bi_w &gt; size_w <span class="keyword">and</span> size_w  <span class="keyword">or</span> bi_w</div><div class="line">bi_h = bi_h &gt; size_h <span class="keyword">and</span> size_h <span class="keyword">or</span> bi_h</div><div class="line">bi_img = bi_img.resize((bi_w, bi_h), Image.ANTIALIAS)</div><div class="line"></div><div class="line"><span class="comment"># 粘贴图片</span></div><div class="line">w = int((qrimg_w - bi_w) / <span class="number">2</span>)</div><div class="line">h = int((qrimg_h - bi_h) / <span class="number">2</span>)</div><div class="line">qrimg.paste(bi_img, (w, h), bi_img)</div><div class="line"> </div><div class="line">qrimg.save(<span class="string">"qrstarbucks.png"</span>)</div></pre></td></tr></table></figure>
+<p>效果如下:</p>
+<p><img src="/img/qrstarbucks.png" alt="低俗代码"></p>
+<p>因为我们的二维码图片是存成png的，所以你的图片也是要png的，而且要注意的是，一定要用正规的png图片（建议用正规的转换软件），否则会报错<code>ValueError: bad transparency mask</code>。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+            <a href="/tags/二维码/" rel="tag">#二维码</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/16/deployment-of-flask-environment-using-uwsgi-and-nginx/" rel="prev">使用uwsgi和nginx部署flask环境</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/12/single-core-cpu-multithreading/" rel="next">对于单核 cpu 而言, 开多线程的目的难倒只能是为了防止阻塞么? </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/11/14/qr-code-with-python/"
+     data-title="使用python操作二维码"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/11/14/qr-code-with-python/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/11/14/qr-code-with-python/"
+                   data-title="使用python操作二维码" data-url="http://www.pulpcode.cn/2015/11/14/qr-code-with-python/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-pil"><span class="nav-number">1.</span> <span class="nav-text">安装 pil</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装qrcode"><span class="nav-number">2.</span> <span class="nav-text">安装qrcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级用法"><span class="nav-number">3.</span> <span class="nav-text">高级用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参数解析"><span class="nav-number">3.0.1.</span> <span class="nav-text">参数解析:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可以带有图片的二维码"><span class="nav-number">3.0.2.</span> <span class="nav-text">可以带有图片的二维码</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

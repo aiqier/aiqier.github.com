@@ -1,0 +1,689 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="emacs,linux," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="解决问题，最好是简单粗暴，这也是我所理解的python的哲学，下面我们把这种哲学贯彻到编辑器emacs的使用上去。
+如果你确实想要在vim上装逼，又要比那群vim党装的更好，那么emacs就是你最好的选择。
+当然我是在搞笑，实际上在linux下，你真没有什么好用的编辑器，要么用vim，要么用emacs，emacs只不过比vim要强大一些。但是emacs的学习曲线是很陡峭的，这就像你如果想玩好魔兽">
+<meta property="og:type" content="article">
+<meta property="og:title" content="暴力的使用emacs">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/04/30/force-use-emacs/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="解决问题，最好是简单粗暴，这也是我所理解的python的哲学，下面我们把这种哲学贯彻到编辑器emacs的使用上去。
+如果你确实想要在vim上装逼，又要比那群vim党装的更好，那么emacs就是你最好的选择。
+当然我是在搞笑，实际上在linux下，你真没有什么好用的编辑器，要么用vim，要么用emacs，emacs只不过比vim要强大一些。但是emacs的学习曲线是很陡峭的，这就像你如果想玩好魔兽">
+<meta property="og:image" content="http://www.pulpcode.cn/img/gnu.png">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.746Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="暴力的使用emacs">
+<meta name="twitter:description" content="解决问题，最好是简单粗暴，这也是我所理解的python的哲学，下面我们把这种哲学贯彻到编辑器emacs的使用上去。
+如果你确实想要在vim上装逼，又要比那群vim党装的更好，那么emacs就是你最好的选择。
+当然我是在搞笑，实际上在linux下，你真没有什么好用的编辑器，要么用vim，要么用emacs，emacs只不过比vim要强大一些。但是emacs的学习曲线是很陡峭的，这就像你如果想玩好魔兽">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/gnu.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 暴力的使用emacs | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              暴力的使用emacs
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-30T00:00:00+08:00" content="2016-04-30">
+            2016-04-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/04/30/force-use-emacs/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/30/force-use-emacs/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p><img src="/img/gnu.png" alt="gun"></p>
+<p>解决问题，最好是简单粗暴，这也是我所理解的python的哲学，下面我们把这种哲学贯彻到编辑器emacs的使用上去。</p>
+<p>如果你确实想要在vim上装逼，又要比那群vim党装的更好，那么emacs就是你最好的选择。</p>
+<p>当然我是在搞笑，实际上在linux下，你真没有什么好用的编辑器，要么用vim，要么用emacs，emacs只不过比vim要强大一些。但是emacs的学习曲线是很陡峭的，这就像你如果想玩好魔兽世界这个游戏，那么你如果没受过几年魔兽历史的熏陶，打过几年的魔兽争霸的积淀，是很难理解这个游戏的。实际上emacs的话题也很多，包括和vim不同的设计哲学，甚至包括elisp程序(因为emacs其本身就是一个lisp解释器)。所以看到这里你因该懂了，这篇博客就是满足既想用emacs装逼，又想立牌坊。哦不，说错了，又不想花太多时间学习的人，那么我们可以尝试用性价比的方式来解决这个问题。</p>
+<p>首先你要安装一个emacs，需要注意的是，默认的yum或者是apt-get所能安装的emacs版本都是比较老的（可能是23的）。建议你安装24或者更高的版本，我们后面介绍的emacs配置也要求是24或者更高的版本。。所以去官网下载就是最好的选择了：<a href="http://www.gnuemacs.org/" target="_blank" rel="external">http://www.gnuemacs.org/</a></p>
+<a id="more"></a>
+<h2 id="暴力的快捷键"><a href="#暴力的快捷键" class="headerlink" title="暴力的快捷键"></a>暴力的快捷键</h2><p>那句28定律怎么说的，实际上emacs的快捷键是很多的，而且大部分根本用不到。你只需要记住常用的，就足够暴力了。</p>
+<h4 id="快速移动"><a href="#快速移动" class="headerlink" title="快速移动"></a>快速移动</h4><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">C</span>-n 向下移动一个字符</div><div class="line"><span class="keyword">C</span>-p 向上移动一个字符</div><div class="line"><span class="keyword">C</span>-b 向左移动一个字符</div><div class="line"><span class="keyword">C</span>-f 向右移动一个字符</div><div class="line">M-b 向左移动一个单词</div><div class="line">M-f 向右移动一个单词</div><div class="line"><span class="keyword">C</span>-M 移动到行首</div><div class="line"><span class="keyword">C</span>-e 移动到行尾</div><div class="line"><span class="keyword">C</span>-v 向上翻页</div><div class="line">M-v 向下翻页</div><div class="line">M-&lt; buffer开头</div><div class="line">M-&gt; buffer结尾</div><div class="line"></div><div class="line"><span class="keyword">C</span>-l 将光标所在行，作为中心行，刷屏</div></pre></td></tr></table></figure>
+<p>其实“段落首尾”，“句子首尾”，这样的快捷键根本用不到，因为你很少用emacs去写英文小说或者是日记什么的。大多情况就是写代码而已，所以忽略它们。</p>
+<h4 id="查找替换"><a href="#查找替换" class="headerlink" title="查找替换"></a>查找替换</h4><p>太复杂的查找替换记不住，只记得查找用<code>C-s</code>向后查找，<code>C-r</code>向前查找就行了。替换只需要调用函数：<code>M-x replace-string</code></p>
+<h4 id="复制，剪贴，粘贴，删除，撤销，重做"><a href="#复制，剪贴，粘贴，删除，撤销，重做" class="headerlink" title="复制，剪贴，粘贴，删除，撤销，重做"></a>复制，剪贴，粘贴，删除，撤销，重做</h4><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">C</span>-@ 设置选择下标</div><div class="line"><span class="keyword">C</span>-w 剪贴选中区域</div><div class="line">M-w 复制选中区域</div><div class="line"></div><div class="line"><span class="keyword">C</span>-x H 全选整个缓冲区</div><div class="line"><span class="keyword">C</span>-k 删除光标后的整行内容</div><div class="line">Backspace 向前删除一个字母</div><div class="line">M-Backspace 向前删除一个单词</div><div class="line"><span class="keyword">C</span>-d 向后删除一个字母</div><div class="line">M-d 向后删除一个单词</div><div class="line"></div><div class="line"><span class="keyword">C</span>-_ Undo</div><div class="line"><span class="keyword">C</span>-? Redo</div></pre></td></tr></table></figure>
+<p>(上面两个键在按的时候，都会Ctrl+Shift+X)<br>关于Yank Ring太复杂，可以直接忽略了。</p>
+<h4 id="其它快捷键"><a href="#其它快捷键" class="headerlink" title="其它快捷键"></a>其它快捷键</h4><p>一个在python中最实用的快捷键，就是使用C-@选择块。</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">C</span>-c &lt; 向左缩进</div><div class="line"><span class="keyword">C</span>-c &gt; 向右缩进</div></pre></td></tr></table></figure>
+<p>还有就是<code>C-c C-c</code>可以直接将当前的buffer发送到python解释器中,这在emacs中编写调试python代码太方便了。</p>
+<h2 id="实用的mode"><a href="#实用的mode" class="headerlink" title="实用的mode"></a>实用的mode</h2><p>org这种做TODOlist还有看日历的那些mode，我就不介绍了，因为我觉得这确实没什么卵用，玩这些完全是浪费时间。</p>
+<h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><p>在emacs下开shell是非常实用的选择，方便的让你一边写代码一边debug。你还可以把整个shell打印出来的东西当文本用（比如向前查找，向后查找，复制粘贴之类的）还要记住两个实用的键<code>M-p:上一个命令</code>，<code>M-n:下一个命令。</code></p>
+<h4 id="Dired"><a href="#Dired" class="headerlink" title="Dired"></a>Dired</h4><p>启动文件管理模式的是<code>C-X+D</code>， 文件管理器，对于查找和打开文件这样的操作非常快。</p>
+<h4 id="follow-mode"><a href="#follow-mode" class="headerlink" title="follow-mode"></a>follow-mode</h4><p>这个模式可以分屏显示代码，也就是说第一屏的尾刚好连到第二屏的首。</p>
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><p>下载prelude，你在github上可以找到它：<a href="https://github.com/bbatsov/prelude" target="_blank" rel="external">prelude</a>，这个是我折腾了这么多配置中觉得最好用的一个配置。你安装好这个配置之后，启动emacs，它就会下载相应的依赖包了。大牛已经帮你踩完了坑，铺平了道路，你只要用它就可以了。</p>
+<p>之后你需要做这些修改,找到<code>~/.emacs.d/sample/prelude-modules.el</code>，在这个文件中，将需要导入的包解开注释，不需要导入的包加上注释。</p>
+<p>在这个配置中有一个实用的键绑定就是</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">F3:</span>定义一个宏</div><div class="line"><span class="symbol">F4:</span>结束一个宏定义/运行一个宏</div></pre></td></tr></table></figure>
+<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><p>在你安装了配置之后，可以在<code>~/emacs.d/personal/</code>目录下建立一个el文件，在这个文件中写入你自定义的配置。</p>
+<h4 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h4><p>这个prelude的默认主题是:zenburn，这个主题在X-windows上看起来很漂亮，但是在shell上会感觉有点卡，我建议在shell中就把这个主题关了，<code>(disable-theme &#39;zenburn)</code>,在告诉你一个小技巧，就是不用每次改完配置重启，只需要<code>load-file</code>就可以了。或者你想换一个主题，只要输入load-theme就可以了。<code>(setq prelude-theme &#39;xxxxx)</code></p>
+<h4 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h4><p>要注意，注释和反注释在写代码的时候太重要了。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="comment">;; 转到某一行</span></div><div class="line">(<span class="name">global-set-key</span> (<span class="name">kbd</span> <span class="string">"M-g"</span>)  'goto-line)</div><div class="line"></div><div class="line"><span class="comment">;; 复制一行</span></div><div class="line">(<span class="name">defun</span> copy-line (<span class="name">&amp;optional</span> arg)</div><div class="line">  <span class="string">"Save current line into Kill-Ring without mark the line"</span></div><div class="line">  (<span class="name">interactive</span> <span class="string">"P"</span>)</div><div class="line">  (<span class="name">let</span> ((<span class="name">beg</span> (<span class="name">line-beginning-position</span>))</div><div class="line">        (<span class="name">end</span> (<span class="name">line-end-position</span> arg)))</div><div class="line">    (<span class="name">copy-region-as-kill</span> beg end))</div><div class="line">  )</div><div class="line"></div><div class="line">(<span class="name">global-set-key</span> (<span class="name">kbd</span> <span class="string">"C-x y"</span>) 'copy-line)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">;; 添加注释与反注释</span></div><div class="line">(<span class="name">global-set-key</span> (<span class="name">kbd</span> <span class="string">"C-c C-b"</span>) 'comment-or-uncomment-region)</div><div class="line"></div><div class="line"><span class="comment">;; 开启yasnippet</span></div><div class="line">(<span class="name">require</span> 'yasnippet)</div><div class="line">(<span class="name">add-to-list</span> 'yas/root-directory <span class="string">"snippets"</span>)</div><div class="line">(<span class="name">yas-reload-all</span>)</div><div class="line"></div><div class="line">(<span class="name">add-hook</span> 'python-mode-hook</div><div class="line">          '(lambda ()</div><div class="line">             (yas-minor-mode)))</div><div class="line"></div><div class="line"><span class="comment">;; 好代码一行不应该超过80个字符</span></div><div class="line">(<span class="name">add-hook</span> 'python-mode-hook</div><div class="line">          (<span class="name">lambda</span> () (<span class="name">highlight-lines-matching-regexp</span> <span class="string">".\\&#123;81\\&#125;"</span> <span class="string">"red"</span>)))</div><div class="line"></div><div class="line"><span class="comment">;; 载入模板</span></div><div class="line">(<span class="name">auto-insert-mode</span>)  <span class="comment">;;; Adds hook to find-files-hook</span></div><div class="line">(<span class="name">setq</span> auto-insert-directory <span class="string">"~/.emacs.d/mytemplates/"</span>) <span class="comment">;;; Or use custom, *NOTE* Trailing slash important</span></div><div class="line">(<span class="name">setq</span> auto-insert-query <span class="literal">nil</span>) <span class="comment">;;; If you don't want to be prompted before insertion</span></div><div class="line">(<span class="name">setq</span> auto-insert-alist</div><div class="line">      (<span class="name">append</span> '((python-mode . <span class="string">"Template.py"</span>)</div><div class="line">        (c-mode . <span class="string">"Template.c"</span>)</div><div class="line">        )</div><div class="line">              auto-insert-alist)</div><div class="line">      )</div><div class="line"></div><div class="line"><span class="comment">;; 使用%在括号间跳转</span></div><div class="line">(<span class="name">global-set-key</span> <span class="string">"%"</span> 'match-paren)</div><div class="line"></div><div class="line">(<span class="name">defun</span> match-paren (<span class="name">arg</span>)</div><div class="line"><span class="string">"Go to the matching paren if on a paren; otherwise insert %."</span></div><div class="line">(<span class="name">interactive</span> <span class="string">"p"</span>)</div><div class="line">(<span class="name">cond</span> ((<span class="name">looking-at</span> <span class="string">"\\s\("</span>) (<span class="name">forward-list</span> <span class="number">1</span>) (<span class="name">backward-char</span> <span class="number">1</span>))</div><div class="line">((<span class="name">looking-at</span> <span class="string">"\\s\)"</span>) (<span class="name">forward-char</span> <span class="number">1</span>) (<span class="name">backward-list</span> <span class="number">1</span>))</div><div class="line">(<span class="name">t</span> (<span class="name">self-insert-command</span> (<span class="name">or</span> arg <span class="number">1</span>)))))</div><div class="line"></div><div class="line"><span class="comment">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span></div><div class="line">(<span class="name">defun</span> goto-match (<span class="name">arg</span>)</div><div class="line">  (<span class="name">interactive</span> <span class="string">"p"</span>)</div><div class="line">  (<span class="name">let</span> ((<span class="name">stop</span> <span class="literal">nil</span>) (<span class="name">c</span> <span class="number">1</span>) (<span class="name">p-save</span> (<span class="name">point</span>)) (<span class="name">forward</span> <span class="literal">t</span>) (<span class="name">self</span> <span class="string">""</span>) (<span class="name">target</span> <span class="string">""</span>))</div><div class="line">    (<span class="name">cond</span> ((<span class="name">looking-at</span> <span class="string">"&#125;"</span>) (<span class="name">setq</span> forward <span class="literal">nil</span>) (<span class="name">setq</span> self <span class="string">"&#125;"</span>) (<span class="name">setq</span> target <span class="string">"&#123;"</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">"&#123;"</span>) (<span class="name">setq</span> forward <span class="literal">t</span>)   (<span class="name">setq</span> self <span class="string">"&#123;"</span>) (<span class="name">setq</span> target <span class="string">"&#125;"</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">")"</span>) (<span class="name">setq</span> forward <span class="literal">nil</span>) (<span class="name">setq</span> self <span class="string">")"</span>) (<span class="name">setq</span> target <span class="string">"("</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">"("</span>) (<span class="name">setq</span> forward <span class="literal">t</span>)   (<span class="name">setq</span> self <span class="string">"("</span>) (<span class="name">setq</span> target <span class="string">")"</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">"&gt;"</span>) (<span class="name">setq</span> forward <span class="literal">nil</span>) (<span class="name">setq</span> self <span class="string">"&gt;"</span>) (<span class="name">setq</span> target <span class="string">"&lt;"</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">"&lt;"</span>) (<span class="name">setq</span> forward <span class="literal">t</span>)   (<span class="name">setq</span> self <span class="string">"&lt;"</span>) (<span class="name">setq</span> target <span class="string">"&gt;"</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">"\\]"</span>) (<span class="name">setq</span> forward <span class="literal">nil</span>) (<span class="name">setq</span> self <span class="string">"\\]"</span>) (<span class="name">setq</span> target <span class="string">"\\["</span>))</div><div class="line">          ((<span class="name">looking-at</span> <span class="string">"\\["</span>) (<span class="name">setq</span> forward <span class="literal">t</span>)   (<span class="name">setq</span> self <span class="string">"\\["</span>) (<span class="name">setq</span> target <span class="string">"\\]"</span>))</div><div class="line">          (<span class="name">t</span> (<span class="name">setq</span> stop <span class="literal">t</span>) (<span class="name">setq</span> c <span class="number">-1</span>)))</div><div class="line">    (<span class="name">while</span> (<span class="name">not</span> stop)</div><div class="line">      (<span class="name">progn</span></div><div class="line">        (<span class="name">if</span> forward (<span class="name">forward-char</span> <span class="number">1</span>) (<span class="name">backward-char</span> <span class="number">1</span>))</div><div class="line">        (<span class="name">cond</span> ((<span class="name">looking-at</span> target) (<span class="name">setq</span> c (<span class="number">1</span>- c)))</div><div class="line">              ((<span class="name">looking-at</span> self) (<span class="name">setq</span> c (<span class="number">1</span>+ c))))</div><div class="line">        (<span class="name">if</span> (<span class="name">or</span> (<span class="name">=</span> c <span class="number">0</span>) (<span class="name">=</span> (<span class="name">point</span>) (<span class="name">point-max</span>))) (<span class="name">setq</span> stop <span class="literal">t</span>))))</div><div class="line">    (<span class="name">if</span> (<span class="name">=</span> c <span class="number">-1</span>) (<span class="name">self-insert-command</span> (<span class="name">or</span> arg <span class="number">1</span>)))</div><div class="line">    (<span class="name">if</span> (<span class="name">&gt;</span> c <span class="number">0</span>) (<span class="name">goto-char</span> p-save))))</div></pre></td></tr></table></figure>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/emacs/" rel="tag">#emacs</a>
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/01/force-use-vim/" rel="prev">暴力的使用vim</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/30/my-story-with-game-04/" rel="next">我和游戏的故事04</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/30/force-use-emacs/"
+     data-title="暴力的使用emacs"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2016/04/30/force-use-emacs/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/04/30/force-use-emacs/"
+                   data-title="暴力的使用emacs" data-url="http://www.pulpcode.cn/2016/04/30/force-use-emacs/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#暴力的快捷键"><span class="nav-number">1.</span> <span class="nav-text">暴力的快捷键</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#快速移动"><span class="nav-number">1.0.1.</span> <span class="nav-text">快速移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找替换"><span class="nav-number">1.0.2.</span> <span class="nav-text">查找替换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制，剪贴，粘贴，删除，撤销，重做"><span class="nav-number">1.0.3.</span> <span class="nav-text">复制，剪贴，粘贴，删除，撤销，重做</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它快捷键"><span class="nav-number">1.0.4.</span> <span class="nav-text">其它快捷键</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实用的mode"><span class="nav-number">2.</span> <span class="nav-text">实用的mode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shell"><span class="nav-number">2.0.1.</span> <span class="nav-text">shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dired"><span class="nav-number">2.0.2.</span> <span class="nav-text">Dired</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#follow-mode"><span class="nav-number">2.0.3.</span> <span class="nav-text">follow-mode</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装配置"><span class="nav-number">3.</span> <span class="nav-text">安装配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义配置"><span class="nav-number">4.</span> <span class="nav-text">自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改主题"><span class="nav-number">4.0.1.</span> <span class="nav-text">修改主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它"><span class="nav-number">4.0.2.</span> <span class="nav-text">其它</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

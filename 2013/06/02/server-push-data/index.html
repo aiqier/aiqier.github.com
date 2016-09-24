@@ -1,0 +1,736 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python,web," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="预备知识web的工作原理，可以概括为：
+
+客户端(浏览器)通过TCP/IP协议，建立到服务器的TCP链接。
+客户端向服务器发送HTTP协议请求包，请求服务器里的资源文档，
+服务器向客户端发送HTTP协议应答包。
+客户端与服务器断开，客户端解释HTML文档，在客户端屏幕上渲染返回结果。
+
+那么，可以发现，HTTP协议有两个问题：
+
+HTTP是无状态协议，所以，上次的请求和这次的请求之间没有关系。
+H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器推送技术">
+<meta property="og:url" content="http://www.pulpcode.cn/2013/06/02/server-push-data/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="预备知识web的工作原理，可以概括为：
+
+客户端(浏览器)通过TCP/IP协议，建立到服务器的TCP链接。
+客户端向服务器发送HTTP协议请求包，请求服务器里的资源文档，
+服务器向客户端发送HTTP协议应答包。
+客户端与服务器断开，客户端解释HTML文档，在客户端屏幕上渲染返回结果。
+
+那么，可以发现，HTTP协议有两个问题：
+
+HTTP是无状态协议，所以，上次的请求和这次的请求之间没有关系。
+H">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.777Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="服务器推送技术">
+<meta name="twitter:description" content="预备知识web的工作原理，可以概括为：
+
+客户端(浏览器)通过TCP/IP协议，建立到服务器的TCP链接。
+客户端向服务器发送HTTP协议请求包，请求服务器里的资源文档，
+服务器向客户端发送HTTP协议应答包。
+客户端与服务器断开，客户端解释HTML文档，在客户端屏幕上渲染返回结果。
+
+那么，可以发现，HTTP协议有两个问题：
+
+HTTP是无状态协议，所以，上次的请求和这次的请求之间没有关系。
+H">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 服务器推送技术 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              服务器推送技术
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-06-02T00:00:00+08:00" content="2013-06-02">
+            2013-06-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2013/06/02/server-push-data/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2013/06/02/server-push-data/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h4 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h4><p>web的工作原理，可以概括为：</p>
+<ol>
+<li>客户端(浏览器)通过TCP/IP协议，建立到服务器的TCP链接。</li>
+<li>客户端向服务器发送HTTP协议请求包，请求服务器里的资源文档，</li>
+<li>服务器向客户端发送HTTP协议应答包。</li>
+<li>客户端与服务器断开，客户端解释HTML文档，在客户端屏幕上渲染返回结果。</li>
+</ol>
+<p>那么，可以发现，HTTP协议有两个问题：</p>
+<ol>
+<li>HTTP是无状态协议，所以，上次的请求和这次的请求之间没有关系。</li>
+<li>HTTP协议是单向的，也就是说，服务器不能向客户端发送请求。</li>
+</ol>
+<ul>
+<li>对于第一个问题，可以在服务器使用session，或者在客户端使用cookie，能够解决“无状态协”议这个问题.</li>
+<li>对于第二个问题，就是此篇博客想要讨论。</li>
+</ul>
+<p>本文将比较三种服务器推送方式。</p>
+<a id="more"></a>
+<ol>
+<li>ajax轮询</li>
+<li>longpoll</li>
+<li>websocket</li>
+</ol>
+<p>在实例代码中，我前台使用javascript和一些jquery，后台web服务器使用了tornado。之所以使用tornado，是因为</p>
+<ol>
+<li>人生苦短，我用python :-)</li>
+<li>tornado对long poll，和web socket都有很好的支持，而且，tornado是异步非阻塞式服务器，处理起需要服务器推送，交互性强的web应用，非常适合。</li>
+</ol>
+<p>我的代码要实现这样一个例子:</p>
+<p>在服务器端，保存一个字符串，连接到服务器的用户，将看到这个字符串，同时也可以修改它，当修改此字符串的时候，连接到此服务器的其他用户，能够在不主动刷新的情况下，看到修改。这就用到了“服务器推”的技术</p>
+<h4 id="1-ajax轮询"><a href="#1-ajax轮询" class="headerlink" title="1.ajax轮询"></a>1.ajax轮询</h4><p>所谓ajax轮询实现服务器推技术，就是客户端，每隔一段时间，“偷偷”的发送ajax请求，之后，将返回的数据局部刷新，这样感觉就像是服务器在推数据.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tornado.web</div><div class="line"><span class="keyword">import</span> tornado.httpserver</div><div class="line"><span class="keyword">import</span> tornado.ioloop</div><div class="line"><span class="keyword">import</span> tornado.options</div><div class="line"></div><div class="line"><span class="keyword">import</span> json</div><div class="line"></div><div class="line"><span class="comment">#用来保存服务器端的字符串</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Announce</span><span class="params">()</span>:</span></div><div class="line">    subject = <span class="string">"nima"</span></div><div class="line">    <span class="comment">#使用json传送数据</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getSubjson</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> json.dumps(&#123;<span class="string">'content'</span>:self.subject&#125;)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        self.render(<span class="string">"index.html"</span>)</div><div class="line"></div><div class="line"><span class="comment"># 修改字符串，为post请求</span></div><div class="line"><span class="comment"># ajax 隔一段时间，会发送get请求</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></div><div class="line">        self.application.announce.subject = self.get_argument(<span class="string">'content'</span>)</div><div class="line">        self.write(self.application.announce.getSubjson())</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        self.write(self.application.announce.getSubjson())</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span><span class="params">(tornado.web.Application)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        """</div><div class="line">        self.announce = Announce()</div><div class="line">        handlers = [</div><div class="line">            (<span class="string">r'/'</span>,MainHandler),</div><div class="line">            (<span class="string">r'/chat'</span>,ChatHandler),</div><div class="line">        ]</div><div class="line">        settings = &#123;</div><div class="line">            <span class="string">'template_path'</span>: <span class="string">'templates'</span>,</div><div class="line">            <span class="string">'static_path'</span>: <span class="string">'static'</span>,</div><div class="line">            <span class="string">'debug'</span>: <span class="keyword">True</span></div><div class="line">        &#125;</div><div class="line">        tornado.web.Application.__init__(self, handlers, **settings)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    tornado.options.parse_command_line()</div><div class="line">    app = Application()</div><div class="line">    server = tornado.httpserver.HTTPServer(app)</div><div class="line">    server.listen(<span class="number">8000</span>)</div><div class="line">    tornado.ioloop.IOLoop.instance().start()</div></pre></td></tr></table></figure>
+<p>下面是javascript代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">    $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            updateMsg();</div><div class="line"></div><div class="line">            $(<span class="string">"#mypp"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">                $.post(<span class="string">"chat"</span>,&#123;</div><div class="line">                    <span class="attr">content</span>: $(<span class="string">"#message"</span>).val()</div><div class="line">                    &#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data, textStatus</span>)</span>&#123;</div><div class="line">                    <span class="keyword">var</span> content = data.content;</div><div class="line">                    <span class="keyword">var</span> txt = <span class="string">"&lt;p&gt;"</span>+content+<span class="string">"&lt;/p&gt;"</span>;</div><div class="line">                    $(<span class="string">"#chatContent"</span>).html(txt);</div><div class="line">            &#125;,<span class="string">"json"</span>);</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateMsg</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    $.get(<span class="string">"chat"</span>,&#123;&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data, textStatus</span>)</span>&#123;</div><div class="line">            <span class="keyword">var</span> content = data.content</div><div class="line">            <span class="keyword">var</span> txt = <span class="string">"&lt;p&gt;"</span>+content+<span class="string">"&lt;/p&gt;"</span>;</div><div class="line">            $(<span class="string">"#chatContent"</span>).html(txt);</div><div class="line">            &#125;,<span class="string">"json"</span>);</div><div class="line">    setTimeout(updateMsg, <span class="number">4000</span>);</div><div class="line">&#125;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<p>updateMsg 隔一段时间，会发送数据请求,注意setTimeout(updateMsg, 4000);定时器<br>可以看出，ajax轮询有两个明显的缺点，</p>
+<ol>
+<li>如果轮询的频率低服务器端的数据更新后，客户端不能马上更新</li>
+<li>如果轮询的频率高，那么服务器大多是些无用的请求，反而会增加服务器的压力。</li>
+</ol>
+<h4 id="Long-Poll"><a href="#Long-Poll" class="headerlink" title="Long Poll"></a>Long Poll</h4><p>那么就来看看第二种方式，long poll， 这算是一种”真正的”的服务器推送技术(comet)<br>long poll的原理是，客户端与服务器将建立一条长连接，也就是说，客户端会发出一个请求，而服务器，将阻塞请求，直到有数据需要传递，才会返回。<br>返回之后，客户端将关闭此连接，然后再次发出一个请求，建立一个新的连接，再次等待服务器推送数据.<br>服务器端实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tornado.web</div><div class="line"><span class="keyword">import</span> tornado.httpserver</div><div class="line"><span class="keyword">import</span> tornado.ioloop</div><div class="line"><span class="keyword">import</span> tornado.options</div><div class="line"></div><div class="line"><span class="keyword">from</span> uuid <span class="keyword">import</span> uuid4</div><div class="line"><span class="keyword">import</span> json</div><div class="line"></div><div class="line"><span class="comment">#服务器端保存的字符串</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Announce</span><span class="params">()</span>:</span></div><div class="line">    subject = <span class="string">"nima"</span></div><div class="line">    callbacks = []</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, callback)</span>:</span></div><div class="line">        self.callbacks.append(callback)</div><div class="line"></div><div class="line">    <span class="comment">#改变后，会推送给保存的注册的客户端</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">changeSubject</span><span class="params">(self, data)</span>:</span></div><div class="line">        self.subject = data</div><div class="line">        self.notifyCallbacks()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getJson</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> json.dumps(&#123;<span class="string">'content'</span>:self.subject&#125;)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notifyCallbacks</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> self.callbacks:</div><div class="line">            self.callbackHelper(c)</div><div class="line"></div><div class="line">        self.callbacks = []</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callbackHelper</span><span class="params">(self, callback)</span>:</span></div><div class="line">        callback(self.getJson())</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        self.render(<span class="string">"index.html"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></div><div class="line">        content = self.get_argument(<span class="string">'content'</span>)</div><div class="line">        self.application.announce.changeSubject(content)</div><div class="line"></div><div class="line"><span class="comment"># StatusHandler的处理是异步的</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">StatusHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"><span class="meta">    @tornado.web.asynchronous</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        self.application.announce.register(self.async_callback(self.on_message))</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_message</span><span class="params">(self, data)</span>:</span></div><div class="line">        self.write(data)</div><div class="line">        <span class="comment"># 必须要finish 否则服务器会一直阻塞</span></div><div class="line">        self.finish()</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span><span class="params">(tornado.web.Application)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        """</div><div class="line">        self.announce = Announce()</div><div class="line">        handlers = [</div><div class="line">            (<span class="string">r'/'</span>,MainHandler),</div><div class="line">            (<span class="string">r'/chat'</span>,ChatHandler),</div><div class="line">            (<span class="string">r'/status'</span>,StatusHandler),</div><div class="line">        ]</div><div class="line">        settings = &#123;</div><div class="line">            <span class="string">'template_path'</span>: <span class="string">'templates'</span>,</div><div class="line">            <span class="string">'static_path'</span>: <span class="string">'static'</span>,</div><div class="line">            <span class="string">'debug'</span>: <span class="keyword">True</span></div><div class="line">        &#125;</div><div class="line">        tornado.web.Application.__init__(self, handlers, **settings)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    tornado.options.parse_command_line()</div><div class="line">    app = Application()</div><div class="line">    server = tornado.httpserver.HTTPServer(app)</div><div class="line">    server.listen(<span class="number">8000</span>)</div><div class="line">    tornado.ioloop.IOLoop.instance().start()</div></pre></td></tr></table></figure>
+<p>客户端与服务器端的链接，会一直保存着，当发生改变时，服务器才会把数据推送给客户端.<br>这其实就是设计模式中的观察者模式。</p>
+<p>客户端js代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">    $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line"></div><div class="line">    setTimeout(requestInventory, <span class="number">100</span>);</div><div class="line"></div><div class="line">            $(<span class="string">"#mypp"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">                $.post(<span class="string">"//localhost:8000/chat"</span>,&#123;</div><div class="line">                    <span class="attr">content</span>: $(<span class="string">"#message"</span>).val()</div><div class="line">                    &#125;,type=<span class="string">"json"</span>);</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">requestInventory</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    $.getJSON(<span class="string">"//localhost:8000/status"</span>,&#123;&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data, Status, xhr</span>)</span>&#123;</div><div class="line">            <span class="keyword">var</span> content = data.content;</div><div class="line">            <span class="keyword">var</span> txt = <span class="string">"&lt;p&gt;"</span>+content+<span class="string">"&lt;/p&gt;"</span></div><div class="line">            $(<span class="string">"#chatContent"</span>).html(txt);</div><div class="line">            setTimeout(requestInventory, <span class="number">0</span>);</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<p>可以看到，在requestInventory()中，每次数据返回后，setTimeout(requestInventory, 0);将建立一条新的链接.<br>其实还有一种类似与long poll的技术，iframe流方式，这种方式在页面插入一个隐藏的iframe.利用其src属性，在服务器和客户端之间建立一条长连接。与long poll不同的是，iframe流的这条连接会一直存在，而不是像long poll在数据返回后，客户端关闭此连接，然后重新开启一条连接。</p>
+<p>但是，comet中采用的长连接，也会大量的消耗服务器的带宽和资源。</p>
+<h4 id="Websocket"><a href="#Websocket" class="headerlink" title="Websocket"></a>Websocket</h4><p>websocket，是html5引入的一个特性，也是未来的趋势，web socket 是在浏览器和服务器之间进行全双工通信的网络技术，既然是全双工通信，那么服务器自然可以主动传送数据给服务器，而且通信协议的header也很小，相比与之前的long poll， web socket 能够更好的节省服务器资源和宽带并达到实时通信.</p>
+<p>服务器端代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tornado.web</div><div class="line"><span class="keyword">import</span> tornado.websocket</div><div class="line"><span class="keyword">import</span> tornado.httpserver</div><div class="line"><span class="keyword">import</span> tornado.ioloop</div><div class="line"><span class="keyword">import</span> tornado.options</div><div class="line"></div><div class="line"><span class="keyword">import</span> json</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Announce</span><span class="params">()</span>:</span></div><div class="line">    subject = <span class="string">"nima"</span></div><div class="line">    callbacks = []</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, callback)</span>:</span></div><div class="line">        self.callbacks.append(callback)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">unregister</span><span class="params">(self, callback)</span>:</span></div><div class="line">        self.callbacks.remove(callback)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getJson</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> json.dumps(&#123;<span class="string">'content'</span>:self.subject&#125;)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">changeSubject</span><span class="params">(self, data)</span>:</span></div><div class="line">        self.subject = data</div><div class="line">        self.notifyCallbacks()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notifyCallbacks</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> self.callbacks:</div><div class="line">            self.callbackHelper(c)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callbackHelper</span><span class="params">(self, callback)</span>:</span></div><div class="line">        callback(self.getJson())</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        self.render(<span class="string">"index.html"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self)</span>:</span></div><div class="line">        content = self.get_argument(<span class="string">'content'</span>)</div><div class="line">        self.application.announce.changeSubject(content)</div><div class="line"></div><div class="line"><span class="comment"># 注意，这个类的父类，用来进行web socket的WebSocketHandler</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">StatusHandler</span><span class="params">(tornado.websocket.WebSocketHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span><span class="params">(self)</span>:</span></div><div class="line">        self.application.announce.register(self.callback)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_close</span><span class="params">(self)</span>:</span></div><div class="line">        self.application.announce.unregister(self.callback)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_message</span><span class="params">(self, message)</span>:</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(self, data)</span>:</span></div><div class="line">        self.write_message(data)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span><span class="params">(tornado.web.Application)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        """</div><div class="line">        self.announce = Announce()</div><div class="line">        handlers = [</div><div class="line">            (<span class="string">r'/'</span>,MainHandler),</div><div class="line">            (<span class="string">r'/chat'</span>,ChatHandler),</div><div class="line">            (<span class="string">r'/status'</span>,StatusHandler),</div><div class="line">        ]</div><div class="line">        settings = &#123;</div><div class="line">            <span class="string">'template_path'</span>: <span class="string">'templates'</span>,</div><div class="line">            <span class="string">'static_path'</span>: <span class="string">'static'</span>,</div><div class="line">            <span class="string">'debug'</span>: <span class="keyword">True</span></div><div class="line">        &#125;</div><div class="line">        tornado.web.Application.__init__(self, handlers, **settings)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    tornado.options.parse_command_line()</div><div class="line">    app = Application()</div><div class="line">    server = tornado.httpserver.HTTPServer(app)</div><div class="line">    server.listen(<span class="number">8000</span>)</div><div class="line">    tornado.ioloop.IOLoop.instance().start()</div></pre></td></tr></table></figure>
+<p>客户端，也是js对websocket 的操作.<br><strong>注意</strong> var host =’ws://localhost:8000/status’</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">    $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        requestInventory();</div><div class="line">            $(<span class="string">"#mypp"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">                $.post(<span class="string">"chat"</span>,&#123;</div><div class="line">                    <span class="attr">content</span>: $(<span class="string">"#message"</span>).val()</div><div class="line">                    &#125;,type=<span class="string">"json"</span>);</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">requestInventory</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> host =<span class="string">'ws://localhost:8000/status'</span></div><div class="line">    <span class="keyword">var</span> websocket = <span class="keyword">new</span> WebSocket(host);</div><div class="line"></div><div class="line">    websocket.onopen = <span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;&#125;;</div><div class="line">    websocket.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">evt</span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> content = $.parseJSON(evt.data)[<span class="string">'content'</span>];</div><div class="line">        <span class="keyword">var</span> txt = <span class="string">"&lt;p&gt;"</span>+ content +<span class="string">"&lt;/p&gt;"</span></div><div class="line">        $(<span class="string">"#chatContent"</span>).html(txt);</div><div class="line">    &#125;;</div><div class="line">    websocket.onerror = <span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;&#125;;</div><div class="line">&#125;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<p>html5就是未来的趋势，而且，chrome，firefox，opera和safari都支持，IE从版本10开始也支持了。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+            <a href="/tags/web/" rel="tag">#web</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/10/14/vim/" rel="prev">vim技巧</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/05/21/talk-about-scope/" rel="next">聊聊作用域</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2013/06/02/server-push-data/"
+     data-title="服务器推送技术"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2013/06/02/server-push-data/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2013/06/02/server-push-data/"
+                   data-title="服务器推送技术" data-url="http://www.pulpcode.cn/2013/06/02/server-push-data/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#预备知识"><span class="nav-number">1.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-ajax轮询"><span class="nav-number">2.</span> <span class="nav-text">1.ajax轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Long-Poll"><span class="nav-number">3.</span> <span class="nav-text">Long Poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Websocket"><span class="nav-number">4.</span> <span class="nav-text">Websocket</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

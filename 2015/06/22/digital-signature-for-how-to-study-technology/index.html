@@ -1,0 +1,690 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="加密," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="情景也许是你某次了解了一些关于数字签名的知识，想要系统的学习一下。或者是你的某个项目让你不得不找一种技术方案，你找到了数字签名，然后打算继续学着看看怎么用。
+资料首先你会读到类似的资料（来源于网络）：
+“发送报文时，发送方用一个哈希函数从报文文本中生成报文摘要,然后用自己的私人密钥对这个摘要进行加密，这个加密后的摘要将作为报文的数字签名和报文一起发送给接收方，接收方首先用与发送方一样的哈希函数从接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一次数字签名的学习中总结做技术的一些思路">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/06/22/digital-signature-for-how-to-study-technology/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="情景也许是你某次了解了一些关于数字签名的知识，想要系统的学习一下。或者是你的某个项目让你不得不找一种技术方案，你找到了数字签名，然后打算继续学着看看怎么用。
+资料首先你会读到类似的资料（来源于网络）：
+“发送报文时，发送方用一个哈希函数从报文文本中生成报文摘要,然后用自己的私人密钥对这个摘要进行加密，这个加密后的摘要将作为报文的数字签名和报文一起发送给接收方，接收方首先用与发送方一样的哈希函数从接">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.740Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从一次数字签名的学习中总结做技术的一些思路">
+<meta name="twitter:description" content="情景也许是你某次了解了一些关于数字签名的知识，想要系统的学习一下。或者是你的某个项目让你不得不找一种技术方案，你找到了数字签名，然后打算继续学着看看怎么用。
+资料首先你会读到类似的资料（来源于网络）：
+“发送报文时，发送方用一个哈希函数从报文文本中生成报文摘要,然后用自己的私人密钥对这个摘要进行加密，这个加密后的摘要将作为报文的数字签名和报文一起发送给接收方，接收方首先用与发送方一样的哈希函数从接">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 从一次数字签名的学习中总结做技术的一些思路 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              从一次数字签名的学习中总结做技术的一些思路
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-06-22T00:00:00+08:00" content="2015-06-22">
+            2015-06-22
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/06/22/digital-signature-for-how-to-study-technology/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/22/digital-signature-for-how-to-study-technology/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>也许是你某次了解了一些关于数字签名的知识，想要系统的学习一下。或者是你的某个项目让你不得不找一种技术方案，你找到了数字签名，然后打算继续学着看看怎么用。</p>
+<h4 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h4><p>首先你会读到类似的资料（来源于网络）：</p>
+<p>“发送报文时，发送方用一个哈希函数从报文文本中生成报文摘要,然后用自己的私人密钥对这个摘要进行加密，这个加密后的摘要将作为报文的数字签名和报文一起发送给接收方，接收方首先用与发送方一样的哈希函数从接收到的原始报文中计算出报文摘要，接着再用发送方的公用密钥来对报文附加的数字签名进行解密，如果这两个摘要相同、那么接收方就能确认该数字签名是发送方的。</p>
+<p>数字签名有两种功效：一是能确定消息确实是由发送方签名并发出来的，因为别人假冒不了发送方的签名。二是数字签名能确定消息的完整性。因为数字签名的特点是它代表了文件的特征，文件如果发生改变，数字摘要的值也将发生变化。不同的文件将得到不同的数字摘要。 一次数字签名涉及到一个哈希函数、发送者的公钥、发送者的私钥。</p>
+<a id="more"></a>
+<h2 id="制造混乱"><a href="#制造混乱" class="headerlink" title="制造混乱"></a>制造混乱</h2><p>对于那些已经理解数字签名的人而言，这段话再简单不过了，可是对于一个初学者而言，想要弄懂这些，可要大费脑经。</p>
+<h4 id="一词多用"><a href="#一词多用" class="headerlink" title="一词多用"></a>一词多用</h4><p>编程技术中，一个东西能干很多事情，常常是带来混乱的原因，早在大二学习c语言的时候，我就思考过为什么指针这么难懂，其实如果你能区分“指向”，“指针变量”，求指针，解地址。分别是什么样的操作，那么你就不会被<code>*</code>和<code>&amp;</code>这些符号搞混，要知道，<code>*</code>符号既可以用来解指针，又可以用来定义指针。</p>
+<p>类似于指针，这个加密解密的名词也有些太泛了。比如说加密，其实数字签名本身并没有加密，此处的加密并不是我们泛指的对数据进行加密，这样数据就不能被人看见了。这里的“用私钥加密”，其实说成“用私钥进行签名”更合适。当然有人就是喜欢将签名也当成一种加密，这自然会制造混乱，提升门槛。</p>
+<p>类似还有 “签名”，“哈希”，“摘要”，“指纹”。这些名词也会被混用，多用。增加理解难度。</p>
+<h4 id="一技多用"><a href="#一技多用" class="headerlink" title="一技多用"></a>一技多用</h4><p>就拿哈希算法来说吧（比如md5，sha1），哈希算法带来的好处，就是不可逆性和唯一性。和它的相关使用都是围绕这两个属性。</p>
+<p>但其实事实比这要复杂的多，比如我们在存密码的时候，不存密码存哈希，而且存的是加盐的哈希。然后许多人就能联想到我们数字签名也会用到加料哈希。而实际上数字签名的哈希只不过是为了使签名数据变短而已。</p>
+<p>许多数学思想能够在多种地方使用，也在不经意间制造混乱，这就是联想带来的坏处，它让我们错误的理解模型。</p>
+<h2 id="问答"><a href="#问答" class="headerlink" title="问答"></a>问答</h2><p>一段定义不足够让你完全理解一个模型，这个时候，我们需要提问，建立一些假设，填补大脑中的空白。</p>
+<h4 id="数字签名加密数据么？"><a href="#数字签名加密数据么？" class="headerlink" title="数字签名加密数据么？"></a>数字签名加密数据么？</h4><p>不加密，实际上，签名和原数据一起以明文的方式被发送，抓包是完全可以抓到的，数字签名的目的，就是保证数字是正确的地方发来的，且没有被人修改。</p>
+<h4 id="数字签名为什么不顺便加密？"><a href="#数字签名为什么不顺便加密？" class="headerlink" title="数字签名为什么不顺便加密？"></a>数字签名为什么不顺便加密？</h4><p>这是大多数学技术的人一个很不好的思维习惯，实际上技术本身是很理性的，每一个技术有它固定的用途和意义，加密有加密本身的方法和所解决的问题。不要做无用功，不要只感动自己。</p>
+<h4 id="这里的被人修改，是如何修改的？"><a href="#这里的被人修改，是如何修改的？" class="headerlink" title="这里的被人修改，是如何修改的？"></a>这里的被人修改，是如何修改的？</h4><p>很简单，明文传输，所以原始数据很容易被修改，再发送出去。</p>
+<h4 id="等等，如果我有公钥，那么我解开数据，修改数据，再重新生成签名不就行了？"><a href="#等等，如果我有公钥，那么我解开数据，修改数据，再重新生成签名不就行了？" class="headerlink" title="等等，如果我有公钥，那么我解开数据，修改数据，再重新生成签名不就行了？"></a>等等，如果我有公钥，那么我解开数据，修改数据，再重新生成签名不就行了？</h4><p>但是你无法用私钥把数据加密再发送出去。</p>
+<h4 id="hash的意义何在，我直接将整个数据用私钥加密不就行了？既证明此数据是我发送的，又证明了它没有被修改。"><a href="#hash的意义何在，我直接将整个数据用私钥加密不就行了？既证明此数据是我发送的，又证明了它没有被修改。" class="headerlink" title="hash的意义何在，我直接将整个数据用私钥加密不就行了？既证明此数据是我发送的，又证明了它没有被修改。"></a>hash的意义何在，我直接将整个数据用私钥加密不就行了？既证明此数据是我发送的，又证明了它没有被修改。</h4><p>理论上是可以的，但是你没有考虑到私钥签名会非常耗时耗空间。如果要私钥签名一个文件更是费时，传输也是问题，这个时候hash后再签名是最好的选择，因为hash可以保证唯一性，不可逆性。</p>
+<h4 id="hash的时候需要加料后哈希么？"><a href="#hash的时候需要加料后哈希么？" class="headerlink" title="hash的时候需要加料后哈希么？"></a>hash的时候需要加料后哈希么？</h4><p>不用，加料不是用在这里的，加料其实是用在一种类似哈希签名的算法。如果加料，难倒你要把加料算法像公钥一样告诉每一个人？</p>
+<p>摘自支付宝文档：</p>
+<p>当拿到请求时的待签名字符串后,需要把私钥直接拼接到待签名字符串后面,形成 新的字符串,利用 MD5 的签名函数对这个新的字符串进行签名运算,从而得到 32 位签名结果字符串(该字符串赋值于参数 sign)</p>
+<p>其实这里将私钥当成只有你知我知的加料算法了。</p>
+<h4 id="如果想再次基础上加密怎么办？"><a href="#如果想再次基础上加密怎么办？" class="headerlink" title="如果想再次基础上加密怎么办？"></a>如果想再次基础上加密怎么办？</h4><p>请参考“数字信封”</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><p>理清思路,消除混乱。</p>
+</li>
+<li><p>提出假设，填补漏洞。</p>
+</li>
+<li><p>建立正确的模型。</p>
+</li>
+</ol>
+<p>这就是我对学习此类技术问题的方法和总结。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/加密/" rel="tag">#加密</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/06/26/python-rsa/" rel="prev">python中支持rsa安装</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/16/install-software-in-linux/" rel="next">在linux上安装软件的一些总结</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/06/22/digital-signature-for-how-to-study-technology/"
+     data-title="从一次数字签名的学习中总结做技术的一些思路"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2015/06/22/digital-signature-for-how-to-study-technology/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/06/22/digital-signature-for-how-to-study-technology/"
+                   data-title="从一次数字签名的学习中总结做技术的一些思路" data-url="http://www.pulpcode.cn/2015/06/22/digital-signature-for-how-to-study-technology/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情景"><span class="nav-number">1.</span> <span class="nav-text">情景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#资料"><span class="nav-number">1.0.1.</span> <span class="nav-text">资料</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#制造混乱"><span class="nav-number">2.</span> <span class="nav-text">制造混乱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一词多用"><span class="nav-number">2.0.1.</span> <span class="nav-text">一词多用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一技多用"><span class="nav-number">2.0.2.</span> <span class="nav-text">一技多用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问答"><span class="nav-number">3.</span> <span class="nav-text">问答</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数字签名加密数据么？"><span class="nav-number">3.0.1.</span> <span class="nav-text">数字签名加密数据么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字签名为什么不顺便加密？"><span class="nav-number">3.0.2.</span> <span class="nav-text">数字签名为什么不顺便加密？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#这里的被人修改，是如何修改的？"><span class="nav-number">3.0.3.</span> <span class="nav-text">这里的被人修改，是如何修改的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#等等，如果我有公钥，那么我解开数据，修改数据，再重新生成签名不就行了？"><span class="nav-number">3.0.4.</span> <span class="nav-text">等等，如果我有公钥，那么我解开数据，修改数据，再重新生成签名不就行了？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash的意义何在，我直接将整个数据用私钥加密不就行了？既证明此数据是我发送的，又证明了它没有被修改。"><span class="nav-number">3.0.5.</span> <span class="nav-text">hash的意义何在，我直接将整个数据用私钥加密不就行了？既证明此数据是我发送的，又证明了它没有被修改。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash的时候需要加料后哈希么？"><span class="nav-number">3.0.6.</span> <span class="nav-text">hash的时候需要加料后哈希么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果想再次基础上加密怎么办？"><span class="nav-number">3.0.7.</span> <span class="nav-text">如果想再次基础上加密怎么办？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

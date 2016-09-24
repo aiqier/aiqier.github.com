@@ -1,0 +1,746 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="linux,shell," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="今天本来是在用pygame写一个演示程序，经常会用到一些rgb值，比如：
+12345BLACK = (0, 0, 0)WHITE = (255, 255, 255)# ........# other colors# .......
+其实每个颜色就是一个元组，如果我把它们全写在一个叫mycolor.py的文件中，那我就可以在别的python代码中直接使用，很方便。可惜网上并没有现成的东西….
+自己动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我想要的RGB">
+<meta property="og:url" content="http://www.pulpcode.cn/2013/01/06/i-want-rgb/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="今天本来是在用pygame写一个演示程序，经常会用到一些rgb值，比如：
+12345BLACK = (0, 0, 0)WHITE = (255, 255, 255)# ........# other colors# .......
+其实每个颜色就是一个元组，如果我把它们全写在一个叫mycolor.py的文件中，那我就可以在别的python代码中直接使用，很方便。可惜网上并没有现成的东西….
+自己动">
+<meta property="og:updated_time" content="2016-09-24T09:56:35.755Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我想要的RGB">
+<meta name="twitter:description" content="今天本来是在用pygame写一个演示程序，经常会用到一些rgb值，比如：
+12345BLACK = (0, 0, 0)WHITE = (255, 255, 255)# ........# other colors# .......
+其实每个颜色就是一个元组，如果我把它们全写在一个叫mycolor.py的文件中，那我就可以在别的python代码中直接使用，很方便。可惜网上并没有现成的东西….
+自己动">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 我想要的RGB | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              我想要的RGB
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-01-06T00:00:00+08:00" content="2013-01-06">
+            2013-01-06
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2013/01/06/i-want-rgb/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2013/01/06/i-want-rgb/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>今天本来是在用pygame写一个演示程序，经常会用到一些rgb值，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">BLACK = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</div><div class="line">WHITE = (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</div><div class="line"><span class="comment"># ........</span></div><div class="line"><span class="comment"># other colors</span></div><div class="line"><span class="comment"># .......</span></div></pre></td></tr></table></figure>
+<p>其实每个颜色就是一个元组，如果我把它们全写在一个叫mycolor.py的文件中，那我就可以在别的python代码中直接使用，很方便。可惜网上并没有现成的东西….</p>
+<p>自己动手吧，开工。当然不能一个一个手工输入啦，要不白学程序了。<br>我在网上找到了如下的数据：<br><a id="more"></a></p>
+<p>（ 这个RGB数据文件很长，所以 以下的 例子都是从中截取一段用来解释 ）</p>
+<pre><code>XXXXX  #F08080     LightCoral     淡珊瑚色
+XXXXX  #BC8F8F     RosyBrown     玫瑰棕色
+XXXXX  #CD5C5C     IndianRed     印度红
+XXXXX  #FF0000     Red     纯红
+XXXXX  #A52A2A     Brown     棕色
+</code></pre><p>最前面的XXXXX什么都不是，所以我vim下用一个宏解决 掉<br>先 把光标移动到第一行的第一个字符出</p>
+<p><strong>录制宏</strong></p>
+<pre><code>@qa
+dt#j
+q
+</code></pre><p>这个宏的意思就是删出#前的所有数据，然后光标下移，</p>
+<p>之后对所有行执行这个宏就行了。</p>
+<p>现在的文件是这个样子，我们把它 命名 为source</p>
+<pre><code>：cat source
+
+#F08080     LightCoral     淡珊瑚色
+#BC8F8F     RosyBrown     玫瑰棕色
+#CD5C5C     IndianRed     印度红
+#FF0000     Red     纯红
+#A52A2A     Brown     棕色
+</code></pre><p>之后我用linux的cut命令</p>
+<pre><code>cut -f 1 source &gt; rgb_0x
+cut -f 2 source &gt; en
+cut -f 3 source &gt; cn
+</code></pre><p>这样我就又多了三个文件， 分别如下：</p>
+<pre><code>：cat rgb_0x
+
+#F08080
+#BC8F8F
+#CD5C5C
+#FF0000
+#A52A2A
+
+：cat en:
+LightCoral
+RosyBrown
+IndianRed
+Red
+Brown
+
+：cat cn:
+淡珊瑚色
+玫瑰棕色
+印度红
+纯红
+棕色
+</code></pre><p>之所以这样，是为了使程序更加灵活，我们可以将这三个文件随意搭配，如果你学过unix和linux，你就能体会到这种思想，用这种放式组织程序和数据，而不是一个交互式程序，提示用户输入….</p>
+<p>现在我们先来把十六进制的rgb转换成我们想要的格式:</p>
+<pre><code>#FF0000 =======&gt;  (255, 0, 0)
+</code></pre><p>我用python写了一个脚本来完成这个任务getrgb.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">infile = <span class="string">'rgb_0x'</span></div><div class="line">outfile = <span class="string">'rgb'</span></div><div class="line"></div><div class="line"><span class="comment"># get rgblist like ['FF', '00', '00']</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(rgbstr)</span>:</span></div><div class="line">    s = rgbstr.srtip()</div><div class="line">    s = s.replace(<span class="string">'#'</span>,<span class="string">''</span>)</div><div class="line">    <span class="keyword">return</span> [s[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(s),<span class="number">2</span>)]</div><div class="line"></div><div class="line"><span class="comment"># read file</span></div><div class="line"></div><div class="line">fin = open(infile)</div><div class="line"></div><div class="line"><span class="comment"># get list like ['255', '255', '255']</span></div><div class="line">rgblist = []</div><div class="line"><span class="keyword">for</span> line <span class="keyword">in</span> fin.readlines():</div><div class="line">    stlist = process(line)</div><div class="line">    intst  = [ <span class="string">'%d'</span>%int(i,<span class="number">16</span>) <span class="keyword">for</span> i <span class="keyword">in</span> stlist]</div><div class="line">    rgblist.append(<span class="string">','</span>.join(st))</div><div class="line"></div><div class="line"><span class="comment"># add parenthese</span></div><div class="line">parlist = []</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rgblist:</div><div class="line">    parlist.append(<span class="string">'('</span> + i + <span class="string">')\n'</span>)</div><div class="line"></div><div class="line"><span class="comment"># write file</span></div><div class="line">fout = open(outfile, <span class="string">'w'</span>)</div><div class="line">fout.writelines(parlist)</div><div class="line"></div><div class="line">fin.close()</div><div class="line">fout.close()</div></pre></td></tr></table></figure>
+<p>运行这个脚本，得到了一个rgb文件</p>
+<pre><code>(255,255,255)
+(245,245,245)
+(220,220,220)
+(211,211,211)
+</code></pre><p>接下来一个命令得到我想要得：</p>
+<pre><code>paste -d &quot;=&quot; en rgb &gt; mycolor.py
+</code></pre><p>paste 用来链接两个文件，当然，用sed也可以完成这个工作 ，不过杀鸡焉用牛刀。</p>
+<pre><code>DarkMagenta =(139,0,139)
+Purple =(128,0,128)
+MediumOrchid =(186,85,211)
+DarkViolet =(148,0,211)
+DarkOrchid =(153,50,204)
+</code></pre><p>看上去很不整齐，所以我用vim打开</p>
+<p>输入:Tab /=</p>
+<pre><code>MediumOrchid = (186,85,211)
+DarkViolet   = (148,0,211)
+DarkOrchid   = (153,50,204)
+Indigo       = (75,0,130)
+</code></pre><p>这是一个叫Tabular的vim插件，用来对齐，对于写代码的vim用户很有用。</p>
+<p>当然我们还可以用sed在给每行加一个中文注释，(如果你英语很好，认识这些颜色的名字，就不用了)<br>像这样：</p>
+<pre><code>MediumOrchid = (186,85,211) # 中兰花紫
+DarkViolet   = (148,0,211)  # 暗紫罗兰
+DarkOrchid   = (153,50,204) # 暗兰花紫
+</code></pre><p>也可以用sed写一个简单的渲染，</p>
+<p>把这些数据渲染成一个html页面，这样颜色在html页面上能直接显示了，方便查阅，</p>
+<p>现在你明白为什么我要把source cut成三段了吧？</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/shell/" rel="tag">#shell</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/01/12/two-arithmetic-about-cuboid/" rel="prev">两个与长方体有关的算法</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/01/06/use-2d-draw-3d/" rel="next">用2D画个3D图形</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2013/01/06/i-want-rgb/"
+     data-title="我想要的RGB"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2013/01/06/i-want-rgb/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2013/01/06/i-want-rgb/"
+                   data-title="我想要的RGB" data-url="http://www.pulpcode.cn/2013/01/06/i-want-rgb/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
