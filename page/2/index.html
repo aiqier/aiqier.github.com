@@ -174,6 +174,94 @@
           
           
             
+              <a class="post-title-link" href="/2016/07/03/connection_timeout_and_read_timeout/" itemprop="url">
+                http的两个超时时间
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-07-03T00:00:00+08:00" content="2016-07-03">
+            2016-07-03
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/07/03/connection_timeout_and_read_timeout/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/03/connection_timeout_and_read_timeout/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="超时时间"><a href="#超时时间" class="headerlink" title="超时时间"></a>超时时间</h2><p>如果你使用http库来进行http请求时，你会发现可以设置超时时间。<br>比如python最好用的requests库，或者是tornado自带的异步http客户端。都有一个可选参数叫timeout。实际上如果你不设置这个值，那它默认就是20s，我不知道其它语言是怎样的，但是在python中，几个http库都是这个默认值。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/03/connection_timeout_and_read_timeout/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/07/02/tornado-asynchronous-http-request-bug/" itemprop="url">
                 tornado并行多个异步请求的坑
               </a>
@@ -704,101 +792,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/05/25/python-video-summarize/" itemprop="url">
-                记录一次python视频总结
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-05-25T00:00:00+08:00" content="2016-05-25">
-            2016-05-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/05/25/python-video-summarize/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/25/python-video-summarize/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>之前在上海的时候，认识了一个python大神，之后一直有关注过这个大神，还总看他的博客，大概在一月份的时候，发现他在某个视频公开课上的python课程，抱着膜拜的态度，我买了这个公开课（大概300多元），但是效果确实不咋地，课程完全是应付，就算是对初学者而言，也没什么特别的营养，美其名曰把程序员思考的方式展现出来，在我看来就是是没怎么好好准备过的样子。</p>
-<p>当然钱不能白花啊，所以我还是把那些我认为值得总结的知识点，作为学习笔记，记录一遍。</p>
-<h4 id="几个类型问题"><a href="#几个类型问题" class="headerlink" title="几个类型问题"></a>几个类型问题</h4><p>在python中u”hellow” == “hellow” 是True，但是 u”中文” != “中文”，之所以unicode能和str比较，是因为内部在比较的时候，做了类型转换。</p>
-<p>int/int结果还是int，因为运算要让<strong>类型封闭</strong>。</p>
-<p>dict的get方法，比[]要安全很多。</p>
-<p><code>[] != None</code></p>
-<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">a</span><span class="params">(*argc, **kargc)</span>:</span></div></pre></td></tr></table></figure>
-<p>调用的时候，传入列表可以用<em>可以解开， *</em>可以解开字典。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/25/python-video-summarize/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -837,7 +830,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">157</span>
+              <span class="site-state-item-count">158</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
