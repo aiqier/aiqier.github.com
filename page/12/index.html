@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2015/05/10/use-pdb-not-print-for-debug-python/" itemprop="url">
+                使用pdb而不是print调试python
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-05-10T00:00:00+08:00" content="2015-05-10">
+            2015-05-10
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/10/use-pdb-not-print-for-debug-python/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/10/use-pdb-not-print-for-debug-python/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="名词解释："><a href="#名词解释：" class="headerlink" title="名词解释："></a>名词解释：</h2><p>野路子：口语，指的是非科班出身的，非正规的。</p>
+<h2 id="暴力的调试："><a href="#暴力的调试：" class="headerlink" title="暴力的调试："></a>暴力的调试：</h2><p>很多人一开始跟我一样，喜欢用这样的方式调试程序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">"*****************"</span></div><div class="line"><span class="keyword">print</span> somevalue</div><div class="line"><span class="keyword">print</span> type(somevalue)</div><div class="line"><span class="keyword">print</span> <span class="string">"*****************"</span></div></pre></td></tr></table></figure>
+<p>别小看这几行代码，两边的*号，方便自己一眼就能看到想打印的值，之后的代码不但打印了值，还打印了类型，对于调试python这样的动态语言再好不过了。</p>
+<p>之后我们使用二分查找的方法，逐步逼近问题。。。还自我感觉很聪明。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/05/10/use-pdb-not-print-for-debug-python/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/05/09/bug-for-mysql-python-cursor-commit/" itemprop="url">
                 记一次使用MySQLdb事务时，select出现的bug
               </a>
@@ -714,99 +806,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/04/04/beijing-3-weeks/" itemprop="url">
-                在北京的第三周
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-04-04T00:00:00+08:00" content="2015-04-04">
-            2015-04-04
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/生活/" itemprop="url" rel="index">
-                  <span itemprop="name">生活</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/04/04/beijing-3-weeks/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/04/beijing-3-weeks/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>2015年3月12日我离开了兰州。</p>
-<p><img src="/img/lanzhou.jpg" alt="lanzhou"></p>
-<p>这张照片是当时在兰州火车站二楼照的，当时去的过早，所以在火车站呆了好长一会。我知道我为什么会来这么早，因为我早就准备好了这次出行，确保万无一失。从去年回到兰州开始，我就明白自己有一天一定会出去的。在兰州的这一年，我慢慢的调整自己的心态，我坚持写技术博客，读书思考，解决工作中棘手的问题，处理好家庭之间的矛盾，慢慢的发现自己。来的时候我准备了一切能准备好的东西，攒了一些钱，面试的相关技术内容，地图，药物，甚至是可能会用到的同学电话，我都挨个记了一份，生怕出个意外。</p>
-<p>说实话，虽然我是一个兰州人，但是我恨这里，我恨这里的风气，恨那些自以为是目中无人的富二代。恨那些不想好好谈恋爱，养几个备胎潜力股的心机婊。恨那些自以为情商高，把别人都当傻逼的人。也许我最恨的是我自己，过去的自己。</p>
-<p>来时坐的那趟火车，只记得有个长得漂亮的兰州妹子，貌似是大四的，在北京上学。</p>
-<p>下了火车就被在那等待的同学接了回去，到他那里已经是晚上十一点了。没想到的是另外两个室友我也认识，大学一个院的。也没想到最后其中一个因为女朋友来了就搬出去了，然后我就先住这了。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/04/04/beijing-3-weeks/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -845,7 +844,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">158</span>
+              <span class="site-state-item-count">159</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -859,7 +858,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

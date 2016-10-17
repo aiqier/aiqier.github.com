@@ -174,6 +174,96 @@
           
           
             
+              <a class="post-title-link" href="/2016/02/18/f-27/" itemprop="url">
+                初中经典录(F-27)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-02-18T00:00:00+08:00" content="2016-02-18">
+            2016-02-18
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/生活/" itemprop="url" rel="index">
+                  <span itemprop="name">生活</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/02/18/f-27/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/18/f-27/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>之前和一个初中妹子聊天，我说时间过得快啊，一晃10年都过去了，她说是啊，她还记得之前我写过一篇初中的回忆录呢。我突然才想起来，对啊，我还记得我写过一篇这种文章呢，不过貌似我早就将自己的qq空间的日志都清空了，不过还好她有转载，发给了我一份，我看了看，觉得当年却是是感情漫漫啊，只可惜如今，我再也写不出这种东西了。</p>
+<p>在此将这篇文章收录在我的博客中。（这篇之所以叫F-27好像是因为Finally 627的意思，最后的我，嘿嘿。）</p>
+<p>以下是原文:</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/18/f-27/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/01/31/redis-cluster-one/" itemprop="url">
                 redis cluster学习笔记1(搭建redis cluster环境)
               </a>
@@ -714,103 +804,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/27/three-party-interface-solution/" itemprop="url">
-                请求三方接口的解决方案
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-27T00:00:00+08:00" content="2015-12-27">
-            2015-12-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/27/three-party-interface-solution/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/27/three-party-interface-solution/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前的工作任务，大多一直在做这样一件事，请求第三方接口，并将接口数据进行解析成固定格式后返回。之后在做业务处理，包括更新数据库状态之类的。</p>
-<p>这里想展示一种解决方案，能够解决以下的问题，包括:</p>
-<ol>
-<li>请求出现异常，包括链接超时，解析异常，请求错误的处理。</li>
-<li>方便的进行单元测试。</li>
-<li>方便的进行扩展。</li>
-</ol>
-<p>注意第3条是指数据来源可能是不同的url，请求和相应格式都不同，但是要做的业务逻辑却是相同的，如何做到方便扩展，接入新的三方时，不用该业务代码。</p>
-<p>还有第2点，特别提到了单元测试，这里我是指模拟测试，因为在真实情况下，这些类似于创建订单的接口，不是你想调用就调用的，甚至是有些接口，比如银行的服务，在调用的时候都是有成本的，这个时候使用模拟类来完成单元测试就非常有必要了。在这个例子中我们使用的python的mock对象。</p>
-<p>下面我会写一个假的例子，来讲解我的解决方案，实际上我们大多数调用的三方接口，并不是走查询这么简单，其实更多是一些post接口，包括下单，和通知。就算是查询接口，可能也不会走get，而是走的post协议。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/27/three-party-interface-solution/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -849,7 +842,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">158</span>
+              <span class="site-state-item-count">159</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -863,7 +856,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

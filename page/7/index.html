@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2015/11/18/use-nginx-deployment-tornado/" itemprop="url">
+                使用nginx部署tornado
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-11-18T00:00:00+08:00" content="2015-11-18">
+            2015-11-18
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/18/use-nginx-deployment-tornado/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/18/use-nginx-deployment-tornado/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>虽然tornado是一个不错的web服务器，但是在真实的生产环境，我们还是会布置多份,而且一般情况下，份数和cpu核数一样。</p>
+<p>首先一个重要的原因是单线程的tornado，在遇到同步的堵塞请求时，会使整个服务都停到那里，这样你就无法在处理新的请求，所谓的同步请求，就是类似数据库查询，<br>或者是磁盘访问块。</p>
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p>之前在介绍flask的部署方式时，已经提到nginx的好处了，nginx本身是一个更安全，更专业的服务器，而且对静态资源也有更好的支持，在加上机器上还有其它的web服务要管理，那nginx自然是最好的选择了。</p>
+<p>基本流程是：客户端通过Internet连接一个反向代理服务器，然后反向代理服务器发送请求到代理后端的Tornado服务器池中的任何一个主机。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/18/use-nginx-deployment-tornado/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/11/16/deployment-of-flask-environment-using-uwsgi-and-nginx/" itemprop="url">
                 使用uwsgi和nginx部署flask环境
               </a>
@@ -710,95 +801,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/15/start-uml-with-meizi/" itemprop="url">
-                使用uml学习把妹基础
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-15T00:00:00+08:00" content="2015-10-15">
-            2015-10-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/15/start-uml-with-meizi/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/start-uml-with-meizi/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>身为一个屌丝的你，是不是想学习把妹基础？这里就来通过uml告诉你把妹原理。</p>
-<h2 id="你和高富帅的区别-用例图"><a href="#你和高富帅的区别-用例图" class="headerlink" title="你和高富帅的区别(用例图)"></a>你和高富帅的区别(用例图)</h2><p><img src="/img/yonglitu.png" alt="用例图"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/15/start-uml-with-meizi/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -837,7 +839,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">158</span>
+              <span class="site-state-item-count">159</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -851,7 +853,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
