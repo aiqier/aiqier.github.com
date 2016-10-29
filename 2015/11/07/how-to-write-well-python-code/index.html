@@ -242,7 +242,7 @@
 <li>把异常直接返回给客户端，这一来不友好，二来，让人知道你的系统内部怎样设计的。实际上在我的server里，请求我，如果出现异常，我都是：打异常日志，报警，然后返回给客户端的结果为：“服务器处理中”或者“服务器内部错误”。</li>
 </ol>
 <p>在实践中，你就会发现，如果你想做好这几点非常难，而且做好这几点，又能把代码写漂亮的，就更难了。当然要优先考虑业务实现，再考虑代码封装。</p>
-<h4 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h4><figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用Python的requests库做http请求</span></div><div class="line">try:</div><div class="line">    <span class="attr">r</span> = requests.post(url, <span class="attr">headers=headers,</span> <span class="attr">data=data,</span> <span class="attr">timeout=timeout)</span></div><div class="line">    r.raise_for_status()</div><div class="line">except requests.RequestException:</div><div class="line">    logging.error('网络访问异常', <span class="attr">exc_info=True)</span></div><div class="line">    ......</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    logger.info(<span class="string">"签名请求返回成功:&#123;&#125;"</span>.format(r.content))</div><div class="line">    ......</div></pre></td></tr></table></figure>
+<h4 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 使用Python的requests库做http请求</div><div class="line">try:</div><div class="line">    r = requests.post(url, headers=headers, data=data, timeout=timeout)</div><div class="line">    r.raise_for_status()</div><div class="line">except requests.RequestException:</div><div class="line">    logging.error(&apos;网络访问异常&apos;, exc_info=True)</div><div class="line">    ......</div><div class="line">else:</div><div class="line">    logger.info(&quot;签名请求返回成功:&#123;&#125;&quot;.format(r.content))</div><div class="line">    ......</div></pre></td></tr></table></figure>
 <p>还有需要注意的是，我很鄙视那些写<code>print e</code>的人，知不知道什么叫异常栈啊,你这样打出来的东西，能分析个卵啊？如果是我，我会这样处理。<br>如果是日志：<code>logging.error(&#39;xxxxxxx&#39;, exc_info=True)</code><br>如果是直接打印到屏幕，那就：<code>traceback.print_exc()</code></p>
 <h4 id="明白异常不算主流程"><a href="#明白异常不算主流程" class="headerlink" title="明白异常不算主流程"></a>明白异常不算主流程</h4><p>实际上异常是要考虑，但是你要明白真正的异常状况所发成的频率到底是多少，你自己想想，一年自己去过几次医院？</p>
 <h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><p>数据库的异常部分，我上面已经描述了，这里提一下：<strong>update</strong></p>
@@ -370,7 +370,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">159</span>
+              <span class="site-state-item-count">160</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

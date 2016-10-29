@@ -262,7 +262,7 @@
 <p>当然一开始就声明，有时还是很有必要的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">response = <span class="keyword">None</span></div><div class="line"><span class="keyword">try</span>:</div><div class="line">response = requests.post(url)</div><div class="line"><span class="keyword">except</span> Exception, e:</div><div class="line">    <span class="keyword">print</span> response, e</div></pre></td></tr></table></figure></p>
 <p>如果你不声明<code>response=None</code>，那么如果请求报了异常，response这个名字是不存在的。</p>
 <h4 id="单个值元组"><a href="#单个值元组" class="headerlink" title="单个值元组"></a>单个值元组</h4><p>正确的写法是: <code>(1,)</code>而不是<code>(1)</code>，后者明显是带有括号的表达式</p>
-<h4 id="ConfigParser"><a href="#ConfigParser" class="headerlink" title="ConfigParser"></a>ConfigParser</h4><p>要以正确的类型声明去读取配置<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">_cf = ConfigParser.ConfigParser()</div><div class="line"></div><div class="line">_cf.<span class="keyword">get</span>()</div><div class="line">_cf.getint()</div><div class="line">_cf.getboolean()</div></pre></td></tr></table></figure></p>
+<h4 id="ConfigParser"><a href="#ConfigParser" class="headerlink" title="ConfigParser"></a>ConfigParser</h4><p>要以正确的类型声明去读取配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">_cf = ConfigParser.ConfigParser()</div><div class="line"></div><div class="line">_cf.get()</div><div class="line">_cf.getint()</div><div class="line">_cf.getboolean()</div></pre></td></tr></table></figure></p>
 <p>尤其那个bool类型，<code>if &quot;FALSE&quot;</code> 的结果你觉得是啥？</p>
 </span>
       
@@ -372,7 +372,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">159</span>
+              <span class="site-state-item-count">160</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

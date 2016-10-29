@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/03/write-unit-test-use-python/" itemprop="url">
+                使用nose写单元测试
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-03T00:00:00+08:00" content="2015-12-03">
+            2015-12-03
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/03/write-unit-test-use-python/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/03/write-unit-test-use-python/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近也是因为琐事一堆，所以一直都没有更新博客，慢慢会把欠的债都补回来。</p>
+<p>这篇博客主要介绍一些如何使用python的 nose来写单元测试，算是介绍nose这个工具，而不是如何去写好一个单元测试。</p>
+<h2 id="不用unittest"><a href="#不用unittest" class="headerlink" title="不用unittest"></a>不用unittest</h2><p>我很少用unitest，因为1，没有nose好用。2是因为那个一点不像python的风格，能像java</p>
+<h2 id="setup和teardown"><a href="#setup和teardown" class="headerlink" title="setup和teardown"></a>setup和teardown</h2><p>nose里面有多种可用的setup和teardown</p>
+<h4 id="Package级别的"><a href="#Package级别的" class="headerlink" title="Package级别的"></a>Package级别的</h4><p>写在<strong>init</strong>.py文件里包装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">setup_package</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">teardown_package</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/03/write-unit-test-use-python/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/11/18/use-nginx-deployment-tornado/" itemprop="url">
                 使用nginx部署tornado
               </a>
@@ -710,97 +803,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/20/find-a-web-server-for-the-python-project/" itemprop="url">
-                为python web项目找一个服务器
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-20T00:00:00+08:00" content="2015-10-20">
-            2015-10-20
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/20/find-a-web-server-for-the-python-project/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/20/find-a-web-server-for-the-python-project/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>当你用python写了一个web应用，你就不得不将其布置到一个web的服务器上，这篇博客将列举下可以使用的web服务器有哪些。</p>
-<p>在这之前先简单的介绍一下其它知识。</p>
-<h2 id="wsgi"><a href="#wsgi" class="headerlink" title="wsgi"></a>wsgi</h2><p>WSGI 的官方定义是，the Python Web Server Gateway Interface</p>
-<p>Gateway是一个网关。网关的作用就是在协议之间进行转换。<br>那么wsgi用来做什么之间的转换呢？它实际上定义一种协议，使得实现wsgi的web框架(app)和实现wsgi的web服务器可以进行“插拔”。<br>这就是为什么我之前的flask项目可以直接部署到tornado上去运行。所以说以下介绍的web服务器，之所以可以部署python的web项目，是因为它们都实现了wsgi。顺便说一句，wsgi这个思想，应该是从java的servlet中借鉴过来的。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/20/find-a-web-server-for-the-python-project/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -839,7 +841,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">159</span>
+              <span class="site-state-item-count">160</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
