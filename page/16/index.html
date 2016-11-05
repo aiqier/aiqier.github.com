@@ -174,95 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2014/12/15/calculate-cash/" itemprop="url">
-                关于几个金融计算中会用到的公式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-12-15T00:00:00+08:00" content="2014-12-15">
-            2014-12-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/12/15/calculate-cash/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/15/calculate-cash/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>非原创，从网上收集的，但是写花了些功夫，因为网上的大多数例子是错误的。</p>
-<h2 id="如何将一个金额转换为中文的大写形式"><a href="#如何将一个金额转换为中文的大写形式" class="headerlink" title="如何将一个金额转换为中文的大写形式"></a>如何将一个金额转换为中文的大写形式</h2><h4 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">/// &lt;summary&gt;</div><div class="line">/// 此函数用来将一个金额数字转化为大写</div><div class="line">/// &lt;/summary&gt;</div><div class="line">/// &lt;param name=&quot;x&quot;&gt;&lt;/param&gt;</div><div class="line">/// &lt;returns&gt;&lt;/returns&gt;</div><div class="line">public static string ConvertToChinese(decimal x)</div><div class="line">&#123;</div><div class="line">    string s = x.ToString(&quot;#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A&quot;);</div><div class="line">    string d = Regex.Replace(s, @&quot;((?&lt;=-|^)[^1-9]*)|((?&apos;z&apos;0)[0A-E]*((?=[1-9])|(?&apos;-z&apos;(?=[F-L\.]|$))))|((?&apos;b&apos;[F-L])(?&apos;z&apos;0)[0A-L]*((?=[1-9])|(?&apos;-z&apos;(?=[\.]|$))))&quot;, &quot;$&#123;b&#125;$&#123;z&#125;&quot;);</div><div class="line">    return Regex.Replace(d, &quot;.&quot;, m =&gt; &quot;负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟萬億兆京垓秭穰&quot;[m.Value[0] - &apos;-&apos;].ToString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/15/calculate-cash/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2014/12/14/two-stories/" itemprop="url">
                 两则故事，不是段子
               </a>
@@ -799,6 +710,97 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/11/13/thinking-not-equal-creative/" itemprop="url">
+                想象力不等于想太多
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-11-13T00:00:00+08:00" content="2014-11-13">
+            2014-11-13
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/生活/" itemprop="url" rel="index">
+                  <span itemprop="name">生活</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/11/13/thinking-not-equal-creative/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/13/thinking-not-equal-creative/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h4 id="想象力与创造力"><a href="#想象力与创造力" class="headerlink" title="想象力与创造力"></a>想象力与创造力</h4><p>大多数人一开始都会认为自己很有想法，勤于思考，有创造力。其实大多数人真么没什么想法，更别说是想象力，甚至说是创造力，充其量是想太多。</p>
+<p>如果我给一个三四岁的小孩一盒颜料，他肯定会把天空画的五颜六色的，然后又是些生长奇特的树，奇怪的动物，大人们会去鼓励他们说，“恩，这个孩子有想象力”。</p>
+<p>但是其实那根本不是想象力或者是什么创造力。只不过那些孩子什么都不懂罢了，你认为他们所谓的”想象力“作品中的场景能跟漫画家（比如宫崎骏）笔下那些看似奇特但美的真实的场景相比吗？</p>
+<p>那些漫画家们，能画出那些极具想象力的作品，不仅仅是因为他们有想象力，有想法，更重要的是他们已经把绘画的知识和绘画的基本功磨练的如此透彻。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/11/13/thinking-not-equal-creative/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -837,7 +839,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">161</span>
+              <span class="site-state-item-count">160</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

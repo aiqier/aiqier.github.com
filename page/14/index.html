@@ -174,96 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2015/02/26/python-technical-summary/" itemprop="url">
-                python基础技术问题总结
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-02-26T00:00:00+08:00" content="2015-02-26">
-            2015-02-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/02/26/python-technical-summary/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/26/python-technical-summary/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>此篇文章总结python一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中…</p>
-<h2 id="解释一下python的-and-or-语法"><a href="#解释一下python的-and-or-语法" class="headerlink" title="解释一下python的 and-or 语法"></a>解释一下python的 and-or 语法</h2><p>python的<code>and-or</code>常常被用来实现类C语言中的三元运算符<code>:?</code>,更骚包的写法是 <code>xxx and xxx or xxx and xxx or xxx</code>，连接多个表达式，一行就够了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> a &gt; <span class="number">10</span>:</div><div class="line">    <span class="keyword">return</span> <span class="string">"big"</span></div><div class="line"><span class="keyword">elif</span> a &gt; <span class="number">5</span>:</div><div class="line">    <span class="keyword">return</span> <span class="string">"middle"</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">return</span> <span class="string">"small"</span></div><div class="line"></div><div class="line">a &gt; <span class="number">5</span> <span class="keyword">and</span> <span class="string">"big"</span> <span class="keyword">or</span> a &gt; <span class="number">3</span> <span class="keyword">and</span> <span class="string">"middle"</span> <span class="keyword">or</span> <span class="string">"small"</span></div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/02/26/python-technical-summary/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2015/02/16/how-to-humorous/" itemprop="url">
                 如何做一个幽默的人
               </a>
@@ -817,6 +727,101 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/" itemprop="url">
+                2014年终技术总结之从输入和输出的角度理解编程
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-01-18T00:00:00+08:00" content="2015-01-18">
+            2015-01-18
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>首先我想引用《Unix编程艺术》中的几段话，我太爱这本书了。</p>
+<p>在输入输出方面，Unix传统极力提倡用简单，文本化，面向流，设备无关的格式。在经典的Unix下，多数程序都尽可能采用简单过滤器的形式，即将一个输入的简单文本流处理为一个简单的文本流输出。</p>
+<p>Unix中，文本流之于工具，就如同在面向对象环境中的消息之于对象。文本流界面的简洁性加强了工具的封装性。</p>
+<p>要想让程序具有组合性，就要使程序彼此独立。在文本流这一端的程序应该尽可能不要考虑文本流另一端的程序。将一端的程序替换为另一个截然不同的程序，而完全不惊扰另一端应该很容易做到。</p>
+<p>下面我从几个不同的方面，来讲述自己对输入输出的理解</p>
+<h2 id="Unix命令"><a href="#Unix命令" class="headerlink" title="Unix命令"></a>Unix命令</h2><p>经常使用linux和unix的同学，已经习惯于在命令中用管道链接输入和输出。</p>
+<pre><code>command1 | command2 paramater1 | command3 parameter1 - parameter2 | command4
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -855,7 +860,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">161</span>
+              <span class="site-state-item-count">160</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
