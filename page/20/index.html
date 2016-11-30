@@ -174,189 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2014/09/02/use-python-alignment-rows/" itemprop="url">
-                使用python对齐文本列
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-09-02T00:00:00+08:00" content="2014-09-02">
-            2014-09-02
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/09/02/use-python-alignment-rows/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/02/use-python-alignment-rows/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近经常要生成一些分析数据，这些数据看上去就像是文本表格。</p>
-<pre><code>    apple  pear banana      orange
-dog   cat  rabbit  monkey
-  sky moon      grubby     tod
-</code></pre><p>但是这些数据没有对齐，对于我这样的强迫症很是受不了。</p>
-<p>所以我用python写了如下代码：</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/02/use-python-alignment-rows/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/08/31/collision-range/" itemprop="url">
-                判断区间是否'碰撞'
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-08-31T00:00:00+08:00" content="2014-08-31">
-            2014-08-31
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/08/31/collision-range/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/31/collision-range/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h4 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h4><p>之前的项目有这样一个需求，“在会议室申请时需要判断新的申请时间段是否与已存在的会议室申请时间段冲突”</p>
-<p>这个问题的本质就是<strong>判断两个区间是否有交集</strong>。<br>当然这里的区间与常见的编程区间不同，编程中讨论的区间是这样的：<code>[begin, end)</code><br>而我要判断的是两个时间段是否冲突，所以我这里指的区间是闭区间：<code>[begin, end]</code></p>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">bool CollisionRange(Range this, Range other)</div><div class="line">&#123;</div><div class="line">  if(this.begin &lt;= other.begin &amp;&amp; other.begin &lt;= this.end)</div><div class="line">    &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  if(this.begin &lt;= other.end &amp;&amp; other.end &lt;= this.end</div><div class="line">    &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  return false;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/31/collision-range/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2014/08/11/why-html-commenting/" itemprop="url">
                 html的代码注释为什么只能是这个样子的？
               </a>
@@ -799,11 +616,188 @@ dog   cat  rabbit  monkey
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/03/10/boot/" itemprop="url">
+                boot到底是个啥？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-03-10T00:00:00+08:00" content="2014-03-10">
+            2014-03-10
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/03/10/boot/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/03/10/boot/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>早些年刚开始学计算机的时候，总会遇到 <strong>boot</strong> 这个词，意为启动，计算机的引导程序。<br>但是boot本来的意思是靴子，跟启动有毛关系？而且一般来说，启动都用start这个单词。</p>
+<p>实际上boot这个词是bootstrap的缩写,而这个词作为启动的意思，来源于&lt;吹牛大王历险记&gt;。<br>其中的典故是这样一个故事，主人公吹牛说自己掉进河里，脱了鞋用鞋带绑着头发，自己把自己拉出水面。<br>这就像武侠片中常见的场景，武林高手掉下悬崖，然后左脚踩右脚，又飞了起来。</p>
+<p>当然这个根本不符合物理学(内力和外力)<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/03/10/boot/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2013/11/22/pip/" itemprop="url">
+                pip的一个问题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-11-22T00:00:00+08:00" content="2013-11-22">
+            2013-11-22
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2013/11/22/pip/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2013/11/22/pip/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>今天运行安装脚本，发现出现错误。原因是在pip install的时候，时间过长时就会抛出异常退出。</p>
+<p>一个办法是我们可以加入<code>--default-timeout</code>。<br>不过更好的办法是修改pip的源，因为pip默认的源是国外的，修改成国内的镜像源会快很多。</p>
+<p>linux的文件在<code>~/.pip/pip.conf</code>修改内容为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">index-url = http://pypi.douban.com/simple</div></pre></td></tr></table></figure>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/21/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/19/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/21/">&raquo;</a>
   </nav>
 
  </div>
@@ -837,7 +831,7 @@ dog   cat  rabbit  monkey
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-count">161</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -851,7 +845,7 @@ dog   cat  rabbit  monkey
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-count">64</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

@@ -174,194 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2015/11/12/single-core-cpu-multithreading/" itemprop="url">
-                对于单核 cpu 而言, 开多线程的目的难倒只能是为了防止阻塞么? 
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-11-12T00:00:00+08:00" content="2015-11-12">
-            2015-11-12
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/12/single-core-cpu-multithreading/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/12/single-core-cpu-multithreading/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>之前对多线程的一些问题一直无法理解，所以在各个论坛提出了此问题，这里将好的回复收集与此。</p>
-<h2 id="原问题"><a href="#原问题" class="headerlink" title="原问题"></a>原问题</h2><p>对于单核 cpu 而言，开多线程的目的难倒只能是为了防止阻塞么？</p>
-<p>以下是一些单核 cpu 多线程的疑问，求解答（都指单核）。</p>
-<ol>
-<li>如果一个进程有 n 个任务要处理，因为终究是在一个 cpu 上跑，所以这 n 个任务在一个线程还是多个线程上跑，执行的总时间是一样的（多线程，线程切换可能更浪费时间）？</li>
-<li>是否进程开多线程就能抢到更多的 cpu 时间， python 这种带 GIL 的估计是没戏了，那么 java 呢？</li>
-<li>自己抢到更多 cpu ，机器上的其它程序不就 cpu 时间少了么？是因为 cpu 大部分时间都是空闲的，不怕抢？还是因为在做应用层开发的时候，是不用考虑其它程序能不能抢到 cpu 时间的。</li>
-<li>一个进程所有线程能抢到的时间片总和是有最大值吗？一个线程一次能拿到多长的 cpu 时间？</li>
-</ol>
-<p>综上，我的最大疑问就是：对于单核 cpu 而言，开多线程难倒只能防止阻塞么？</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/12/single-core-cpu-multithreading/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/07/how-to-write-well-python-code/" itemprop="url">
-                如何写出有质量的python代码
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-11-07T00:00:00+08:00" content="2015-11-07">
-            2015-11-07
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/07/how-to-write-well-python-code/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/07/how-to-write-well-python-code/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。</p>
-<p>实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。</p>
-<h2 id="多考虑前期需求分析和设计"><a href="#多考虑前期需求分析和设计" class="headerlink" title="多考虑前期需求分析和设计"></a>多考虑前期需求分析和设计</h2><p>之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（uml和文档），花一两天去实现。这件事，编码的年龄越大，领悟越透彻。</p>
-<h2 id="写好异常"><a href="#写好异常" class="headerlink" title="写好异常"></a>写好异常</h2><p>异常本身不算是python特有的，这本身算是编程的基本功了，那我就从异常本身和python特性两方面，来谈谈异常。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/07/how-to-write-well-python-code/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2015/10/24/b-tree-and-b+-tree/" itemprop="url">
                 b树和b+树
               </a>
@@ -803,11 +615,190 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/09/20/design-good-protocol/" itemprop="url">
+                如何设计好一个协议
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-20T00:00:00+08:00" content="2015-09-20">
+            2015-09-20
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/20/design-good-protocol/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/20/design-good-protocol/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近一直在从设计到编码，一直在想什么是一个好的设计，以下是开发中的一些心得。</p>
+<h2 id="几类接口"><a href="#几类接口" class="headerlink" title="几类接口"></a>几类接口</h2><p>一开始我觉得我的服务有很多的接口，但是在后来我才发现，我的接口基本上就是三类(实际上应该有四类，但是目前只有三类，本文后面的部分会介绍还有哪三类)。</p>
+<h4 id="我的服务"><a href="#我的服务" class="headerlink" title="我的服务"></a>我的服务</h4><p>我的服务基本上有这样几个功能，我可以接收一笔订单，我的后台负责处理这笔订单。我还可以接收一个查询，返回一笔订单的状态, 还可以接收别的系统发来的通知，算是其它系统告诉我我对其它系统发出请求后的处理结果。这就是我指的三类接口。（以下的描述中，“我”是服务商，“你”就是请求方）</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/20/design-good-protocol/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/09/15/regular-expression-base/" itemprop="url">
+                正则表达式基础
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-15T00:00:00+08:00" content="2015-09-15">
+            2015-09-15
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/15/regular-expression-base/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/15/regular-expression-base/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>基础:</p>
+<h2 id="匹配字符元字符："><a href="#匹配字符元字符：" class="headerlink" title="匹配字符元字符："></a>匹配字符元字符：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">. 匹配除了换行符以外的任意字符</div><div class="line">\w 匹配字母或数字或下划线或汉字</div><div class="line">\W 匹配不是字母或数字或下划线或汉字</div><div class="line">\s 匹配任意的空白符，包括空格，制表符，换行符，中文全角空格</div><div class="line">\S 匹配任意的不是空白符，包括空格，制表符，换行符，中文全角空格</div><div class="line">\d 匹配数字</div><div class="line">\D 匹配不是数字</div><div class="line">\b 匹配单词的开始或结束</div><div class="line">\B 匹配不是单词的开始或结束</div><div class="line">^ 匹配字符串的开始</div><div class="line">$ 匹配字符串的结束</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/15/regular-expression-base/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/9/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/7/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/9/">&raquo;</a>
   </nav>
 
  </div>
@@ -841,7 +832,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-count">161</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -855,7 +846,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-count">64</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

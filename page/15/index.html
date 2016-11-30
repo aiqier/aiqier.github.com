@@ -174,195 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2015/01/31/from-oop-to-designpattern/" itemprop="url">
-                从面向对象到设计模式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-01-31T00:00:00+08:00" content="2015-01-31">
-            2015-01-31
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/01/31/from-oop-to-designpattern/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/31/from-oop-to-designpattern/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>在<code>《thinking in c++》</code>这本书上，作者将一段代码先用c去实现，然后再用c++来重写它，通过这种方式来论述c++在面向对象方面的优点。</p>
-<p>这里可以看出，其实C也可以写出“面向对象”的代码，只不过非常蹩脚(据说当年oop正当流行的时候，将汇编代码设计成oop的)，因为它不支持这些语法特性。</p>
-<p>而支持面向对象的语言可以将面向对象的功能做的很好。而作为支持面向对象的语言，如果面向对象编程都不能解决复用性和可维护性等问题，这个时候就需要使用设计模式了。</p>
-<p>也许将来会有一种语言直接支持设计模式吧。</p>
-<h2 id="面向对象是什么"><a href="#面向对象是什么" class="headerlink" title="面向对象是什么"></a>面向对象是什么</h2><p>教科书会告诉你，面向对象是“封装，继承，多态”。所谓封装，就是为了隐藏一个对象的实现细节，对外提供接口。而继承，是为了提高软件的复用性，父类的属性和代码可以直接继承，不用重复编写。多态，则是在运行时通过对一个对象指针赋不同的对象，而表现出多种形态。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/01/31/from-oop-to-designpattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/01/28/annual-technical-code-cleanliness/" itemprop="url">
-                2014年终技术总结之代码洁癖
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-01-28T00:00:00+08:00" content="2015-01-28">
-            2015-01-28
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/01/28/annual-technical-code-cleanliness/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/28/annual-technical-code-cleanliness/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>本文算是两部分，一部分是对《编写可读代码的艺术》一书的总结，一部分算是自己这一年来对代码书写的心得体会。</p>
-<p>虽然项目的整体构架和设计模式很重要，但程序员日常工作的大部分时间，还是会花在一些“基本”的事上，所以写的一手“好代码”，也十分重要。</p>
-<p>这些代码洁癖包括：</p>
-<pre><code>命名，注释以及审美-可以用于代码库每一行的小提示。
-简化循环和逻辑。
-在程序中定义循环，逻辑和变量，从而使得代码更容易理解。
-重新组织你的代码。
-在更高层次上组织大的代码块以及在功能层次上解决问题的方法。
-</code></pre><p>而代码洁癖，本身就是为了使代码更容易理解，你会发现，如果一个人的代码写的很干净，那么他的编程思路也绝对是清晰的。相反代码写的乱的人，他们的编程思路，甚至做事态度都是含糊不清的。</p>
-<p>关键思想: 代码的写法应当使别人理解它所需的时间最小化。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/01/28/annual-technical-code-cleanliness/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/" itemprop="url">
                 2014年终技术总结之从输入和输出的角度理解编程
               </a>
@@ -818,11 +629,195 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/12/24/fast-editor-emacs/" itemprop="url">
+                高效的emacs
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-12-24T00:00:00+08:00" content="2014-12-24">
+            2014-12-24
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/24/fast-editor-emacs/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/24/fast-editor-emacs/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>这篇文章用来总结自己对emacs的理解。本人之前使用过vim和sublime，现在主要使用emacs</p>
+<h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><p>就编辑速度来说，是不会有编辑器比vim更快的了。我也常常将代码片段，或者日志，xml，考到sublime进行分析。多行编辑很实用。</p>
+<p>但我在平时，主要还是使用emacs，无论是用它写博客，写代码，执行代码，写GTD，管理文档…都非常的方便。</p>
+<h2 id="键绑定"><a href="#键绑定" class="headerlink" title="键绑定"></a>键绑定</h2><p>一个高效的编辑器，就是能够做到不用鼠标，编辑时在鼠标和键盘之间进行切换是一件很恼人的事情。这点在你抱着笔记本进行写作的时候会深有体会。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/24/fast-editor-emacs/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/12/23/python-encode/" itemprop="url">
+                python中的str与unicode处理方法
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-12-23T00:00:00+08:00" content="2014-12-23">
+            2014-12-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/23/python-encode/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/23/python-encode/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。</p>
+<p>我也会在以后学习中，不断的修改此篇博客。</p>
+<p>这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。</p>
+<h2 id="str与字节码"><a href="#str与字节码" class="headerlink" title="str与字节码"></a>str与字节码</h2><p>首先，我们完全不谈unicode。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">"人生苦短"</span></div></pre></td></tr></table></figure>
+<p>s是个字符串，它本身存储的就是字节码。那么这个字节码是什么格式的？</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/23/python-encode/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/16/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/14/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/16/">&raquo;</a>
   </nav>
 
  </div>
@@ -856,7 +851,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-count">161</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -870,7 +865,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-count">64</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

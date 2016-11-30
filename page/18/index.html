@@ -174,192 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2014/11/01/sql-subquery/" itemprop="url">
-                sql知识总结之子查询
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-11-01T00:00:00+08:00" content="2014-11-01">
-            2014-11-01
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/11/01/sql-subquery/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/01/sql-subquery/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近sql语句接触的比较多，这里总结一下子查询的相关知识，我使用的数据库是<code>postgres</code>(所以sql语句会与mysql之类的有所不同,字段，表名需要被双引号括住)</p>
-<p>但如果是使用方法，那我直接看文档就好了，之所以写成博客，是分享我对子查询的理解方式。</p>
-<h4 id="从输入和输出的方式理解子查询。"><a href="#从输入和输出的方式理解子查询。" class="headerlink" title="从输入和输出的方式理解子查询。"></a>从输入和输出的方式理解子查询。</h4><p>首先我们要理解，在关系数据库中，始终是对二维表的操作，比如你的<code>SELECT</code>结果是一张表，你的<code>FROM</code>也是要对一张表。</p>
-<p><code>WHERE</code>是一个谓词没错，但是构成这个谓词的，可能需要一个值： <code>WHERE &quot;NAME&quot; = &#39;aiqier&#39;</code></p>
-<p>或者可能需要一个多行(类似于python的元组)： <code>WHERE &quot;Oid&quot; IN (111, 222, 333, 444))</code></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/11/01/sql-subquery/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/10/23/plants-vs-zombies-jinzanhua/" itemprop="url">
-                植物大战僵尸中的金盏花
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-10-23T00:00:00+08:00" content="2014-10-23">
-            2014-10-23
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/游戏/" itemprop="url" rel="index">
-                  <span itemprop="name">游戏</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/10/23/plants-vs-zombies-jinzanhua/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/10/23/plants-vs-zombies-jinzanhua/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>这篇博客是玩植物大战僵尸时发现的一件趣事:</p>
-<hr>
-<p><img src="/img/jinzhanhua.jpg" alt="Marigold"></p>
-<p><strong>这种花每24秒生产一个银币或金币</strong></p>
-<p>于是有些“贪财鬼”想到了这种方式来在游戏中刷钱：</p>
-<p><img src="/img/jinzhanhua-nomoney-1.jpg" alt="NoMoney"></p>
-<p>看似很聪明的办法，留下最后一只僵尸的命，让游戏无法结束，然后让金盏花不停的生钱。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/10/23/plants-vs-zombies-jinzanhua/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2014/10/16/practical-common-lisp-read-note-4/" itemprop="url">
                 实用common lisp 教程 读书笔记4
               </a>
@@ -797,11 +611,190 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/09/19/acl-ch3-exercises/" itemprop="url">
+                ANSI Common Lisp 第三章习题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-09-19T00:00:00+08:00" content="2014-09-19">
+            2014-09-19
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/09/19/acl-ch3-exercises/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/19/acl-ch3-exercises/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p><em>问题</em>:1.用箱子表示法表示以下列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(a) (a b (c d))</div><div class="line">(b) (a (b (c (d))))</div><div class="line">(c) (((a b) c) d)</div><div class="line">(d) (a (b . c) d)</div></pre></td></tr></table></figure>
+<p><em>答案</em>:</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/09/19/acl-ch3-exercises/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/09/16/acl-ch2-exercises/" itemprop="url">
+                ANSI Common Lisp 第二章习题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-09-16T00:00:00+08:00" content="2014-09-16">
+            2014-09-16
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/09/16/acl-ch2-exercises/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/16/acl-ch2-exercises/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p><em>问题</em>: 1.描述下列表达式求值之后的结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">;; (a)</div><div class="line">(+ (- 5 1) (+ 3 7))</div><div class="line">;; (b)</div><div class="line">(list 1 (+ 2 3))</div><div class="line">;; (c)</div><div class="line">(if (listp 1) (+ 1 2) (+ 3 4))</div><div class="line">;; (d)</div><div class="line">(list (and (listp 3) t) (+ 1 2))</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/09/16/acl-ch2-exercises/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/19/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/17/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/19/">&raquo;</a>
   </nav>
 
  </div>
@@ -835,7 +828,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-count">161</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -849,7 +842,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-count">64</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
