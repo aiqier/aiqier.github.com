@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2016/09/24/why-sleep-in-rain-so-happy/" itemprop="url">
+                为什么下雨天睡觉这么爽？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-09-24T00:00:00+08:00" content="2016-09-24">
+            2016-09-24
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/生活/" itemprop="url" rel="index">
+                  <span itemprop="name">生活</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/09/24/why-sleep-in-rain-so-happy/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/24/why-sleep-in-rain-so-happy/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>北京最近下了好几次雨，几乎都是到了深夜还在下。这几次雨对我的影响而言，除了降低温度让我不得不买换季的衣服外，就是让我夜里能快速入睡。<br>我一直觉得这是一件很神奇的事情，下雨本来是一件很吵的事情，但是却能让你快速入睡，而过于安静有时候你反而睡不着。</p>
+<p><img src="/img/rain.png" alt="Bootstrap"></p>
+<p>其实如果晚上睡不着的时候，我还会用手机播放下雨声的mp3（文艺青年装起逼来自己都怕）。这声音简直比什么“请大家跟着我的声音放松。”这样的音乐更有效。简直可以跟英语老师的课同登“入眠音乐”的榜首。</p>
+<p>然后那天我发了一条朋友圈，就是说自己最喜欢在雨声中睡觉，没想到有很多人点赞，我发现很多人都有这种感觉。</p>
+<p>我带着疑问去,知乎，果壳等网站寻找答案。有几个说法来解释这一现象。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/24/why-sleep-in-rain-so-happy/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/09/03/cost-reduction/" itemprop="url">
                 降低成本
               </a>
@@ -705,103 +797,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/07/02/tornado-asynchronous-http-request-bug/" itemprop="url">
-                tornado并行多个异步请求的坑
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-07-02T00:00:00+08:00" content="2016-07-02">
-            2016-07-02
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/07/02/tornado-asynchronous-http-request-bug/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/02/tornado-asynchronous-http-request-bug/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>之前的博客，写到过这个技巧，就是tornado可以让多个请求，并行发出。</p>
-<p>只所以这样，是因为比如你要n个接口的返回结果：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">response1 = <span class="keyword">yield</span> http_client.fetch(url1)</div><div class="line">response2 = <span class="keyword">yield</span> http_client.fetch(url2)</div><div class="line">...</div><div class="line">responsen = <span class="keyword">yield</span> http_client.fetch(urln)</div></pre></td></tr></table></figure>
-<p>那么你这样实现之后，虽然你的服务是异步的，但是却假定他们的请求之间存在某种先后关系，也就是说response1获得了，才可以获得response2。<br>但是实际上n个异步请求是可以并行的，而且tornado也支持这种写法(列表和字典都可以)：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">response1, response2,... responsen = <span class="keyword">yield</span> [http_client.fetch(url1) ,  http_client.fetch(url2), ...... ,http_client.fetch(url2) ]</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/02/tornado-asynchronous-http-request-bug/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
   </nav>
 
  </div>
@@ -835,14 +835,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">161</span>
+              <span class="site-state-item-count">162</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>

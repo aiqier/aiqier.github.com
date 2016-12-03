@@ -174,6 +174,103 @@
           
           
             
+              <a class="post-title-link" href="/2015/01/28/annual-technical-code-cleanliness/" itemprop="url">
+                2014年终技术总结之代码洁癖
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-01-28T00:00:00+08:00" content="2015-01-28">
+            2015-01-28
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/01/28/annual-technical-code-cleanliness/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/28/annual-technical-code-cleanliness/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>本文算是两部分，一部分是对《编写可读代码的艺术》一书的总结，一部分算是自己这一年来对代码书写的心得体会。</p>
+<p>虽然项目的整体构架和设计模式很重要，但程序员日常工作的大部分时间，还是会花在一些“基本”的事上，所以写的一手“好代码”，也十分重要。</p>
+<p>这些代码洁癖包括：</p>
+<pre><code>命名，注释以及审美-可以用于代码库每一行的小提示。
+简化循环和逻辑。
+在程序中定义循环，逻辑和变量，从而使得代码更容易理解。
+重新组织你的代码。
+在更高层次上组织大的代码块以及在功能层次上解决问题的方法。
+</code></pre><p>而代码洁癖，本身就是为了使代码更容易理解，你会发现，如果一个人的代码写的很干净，那么他的编程思路也绝对是清晰的。相反代码写的乱的人，他们的编程思路，甚至做事态度都是含糊不清的。</p>
+<p>关键思想: 代码的写法应当使别人理解它所需的时间最小化。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/01/28/annual-technical-code-cleanliness/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/" itemprop="url">
                 2014年终技术总结之从输入和输出的角度理解编程
               </a>
@@ -720,104 +817,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/12/23/python-encode/" itemprop="url">
-                python中的str与unicode处理方法
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-12-23T00:00:00+08:00" content="2014-12-23">
-            2014-12-23
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/12/23/python-encode/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/23/python-encode/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。</p>
-<p>我也会在以后学习中，不断的修改此篇博客。</p>
-<p>这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。</p>
-<h2 id="str与字节码"><a href="#str与字节码" class="headerlink" title="str与字节码"></a>str与字节码</h2><p>首先，我们完全不谈unicode。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">"人生苦短"</span></div></pre></td></tr></table></figure>
-<p>s是个字符串，它本身存储的就是字节码。那么这个字节码是什么格式的？</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/23/python-encode/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/16/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/14/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/16/">&raquo;</a>
   </nav>
 
  </div>
@@ -851,14 +855,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">161</span>
+              <span class="site-state-item-count">162</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
