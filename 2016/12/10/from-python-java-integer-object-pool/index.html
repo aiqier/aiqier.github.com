@@ -1,0 +1,697 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="python,java," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="最近有同事分享了一次java基础，里面提到了java基础类型的包装类型（比如Integer）和String都有自己的常量池,我突然想到在python中也有类似的东西，所以本来想写一篇关于分析python和java常量池的博客，但是后来我发现这里面的内容还挺多的，所以我决定先从整型常量池入手，下次再分析字符串的。
+需要提到的是，我只是因为找到的有关python小整型池和大整型池的资料，才特意介绍py">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从python到java之整型常量池">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/12/10/from-python-java-integer-object-pool/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="最近有同事分享了一次java基础，里面提到了java基础类型的包装类型（比如Integer）和String都有自己的常量池,我突然想到在python中也有类似的东西，所以本来想写一篇关于分析python和java常量池的博客，但是后来我发现这里面的内容还挺多的，所以我决定先从整型常量池入手，下次再分析字符串的。
+需要提到的是，我只是因为找到的有关python小整型池和大整型池的资料，才特意介绍py">
+<meta property="og:updated_time" content="2016-12-10T10:06:11.158Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从python到java之整型常量池">
+<meta name="twitter:description" content="最近有同事分享了一次java基础，里面提到了java基础类型的包装类型（比如Integer）和String都有自己的常量池,我突然想到在python中也有类似的东西，所以本来想写一篇关于分析python和java常量池的博客，但是后来我发现这里面的内容还挺多的，所以我决定先从整型常量池入手，下次再分析字符串的。
+需要提到的是，我只是因为找到的有关python小整型池和大整型池的资料，才特意介绍py">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 从python到java之整型常量池 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              从python到java之整型常量池
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-12-10T00:00:00+08:00" content="2016-12-10">
+            2016-12-10
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程语言/" itemprop="url" rel="index">
+                  <span itemprop="name">编程语言</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/12/10/from-python-java-integer-object-pool/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/from-python-java-integer-object-pool/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>最近有同事分享了一次java基础，里面提到了java基础类型的包装类型（比如Integer）和String都有自己的常量池,我突然想到在python中也有类似的东西，所以本来想写一篇关于分析python和java常量池的博客，但是后来我发现这里面的内容还挺多的，所以我决定先从整型常量池入手，下次再分析字符串的。</p>
+<p>需要提到的是，我只是因为找到的有关python小整型池和大整型池的资料，才特意介绍python的。我并没有找到关于java大整型对象存储技术的文献，但是我猜都能猜到，如果java真有这方面的优化需求，是一定会有类似的东西，如果之后我了解到了，我会在自己的博客中再去介绍的。</p>
+<h2 id="java常量池"><a href="#java常量池" class="headerlink" title="java常量池"></a>java常量池</h2><p>首先是java的常量池，我搜索了java的常量池，大部分提到了，“java中基本类型的包装类的大部分都实现了常量池技术”这句话，它们都提到了对于Interger这样的对象（Byte，Short，Long，Character类似）在值小于127的时候，会默认使用内存池中已经创建好的数据。</p>
+<p>这也就是为什么：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Integer i1 = <span class="number">100</span>;</div><div class="line">Integer i2 = <span class="number">100</span>;</div></pre></td></tr></table></figure>
+<p>的时候， <code>i1 == i2</code>会返回true，而在</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Integer i2 = <span class="number">200</span>;</div><div class="line">Integer i2 = <span class="number">200</span>;</div></pre></td></tr></table></figure>
+<p>的时候， <code>i1 == i2</code>会返回False。</p>
+<a id="more"></a>
+<p>这个很好理解，首先java中 <code>==</code> 对对象而言，代表是否是同一引用（equal用来比较是否值相等）。还有就是我们没有 new Integer，而是直接使用看上去像是赋值的操作，因为使用了装箱操作。</p>
+<p>这里需要提到的是如果i1和i2都是int型的基础类型，那么他们无论有多大，比较起来都是相等的，因为这部分内存是放在栈的，它们仅仅是基础类型，而非引用堆中的对象。</p>
+<h2 id="python整型常量池"><a href="#python整型常量池" class="headerlink" title="python整型常量池"></a>python整型常量池</h2><p>先说明的是，python中没有基础类型这种东西，万物皆对象，而且<code>==</code>在比较两个整型的时候就是在比较值大小，比较是否是同一对象的引用使用is关键字。</p>
+<p>python中的整型常量池分为小整型对象池和大整型对象池。（这个说法出自python源码分析）</p>
+<p>对于一些常用的整型，python也是提前初始化好的：</p>
+<p>在[-5, 257)这个区间内的整数，被称为小整数对象，类似于java常量池，是一开始就初始化好的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">a = <span class="number">1</span></div><div class="line">b = <span class="number">1</span></div><div class="line">a == b <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># True</span></div><div class="line"><span class="keyword">print</span> id(a)</div><div class="line"><span class="keyword">print</span> id(b)</div></pre></td></tr></table></figure>
+<p>而对于超过此区间的对象，就需要在每次需要的时候创建了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">a = <span class="number">1000</span></div><div class="line">b = <span class="number">1000</span></div><div class="line">a == b <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># False</span></div><div class="line"><span class="keyword">print</span> id(a)</div><div class="line"><span class="keyword">print</span> id(b)</div></pre></td></tr></table></figure>
+<p>上面的例子是针对解释器运行，如果是运行脚本，还有不同的地方，后面会再解释。</p>
+<p>但是这些要创建的大整型对象，并不是直接在一块堆内存上创建的（如果是那效率就太挫了），而是维护了一个专门的数据结构，我们称其为大整型对象池。</p>
+<p>这个池的数据结构类似于一个单向链表，每一个节点是一个可以存放python Int对象的数组。然后在每次创建python大整型INT对象的时候，如果单向链表中没有空间可用，那就会创建一块新的python Int数组空间，链接到单向链表中。否则就直接使用数组中的内存就可以了。之所以要数组和链表结合使用，就是因为数组的查找要快，而链表的释放和创建自由灵活。这种模型在内存管理中很常见。</p>
+<p>而且你应该知道python的对象回收机制，就是在引用计数减为0的时候，这个内存就会被回收。所以对我们刚才提到的大整型对象如果没有引用指向它，它就会被python虚拟机回收。但是坑的地方是，它并不会释放给操作系统，而仅仅是回收给这个大整型对象池的free区，用于再次使用。这也就是说你的这个大整型对象池，只增不减。这听上去很像是内存泄漏。</p>
+<p>你可以试一试，如果创建了一大堆的python int对象，你的内存将飙高到几个G，然后即使你del 了这些用于存放int对象的容器，你的python进程的内存也没有变小，也就是说除非你的python进程结束，否则这些内存永远不会还给操作系统。</p>
+<h4 id="这是个问题？"><a href="#这是个问题？" class="headerlink" title="这是个问题？"></a>这是个问题？</h4><p>这其实不是问题，首先它并不是内存泄漏，严格意义来讲，内存泄漏是指无法找到内存空间了，比如c++和c中的指针的作用域没了，访问那些内存的方式你找不到了。但是实际上对于大整型内存池而言，我们可以找到这些内存，它们也可以被我们重复使用。而且现代操作系统，内存是用缺页分配的。所以不会占用那么多“真实的内存”。</p>
+<h4 id="这是设计缺陷？"><a href="#这是设计缺陷？" class="headerlink" title="这是设计缺陷？"></a>这是设计缺陷？</h4><p>工程上的事，往往就是在做去权衡。还有就是那些认为这是设计缺陷的人，简直就是在说“我比python作者聪明”。我仔细想了想，这些可以重复使用的内存块，它们分散在链表上数组的各处，根本没什么好的办法释放它们，所以在运行效率上权衡，就只能设计成这样了。</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>口说无凭，看看cpython的实现源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</div><div class="line">	PyObject_HEAD;</div><div class="line">	<span class="keyword">long</span> ob_ival;</div><div class="line">&#125; PyIntObject;</div></pre></td></tr></table></figure>
+<p>上面就是提到的PyIntObject的C底层数据结构。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NSMALLPOSINTS</span></div><div class="line">    <span class="meta">#<span class="meta-keyword">define</span> NSMALLPOSINTS 257</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NSMALLNEGINTS</span></div><div class="line">    <span class="meta">#<span class="meta-keyword">define</span> NSMALLNEGINTS 5</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">if</span> NSMALLNEGINTS + NSMALLPOSINTS &gt; 0</span></div><div class="line">    <span class="keyword">static</span> PyIntObject *small_ints[NSMALLNEGINTS + NSMALLPOSINTS];</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
+<p>上面就是小整型常量池的大小定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> _intblock&#123;</div><div class="line">    <span class="keyword">struct</span> _intblock *next;</div><div class="line">    PyIntObject objects[N_INTOBJECTS];	</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>上面就是我们说的用于给大整型对象的内存块节点，可以看到，每个节点是一个PyIntObject数组。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> _inblock PyIntBlock;</div><div class="line"></div><div class="line"><span class="keyword">static</span> PyIntBlock *block_list = <span class="literal">NULL</span>;</div><div class="line"><span class="keyword">static</span> PyIntObject *free_list = <span class="literal">NULL</span>;</div></pre></td></tr></table></figure>
+<p>其中block_list指针，就是大整型数组对象链表的头节点，而free_list就是可用内存（空闲内存）的头节点。</p>
+<p>而且我们提到，被删除的PyIntObject对象，它的空间可以被重新使用，这种重新使用的方式就是指它们会以单链表的形式串连在一起，而表头就是free_list</p>
+<h4 id="遗留问题，解释器运行和python程序运行"><a href="#遗留问题，解释器运行和python程序运行" class="headerlink" title="遗留问题，解释器运行和python程序运行"></a>遗留问题，解释器运行和python程序运行</h4><p>前面提到的那段python代码，在python的解释器运行和作为python代码运行，结果不一样的，我猜测可能是因为解释器是逐条执行，而python代码则存在整体处理的过程。<br>最后我在网上找到这样一种解答：</p>
+<p>“Cpython代码的编译单元是函数，也就是说每个函数会单独编译，对于同一个编译单元中出现相同值的常量，只会出现一份。对于不同单元的编译单元，值相同的常量不一定会应用到运行时的同一对象。”</p>
+<p>写两个例子，就全都明白了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">m</span><span class="params">()</span>:</span></div><div class="line">    a = <span class="number">1</span></div><div class="line">    <span class="keyword">print</span> id(a)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">n</span><span class="params">()</span>:</span></div><div class="line">    b = <span class="number">1</span></div><div class="line">    <span class="keyword">print</span> id(b)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    m()</div><div class="line">    n()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">m</span><span class="params">()</span>:</span></div><div class="line">    a = <span class="number">1000</span></div><div class="line">    <span class="keyword">print</span> id(a)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">n</span><span class="params">()</span>:</span></div><div class="line">    b = <span class="number">1000</span></div><div class="line">    <span class="keyword">print</span> id(b)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    m()</div><div class="line">    n()</div></pre></td></tr></table></figure>
+<p>所以解释器逐条执行的，应该是不同的编译单元。</p>
+<h1 id="参考阅读"><a href="#参考阅读" class="headerlink" title="参考阅读"></a>参考阅读</h1><p>《python源码分析》</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#python</a>
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/03/what-is-strong-weak-language/" rel="next">强弱类型到底是个啥？</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/12/10/from-python-java-integer-object-pool/"
+     data-title="从python到java之整型常量池"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2016/12/10/from-python-java-integer-object-pool/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/12/10/from-python-java-integer-object-pool/"
+                   data-title="从python到java之整型常量池" data-url="http://www.pulpcode.cn/2016/12/10/from-python-java-integer-object-pool/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java常量池"><span class="nav-number">1.</span> <span class="nav-text">java常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python整型常量池"><span class="nav-number">2.</span> <span class="nav-text">python整型常量池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#这是个问题？"><span class="nav-number">2.0.1.</span> <span class="nav-text">这是个问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#这是设计缺陷？"><span class="nav-number">2.0.2.</span> <span class="nav-text">这是设计缺陷？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#证明"><span class="nav-number">3.</span> <span class="nav-text">证明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#遗留问题，解释器运行和python程序运行"><span class="nav-number">3.0.1.</span> <span class="nav-text">遗留问题，解释器运行和python程序运行</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考阅读"><span class="nav-number"></span> <span class="nav-text">参考阅读</span></a></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
