@@ -174,6 +174,101 @@
           
           
             
+              <a class="post-title-link" href="/2015/07/14/python-import/" itemprop="url">
+                从几个实验来分析python import
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-14T00:00:00+08:00" content="2015-07-14">
+            2015-07-14
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/07/14/python-import/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/14/python-import/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="一些实验："><a href="#一些实验：" class="headerlink" title="一些实验："></a>一些实验：</h2><p>首先a文件中有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">"this is a"</span></div></pre></td></tr></table></figure>
+<p>b文件中有：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> a</div><div class="line"><span class="keyword">print</span> <span class="string">"this is b"</span></div></pre></td></tr></table></figure></p>
+<p>然后执行b： <code>python b.py</code></p>
+<p>结果为：</p>
+<pre><code>this is a
+this is b
+</code></pre><p>结论：在import a的时候，执行了a脚本</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/07/14/python-import/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/07/12/how-to-write-a-pretty-log/" itemprop="url">
                 如何打好一个日志
               </a>
@@ -728,100 +823,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/06/13/escape-string/" itemprop="url">
-                字符串的转义和反转义
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-06-13T00:00:00+08:00" content="2015-06-13">
-            2015-06-13
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/06/13/escape-string/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/13/escape-string/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h4 id="ASCII字符转义"><a href="#ASCII字符转义" class="headerlink" title="ASCII字符转义"></a>ASCII字符转义</h4><p>每次说到转义字符，首先想到的就是ASCII码。</p>
-<p>转义字符就是一种代表，我们要区分<strong>展示</strong>和其本身<strong>在内存，在硬盘中的存储</strong>的区别。</p>
-<p>比如这两个：</p>
-<p>\a 响铃(BEL) 007</p>
-<p>\b 退格(BS)  008</p>
-<p>也就是说我们在字符串中输入的’\a’就是代表了一个字符，那么假如说我就是想要’\a’这两个字符呢？</p>
-<p>这时候就要用到反转义了：’\a’ 就代表 ‘\a’(两个字符)</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/06/13/escape-string/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -860,7 +861,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-count">164</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2015/01/02/undo-redo-mode/" itemprop="url">
+                编辑器的撤销和重做如何实现
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-01-02T00:00:00+08:00" content="2015-01-02">
+            2015-01-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/01/02/undo-redo-mode/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/02/undo-redo-mode/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>我一直好奇，编辑器的<code>undo</code>和<code>redo</code>是如何实现的，而且因为不了解<code>uodo</code>和<code>redo</code>工作原理到底是怎样的。常常会发现它并不能我所想的去工作。</p>
+<p>这篇文章用一种模型解释undo和redo，我在编辑器上试过这种思路是没问题的，但我不能把握这种模型一定是对的，如果在以后的学习中发现还有问题，我会进一步修改。</p>
+<h2 id="清晰的思路"><a href="#清晰的思路" class="headerlink" title="清晰的思路"></a>清晰的思路</h2><p>首先要明白，为什么有的时候我们点击<code>redo</code>是没用的，因为只有<code>undo</code>的才能<code>redo</code>，你在一个新操作上<code>redo</code>是没用的。</p>
+<p>而且，虽然看上去在操作过程中，我们是在保存每一次的状态，但是在底层实现中，程序员是不会蠢到把每一次的缓冲区都保存为状态，真实情况就是<code>只保存变化</code>。这还真算是编程里面的一个范式了。版本管理器的原理也是如此。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/01/02/undo-redo-mode/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/12/24/fast-editor-emacs/" itemprop="url">
                 高效的emacs
               </a>
@@ -710,98 +801,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/12/06/think-about-Shawshank/" itemprop="url">
-                另一种角度思考《肖申克的救赎》
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-12-06T00:00:00+08:00" content="2014-12-06">
-            2014-12-06
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/电影/" itemprop="url" rel="index">
-                  <span itemprop="name">电影</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/12/06/think-about-Shawshank/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/06/think-about-Shawshank/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p><img src="/img/xiaoshenke.jpg" alt="肖申克的救赎"></p>
-<p>瑞德被释放后，去安迪在逃离前告诉他的那个橡树下找到一盒现金，两个老朋友终于在墨西哥阳光明媚的海滨重逢了。你是否觉得一切都是那么的温馨，励志？</p>
-<p>《肖申克的救赎》是我最喜欢的电影之一，而且我还特意读了斯蒂芬金的原著，我印象深刻的是原著中典狱长最后并没有自杀，而是被检察院带走了。而且原著最后也没有描写两人在重逢的画面。据说电影本来也是打算这么拍的，作为一个开放结局，最后多亏看样片的观众非常喜爱重逢的画面，才使得导演保留。</p>
-<p>但是我想从另外一种角度去理解肖申克的救赎。</p>
-<p><img src="/img/xiaoshenke2.jpg" alt="肖申克的救赎"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/06/think-about-Shawshank/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -840,7 +839,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">163</span>
+              <span class="site-state-item-count">164</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
