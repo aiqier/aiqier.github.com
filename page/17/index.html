@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2014/12/08/staging-price-calculation/" itemprop="url">
+                记一次工作中的金融计算程序
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-12-08T00:00:00+08:00" content="2014-12-08">
+            2014-12-08
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/08/staging-price-calculation/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/08/staging-price-calculation/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><p>最近工作中要实现一个计算分期价款程序。</p>
+<p>比如1000万的总金额，如果分5期付完，那么第一期要占50%（也就是500），其余四期要均分剩余的50%，也就是125万，那么你得到的结果列表应该是<code>[500,125,125,125,125]</code></p>
+<p>但是并没有那么简单。</p>
+<p>首先，不仅仅能够从总金直接生成，因为用户可以根据需要修改任意一期，那么其后金额的也要跟着变化。比如上面例子中的数据，如果修改了第二期。将其修改为200，那么余下三期将分摊剩下的300，那么结果列表将变为<code>[500,200,100,100,100]</code>。</p>
+<p>当然实际情况比这个还要复杂一点，因为要考虑到整除，也就是金额部分不能有小数。那么期数越大，比如11，是很容易不能整除的。</p>
+<p>我的第一种做法是将每期的的小数部分保存在一个值中，最后将这个不断累加的值加到最后一期。但是这样算会有误差，（除法带来的误差），而且难以测试。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/08/staging-price-calculation/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/12/06/think-about-Shawshank/" itemprop="url">
                 另一种角度思考《肖申克的救赎》
               </a>
@@ -709,103 +802,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/11/06/c-sharp-event-delegate/" itemprop="url">
-                c#事件处理之委托
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-11-06T00:00:00+08:00" content="2014-11-06">
-            2014-11-06
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/11/06/c-sharp-event-delegate/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/06/c-sharp-event-delegate/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>最近打算写一个系列博客，总结c#中的事件处理，第一部分写委托。</p>
-<h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><p>委托(delegate)是一种可以把引用存储为函数的类型，这类似于c++中的函数指针。</p>
-<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p>c++中的回调函数，就是用函数指针来实现的。类似的，c#中用委托，来实现回调函数的功能。</p>
-<p>回调函数为什么被称为回调函数？比如你调用了一个函数，那么就叫调用，但是如果你在调用一个函数的时候，还需要把一个函数提供给该函数，让这个函数来调用你的函数，那么你提供的这个函数就被称为回调函数（callback）。</p>
-<p>对于python这样的动态语言而言，就没有c#，c++提供特殊的语法实现回调函数，因为在python中，函数也是一个对象，无论是当参数传，还是当函数的返回值，都不会有问题。</p>
-<p>回调函数还被用来当作一个“插件”：</p>
-<p>在C++的STL库中，排序函数的具体算法已经被实现，但是两个元素的具体比较办法，通过回调函数提供（比较函数），保证该算法可用于int，string等不同类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">( iterator start, iterator end )</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">( iterator start, iterator end, StrictWeakOrdering cmp )</span></span>;</div></pre></td></tr></table></figure>
-<h2 id="c-委托"><a href="#c-委托" class="headerlink" title="c#委托"></a>c#委托</h2><p>委托常常被使用在事件处理中。因为可以将事件触发后的具体操作（该做哪些事情）委托给实现类。这个就是好莱坞法则，“Don’t call me, I will call you”。</p>
-<p>这个例子来源于c#经典入门：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">delegate double ProcessDelegate(double param1, double param2);</div><div class="line"></div><div class="line">static double Multiply(double param1, double param2)</div><div class="line">&#123;</div><div class="line">    return param1 * param2;</div><div class="line">&#125;</div><div class="line"></div><div class="line">staitc double Divide(double param1, double param2)</div><div class="line">&#123;</div><div class="line">    return param1 / param2;</div><div class="line">&#125;</div><div class="line"></div><div class="line">if (input == &quot;M&quot;)</div><div class="line">    process = new ProcessDelegate(Multiply);</div><div class="line">else</div><div class="line">    process = new ProcessDelegate(Divide);</div></pre></td></tr></table></figure>
-<p>但真实情况我们并不通过逻辑判断初始化回调函数，下面的这个函数插件的例子更常见。</p>
-<p>```c#<br>static void ExecuteFunction(ProcessDelegate process)<br>{<br>    process(2.2, 3.3);<br>}</p>
-<p>还有一个更常用的就是用于事件处理了，将在第三篇博客介绍。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -844,14 +840,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">164</span>
+              <span class="site-state-item-count">165</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
