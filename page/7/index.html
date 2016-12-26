@@ -174,6 +174,103 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/27/three-party-interface-solution/" itemprop="url">
+                请求三方接口的解决方案
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-27T00:00:00+08:00" content="2015-12-27">
+            2015-12-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/27/three-party-interface-solution/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/27/three-party-interface-solution/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前的工作任务，大多一直在做这样一件事，请求第三方接口，并将接口数据进行解析成固定格式后返回。之后在做业务处理，包括更新数据库状态之类的。</p>
+<p>这里想展示一种解决方案，能够解决以下的问题，包括:</p>
+<ol>
+<li>请求出现异常，包括链接超时，解析异常，请求错误的处理。</li>
+<li>方便的进行单元测试。</li>
+<li>方便的进行扩展。</li>
+</ol>
+<p>注意第3条是指数据来源可能是不同的url，请求和相应格式都不同，但是要做的业务逻辑却是相同的，如何做到方便扩展，接入新的三方时，不用该业务代码。</p>
+<p>还有第2点，特别提到了单元测试，这里我是指模拟测试，因为在真实情况下，这些类似于创建订单的接口，不是你想调用就调用的，甚至是有些接口，比如银行的服务，在调用的时候都是有成本的，这个时候使用模拟类来完成单元测试就非常有必要了。在这个例子中我们使用的python的mock对象。</p>
+<p>下面我会写一个假的例子，来讲解我的解决方案，实际上我们大多数调用的三方接口，并不是走查询这么简单，其实更多是一些post接口，包括下单，和通知。就算是查询接口，可能也不会走get，而是走的post协议。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/27/three-party-interface-solution/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/26/python-web-design-pattern/" itemprop="url">
                 python web开发中的设计模式
               </a>
@@ -712,97 +809,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/18/use-nginx-deployment-tornado/" itemprop="url">
-                使用nginx部署tornado
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-11-18T00:00:00+08:00" content="2015-11-18">
-            2015-11-18
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/18/use-nginx-deployment-tornado/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/18/use-nginx-deployment-tornado/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>虽然tornado是一个不错的web服务器，但是在真实的生产环境，我们还是会布置多份,而且一般情况下，份数和cpu核数一样。</p>
-<p>首先一个重要的原因是单线程的tornado，在遇到同步的堵塞请求时，会使整个服务都停到那里，这样你就无法在处理新的请求，所谓的同步请求，就是类似数据库查询，<br>或者是磁盘访问块。</p>
-<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p>之前在介绍flask的部署方式时，已经提到nginx的好处了，nginx本身是一个更安全，更专业的服务器，而且对静态资源也有更好的支持，在加上机器上还有其它的web服务要管理，那nginx自然是最好的选择了。</p>
-<p>基本流程是：客户端通过Internet连接一个反向代理服务器，然后反向代理服务器发送请求到代理后端的Tornado服务器池中的任何一个主机。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/18/use-nginx-deployment-tornado/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -841,7 +847,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">165</span>
+              <span class="site-state-item-count">166</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

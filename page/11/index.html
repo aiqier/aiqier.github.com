@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/05/user-guide-sqlalchemy/" itemprop="url">
+                sqlalchemy使用手册
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-05T00:00:00+08:00" content="2015-08-05">
+            2015-08-05
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/05/user-guide-sqlalchemy/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/05/user-guide-sqlalchemy/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>我们在开发过程中需要使用python去连接mysql，pymysql过于“老土”，所以我选择使用sqlalchemy。</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>我一般在配置文件中，配置mysql相关的用户名，密码，等参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine</div><div class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker</div><div class="line"></div><div class="line">DB_CONNECT_STRING = <span class="string">"mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8"</span></div><div class="line">engine = create_engine(DB_CONNECT_STRING % (config.MYSQL_USER, config.MYSQL_PASSWD, config.MYSQL_HOST, config.MYSQL_PORT, config.MYSQL_DB), echo=config.SQLALCHEMY_ECHO)</div><div class="line">DB_Session = scoped_session(sessionmaker(bind=engine))</div></pre></td></tr></table></figure>
+<p>其中：create_engine() 会返回一个数据库引擎,sessionmaker() 会生成一个数据库会话类。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/08/05/user-guide-sqlalchemy/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/07/26/say-gobye-to-emacs/" itemprop="url">
                 再见了，emacs
               </a>
@@ -731,97 +822,6 @@ this is b
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/06/22/digital-signature-for-how-to-study-technology/" itemprop="url">
-                从一次数字签名的学习中总结做技术的一些思路
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-06-22T00:00:00+08:00" content="2015-06-22">
-            2015-06-22
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/06/22/digital-signature-for-how-to-study-technology/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/22/digital-signature-for-how-to-study-technology/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>也许是你某次了解了一些关于数字签名的知识，想要系统的学习一下。或者是你的某个项目让你不得不找一种技术方案，你找到了数字签名，然后打算继续学着看看怎么用。</p>
-<h4 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h4><p>首先你会读到类似的资料（来源于网络）：</p>
-<p>“发送报文时，发送方用一个哈希函数从报文文本中生成报文摘要,然后用自己的私人密钥对这个摘要进行加密，这个加密后的摘要将作为报文的数字签名和报文一起发送给接收方，接收方首先用与发送方一样的哈希函数从接收到的原始报文中计算出报文摘要，接着再用发送方的公用密钥来对报文附加的数字签名进行解密，如果这两个摘要相同、那么接收方就能确认该数字签名是发送方的。</p>
-<p>数字签名有两种功效：一是能确定消息确实是由发送方签名并发出来的，因为别人假冒不了发送方的签名。二是数字签名能确定消息的完整性。因为数字签名的特点是它代表了文件的特征，文件如果发生改变，数字摘要的值也将发生变化。不同的文件将得到不同的数字摘要。 一次数字签名涉及到一个哈希函数、发送者的公钥、发送者的私钥。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/06/22/digital-signature-for-how-to-study-technology/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -860,7 +860,7 @@ this is b
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">165</span>
+              <span class="site-state-item-count">166</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
