@@ -1,0 +1,695 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="多核," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="Starting不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。
+这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。”
+类似于网上流传的这张图：
+
+本篇博客将试图讲清楚为什么会这样，顺便解答此篇博">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为啥你的多核手机打游戏没啥提升">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/01/02/why-your-multi-core-phone-not-have-any-useful/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="Starting不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。
+这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。”
+类似于网上流传的这张图：
+
+本篇博客将试图讲清楚为什么会这样，顺便解答此篇博">
+<meta property="og:image" content="http://www.pulpcode.cn/img/19core.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/amd64.jpg">
+<meta property="og:updated_time" content="2017-01-02T08:32:24.581Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为啥你的多核手机打游戏没啥提升">
+<meta name="twitter:description" content="Starting不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。
+这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。”
+类似于网上流传的这张图：
+
+本篇博客将试图讲清楚为什么会这样，顺便解答此篇博">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/19core.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 为啥你的多核手机打游戏没啥提升 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              为啥你的多核手机打游戏没啥提升
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-01-02T00:00:00+08:00" content="2017-01-02">
+            2017-01-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/并行程序设计/" itemprop="url" rel="index">
+                  <span itemprop="name">并行程序设计</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/01/02/why-your-multi-core-phone-not-have-any-useful/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/02/why-your-multi-core-phone-not-have-any-useful/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="Starting"><a href="#Starting" class="headerlink" title="Starting"></a>Starting</h2><p>不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。</p>
+<p>这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。”</p>
+<p>类似于网上流传的这张图：</p>
+<p><img src="/img/19core.png" alt="9core"></p>
+<p>本篇博客将试图讲清楚为什么会这样，顺便解答此篇博客的题目：“为啥你的多核手机打游戏没啥提升。”</p>
+<a id="more"></a>
+<h2 id="多核的意义"><a href="#多核的意义" class="headerlink" title="多核的意义"></a>多核的意义</h2><p>你一定有类似概念，即我们的程序都是靠cpu去运行的，你的pc机有自己的cpu，你的手机也有自己的cpu。很多书喜欢把cpu比喻成计算机的心脏，来强调它的重要性。但是这个比喻不是很恰当，相比之下，比喻成“大脑”就会好很多，你的软件（程序）里有如何运行的步骤，而cpu就想大脑一样，控制运行你的程序如何运行。</p>
+<p>早期计算机比较简单，程序也比较简单，这样玩没啥问题，但是随着人们需要在在计算机上运行更多的程序时，单个的cpu就不能满足了，这个时候就出现了多核cpu。</p>
+<p>我记得高中在《大众软件》上读过一篇文章，讲到INTEL和AMD的纷争，其实AMD一开始是给INTEL打工的小弟，负责给INTEL生产芯片，但虽然是小弟，INTEL给AMD的利润可不少。可就是这样，AMD还是不能满足自己做小弟看着大哥吃肉，所以就独立开始自己搞CPU，后来就越做越大，可以和INTEL抗衡了。</p>
+<p>之所以提到这个故事是因为，“小弟”在抢占市场的时候，比“大哥”先做出多核cpu（也就是著名的双核：速龙X2 3600），而且64位的cpu也是AMD先做出来的，顺便说一句，这些所谓的“先”，都是指民企面向市场的。其实这些理论和技术，都是高等学府和军方玩剩下的。</p>
+<p><img src="/img/amd64.jpg" alt="amd64"></p>
+<p>当然在多核cpu之前还有一种被称为超线程的技术，就是常说的虚拟多核，或者说伪多核，INTEL的奔腾4上最先使用了该技术，能够“让单核cpu同时执行两个线程”，但因为是伪多核，只不过cpu多了一个Logical cpu Pointer(逻辑处理单元)，其它的什么ALU（整数运算单元）FPU（浮点运算单元）二级缓存都是被共享的，所以效果不能跟双核相提并论，更坑爹的是，这项技术，要同时有CPU，主板，内存，操作系统和软件多方面支持，也就是说基本没办法使用此技术，所以这件事也被用户骂了很久。</p>
+<p>举例来说，如果你的计算机有一个双核的cpu，那么相当于你的计算机就有两个cpu，这意味着，别人的机器同一时刻只能运行一个计算，但是你的机器同一时刻可以执行2个计算，也就比别人快一倍，那么对于市面上那些6核8核的cpu，也就意味这运算速度要比普通的机器快6倍，或者8倍。</p>
+<p>比如新出的iphone7使用了A10Fusion是四核，小米5s plus使用了骁龙821也是4核，还有国内的很多8核手机就不提了。</p>
+<p>但真的是这样吗？</p>
+<h2 id="游戏编程"><a href="#游戏编程" class="headerlink" title="游戏编程"></a>游戏编程</h2><p>回到我们博客的题目，游戏程序。</p>
+<p>实际上不仅仅是手机游戏，很多pc玩家也经常抱怨，比较大的游戏，跑在自己的多核计算机上，依旧卡的要命。</p>
+<p>那是因为这些游戏基本都是“单线程”的。</p>
+<p>这么说吧，讲道理，如果你的程序逻辑是多线程的，那么如果它在单核cpu上跑，那就是串行的，如果是在多核cpu上跑，那么它就能并行运行，大大的提升效率。但如果你的程序逻辑本身就是单线程的，那么它只能在一个核上跑，你有再多的核也用不了。</p>
+<p>那么为啥写游戏程序的这群程序员不把游戏写成多线程的？</p>
+<p>因为太复杂了。</p>
+<p>首先游戏编程是我所知的编程领域最复杂的技术之一。很多人举例多线程，多核，多cpu的时候，总是再说，多个人同时在做任务的理想状况，但实际上并行程序的设计远比这个复杂，而且复杂的多，比如有些事情是有先后顺序的，不能并行执行，比如排序，再比如一些先后逻辑，类似你先点餐才能吃饭，并不能让点餐和吃饭同时进行。而且就算并行，还要考虑保持上下文，强一致等等更多的问题，比如你和你妈同时用你的账户取钱，不能在一瞬间看到的金额一样，必须控制一个人取完另一个人才能取。这些事情如果出了问题，排查起bug都难得要死。这些成本考虑在里面，工业上设计的妥协就是把程序写成单线程的。</p>
+<p>市面上的游戏引擎，类似cocos，unity等都是单线程的，因为要保证渲染和各种事件的先后顺序复杂度太高，它们不得不设计成单线程的，类似像python，ruby这样的语言，也有类似全局锁GIL存在，来控制复杂度。</p>
+<p>当然这里的单线程并不是严格意义上的单线程，开发游戏的那群人，还是会想一些办法利用多核来使用多线程的，比如网络io操作，一些ai，寻路的逻辑等等，但是最重头的主逻辑渲染，依然是单线程的。</p>
+<p>所以多核常常是指你的机器可以同时跑更多互不相干的程序。</p>
+<p>这下你明白为啥只有跑分软件，能在你的手机上如此畅爽了吧，因为它们就是为充分利用多核而设计的，它们也只能干这个，真实的软件就不能这样用了，这是一种本末倒置，也就说你的多核其实为你的软件提供服务的，但是跑分软件却是专门为你的多核提供服务的。</p>
+<h4 id="服务器编程"><a href="#服务器编程" class="headerlink" title="服务器编程"></a>服务器编程</h4><p>我是做后端服务器编程的，我们经常提到并行程序设计，其实相比于游戏开发，大部分服务器编程的逻辑还是比较简单的，最起码的，每一次请求都是相互独立的，在这点让服务器并行执行多个请求就很简单，web框架都帮你做了。最近还提出的协程，函数式编程的概念，都让某些并行程序在实现上简单的多。当然只是某些领域而已。复杂起来就真没啥好工具可用了。</p>
+<h4 id="瓶颈不在核"><a href="#瓶颈不在核" class="headerlink" title="瓶颈不在核"></a>瓶颈不在核</h4><p>如果你学过一些计算机组成或者是优化算法的概念，你一定知道取数速度，cpu&gt;内存&gt;硬盘，而成本和容量 硬盘&gt; 内存 &gt; cpu.所以很多情况下，你cpu算得在快，数据从硬盘读到内存也是慢的。这也就是为什么数据库优化，建立合适的索引是大头，然后才是减少查询量和使用合适类型之类的。我们的程序其实很大一部分耗时，都是读取数据。所以很多人建议你，与其买个什么牛逼的cpu，不如把你的机械硬盘换成固态硬盘。</p>
+<p>类似为啥你家都x兆的网，看个片还是卡，因为首先流量的那个M，是以bit为单位，而我们常说的硬盘，是以字节为单位的，8bit = 1字节，笑。。。当然更关键的是，网络请求的大部分耗时，其实通过路由建立通信路径，而不是传输数据本身的耗时，你家的x兆的网，只不过能能使理论流量变大，但是如果找不到数据在哪台主机，还是闲的。</p>
+<p>在计算机领域中，常常都是“找到数据在哪最耗时，而非传输数据本身”。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/多核/" rel="tag">#多核</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/31/why-do-i-like-tractor-exhaust/" rel="next">为啥小时候爱闻拖拉机尾气</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/01/02/why-your-multi-core-phone-not-have-any-useful/"
+     data-title="为啥你的多核手机打游戏没啥提升"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2017/01/02/why-your-multi-core-phone-not-have-any-useful/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2017/01/02/why-your-multi-core-phone-not-have-any-useful/"
+                   data-title="为啥你的多核手机打游戏没啥提升" data-url="http://www.pulpcode.cn/2017/01/02/why-your-multi-core-phone-not-have-any-useful/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">168</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Starting"><span class="nav-number">1.</span> <span class="nav-text">Starting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多核的意义"><span class="nav-number">2.</span> <span class="nav-text">多核的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏编程"><span class="nav-number">3.</span> <span class="nav-text">游戏编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#服务器编程"><span class="nav-number">3.0.1.</span> <span class="nav-text">服务器编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#瓶颈不在核"><span class="nav-number">3.0.2.</span> <span class="nav-text">瓶颈不在核</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
