@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2015/05/22/varchar-equal-zero-for-mysql/" itemprop="url">
+                mysql中varchar字段=0的问题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-05-22T00:00:00+08:00" content="2015-05-22">
+            2015-05-22
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/22/varchar-equal-zero-for-mysql/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/22/varchar-equal-zero-for-mysql/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>今天同事一下子删除了n条数据库的内容，原因是where语句的部分是这样的：</p>
+<pre><code>where tran_no = 0;
+</code></pre><p>但是<code>tran_no</code> 是一个varchar类型的，为什么varchar的类型会导致这条where语句成功？</p>
+<p>先看结论：</p>
+<p>当比较数字和varchar时，mysql会把varchar转换为数字，首字符为数字0的，或者其他字符的都会转换为0。</p>
+<p>所以varchar类型字段=0 只能排除首字符为非零数字的字符串</p>
+<p>所以，除了像’2two’这样的字符，大多数字符都被where“抓”到了。</p>
+<p>这对于那些在动态语言中（比如php），null，””, 0 各种乱写乱用的人而言，简直就是噩梦。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/05/21/insert-json-to-mysql-with-python/" itemprop="url">
                 使用python将json存入数据库
               </a>
@@ -715,104 +806,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/04/20/python-program-some-hole/" itemprop="url">
-                python编程中遇到的一些“小坑”
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-04-20T00:00:00+08:00" content="2015-04-20">
-            2015-04-20
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/04/20/python-program-some-hole/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/20/python-program-some-hole/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="这里记录自己在python编程中遇到的一些小坑，不断更新中。"><a href="#这里记录自己在python编程中遇到的一些小坑，不断更新中。" class="headerlink" title="这里记录自己在python编程中遇到的一些小坑，不断更新中。"></a>这里记录自己在python编程中遇到的一些小坑，不断更新中。</h2><h4 id="关于tornado的handler终结"><a href="#关于tornado的handler终结" class="headerlink" title="关于tornado的handler终结"></a>关于tornado的handler终结</h4><p>一开始我一直以为tornado在调用write之后就表示此handler终结了，后来我发现错了。</p>
-<p>首先，我发现write方法可以被调用两次：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.write(<span class="string">"hello"</span>)</div><div class="line">self.write(<span class="string">"world!"</span>)</div></pre></td></tr></table></figure>
-<p>即使是finsh方法，后面的代码也会继续执行。</p>
-<p>而且<code>self.finish()</code>是用来主动与客户端断开连接的，一般也是因为<code>@tornado.web.asynchronous</code>装饰器会一直保持连接而配合使用。</p>
-<p>所以还是要加return:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.write(<span class="string">"give me five"</span>)</div><div class="line"><span class="keyword">return</span></div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/04/20/python-program-some-hole/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/15/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/13/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/15/">&raquo;</a>
   </nav>
 
  </div>
@@ -846,7 +844,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">175</span>
+              <span class="site-state-item-count">176</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

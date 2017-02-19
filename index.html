@@ -272,6 +272,97 @@
           
           
             
+              <a class="post-title-link" href="/2017/02/14/from-python-to-java-design-pattern-adapter-pattern/" itemprop="url">
+                从python到java设计模式-适配器模式
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-02-14T00:00:00+08:00" content="2017-02-14">
+            2017-02-14
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/设计模式/" itemprop="url" rel="index">
+                  <span itemprop="name">设计模式</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/02/14/from-python-to-java-design-pattern-adapter-pattern/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/14/from-python-to-java-design-pattern-adapter-pattern/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>适配器模式是一种非常常用的模式。</p>
+<p>我们常常所理解的设计模式是，你在一开始就想好了系统的构架,然后用设计模式去构建你的构架，奈何真实的项目，往往有你想不到的地方，新的改动不断的加入，这个时候就需要一些模式来满足这种打补丁的需求。</p>
+<p>所以我认为适配器模式的真实场景是这样的：</p>
+<p>你的现有系统跑的很好，这个时候突然来了一个新的接口，你要融合到你现有的系统设计中去，因为你现有系统运行的很好，你不想对其做任何修改，这时你就需要适配器模式，来将这个新的接口包装成现有系统能理解的样子，让它们根本不知道来了这样一个新接口。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/14/from-python-to-java-design-pattern-adapter-pattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/02/06/why-lanzhou-airportcode-is-lhw/" itemprop="url">
                 兰州的机场三字码为啥是LHW?
               </a>
@@ -721,108 +812,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/" itemprop="url">
-                从python到java设计模式之命令模式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-01-07T00:00:00+08:00" content="2017-01-07">
-            2017-01-07
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/设计模式/" itemprop="url" rel="index">
-                  <span itemprop="name">设计模式</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/07/from-python-to-java-design-pattern-command-pattern/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近在看Hystrix，有博客提到这个里面使用到了命令模式。虽然命令模式在web开发中很少见，但神奇的是我也在前段时间的一次设计中使用了命令模式（或者说类似的模式）。</p>
-<p>命令模式算是一个比较特别的模式，为什么说它特别？因为很多教你如何做好oop设计的书都会提到类似的观点：</p>
-<blockquote>
-<p>不要把操作变成类。</p>
-</blockquote>
-<p>然而命令模式就是把某一个操作封装成为类。</p>
-<p>简单的说命令模式干了这样一件事：</p>
-<blockquote>
-<p>一开始你的程序是A，B，C…对象对X，Y，Z…对象的直接操作。然后为了让（A，B，C）和（X，Y，Z）解耦，你在A和B之间加入了一个中介对象F1，F2，F3，这个中介对象的意义是包装对X，Y，Z的操作。这样你的（A，B，C）就不直接操作（X，Y，Z）了，而是使用（F1，F2，F3）对象，而这个F对象就被称为命令。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
   </nav>
 
  </div>
@@ -856,7 +850,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">175</span>
+              <span class="site-state-item-count">176</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
