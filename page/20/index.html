@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2014/11/01/sql-subquery/" itemprop="url">
+                sql知识总结之子查询
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-11-01T00:00:00+08:00" content="2014-11-01">
+            2014-11-01
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/11/01/sql-subquery/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/01/sql-subquery/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近sql语句接触的比较多，这里总结一下子查询的相关知识，我使用的数据库是<code>postgres</code>(所以sql语句会与mysql之类的有所不同,字段，表名需要被双引号括住)</p>
+<p>但如果是使用方法，那我直接看文档就好了，之所以写成博客，是分享我对子查询的理解方式。</p>
+<h4 id="从输入和输出的方式理解子查询。"><a href="#从输入和输出的方式理解子查询。" class="headerlink" title="从输入和输出的方式理解子查询。"></a>从输入和输出的方式理解子查询。</h4><p>首先我们要理解，在关系数据库中，始终是对二维表的操作，比如你的<code>SELECT</code>结果是一张表，你的<code>FROM</code>也是要对一张表。</p>
+<p><code>WHERE</code>是一个谓词没错，但是构成这个谓词的，可能需要一个值： <code>WHERE &quot;NAME&quot; = &#39;aiqier&#39;</code></p>
+<p>或者可能需要一个多行(类似于python的元组)： <code>WHERE &quot;Oid&quot; IN (111, 222, 333, 444))</code></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/11/01/sql-subquery/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/10/23/plants-vs-zombies-jinzanhua/" itemprop="url">
                 植物大战僵尸中的金盏花
               </a>
@@ -705,96 +797,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/09/19/acl-ch3-exercises/" itemprop="url">
-                ANSI Common Lisp 第三章习题
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-09-19T00:00:00+08:00" content="2014-09-19">
-            2014-09-19
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/09/19/acl-ch3-exercises/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/19/acl-ch3-exercises/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p><em>问题</em>:1.用箱子表示法表示以下列表：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(a) (a b (c d))</div><div class="line">(b) (a (b (c (d))))</div><div class="line">(c) (((a b) c) d)</div><div class="line">(d) (a (b . c) d)</div></pre></td></tr></table></figure>
-<p><em>答案</em>:</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/19/acl-ch3-exercises/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -833,7 +835,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-count">177</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
