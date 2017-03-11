@@ -1,0 +1,690 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="编程," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="在运行代码的时候，最烦的就是看见Null了，而程序经常遇到的错误也是NullPointException(空指针异常)。就算是写代码处理Null，也烦的要死，因为要在各处重复的写：
+123456if (xxx == null)&amp;#123;   ...&amp;#125;else&amp;#123;   ...&amp;#125;
+然而很多时候你可能就忘写了。
+当然还有的人，跟我一样纠结，认为代码不能写太多的废话，比如我明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的代码要如何处理NULL">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/03/11/how-can-i-deal-with-null-in-my-code/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="在运行代码的时候，最烦的就是看见Null了，而程序经常遇到的错误也是NullPointException(空指针异常)。就算是写代码处理Null，也烦的要死，因为要在各处重复的写：
+123456if (xxx == null)&amp;#123;   ...&amp;#125;else&amp;#123;   ...&amp;#125;
+然而很多时候你可能就忘写了。
+当然还有的人，跟我一样纠结，认为代码不能写太多的废话，比如我明">
+<meta property="og:updated_time" content="2017-03-11T04:42:37.840Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的代码要如何处理NULL">
+<meta name="twitter:description" content="在运行代码的时候，最烦的就是看见Null了，而程序经常遇到的错误也是NullPointException(空指针异常)。就算是写代码处理Null，也烦的要死，因为要在各处重复的写：
+123456if (xxx == null)&amp;#123;   ...&amp;#125;else&amp;#123;   ...&amp;#125;
+然而很多时候你可能就忘写了。
+当然还有的人，跟我一样纠结，认为代码不能写太多的废话，比如我明">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 我的代码要如何处理NULL | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              我的代码要如何处理NULL
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-11T00:00:00+08:00" content="2017-03-11">
+            2017-03-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/03/11/how-can-i-deal-with-null-in-my-code/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/11/how-can-i-deal-with-null-in-my-code/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>在运行代码的时候，最烦的就是看见Null了，而程序经常遇到的错误也是NullPointException(空指针异常)。就算是写代码处理Null，也烦的要死，因为要在各处重复的写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (xxx == <span class="keyword">null</span>)&#123;</div><div class="line">   ...</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然而很多时候你可能就忘写了。</p>
+<p>当然还有的人，跟我一样纠结，认为代码不能写太多的废话，比如我明知道这个函数不会返回null，那我为什么要在这里判断是否为null，那这样我的代码是不是显得非常蠢啊？</p>
+<p>但是你还是会有点犹豫，毕竟你害怕哪天，真的就空指针了，而你并没有判断。所以很多强迫症患者一直在思考，这代码怎样写才算好。</p>
+<p>所以这篇博客。总结一下，到底应该怎样处理这个null</p>
+<h2 id="什么是null"><a href="#什么是null" class="headerlink" title="什么是null"></a>什么是null</h2><p>在语言层面，定义null，返回null，没有任何问题，因为它确实代表着什么都没有，而且也不和0，空字符串等价。就像数据库，也是既有null值又有空类型的值（比如空字符串），它们并不能被混淆。</p>
+<p>而在代码层面（工程层面），之所以报错，也就是所谓的NullPointException，只不过因为对一个不存在的东西进行了解引用罢了。</p>
+<p>比如你调用了一个null对象的属性或者方法。类似a.b(),那这就自然会报空指针异常了。<br>再或者对一个null的容器，通过索引进行调用，也会出现空指针异常。<br>还有就是用for去迭代一个null容器。<br>以上这些都是常见的空指针异常错误的原因。</p>
+<a id="more"></a>
+<h2 id="对null的处理"><a href="#对null的处理" class="headerlink" title="对null的处理"></a>对null的处理</h2><p>大部分对null的处理，就是在解引用前，先判断是否为null。</p>
+<p>其实说白了，对null的处理，其实就是在做这样一种判断：</p>
+<p>if(上下文正确){<br>    xxxxxx<br>}<br>而上下文不正确，可能会做一些其他的事情，也可能什么也不做。</p>
+<p>不仅仅是null，在编程的其它场景，在做某事之前，先检查上下文是否合理，也是一个好的编程习惯，《代码大全》中所提出的防御式编程，就是这个思路，你所有函数在一开始先判断传入的参数是否是合法的。</p>
+<h2 id="其它一些尝试"><a href="#其它一些尝试" class="headerlink" title="其它一些尝试"></a>其它一些尝试</h2><p>我认为null总是和try .. catch相伴随，try … catch 用来处理那些不确定的元素，比如读文件，比如调用三方接口，这些地方都有可能返回null。而作为你的确定代码，当返回一个null时，就要从代码逻辑上考虑，这里返回一个null是否应该。</p>
+<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>比如对于容器类，很多开发都建议，如果什么结果都没有得到，那也不要返回null，最好返回一个空容器。这样你的代码如果是迭代这个容器并做一些操作，那么空容器，只不过什么都不用干了，而你也不会每次都要苦恼的写null。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(collection is not empty)&#123;</div><div class="line">    ....</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Null对象"><a href="#Null对象" class="headerlink" title="Null对象"></a>Null对象</h4><p>有些设计会尝试用Null对象来替代Null， 而这个所谓的Null对象，就是包含正常对象的所有接口，只不过这些方法的实现都是空的，也就是说什么也不做。</p>
+<p>比如你根据需要创建了许多的Task，然后在一个一个的在不同的execute函数中，改变它们的状态机。而如果你创建的task对象有可能是null，那就要保证，你的每个方法都要在代码的一开始，判断是否为null，所以一个好的解决办法就是做一个NullTask，它提供所有Task所提供的方法可以被你调用，只是它什么都不做罢了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="keyword">implements</span> <span class="title">IRun</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</div><div class="line">    ....xxx</div><div class="line">    ....xxx</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NullTask</span> <span class="keyword">implements</span> <span class="title">IRun</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (Task task: tasks)&#123;</div><div class="line">	task.run()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很多为了防止大量写 <code>if null</code> ,之类的判断逻辑时，都采用这种设计。但是它好用的前提是，你的上下文语义是：“如果是null，我就什么都不做。”所以这种设计，在循环操作中非常实用。</p>
+<h2 id="标记位"><a href="#标记位" class="headerlink" title="标记位"></a>标记位</h2><p><code>if null</code>的写法，让你会常常忘记先判断是否为null</p>
+<p>python的代码有一种写法，就是用来将“函数动作本身”和“函数结果本身”，相分离。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ok, result = fetch_something()</div><div class="line"><span class="keyword">if</span> ok :</div><div class="line">   result</div><div class="line">   xxxxx</div><div class="line">   xxxxx</div></pre></td></tr></table></figure>
+<p>不仅仅是将动作和结果本身相分离，也让你强行先用ok判断一下是否为null。</p>
+<p>这种标记位在接口设计的时候也非常实用，比如你为函数添加了一个新逻辑，或者为接口添加了一个新字段，那最好配置一个标记位，这样代码写起来，就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if(flag)&#123;</div><div class="line">   从目标字段获取数据</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h2><p>java8之后，添加的Optional,包装null的全套处理，让你统一的处理判断。</p>
+<p>也有一种让你强行先判断是否为null的感觉。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Optional maybeempty = Optional.ofNullable(maybenull);</div><div class="line"><span class="keyword">if</span> (maybeempty.isPresent())&#123;</div><div class="line">    maybeempty.get();</div><div class="line">    .....</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然除了isPresent，还提供：orElse之类的写法。python中的字典有一个类似的写法：dic.get(key,default),既如果拿不到，就返回default,而不是抛异常。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag">#编程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/10/sister-you-bold-merge/" rel="next">妹妹你大胆的merge吧</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/03/11/how-can-i-deal-with-null-in-my-code/"
+     data-title="我的代码要如何处理NULL"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2017/03/11/how-can-i-deal-with-null-in-my-code/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2017/03/11/how-can-i-deal-with-null-in-my-code/"
+                   data-title="我的代码要如何处理NULL" data-url="http://www.pulpcode.cn/2017/03/11/how-can-i-deal-with-null-in-my-code/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">180</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">75</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是null"><span class="nav-number">1.</span> <span class="nav-text">什么是null</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对null的处理"><span class="nav-number">2.</span> <span class="nav-text">对null的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它一些尝试"><span class="nav-number">3.</span> <span class="nav-text">其它一些尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#容器"><span class="nav-number">3.0.1.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Null对象"><span class="nav-number">3.0.2.</span> <span class="nav-text">Null对象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标记位"><span class="nav-number">4.</span> <span class="nav-text">标记位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optional"><span class="nav-number">5.</span> <span class="nav-text">Optional</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
