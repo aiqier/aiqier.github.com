@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2016/03/06/tornado-yield-futures-run-in-parallel/" itemprop="url">
+                tornado并行执行多个异步的原理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-03-06T00:00:00+08:00" content="2016-03-06">
+            2016-03-06
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/03/06/tornado-yield-futures-run-in-parallel/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/06/tornado-yield-futures-run-in-parallel/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>实际上之前一直使用tornado异步，也大概知道tornado Coroutine yield的原理，从来不知道tornado可以支持“同时多个异步并发执行，等它们的结果都获取到再返回”，官网中给出类似的写法：</p>
+<p>You can also yield a list or dict of Futures, which will be started at the same time and run in parallel; a list or dict of results will be returned when they are all finished:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@gen.coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">    http_client = AsyncHTTPClient()</div><div class="line">    response1, response2 = <span class="keyword">yield</span> [http_client.fetch(url1),</div><div class="line">                                  http_client.fetch(url2)]</div><div class="line">    response_dict = <span class="keyword">yield</span> dict(response3=http_client.fetch(url3),</div><div class="line">                               response4=http_client.fetch(url4))</div><div class="line">    response3 = response_dict[<span class="string">'response3'</span>]</div><div class="line">    response4 = response_dict[<span class="string">'response4'</span>]</div></pre></td></tr></table></figure>
+<p>所以这篇博客就来挖掘一下原因。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/06/tornado-yield-futures-run-in-parallel/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/03/05/think-something-about-technology/" itemprop="url">
                 关于技术的几点思考
               </a>
@@ -710,99 +801,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/01/10/python-deque/" itemprop="url">
-                python双端队列
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-01-10T00:00:00+08:00" content="2016-01-10">
-            2016-01-10
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/01/10/python-deque/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/10/python-deque/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>之前看公司python的代码居然看到了双端队列，这一点我很惊奇，因为这个数据结构看上去有用，但是生产从来没用过的东西，后来我才知道，项目中使用了双端队列来做一个redis连接池。但是我见过其它的一些连接池实现也是使用双端队列，具体为什么是双端队列而不是普通队列，我觉得还需要自己再去研究考证。</p>
-<p>这篇博客主要写写python的双端队列。</p>
-<p>python的collections包中有一个deque的数据类型，也就是我们常说的双端队列。双端队列中的元素可以从两端弹出，也可以从两端插入。也就是插入和弹出都在两端进行，所以是一种具有队列和栈的性质的数据结构。</p>
-<p>也就是你可以通过如下方式找到得到一个deque</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</div></pre></td></tr></table></figure>
-<p>以下内容我翻译自python官方文档。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/10/python-deque/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -841,7 +839,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">180</span>
+              <span class="site-state-item-count">181</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -855,7 +853,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">75</span>
+              <span class="site-state-item-count">76</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
