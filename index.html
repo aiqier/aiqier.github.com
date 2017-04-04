@@ -232,6 +232,8 @@
 <p><img src="/img/git-origin.png" alt="git-origin"></p>
 <p>第一个是工作目录，其实工作目录就是你的项目本身，你平时写代码，都是在和工作目录打交道。而git其实就是在跟踪你的工作目录。所以如果你在开发一个项目，但是根本不打算用git管理，连git init的命令都没有输，那你就只有工作目录本身了。</p>
 <p>第二个是暂存区，一开始学git的时候，都有这样一个疑问，为什么直接<code>git commit</code>不行。还非要<code>git add</code>一次。其实git的add一个文件，就是把一个文件放到暂存区。而你commit，其实就是commit暂存区的内容。这样的好处是你可以选择你准备要提交的修进行提交。而不是把所有修改的代码都进行提交。</p>
+<p>git的这个add是很有歧义的，因为它和早期的svn意思并不一样，在svn里，add就是将某个文件加入版本控制了。还有这个stage，在git中有些被称为cache的命令：如 <code>git diff --cached</code>,其实就是和stage比较，所以git在新的版本中虽然保留了这两个命令作为后相兼容，同时又提供了新的命令共选择：</p>
+<p><code>git stage</code> 作为 <code>git add</code> 的同义词<br><code>git diff --staged</code> 作为 <code>git diff --cached</code> 的同义词</p>
 <p>第三个区域是代码库，这就是git存储代码版本的地方，你可以理解每一个git项目，都在内部维护了一个数据库，数据库里存放着历史代码，不管它底层是怎样的，它在表现形式上，就像是一颗树，记录着每一个分支的每一个版本。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/04/03/how-to-use-git-back-to-the-past/#more" rel="contents">

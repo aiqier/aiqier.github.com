@@ -52,7 +52,7 @@ git的结构我把git所控制的项目结构，分成了四个区。当然这�
 
 第一个是工作目录，其实工作目录就是你的项目本身，你平时写代码，都是在和工作目录打交道。而git其">
 <meta property="og:image" content="http://www.pulpcode.cn/img/git-origin.png">
-<meta property="og:updated_time" content="2017-04-03T08:46:03.901Z">
+<meta property="og:updated_time" content="2017-04-04T12:44:50.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何用git回到过去">
 <meta name="twitter:description" content="这篇博客我打算总结一下，如何用git来完成某些撤销操作。当然这里指的撤销操作,一部分是说，git命令本身就支持的撤销操作，还有一部分是说我们为了对自己错误的补救而做的撤销操作。
@@ -239,10 +239,12 @@ git的结构我把git所控制的项目结构，分成了四个区。当然这�
 <p><img src="/img/git-origin.png" alt="git-origin"></p>
 <p>第一个是工作目录，其实工作目录就是你的项目本身，你平时写代码，都是在和工作目录打交道。而git其实就是在跟踪你的工作目录。所以如果你在开发一个项目，但是根本不打算用git管理，连git init的命令都没有输，那你就只有工作目录本身了。</p>
 <p>第二个是暂存区，一开始学git的时候，都有这样一个疑问，为什么直接<code>git commit</code>不行。还非要<code>git add</code>一次。其实git的add一个文件，就是把一个文件放到暂存区。而你commit，其实就是commit暂存区的内容。这样的好处是你可以选择你准备要提交的修进行提交。而不是把所有修改的代码都进行提交。</p>
+<p>git的这个add是很有歧义的，因为它和早期的svn意思并不一样，在svn里，add就是将某个文件加入版本控制了。还有这个stage，在git中有些被称为cache的命令：如 <code>git diff --cached</code>,其实就是和stage比较，所以git在新的版本中虽然保留了这两个命令作为后相兼容，同时又提供了新的命令共选择：</p>
+<p><code>git stage</code> 作为 <code>git add</code> 的同义词<br><code>git diff --staged</code> 作为 <code>git diff --cached</code> 的同义词</p>
 <p>第三个区域是代码库，这就是git存储代码版本的地方，你可以理解每一个git项目，都在内部维护了一个数据库，数据库里存放着历史代码，不管它底层是怎样的，它在表现形式上，就像是一颗树，记录着每一个分支的每一个版本。</p>
 <a id="more"></a>
 <p>第四个区域是回收站，我不知道应该怎样定义这样一个区域，但之所以提到这样一个区域，是因为git支持把你自己主动删除的分支或者版本给找回来，当然年代不能太过久远，否则就会被git给真的清理掉。</p>
-<p><pro git=""> 这本书大概提到了一部分git这几个命令的原理：Git用blob对象来存储文件内容，用tree对象存储目录里的文件名，用commit对象存储每一次提交。而git add负责将文件内容存入blob对象，并更新index，git commit负责根据index生成tree对象，然后生成commit对象指向这个tree对象。</pro></p>
+<p>《PRO GIT》这本书大概提到了一部分git这几个命令的原理：Git用blob对象来存储文件内容，用tree对象存储目录里的文件名，用commit对象存储每一次提交。而git add负责将文件内容存入blob对象，并更新index，git commit负责根据index生成tree对象，然后生成commit对象指向这个tree对象。</p>
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>从使用的场景出发，有哪些场景你要回到过去。</p>
 <h2 id="不要工作区或者不要暂存区"><a href="#不要工作区或者不要暂存区" class="headerlink" title="不要工作区或者不要暂存区"></a>不要工作区或者不要暂存区</h2><p>你可能在修改了一部分代码之后，发现这个实现方式有问题，所以你要把工作目录还原成没开发的样子，又或者你觉得这部分修改后又add的内容不应该被提交，你后悔了，其实对于这两种内容，没什么好记住的，因为对于工作区的撤销和暂存区的撤销，你在操作git的时候，它就在友好的告诉你了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">On branch master</div><div class="line"></div><div class="line">Initial commit</div><div class="line"></div><div class="line">Changes to be committed:</div><div class="line">  (use <span class="string">"git rm --cached &lt;file&gt;..."</span> to unstage)</div><div class="line"></div><div class="line">        new file:   aaa.txt</div></pre></td></tr></table></figure>
