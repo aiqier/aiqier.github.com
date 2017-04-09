@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2013/01/12/two-arithmetic-about-cuboid/" itemprop="url">
+                两个与长方体有关的算法
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-01-12T00:00:00+08:00" content="2013-01-12">
+            2013-01-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2013/01/12/two-arithmetic-about-cuboid/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2013/01/12/two-arithmetic-about-cuboid/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>之前的用<a href="http://www.pulpcode.cn/2013/01/06/use-2d-draw-3d/">用2d画个3d图形</a>，我说到过跟长方体有关的两个算法，(一个通过中心坐标长宽高求八个顶点，一个通过八个顶点求十二条边) ，但是那两个算法实在是太丑陋了，对于向我这种有强迫症的人简直不能忍受，所以我现在先把它们的算法用python描述出来，接着试着把它们变得更精巧，俗话说，代码就像女生的超短裙，越短越好…(虽然不知道是谁说的，但肯定是个男人)</p>
+<h4 id="算法1"><a href="#算法1" class="headerlink" title="算法1"></a>算法1</h4><p>通过一个中心坐标cen,和长方体的长宽高lwh，求出长房体的八个顶点 其实如果(x,y,z) = cen, (l,w,h) = lwh 我们的算法就是要求出x加减l,y加减w,z加减h然后在做一个组合,不过要注意位置不能变，所以一共有八个结果，这就是我们要求的八个顶点, 我的算法就是模仿八皇后，不过不需要回溯,递归到合适的值，把值保存起来。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2013/01/12/two-arithmetic-about-cuboid/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2013/01/06/i-want-rgb/" itemprop="url">
                 我想要的RGB
               </a>
@@ -707,97 +796,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2012/09/10/rabbit-bring-rabbits/" itemprop="url">
-                兔子生兔子
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2012-09-10T00:00:00+08:00" content="2012-09-10">
-            2012-09-10
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2012/09/10/rabbit-bring-rabbits/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2012/09/10/rabbit-bring-rabbits/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>有一对兔子，从出生后第3个月起每个月都生一对兔子，小兔子长到第三个月后每个月又生一对兔子，假如兔子都不死，问每个月的兔子总数为多少？</p>
-<p>思考，这个题，如果仔细观察，不难发现是斐波那契数列，也就是从一月开始，兔子的个数是<code>1，1，2，3，5，8....</code>.的形式增长的，所以我决定先写一个斐波那契函数，我使用递归的方式来写，非常简单：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fibo</span><span class="params">(<span class="keyword">int</span> n)</span></div><div class="line"></span>&#123;</div><div class="line"><span class="keyword">if</span>(n == <span class="number">1</span>||n ==<span class="number">2</span>)</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line"><span class="keyword">else</span></div><div class="line">    <span class="keyword">return</span> fibo(n<span class="number">-1</span>) + fibo(n<span class="number">-2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面是整个程序:<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2012/09/10/rabbit-bring-rabbits/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -836,7 +834,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">183</span>
+              <span class="site-state-item-count">184</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
