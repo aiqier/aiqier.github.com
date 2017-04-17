@@ -52,7 +52,7 @@ git的结构我把git所控制的项目结构，分成了四个区。当然这�
 
 第一个是工作目录，其实工作目录就是你的项目本身，你平时写代码，都是在和工作目录打交道。而git其">
 <meta property="og:image" content="http://www.pulpcode.cn/img/git-origin.png">
-<meta property="og:updated_time" content="2017-04-04T12:44:50.112Z">
+<meta property="og:updated_time" content="2017-04-17T05:10:54.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何用git回到过去">
 <meta name="twitter:description" content="这篇博客我打算总结一下，如何用git来完成某些撤销操作。当然这里指的撤销操作,一部分是说，git命令本身就支持的撤销操作，还有一部分是说我们为了对自己错误的补救而做的撤销操作。
@@ -254,6 +254,7 @@ git的结构我把git所控制的项目结构，分成了四个区。当然这�
 <p>所以我们在使用checkout切换分支的时候，其实就是读取代码库中的分支本到工作目录。而我们打算还原被修改的代码时，<code>git checkout -- file</code>，就是读取git库中的文件到工作区中，将工作区中的文件覆盖。</p>
 <h2 id="撤回到原来某个版本"><a href="#撤回到原来某个版本" class="headerlink" title="撤回到原来某个版本"></a>撤回到原来某个版本</h2><p>git 有两种回到原来某个版本的方法</p>
 <h4 id="增量撤销"><a href="#增量撤销" class="headerlink" title="增量撤销"></a>增量撤销</h4><p>git revert 是一个不是很常用的命令，它使用增量的方式撤销修改，所谓增量，就是我之前提到的“只做加法，不做减法”。比如现在的git分支树的commit是A-&gt;B-&gt;C，我们revert C，其实是在C的基础上，衍生出了一个commit D，这时后commit栈就变成了： A-&gt;B-&gt;C-&gt;D，而这个commitD其实是对C的逆操作，也就是把C所有的修改，进行还原。这样做的好处是虽然撤回了commit C，但是提交C还在commit树里。</p>
+<p>一般在本地，我们很少用revert的，用revert的原因一般是，对于你已经push的内容要进行回退，如果你用reset进行回退后，你会发现自己无法push的。（除非你用一个很被人反感的命令：git push -f）<br>所以你只能用revert来增量的把那些功能都取反，然后在push。</p>
 <h4 id="修改历史"><a href="#修改历史" class="headerlink" title="修改历史"></a>修改历史</h4><p>还是上面那个例子，如果你想干脆修改历史，连C都不要了，那就可以使用 <code>git reset</code>。比如你<code>git reset C</code>，那你的commit栈就变成了： A-&gt;B。这样你就做到了真正的修改历史。当然，这种修改并不是找不回来。后面的博客，我会介绍如何找回这种被你撤销的历史。</p>
 <p>git reset，提供了参数：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git reset &lt;last good SHA&gt;: 保留工作目录</div><div class="line">git reset —hard &lt;last good SHA&gt; 不保留工作目录</div></pre></td></tr></table></figure>
@@ -478,8 +479,6 @@ git的结构我把git所控制的项目结构，分成了四个区。当然这�
     })();
   </script>
     
-     
-
     
   
   
