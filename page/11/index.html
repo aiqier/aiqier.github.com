@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2015/11/16/deployment-of-flask-environment-using-uwsgi-and-nginx/" itemprop="url">
+                使用uwsgi和nginx部署flask环境
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-11-16T00:00:00+08:00" content="2015-11-16">
+            2015-11-16
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/16/deployment-of-flask-environment-using-uwsgi-and-nginx/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/16/deployment-of-flask-environment-using-uwsgi-and-nginx/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>flask自带的web server仅仅能用于开发，因为它本身就不是一个web服务器，而是一个web 框架，这和tornado刚好是相反的。</p>
+<p>这时候我们需要一个生产的部署方案，mod_wsgi已经是过去时了，uwsgi已经算是现在标准的python web 部署方案了。</p>
+<p>uwsgi可以使你的服务以多进程,多线程执行，但因为python的线程是有GIL的，所以一般在每个worker进程里面只有一个线程，而且维护一个数据库连接就行了,也无需使用连接池。</p>
+<p>uwsgi将会对每一个请求开进程，这种进程并不是那种让你觉得很浪费资源的fork，这是一种被成为prefork的技术。也就是多线程池，会预先生成若干个进程来处理请求。 下面我们就来部署一个这样的webserver。</p>
+<h2 id="安装uwsgi"><a href="#安装uwsgi" class="headerlink" title="安装uwsgi"></a>安装uwsgi</h2><p>先写一个最简单的flask服务程序吧</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/16/deployment-of-flask-environment-using-uwsgi-and-nginx/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/11/14/qr-code-with-python/" itemprop="url">
                 使用python操作二维码
               </a>
@@ -707,102 +799,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/10/start-on-nginx/" itemprop="url">
-                初探nginx
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-10T00:00:00+08:00" content="2015-10-10">
-            2015-10-10
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/10/start-on-nginx/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/10/start-on-nginx/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>久仰nginx大名，今天来初探一下。</p>
-<h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><p>我的机器是ubuntu，编译安装nginx，不同的模块都要依赖库：</p>
-<p>gzip模块需要 zlib 库</p>
-<p>rewrite模块需要 pcre 库</p>
-<p>ssl 功能需要openssl库</p>
-<p>分别去官网下载然后进行编译安装即可，套路都是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
-<p>最后下载并安装nginx，注意在./configure的时候，会提示以上需要的那几个库是否找到。</p>
-<p>启动nginx之后，在浏览器输入<code>http://localhost</code>就可以访问到nginx的欢迎界面。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/10/start-on-nginx/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -841,7 +837,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">185</span>
+              <span class="site-state-item-count">186</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -855,7 +851,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">77</span>
+              <span class="site-state-item-count">79</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
