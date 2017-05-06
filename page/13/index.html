@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2015/09/01/about-type-checking/" itemprop="url">
+                关于类型检查
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-01T00:00:00+08:00" content="2015-09-01">
+            2015-09-01
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/01/about-type-checking/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/01/about-type-checking/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>python虽然是强类型语言（对此说法有异议，自行google），但同时又是动态语言。其灵活性带来的缺点就是不能像静态语言那样在编译期间通过静态类型检查”过滤”掉一部分错误。<br>我们目前的项目中，有两个地方需要进行类型检查。1是作为提供接口的server，要对请求json的字段缺失，参数类型和值范围进行校验。2是对某个函数的参数和返回值进行校验。这里把自己在项目中的一些处理经验拿出来分享，如有错误和不足，还望指正。</p>
+<h2 id="请求参数校验"><a href="#请求参数校验" class="headerlink" title="请求参数校验"></a>请求参数校验</h2><p>请求参数校验会遇到这样几个问题:<br>为了重用和方便修改，你需要将它们“格式化”<br>你需要将错误原因返回给调用者或打印到日志，还不能写太多麻烦的代码<br>我的解决办法是使用“表驱动”的方法，将检查过程制作成可配置的。<br>比如下面是一段请求服务器的json字符串：</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/01/about-type-checking/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/29/but-it-is-no-use/" itemprop="url">
                 然而这并没有什么卵用
               </a>
@@ -713,97 +802,6 @@ Mac: 以\r结尾。
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/05/user-guide-sqlalchemy/" itemprop="url">
-                sqlalchemy使用手册
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-08-05T00:00:00+08:00" content="2015-08-05">
-            2015-08-05
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/05/user-guide-sqlalchemy/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/05/user-guide-sqlalchemy/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>我们在开发过程中需要使用python去连接mysql，pymysql过于“老土”，所以我选择使用sqlalchemy。</p>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>我一般在配置文件中，配置mysql相关的用户名，密码，等参数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine</div><div class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker</div><div class="line"></div><div class="line">DB_CONNECT_STRING = <span class="string">"mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8"</span></div><div class="line">engine = create_engine(DB_CONNECT_STRING % (config.MYSQL_USER, config.MYSQL_PASSWD, config.MYSQL_HOST, config.MYSQL_PORT, config.MYSQL_DB), echo=config.SQLALCHEMY_ECHO)</div><div class="line">DB_Session = scoped_session(sessionmaker(bind=engine))</div></pre></td></tr></table></figure>
-<p>其中：create_engine() 会返回一个数据库引擎,sessionmaker() 会生成一个数据库会话类。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/08/05/user-guide-sqlalchemy/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -842,7 +840,7 @@ Mac: 以\r结尾。
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">186</span>
+              <span class="site-state-item-count">187</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -856,7 +854,7 @@ Mac: 以\r结尾。
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">79</span>
+              <span class="site-state-item-count">81</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
