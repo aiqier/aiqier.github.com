@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2014/09/13/how-to-prove-pythagoras-theorem/" itemprop="url">
+                如何用初中的知识证明勾股定理？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-09-13T00:00:00+08:00" content="2014-09-13">
+            2014-09-13
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/09/13/how-to-prove-pythagoras-theorem/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/13/how-to-prove-pythagoras-theorem/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>今天在整理书柜的时候，发现了自己初中收集的好几本《可怕的科学》系列丛书。</p>
+<p>我记忆犹新的是其中一本关于几何的书上，介绍了一种求证毕达哥拉斯定理(勾股定理)的方法，仅仅使用初中的数学知识。<br>这么多年一直没忘，今天就为大家show一下。</p>
+<pre><code>勾股定理：a^2 + b^2 = c^2
+</code></pre><p>证明其实不长，而且也简单，如果你能耐心看下去，会发现很有意思。</p>
+<p><img src="/img/pythagoras.jpg" alt="pythagoras"></p>
+<p>首先我们先对一个直角三角形的每一个边都做一个正方形。<br>你应该已经发现，我们只要证明两个直角边的正方形面积之和等于斜边正方形面积就行了。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/09/13/how-to-prove-pythagoras-theorem/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/09/12/py-and-pyc-el-and-elc/" itemprop="url">
                 python的py和pyc文件
               </a>
@@ -700,94 +793,6 @@ dog   cat  rabbit  monkey
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/08/11/why-html-commenting/" itemprop="url">
-                html的代码注释为什么只能是这个样子的？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-08-11T00:00:00+08:00" content="2014-08-11">
-            2014-08-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/08/11/why-html-commenting/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/11/why-html-commenting/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>早些年在初学html的时候，经常用类C的注释语法来注释html代码，比如<code>/**/</code> 和 <code>//</code>。<br>当然这些都是不能通过的，正确的方式只能是：</p>
-<pre><code>&lt;!-- This is a comment --&gt;
-</code></pre><p>然而html不是不能包含这些类C的注释，你可以在html的源码中，那些直接内嵌css和javascript的地方看见这些注释。<br>之所以html不支持这种写法，是因为DOM(对象文档模型)的原因。 html必须符合DOM的要求,由节点来构成一棵Dom树。<br>它的节点都是<code>&lt;x&gt;</code>这样的元素构成的，只不过有的节点内部不会在包含其它元素，比如<code>&lt;hr&gt;</code>,而有的节点是要包含其它节点的。比如<code>&lt;a&gt; ... &lt;/a&gt;</code></p>
-<p>即使是注释，也要符合DOM的要求，所以html代码的注释只能是这个样子了:</p>
-<pre><code>&lt;!-- This is a comment --&gt;
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -826,7 +831,7 @@ dog   cat  rabbit  monkey
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">188</span>
+              <span class="site-state-item-count">189</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -840,7 +845,7 @@ dog   cat  rabbit  monkey
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">83</span>
+              <span class="site-state-item-count">84</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

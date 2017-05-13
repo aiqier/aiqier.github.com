@@ -174,6 +174,96 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/09/python-requests-post-unicode-lose-data/" itemprop="url">
+                python requests post发送unicode丢失字符串
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-09T00:00:00+08:00" content="2015-12-09">
+            2015-12-09
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/09/python-requests-post-unicode-lose-data/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/09/python-requests-post-unicode-lose-data/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>之前同事遇到一个问题，最后被我解决了，现在在这里分析一下。</p>
+<h2 id="错误描述"><a href="#错误描述" class="headerlink" title="错误描述"></a>错误描述</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">d = &#123;</div><div class="line">    &quot;name&quot;: &quot;爱德华蒂奇&quot;,</div><div class="line">    &quot;age&quot;: 12 &#125;</div><div class="line"></div><div class="line">headers = &#123;</div><div class="line">    &apos;Content-Type&apos;:&apos;application/json&apos;,</div><div class="line">    &apos;content-encoding&apos; :&quot;utf-8&quot;</div><div class="line">&#125;</div><div class="line"></div><div class="line">body = json.dumps(d, sort_keys=True, separators=(&apos;,&apos;,&apos;:&apos;), ensure_ascii=False)</div><div class="line"></div><div class="line">data = body.decode(&apos;utf-8&apos;)</div><div class="line"></div><div class="line">print body</div><div class="line">print body[: len(data)]</div><div class="line"></div><div class="line">resp = requests.post(&quot;http://localhost:8888/json&quot;, data=data, headers=headers)</div></pre></td></tr></table></figure>
+<p>我将一个unicode字符串通过requests的post方法发送数据，结果在服务器端打印数据时，数据部分丢失。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/09/python-requests-post-unicode-lose-data/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/03/write-unit-test-use-python/" itemprop="url">
                 使用nose写单元测试
               </a>
@@ -718,91 +808,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/24/b-tree-and-b+-tree/" itemprop="url">
-                b树和b+树
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-24T00:00:00+08:00" content="2015-10-24">
-            2015-10-24
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/24/b-tree-and-b+-tree/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/24/b-tree-and-b+-tree/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h2 id="starting"><a href="#starting" class="headerlink" title="starting"></a>starting</h2><p>树是一种非常重要的非线性结构。线性表，栈和队列相对简单。图呢，在目前项目中我几乎就没碰到过。<br>分叉的特性让其非常的容易用于查找，这篇博客是想总结一下b树和b+树。</p>
-<h2 id="查找树"><a href="#查找树" class="headerlink" title="查找树"></a>查找树</h2><p>按照数据结构书上的定义，查找的数据结构，分为静态查找表，动态查找表和哈希表。<br>首先静态查找表本身并不实用，因为不能动态的插入和删除元素，动态查找表中的二叉排序树和平衡二叉树又不符合真实的硬件场景。而b树和b+树才是真真确确被用到现实场景，比如mysql数据库引擎的InnoDB和MyISAM都使用了b+树，虽然在实现方式上可能稍有不同。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -841,7 +846,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">188</span>
+              <span class="site-state-item-count">189</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -855,7 +860,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">83</span>
+              <span class="site-state-item-count">84</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
