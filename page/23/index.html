@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2014/09/16/acl-ch2-exercises/" itemprop="url">
+                ANSI Common Lisp 第二章习题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-09-16T00:00:00+08:00" content="2014-09-16">
+            2014-09-16
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/09/16/acl-ch2-exercises/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/16/acl-ch2-exercises/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p><em>问题</em>: 1.描述下列表达式求值之后的结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">;; (a)</div><div class="line">(+ (- 5 1) (+ 3 7))</div><div class="line">;; (b)</div><div class="line">(list 1 (+ 2 3))</div><div class="line">;; (c)</div><div class="line">(if (listp 1) (+ 1 2) (+ 3 4))</div><div class="line">;; (d)</div><div class="line">(list (and (listp 3) t) (+ 1 2))</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/09/16/acl-ch2-exercises/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/09/13/how-to-prove-pythagoras-theorem/" itemprop="url">
                 如何用初中的知识证明勾股定理？
               </a>
@@ -703,101 +792,11 @@ dog   cat  rabbit  monkey
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/08/31/collision-range/" itemprop="url">
-                判断区间是否'碰撞'
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-08-31T00:00:00+08:00" content="2014-08-31">
-            2014-08-31
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/08/31/collision-range/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/31/collision-range/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h4 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h4><p>之前的项目有这样一个需求，“在会议室申请时需要判断新的申请时间段是否与已存在的会议室申请时间段冲突”</p>
-<p>这个问题的本质就是<strong>判断两个区间是否有交集</strong>。<br>当然这里的区间与常见的编程区间不同，编程中讨论的区间是这样的：<code>[begin, end)</code><br>而我要判断的是两个时间段是否冲突，所以我这里指的区间是闭区间：<code>[begin, end]</code></p>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">bool CollisionRange(Range this, Range other)</div><div class="line">&#123;</div><div class="line">  if(this.begin &lt;= other.begin &amp;&amp; other.begin &lt;= this.end)</div><div class="line">    &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  if(this.begin &lt;= other.end &amp;&amp; other.end &lt;= this.end</div><div class="line">    &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  return false;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/31/collision-range/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/22/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/24/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/22/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/24/">&raquo;</a>
   </nav>
 
  </div>
@@ -831,21 +830,21 @@ dog   cat  rabbit  monkey
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">189</span>
+              <span class="site-state-item-count">190</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">84</span>
+              <span class="site-state-item-count">86</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

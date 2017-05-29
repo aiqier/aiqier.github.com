@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2014/12/23/python-encode/" itemprop="url">
+                python中的str与unicode处理方法
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-12-23T00:00:00+08:00" content="2014-12-23">
+            2014-12-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/23/python-encode/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/23/python-encode/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。</p>
+<p>我也会在以后学习中，不断的修改此篇博客。</p>
+<p>这里假设读者已有与编码相关的基础知识,本文不再再次介绍，包括什么是utf-8，什么是unicode，它们之间有什么关系。</p>
+<h2 id="str与字节码"><a href="#str与字节码" class="headerlink" title="str与字节码"></a>str与字节码</h2><p>首先，我们完全不谈unicode。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">"人生苦短"</span></div></pre></td></tr></table></figure>
+<p>s是个字符串，它本身存储的就是字节码。那么这个字节码是什么格式的？</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/23/python-encode/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/12/15/calculate-cash/" itemprop="url">
                 关于几个金融计算中会用到的公式
               </a>
@@ -708,102 +801,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/11/18/use-CSharp-linq-and-python-funcprogram-operator-collection/" itemprop="url">
-                使用c#的linq和python的函数式编程操作集合
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-11-18T00:00:00+08:00" content="2014-11-18">
-            2014-11-18
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/11/18/use-CSharp-linq-and-python-funcprogram-operator-collection/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/18/use-CSharp-linq-and-python-funcprogram-operator-collection/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><p>作为一个一开始编写c的程序员，刚接触c#(静态)或者是python(动态)这样”现代化的语言时”，编写代码的时候常常是使用<strong>古老的解决方案</strong>。这就是没能理解一门语言的表现。所以这篇博客想总结一下，对集合的操作，有哪些古老的做法，而在”现代语言“中又是如何解决的。</p>
-<p>说语言不重要，重要的是编程思维，这种说法确实很是扯淡，因为你用什么语言就决定了你的编程思维，如果你没有长时间使用一门语言，去吸取它的精华，那么你根本不会有什么编程思维，也只能<strong>用各种语言写C代码</strong>。</p>
-<p>说到数据库我们经常会说“增删改查”。对于集合而言也基本是这些操作。</p>
-<p>比如将一个整型数组中大于5的元素过滤出来，我们一直会写这样的代码:</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/11/18/use-CSharp-linq-and-python-funcprogram-operator-collection/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/21/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/19/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/21/">&raquo;</a>
   </nav>
 
  </div>
@@ -837,21 +839,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">189</span>
+              <span class="site-state-item-count">190</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">84</span>
+              <span class="site-state-item-count">86</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
