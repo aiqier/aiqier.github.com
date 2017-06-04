@@ -1,0 +1,656 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="随笔," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="洗牌上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奇怪的需求">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/06/04/strange-demand/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="洗牌上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而">
+<meta property="og:updated_time" content="2017-06-04T11:55:14.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="奇怪的需求">
+<meta name="twitter:description" content="洗牌上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 奇怪的需求 | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              奇怪的需求
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-04T00:00:00+08:00" content="2017-06-04">
+            2017-06-04
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/思考/" itemprop="url" rel="index">
+                  <span itemprop="name">思考</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/06/04/strange-demand/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/04/strange-demand/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="洗牌"><a href="#洗牌" class="headerlink" title="洗牌"></a>洗牌</h2><p>上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而不是洗牌后让你重新来过，让你的努力最后都付诸东流。虽然早些年，毛爷爷打土豪分田地后，让大家都众生平等了。可惜改革开放后，第一批先富的人，变得越来越富，中国又慢慢的分层了。那么你幻想过一种洗牌么？那要看你现在是顺风局还是逆风局了。</p>
+<a id="more"></a>
+<h2 id="蠢人"><a href="#蠢人" class="headerlink" title="蠢人"></a>蠢人</h2><p>小的时候，有个同学特别招人烦，总欺负别的同学。但是你又害怕他，不敢直面他。这时候，你多么希望出现一个人去消灭他，这个人不应该是你的好友，因为你不想让你的好友受到伤害。也不应该是你的老师，毕竟给老师打小报告是很low的行为，还有可能有些蠢老师把你们两个叫到办公室做思想工作，所以最好是你另一个讨厌的人，这样搞不好两个你讨厌的人都消失了，当然这个另一个你讨厌的人最好要蠢，这样他才会容易上当。在《权力的游戏》中。小指头想杀奈德史塔克，但是又不能自己亲手杀，自然找到了乔弗里这种蠢人。很多聪明人留着身边的蠢人，因为觉得这些人日后自然有用。《沙家浜》中阿庆嫂有这样一句台词：“这草包倒是一堵挡风的墙”，就是说的胡司令这种蠢人。我每天出门前都会照镜子，我不希望镜子里面的那个人是那种聪明人，当然更不愿意他是一个蠢人。</p>
+<h2 id="把自己藏起来"><a href="#把自己藏起来" class="headerlink" title="把自己藏起来"></a>把自己藏起来</h2><p>我已经不止听一个朋友跟我描述这样一个场景，“他希望现在打仗，然后他去找个地方把自己藏起来，过着世外桃源的生活。” 我觉得很多人在看不到希望的时候，都会这样幻想，即使那个人曾经奋斗过，这算是一种对现实的逃避。但这种想法不是为了世外桃源的舒适感，而是为了把自己藏起来的那种安全感。类似在夜里，你听到外面在下大雨，而你关着灯躺在床上获得的安全感。我觉得我们的祖先在穿树叶，住山洞的时候，听到外面的雨声，在山洞里睡觉也会有类似的安全感，因为肉食动物不在雨天捕猎。有一部日本电影叫《感官世界》，讲的一个日本老板和情妇的故事。有一段剧情是，日本老板和情妇搬到旅店住，天天过着纵欲的生活。有一次他出去买东西，看到一群军人嬉笑着路过，而他却选择了低头逃避，视而不见，小步快走，投入情妇的怀抱。我大概查了一些历史资料，了解到当时日本男人从军是一种荣誉和自豪，国民都被洗脑了。而这个日本老板，却只想把自己藏起来，不要社会给他的荣誉感，只想要自己的安全感，仔细想想，有的时候，自己比这个日本老板还可怜。</p>
+<h2 id="洗钱"><a href="#洗钱" class="headerlink" title="洗钱"></a>洗钱</h2><p>把非法收入转化为合法收入的方式，叫做洗钱。但实际上，就算是合法收入，也需要洗。比如你是一个逆袭的屌丝，靠着某次机遇变成了一个土大款，但是你不能一辈子做一个土大款。毕竟，你和其他的有钱人坐在一起，你发现人家都是富豪世家，谈吐文雅，爱好广泛，吃喝讲究。所以你也要把自己洗白，给自己洗一个国外名校的学历，洗一些听歌剧，打高尔夫之类的爱好，洗一个正经体面的公司，甚至连父母的身世都洗了。让你从一个new money变成一个old money。最起码你要变得低调有内涵，而不是逢人就说，“我当年如何如何，现在如何的”暴露自己是屌丝出身的话。虽然新中国才成立几十年，但已经有人把自己身上的泥洗干净了。</p>
+<h2 id="优越感"><a href="#优越感" class="headerlink" title="优越感"></a>优越感</h2><p>我是个很容易找到优越感的人，有时我不发朋友圈，那我打开朋友圈，看那些发朋友圈的人，自然觉得他们沉不住气，什么都要说出来，不成熟，肤浅，不像我这样低调，闷声发大财，一看就是成大事的料。但是我就算是一个爱发朋友圈的人，我也能找到优越感。比如那些发鸡汤的人，简直弱智。发星座分析的人，连最简单的心理学都不懂。发分析经济局势文章的人，都是通过别人的文章秀自己逼格的人。发自己博客的人，真是的，谁会看啊。天天发说说的人，你是有多闲多寂寞。天天发自拍的人，你用美颜相机装什么，明明自己长那么丑。天天发旅游的人，你去过几个鸟地方有什么可显摆的，你看你这个摄影水平就这么菜。说来说去还是我自己的朋友圈最有内涵。</p>
+<h2 id="游侠"><a href="#游侠" class="headerlink" title="游侠"></a>游侠</h2><p>很多人都希望自己是令狐冲这样的游侠，一把剑浪迹天涯，不追逐名利，但是名利都来找他。很多武侠电影和小说都塑造了这样一个男主角。其实不仅仅是国内，我看过日本著名导演黑泽明的《用心棒》和《椿三十郎》，主角也是这样一个游侠。这说出了一代文人骚客的内心世界吧，既想要名利，有不想说出来。说白了还是因为得不到，而表现的自己与世无争。就像小的时候，每次获个什么竞赛奖，我都不会自己主动说出了，而是希望某个朋友替我说出来。所以你可以成为那个替他说出来的朋友，让他过一回当游侠的瘾。</p>
+<h2 id="劝妓从良"><a href="#劝妓从良" class="headerlink" title="劝妓从良"></a>劝妓从良</h2><p>知乎上有一句经典的话，“男人喜欢做两件事，诱良女下海，劝妓女从良。”据说这是一个男人为了抵消事后的罪恶感，而产生的莫名其妙的正义感。他们会说：“你这样是不对的，回老家去吧，找个正经工作，找个好男人嫁了。”据说妓女们都已经学会了满足这类男人做好人的需求。所以她们会倒在男人怀里，对他说，“你是第一个这么对我说的男人，我就知道，你和那群嫖客不一样。”，嗯嗯，都成了嫖客了，还想跟别的嫖客不一样，满足奇怪的需求，很点题。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/随笔/" rel="tag">#随笔</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/29/learn-greek-mythology/" rel="next">性价比学习希腊神话</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/06/04/strange-demand/"
+     data-title="奇怪的需求"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2017/06/04/strange-demand/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2017/06/04/strange-demand/"
+                   data-title="奇怪的需求" data-url="http://www.pulpcode.cn/2017/06/04/strange-demand/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">191</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#洗牌"><span class="nav-number">1.</span> <span class="nav-text">洗牌</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#蠢人"><span class="nav-number">2.</span> <span class="nav-text">蠢人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把自己藏起来"><span class="nav-number">3.</span> <span class="nav-text">把自己藏起来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#洗钱"><span class="nav-number">4.</span> <span class="nav-text">洗钱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优越感"><span class="nav-number">5.</span> <span class="nav-text">优越感</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游侠"><span class="nav-number">6.</span> <span class="nav-text">游侠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#劝妓从良"><span class="nav-number">7.</span> <span class="nav-text">劝妓从良</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

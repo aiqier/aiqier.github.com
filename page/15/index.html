@@ -174,6 +174,104 @@
           
           
             
+              <a class="post-title-link" href="/2015/07/12/how-to-write-a-pretty-log/" itemprop="url">
+                如何打好一个日志
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-12T00:00:00+08:00" content="2015-07-12">
+            2015-07-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/07/12/how-to-write-a-pretty-log/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/12/how-to-write-a-pretty-log/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>我的工作，主要是在linux上写一些服务程序，而对于一个运行的服务来说，日志非常重要，因为它记录了运行时的所有信息。大多数情况下，我们很少去翻看自己的日志，但是如果系统出现异常，那么日志的作用就非常明显了。</p>
+<p>而且不仅仅是在线上运行时，在调试程序的时候，打一些必要的debug级日志，对于定位错误也很有用，在上线的时候，我们只需要将日志级别设计为info，就可以“除去”这些debug信息了。</p>
+<h2 id="粗暴的过去"><a href="#粗暴的过去" class="headerlink" title="粗暴的过去"></a>粗暴的过去</h2><p>有那么一群粗暴的程序员，无论是调试代码，还是打印日志，总是会<code>print</code>各种上，首先这些<code>print</code>很少能留下极其有用的信息，还有你无法简单的将这些日志定位到各个地方（终端or文件），也不能已各种格式去打印它们，而且你还会将它们和真正的<code>print</code>进行混淆，很多人喜欢用<code>print</code>，仅仅是因为它们确实很简单，没什么门槛，所以同样的，它们什么也不能干。这些粗暴的人，永远都不会知道ipdb有多爽，logging有多爽。</p>
+<h2 id="python-logging模块"><a href="#python-logging模块" class="headerlink" title="python logging模块"></a>python logging模块</h2><p>每种语言都会带有logging模块，用法也是大同小异，绝对不会出现说我python能做的一个库，别的语言做不出来。</p>
+<p>相比于print，日志有如下好处：</p>
+<ol>
+<li><p>你可以控制消息的级别，过滤掉那些并不重要的消息。</p>
+</li>
+<li><p>你可决定输出到什么地方，以及怎么输出。</p>
+</li>
+</ol>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/07/12/how-to-write-a-pretty-log/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/07/05/this-would-be-very-complicated/" itemprop="url">
                 这本来就很复杂
               </a>
@@ -724,102 +822,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/05/30/talk-about-encryption/" itemprop="url">
-                加密基础知识总结
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-05-30T00:00:00+08:00" content="2015-05-30">
-            2015-05-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/05/30/talk-about-encryption/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/30/talk-about-encryption/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>其实一开始我们去学习加密解密知识的时候，往往先入为主，认为加密解密就是对数据在一端加密，传输后再到另一端去解密。<br>类似于“国王的秘密文件用类似凯撒密码这样的东西加密后给某个人”这样的剧情。</p>
-<p>具体的加密手段还是要和具体的需求场景相联系起来。不过这背后的原因到底是因为加密是一个很泛的概念，还是因为以下讨论的部分技术本身就不算是加密。</p>
-<h2 id="摘要（指纹）"><a href="#摘要（指纹）" class="headerlink" title="摘要（指纹）"></a>摘要（指纹）</h2><p>摘要算法就是我们常说的hash（哈希）算法，hash算法的特征是：</p>
-<ol>
-<li>对于两个不同的数据，不会生成相同的指纹。（唯一性）</li>
-<li>对于一个指纹，并不能逆推出它的原始数据。（不可逆性）</li>
-</ol>
-<p>比较常见的hash算法就是md5和sha1了。</p>
-<h4 id="真实场景："><a href="#真实场景：" class="headerlink" title="真实场景："></a>真实场景：</h4><p>如果是密码之类的存储，仅仅hash是不够的，因为会有类似于彩虹表这样的东西来暴力破解，这时我们就需要原始数据中加入一些“料”，来加大逆推的难度。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/05/30/talk-about-encryption/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -858,7 +860,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">190</span>
+              <span class="site-state-item-count">191</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
