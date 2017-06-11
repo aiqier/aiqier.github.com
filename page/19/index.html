@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2015/02/02/annual-technical-how-to-do-technical/" itemprop="url">
+                2014年终技术总结之做技术的心得
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-02-02T00:00:00+08:00" content="2015-02-02">
+            2015-02-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/02/02/annual-technical-how-to-do-technical/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/02/annual-technical-how-to-do-technical/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在大三的时候，我写过一篇博客叫《我们应该如何学习编程》，今天看来有些内容是显得幼稚，我想这就是所谓的成长吧，快年底了，打算再总结一次自己做技术的心得体会。<br>即使我知道，几年后的我再看这篇文章，依旧会觉得幼稚。</p>
+<h2 id="学技术的方式"><a href="#学技术的方式" class="headerlink" title="学技术的方式"></a>学技术的方式</h2><p>原来的学习方法，尤其是在学校的那段时间，思路是这样的：</p>
+<p><code>这是一个很牛逼的语言特性，一般人不知道，我一定要学会它，恩，快点找个地方好好的用一下，让别人都来朝拜我。</code></p>
+<p>最近的一段时间，我的思路慢慢向这个方向靠拢：</p>
+<p><code>我要做一个这样的设计，嗯，这个语言是否有特性能满足这样的需求。嗯，之前我都是这样写的，我还不知道有这样好方法。。。</code></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/02/02/annual-technical-how-to-do-technical/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/01/31/from-oop-to-designpattern/" itemprop="url">
                 从面向对象到设计模式
               </a>
@@ -727,97 +819,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/01/02/undo-redo-mode/" itemprop="url">
-                编辑器的撤销和重做如何实现
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-01-02T00:00:00+08:00" content="2015-01-02">
-            2015-01-02
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/01/02/undo-redo-mode/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/02/undo-redo-mode/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>我一直好奇，编辑器的<code>undo</code>和<code>redo</code>是如何实现的，而且因为不了解<code>uodo</code>和<code>redo</code>工作原理到底是怎样的。常常会发现它并不能我所想的去工作。</p>
-<p>这篇文章用一种模型解释undo和redo，我在编辑器上试过这种思路是没问题的，但我不能把握这种模型一定是对的，如果在以后的学习中发现还有问题，我会进一步修改。</p>
-<h2 id="清晰的思路"><a href="#清晰的思路" class="headerlink" title="清晰的思路"></a>清晰的思路</h2><p>首先要明白，为什么有的时候我们点击<code>redo</code>是没用的，因为只有<code>undo</code>的才能<code>redo</code>，你在一个新操作上<code>redo</code>是没用的。</p>
-<p>而且，虽然看上去在操作过程中，我们是在保存每一次的状态，但是在底层实现中，程序员是不会蠢到把每一次的缓冲区都保存为状态，真实情况就是<code>只保存变化</code>。这还真算是编程里面的一个范式了。版本管理器的原理也是如此。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/01/02/undo-redo-mode/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -856,7 +857,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">191</span>
+              <span class="site-state-item-count">192</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -870,7 +871,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-count">87</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

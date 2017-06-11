@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2017/04/22/from-hdd-to-ssd-how-b-tree/" itemprop="url">
+                从机械硬盘到固态硬盘后，b树怎么办？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-04-22T00:00:00+08:00" content="2017-04-22">
+            2017-04-22
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/数据结构/" itemprop="url" rel="index">
+                  <span itemprop="name">数据结构</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/04/22/from-hdd-to-ssd-how-b-tree/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/22/from-hdd-to-ssd-how-b-tree/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>其实提到树这种数据结构，你一定会和搜索联系起来，毕竟每次分支的决策就能过滤掉大半的选择，从而使解空间变得越来越小。有一种在文件系统很常用的树，那就是b树。</p>
+<p><img src="/img/btree.png" alt="btree"></p>
+<p>上面这张图就是一个b树的样子，b树的非终端节点，都是一个节点，可以存放一组信息，其结构可以定义为：(n, A0, K1, A1, K2, …. , Kn, An).其中n表示这个节点有几个关键字，而K就表示关键字，A表示指向子树节点的指针。那么从数据结构图就能明白，A0指向的节点都小于k1，A1指向的节点都大于k1小于k2.而且所有叶子节点都出现在同一层次上，并且不带信息（其实就是空指针）。</p>
+<p>而这种被称为b树的树结构，关键的不同点是每个节点可有多个key和分叉使得你可以把节点的大小凑成某个数，比如接近磁盘一个块的大小(或整数倍)。因为磁盘的读写是一块一块进行的，所以这样做的话能够较高效率地IO。</p>
+<p>下面两张图算是机械硬盘的主视图和俯视图了。其实没必要对机械硬盘过于深入的了解，只需要知道，我们的数据其实是存储于盘面的，当我的数据需要被读取或者写入的时候，都需要让磁头移动到那个盘面的那个位置，首先可以看到每一个盘面都都应一个磁头。盘面本身可以转动，而从第二张图也可以知道，磁头可以横向移动，从而触碰一个半径上的磁盘。就这样，我们可以访问n个盘面上的所有位置。但是你会发现，要随机访问一块数据非常慢，因为你要先确定数据在哪个盘面的哪个磁道的哪个扇区。然后先让磁盘旋转到磁头可以触碰的那个磁道，然后在让磁头移动到相应的扇区。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/04/22/from-hdd-to-ssd-how-b-tree/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/04/09/how-to-write-a-wx-robot/" itemprop="url">
                 如何实现一个微信机器人
               </a>
@@ -732,102 +824,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/02/24/castration-fear/" itemprop="url">
-                阉割恐惧
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-02-24T00:00:00+08:00" content="2017-02-24">
-            2017-02-24
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/思考人生/" itemprop="url" rel="index">
-                  <span itemprop="name">思考人生</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/02/24/castration-fear/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/24/castration-fear/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>有一些文艺青年，喜欢引用这样一句话：</p>
-<blockquote>
-<p>那一天我二十一岁，在我一生的黄金时代，我有好多奢望。我想爱，想吃，还想在一瞬间变成天上半明半暗的云，后来我才知道，生活就是个缓慢受锤的过程，人一天天老下去，奢望也一天天消逝，最后变得像挨了锤的牛一样。可是我过二十一岁生日时没有预见到这一点。我觉得自己会永远生猛下去，什么也锤不了我。</p>
-</blockquote>
-<p>这段话吧，出自王小波的《黄金时代》，我读过这本书。我记得这里提到的“像挨了锤的牛一样”。好像是说为了防止公牛好斗，喜欢打架，影响春耕，全都给阉了。</p>
-<p>话说我第一次看老谋子的电影《红高粱》，有一个镜头也让我想起了“挨了锤的牛”这个梗，桥段就是日本人抓住一大帮中国农民，逼他们砍倒高粱修公路，这个时候有个屠夫被逼着给日本人杀牛剥牛皮。这个时候镜头特写了一个切牛睾丸的画面。我没看过《红高粱》这本书，不知道书中是否有这段，但是我应该能猜到，电影中这个画面，应该是指被日本人使唤的这群中国人，就像这被剥了皮，割了屌了的牛一样，只能忍气吞声。</p>
-<p>其实我记得刚毕业的时候吧，确实是有这种被我称为阉割恐惧的感觉。实际上不仅仅是我，我看我周围的同学，很多在毕业的那段时间，有坚持背单词发朋友圈，也有每天打卡健身的，还有刷微积分的。我觉得他们都是有一种阉割恐惧，害怕自己被这个社会阉了而已。</p>
-<p>当然你看到我这篇博客的开头，好像感觉我是要写一篇，“毕业几年，觉得自己迷茫，害怕自己颓废，最后再给自己灌点鸡汤”之类的文章，那还真不是。那种东西，我真懒的写。</p>
-<p>因为后来我才明白，根本没有什么阉割不阉割的。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/24/castration-fear/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -866,7 +862,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">191</span>
+              <span class="site-state-item-count">192</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -880,7 +876,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-count">87</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
