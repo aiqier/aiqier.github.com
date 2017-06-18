@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2013/01/19/python-and-paths/" itemprop="url">
+                python的那些路径
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-01-19T00:00:00+08:00" content="2013-01-19">
+            2013-01-19
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2013/01/19/python-and-paths/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2013/01/19/python-and-paths/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h4 id="当前路径（执行一段脚本）test-py"><a href="#当前路径（执行一段脚本）test-py" class="headerlink" title="当前路径（执行一段脚本）test.py"></a>当前路径（执行一段脚本）test.py</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">"nihao,neng bu neng jie wo liang kuai qian"</span></div><div class="line"><span class="comment"># 下次你看见一个外国人，可以这样说。</span></div></pre></td></tr></table></figure>
+<p>你可以这样执行:</p>
+<pre><code>$ python test.py
+</code></pre><p>如果你不用python， shell是不会知道如何解决这段脚本的。<br>除非你在这个脚本的第一行加上一句话(写过shell脚本的都知道)</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2013/01/19/python-and-paths/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2013/01/15/c-embed-python/" itemprop="url">
                 C语言嵌入python
               </a>
@@ -706,96 +797,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2012/11/13/talk-about-quick-sort/" itemprop="url">
-                聊聊快速排序
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2012-11-13T00:00:00+08:00" content="2012-11-13">
-            2012-11-13
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2012/11/13/talk-about-quick-sort/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2012/11/13/talk-about-quick-sort/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>好吧，你可以在网上搜到一大堆的快速排序的代码，包括一些相似的博客（说明+代码实现），所以我想写一篇关于自己所理解的快速排序。</p>
-<p>本文假设你明白什么是快速排序= =!</p>
-<h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>快速排序会以一个数列的某个元素为基准，把一个数列分成两部分，小于这个基准的为一部分，大于等于的作为一部分，然后分别为这两部分递归求解，这是书上，和教程上的说法，这样的描述很容易让人误解，我觉得算上这个基准应该是三部分，基准并没有参加进一步递归，如果你不看别人的代码，第一次通过定义试图写一个快速排序，很容易把基准加入到第二个部分，导致无穷递归，所以我常对快速排序这样描述，快速排序每次分区后，都会确定一个基准的位置（这个位置是它应有的）<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2012/11/13/talk-about-quick-sort/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -834,7 +835,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">193</span>
+              <span class="site-state-item-count">194</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
