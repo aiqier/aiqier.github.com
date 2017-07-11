@@ -50,7 +50,7 @@
 1BResponse  bResponse = unBlockCallB();
 这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是">
 <meta property="og:image" content="http://www.pulpcode.cn/img/eventloop.png">
-<meta property="og:updated_time" content="2017-07-11T14:29:54.103Z">
+<meta property="og:updated_time" content="2017-07-11T14:36:35.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="轮训和中断">
 <meta name="twitter:description" content="有一个经典的交互场景，A让B做一件事情，然后B做完了再告诉A。
@@ -248,7 +248,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">while true &#123;</div><div class="line">active_stream[] = epoll_wait(epollfd)</div><div class="line">for i in active_stream[] &#123;</div><div class="line">read or write till unavailable</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>epoll有一个“更好”的代理，每次返回给你一个准备好的io组，让你直接处理这些io组。</p>
 <p>多路复用就是这样一个模型，轮训多个非阻塞IO，无论是可读(read)，还是可写(write)。</p>
-<p>编程另一种，这些轮训的模型都非常相近，比如很多语言都会使用的事件处理机制：EventLoop</p>
+<p>编程领域中，这些轮训的模型都非常相近，比如很多语言都会使用的事件处理机制：EventLoop</p>
 <p><img src="/img/eventloop.png" alt="trap"></p>
 <p>而且你发现，这些轮训的程序，基本看上去就像是一个服务（死循环）。</p>
 <h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>上面提到处理方式是要自己主动的去轮训，是否有消息。这貌似和我们生活常识理解相违背，比如你不会每时每刻不停的刷微信，看有没有人给你回复信息（除非那个人是你的女神）。真实情况是，你在给别人发送完消息之后，去干别的事情，然后别人发送消息给你的时候,要么是有一个铃声，要么是有一个震动，你会停下手头的事去看消息，消息处理完之后，再来做手头的事。</p>
