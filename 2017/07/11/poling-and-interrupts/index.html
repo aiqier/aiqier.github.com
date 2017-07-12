@@ -43,16 +43,16 @@
 1BResponse  bResponse = unBlockCallB();
 这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="轮训和中断">
+<meta property="og:title" content="轮询和中断">
 <meta property="og:url" content="http://www.pulpcode.cn/2017/07/11/poling-and-interrupts/index.html">
 <meta property="og:site_name" content="Pulpcode-低俗代码">
 <meta property="og:description" content="有一个经典的交互场景，A让B做一件事情，然后B做完了再告诉A。
 1BResponse  bResponse = unBlockCallB();
 这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是">
 <meta property="og:image" content="http://www.pulpcode.cn/img/eventloop.png">
-<meta property="og:updated_time" content="2017-07-11T14:36:35.666Z">
+<meta property="og:updated_time" content="2017-07-12T14:03:23.368Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="轮训和中断">
+<meta name="twitter:title" content="轮询和中断">
 <meta name="twitter:description" content="有一个经典的交互场景，A让B做一件事情，然后B做完了再告诉A。
 1BResponse  bResponse = unBlockCallB();
 这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是">
@@ -66,7 +66,7 @@
   };
 </script>
 
-  <title> 轮训和中断 | Pulpcode-低俗代码 </title>
+  <title> 轮询和中断 | Pulpcode-低俗代码 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -181,7 +181,7 @@
           
           
             
-              轮训和中断
+              轮询和中断
             
           
         </h1>
@@ -234,24 +234,24 @@
         <span itemprop="articleBody"><p>有一个经典的交互场景，A让B做一件事情，然后B做完了再告诉A。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BResponse  bResponse = unBlockCallB();</div></pre></td></tr></table></figure>
 <p>这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是，B在做完之后，如何通知给A？</p>
-<h2 id="轮训"><a href="#轮训" class="headerlink" title="轮训"></a>轮训</h2><p>一种方式是A其实专门就有一部分代码轮训这个返回结果，另一部分专门做别的事情：</p>
+<h2 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h2><p>一种方式是A其实专门就有一部分代码轮询这个返回结果，另一部分专门做别的事情：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">unBlockCallB();</div><div class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</div><div class="line">    <span class="keyword">boolean</span> ok = checkBResponse();</div><div class="line">    <span class="keyword">if</span>(ok) &#123;</div><div class="line">          dosomethingForBResponse();</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">          sleep();</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>之所以要轮训，是因为你还要在此上下文内，在得到B的返回结果之后做一些事情。否则你调用非阻塞就可以了，根本不用关心它返回了什么。</p>
-<p>但是按照上面的例子，轮训非阻塞真的得不偿失，不如直接调用阻塞，因为它除了“处理B的返回结果”之外，也并没有什么可做。<br>而且一般的程序是不会有什么奇怪的逻辑，会在正常的流程中，专门隔一段时间去单独检查<strong>某个</strong>非阻塞调用。<br>常见的实用场景是：同时监听多个非阻塞调用。</p>
+<p>之所以要轮询，是因为你还要在此上下文内，在得到B的返回结果之后做一些事情。否则你调用非阻塞就可以了，根本不用关心它返回了什么。</p>
+<p>但是按照上面的例子，轮询非阻塞真的得不偿失，不如直接调用阻塞，因为它除了“处理B的返回结果”之外，也并没有什么可做。<br>而且一般的程序是不会有什么奇怪的逻辑，会在正常的流程中，专门隔一段时间去单独检查<strong>某个</strong>非阻塞调用。<br>常见的实用场景是：同时监听多个非阻塞调用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(fun in funcList)&#123;</div><div class="line">    unBlockCallFun();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;    </div><div class="line">    <span class="keyword">for</span>(fun in funcList)&#123;</div><div class="line">        <span class="keyword">boolean</span> ok = checkFunResponse();</div><div class="line">        <span class="keyword">if</span>(ok)&#123;</div><div class="line">            dosomeingForFunResponse();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    sleep();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>不过这段代码看上去有点蠢，如果是这样，不如阻塞直到有某个非阻塞有返回，而不是不停的轮训。</p>
+<p>不过这段代码看上去有点蠢，如果是这样，不如阻塞直到有某个非阻塞有返回，而不是不停的轮询。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</div><div class="line">   <span class="comment">// 这个blockIfSomeOneHasResponse就像是一个代理</span></div><div class="line">    blockIfSomeOneHasResponse&#123;</div><div class="line">        <span class="keyword">boolean</span> ok = checkFunResponse();</div><div class="line">        <span class="keyword">if</span>(ok)&#123;</div><div class="line">            dosomeingForFunResponse();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这个例子是不是让你想起了select系统调用：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> <span class="keyword">true</span> &#123;</div><div class="line">select(streams[]);</div><div class="line"><span class="keyword">for</span> i in streams[] &#123;</div><div class="line">        <span class="keyword">if</span> (i has data)&#123;</div><div class="line">            read until unavailable;</div><div class="line">        &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>当然提到select，就不得不提到epoll了，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">while true &#123;</div><div class="line">active_stream[] = epoll_wait(epollfd)</div><div class="line">for i in active_stream[] &#123;</div><div class="line">read or write till unavailable</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>epoll有一个“更好”的代理，每次返回给你一个准备好的io组，让你直接处理这些io组。</p>
-<p>多路复用就是这样一个模型，轮训多个非阻塞IO，无论是可读(read)，还是可写(write)。</p>
-<p>编程领域中，这些轮训的模型都非常相近，比如很多语言都会使用的事件处理机制：EventLoop</p>
+<p>多路复用就是这样一个模型，轮询多个非阻塞IO，无论是可读(read)，还是可写(write)。</p>
+<p>编程领域中，这些轮询的模型都非常相近，比如很多语言都会使用的事件处理机制：EventLoop</p>
 <p><img src="/img/eventloop.png" alt="trap"></p>
-<p>而且你发现，这些轮训的程序，基本看上去就像是一个服务（死循环）。</p>
-<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>上面提到处理方式是要自己主动的去轮训，是否有消息。这貌似和我们生活常识理解相违背，比如你不会每时每刻不停的刷微信，看有没有人给你回复信息（除非那个人是你的女神）。真实情况是，你在给别人发送完消息之后，去干别的事情，然后别人发送消息给你的时候,要么是有一个铃声，要么是有一个震动，你会停下手头的事去看消息，消息处理完之后，再来做手头的事。</p>
+<p>而且你发现，这些轮询的程序，基本看上去就像是一个服务（死循环）。</p>
+<h2 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h2><p>上面提到处理方式是要自己主动的去轮询，是否有消息。这貌似和我们生活常识理解相违背，比如你不会每时每刻不停的刷微信，看有没有人给你回复信息（除非那个人是你的女神）。真实情况是，你在给别人发送完消息之后，去干别的事情，然后别人发送消息给你的时候,要么是有一个铃声，要么是有一个震动，你会停下手头的事去看消息，消息处理完之后，再来做手头的事。</p>
 <p>但是这种场景在代码中如何实现？</p>
 <p>这一点很神奇，你的代码在执行的时候，其实是这样的：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1</div><div class="line">2</div><div class="line">NonBlockCallB();</div><div class="line">3</div><div class="line">...</div><div class="line">n</div></pre></td></tr></table></figure>
@@ -262,10 +262,10 @@
 <p>在《深入理解操作系统中》，提到这种异常流程的处理方式。它类似于调用过程，都是将上下文压栈。而且异常处理机制一般是指硬件和操作系统之间的交互。而上面提到的信号是一种高级的异常处理机制，用于进程间通信的。</p>
 <p>当然通知的方式可以是设置应用程序地址空间的某个变量，或者是通过信号，或者是软件中断，或应用程序执行流程之外的某个回调函数。</p>
 <p>如果来了<strong>多个通知信号</strong>要怎么办呢？</p>
-<p>要么是使用栈的方式，再调一次处理函数。(这要看这个信号的处理函数，是不是可重入的。一般硬件级别的处理函数，都是不可重用的)。<br>要么就是忽略，（你给进程发送多个同一类型的信号，后面的就会被忽略）<br>要么就只能阻塞到第一个消息处理完。（比如可以在前面加一个事件队列，这样就可以一个一个的处理。cpu中断屏蔽的处理方式就和这个类似。但是作为软件设计，与其在中断前加一个队列，不如直接设计成轮训的模型。）</p>
+<p>要么是使用栈的方式，再调一次处理函数。(这要看这个信号的处理函数，是不是可重入的。一般硬件级别的处理函数，都是不可重用的)。<br>要么就是忽略，（你给进程发送多个同一类型的信号，后面的就会被忽略）<br>要么就只能阻塞到第一个消息处理完。（比如可以在前面加一个事件队列，这样就可以一个一个的处理。cpu中断屏蔽的处理方式就和这个类似。但是作为软件设计，与其在中断前加一个队列，不如直接设计成轮询的模型。）</p>
 <p>所以在通知比较少，或者是较为底层的模型中，会使用中断，通知量较大的模型中，都会使用轮询。还有更常见的分层软件设计。内部的引擎设计是轮询。但是你在使用提供的接口时，用起来就是一个注册回调函数或者是协程，看上去很像是中断机制。</p>
 <p>还要再谈一点更有趣的，其实底层的设计也并非都是中断设计，比如我们的网卡，在数据量小的时候，每一个数据包都会让网卡产生一个中断。随着数据量的增加，每个包都产生中断代价太大，kernel就会开始interrupt coalescing机制，让网卡做中断合并，也就是说来足够多的数据包或者等待一个timeout才会产生一个中断，kernel在响应中断时会把所有数据一起读出来处理，这样可以有效的降低中断次数。如果数据量更大的时候，既然网卡缓冲区里几乎总是有未处理的数据，那么kernel干脆会禁掉网卡的中断，切换到轮询处理的模式。</p>
-<p>所以设计也会根据场景的不同，在中断和轮训之间切换。</p>
+<p>所以设计也会根据场景的不同，在中断和轮询之间切换。</p>
 </span>
       
     </div>
@@ -303,7 +303,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2017/07/11/poling-and-interrupts/"
-     data-title="轮训和中断"
+     data-title="轮询和中断"
      data-content=""
      data-url="http://www.pulpcode.cn/2017/07/11/poling-and-interrupts/">
   <div class="ds-share-inline">
@@ -332,7 +332,7 @@
           <div class="comments" id="comments">
             
               <div class="ds-thread" data-thread-key="2017/07/11/poling-and-interrupts/"
-                   data-title="轮训和中断" data-url="http://www.pulpcode.cn/2017/07/11/poling-and-interrupts/">
+                   data-title="轮询和中断" data-url="http://www.pulpcode.cn/2017/07/11/poling-and-interrupts/">
               </div>
             
           </div>
@@ -414,7 +414,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#轮训"><span class="nav-number">1.</span> <span class="nav-text">轮训</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断"><span class="nav-number">2.</span> <span class="nav-text">中断</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#轮询"><span class="nav-number">1.</span> <span class="nav-text">轮询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断"><span class="nav-number">2.</span> <span class="nav-text">中断</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
