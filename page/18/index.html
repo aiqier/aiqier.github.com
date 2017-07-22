@@ -174,6 +174,100 @@
           
           
             
+              <a class="post-title-link" href="/2015/04/26/when-do-we-use-tornado/" itemprop="url">
+                什么时候使用tornado
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-04-26T00:00:00+08:00" content="2015-04-26">
+            2015-04-26
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/04/26/when-do-we-use-tornado/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/26/when-do-we-use-tornado/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>初学tornado的我，曾经一直好奇tornado到底适合什么样的开发，stackoverflow的一个提问曾经给了我解答。</p>
+<h2 id="问题部分："><a href="#问题部分：" class="headerlink" title="问题部分："></a>问题部分：</h2><p>Ok, Tornado is non-blocking and quite fast and it can handle a lot of standing requests easily.</p>
+<p>好吧，tornado是一个非阻塞的而且可以快速的处理大量并发请求。</p>
+<p>But I guess it’s not a silver bullet and if we just blindly run Django-based or any other site with Tornado it won’t give any performance boost.</p>
+<p>但是我猜测它并非银弹，并且如果我们把其他的web站点，类似django这样的运行在tornado上，并不会提升效率</p>
+<p>I couldn’t find comprehensive explanation of this, so I’m asking it here:</p>
+<p>我不能得到一个全面的解释，所以我在这里这样提问。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/04/26/when-do-we-use-tornado/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/04/20/python-program-some-hole/" itemprop="url">
                 python编程中遇到的一些“小坑”
               </a>
@@ -718,100 +812,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/03/03/something-for-oa/" itemprop="url">
-                这一年OA的那点事
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-03-03T00:00:00+08:00" content="2015-03-03">
-            2015-03-03
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/03/03/something-for-oa/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/03/something-for-oa/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>这一年的工作没干别的了，就做这个oa系统。这篇博客也算是自己对过去一年工作的回顾了。</p>
-<p>公司使用的开发语言是c#，虽然上学的我很鄙视那些只会拖控件，用IDE的菜笔，这一年我才发现c#这个语言如此“优雅”。</p>
-<p>使用的框架式XAF，数据库Postgresql，开发环境是VS2012+resharp插件，版本管理器是SVN。</p>
-<p>一开始设计的模型是这样的：项目与项目阶段一对多的关系，当项目完成后，在与合同多对多的处理，最后合同再与财务信息多对多。这看上去是个三角循环，事实上后面的二次调研才发现，这么做根本不合理。</p>
-<p>这里有一个有趣的设计，我们之前的职位字段是一个Enum，也就是说一个人只能有一个职位。在之后的需求中，需要一个人有多个职位，我使用了位掩码来实现多个职位，<a href="http://www.pulpcode.cn/2014/07/05/enum-post/">使用位掩码实现多个职位</a></p>
-<p>之后的一段时间，我一直纠结与各种细节问题，和各种琐事，比如svn的底层原理到底是怎样的，我到底是应该用vim，还是emacs，还是sublime，我的变量这样命名是否合理？这个函数的接口设计的是否合理。我的代码写大了如何重构。我是不是又在走弯路，很长一段时间，我感到非常的恐慌，不知如何是好。</p>
-<p>之后的阶段，我开始和实际使用的业务人员沟通，发现我们的需求之前确实是错的，而且讨论的需求也基本是和数据中心的人闭门造车，真实情况是他们也是对业务流程知道个一知半解。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/03/03/something-for-oa/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -850,7 +850,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">197</span>
+              <span class="site-state-item-count">198</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
