@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2017/06/11/why-did-Japanese-Katana-so-long/" itemprop="url">
+                为啥太刀这么长
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-11T00:00:00+08:00" content="2017-06-11">
+            2017-06-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/游戏知识/" itemprop="url" rel="index">
+                  <span itemprop="name">游戏知识</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/06/11/why-did-Japanese-Katana-so-long/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/11/why-did-Japanese-Katana-so-long/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>如果你看过一些日本的武士片或者是玩过一些类似《怪物猎人》，《仁王》，《荣耀战魂》这样包含日本元素的游戏，那你一定见过那种长长的，被称为太刀的武士刀。这篇博客就来考据一下为啥这种刀这么长。</p>
+<p>首先我查阅了一些资料发现普通的太刀并没有那么长，也就是 2尺（66cm）以上、3尺（约1m）之间。可以说差不多一米左右。所以这种刀经常会和另一种长度相近的打刀搞混。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/11/why-did-Japanese-Katana-so-long/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/06/04/strange-demand/" itemprop="url">
                 奇怪的需求
               </a>
@@ -705,98 +794,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/04/22/from-hdd-to-ssd-how-b-tree/" itemprop="url">
-                从机械硬盘到固态硬盘后，b树怎么办？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-04-22T00:00:00+08:00" content="2017-04-22">
-            2017-04-22
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/数据结构/" itemprop="url" rel="index">
-                  <span itemprop="name">数据结构</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/04/22/from-hdd-to-ssd-how-b-tree/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/22/from-hdd-to-ssd-how-b-tree/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>其实提到树这种数据结构，你一定会和搜索联系起来，毕竟每次分支的决策就能过滤掉大半的选择，从而使解空间变得越来越小。有一种在文件系统很常用的树，那就是b树。</p>
-<p><img src="/img/btree.png" alt="btree"></p>
-<p>上面这张图就是一个b树的样子，b树的非终端节点，都是一个节点，可以存放一组信息，其结构可以定义为：(n, A0, K1, A1, K2, …. , Kn, An).其中n表示这个节点有几个关键字，而K就表示关键字，A表示指向子树节点的指针。那么从数据结构图就能明白，A0指向的节点都小于k1，A1指向的节点都大于k1小于k2.而且所有叶子节点都出现在同一层次上，并且不带信息（其实就是空指针）。</p>
-<p>而这种被称为b树的树结构，关键的不同点是每个节点可有多个key和分叉使得你可以把节点的大小凑成某个数，比如接近磁盘一个块的大小(或整数倍)。因为磁盘的读写是一块一块进行的，所以这样做的话能够较高效率地IO。</p>
-<p>下面两张图算是机械硬盘的主视图和俯视图了。其实没必要对机械硬盘过于深入的了解，只需要知道，我们的数据其实是存储于盘面的，当我的数据需要被读取或者写入的时候，都需要让磁头移动到那个盘面的那个位置，首先可以看到每一个盘面都都应一个磁头。盘面本身可以转动，而从第二张图也可以知道，磁头可以横向移动，从而触碰一个半径上的磁盘。就这样，我们可以访问n个盘面上的所有位置。但是你会发现，要随机访问一块数据非常慢，因为你要先确定数据在哪个盘面的哪个磁道的哪个扇区。然后先让磁盘旋转到磁头可以触碰的那个磁道，然后在让磁头移动到相应的扇区。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/04/22/from-hdd-to-ssd-how-b-tree/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -835,21 +832,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">198</span>
+              <span class="site-state-item-count">199</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">88</span>
+              <span class="site-state-item-count">89</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
