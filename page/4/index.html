@@ -174,6 +174,104 @@
           
           
             
+              <a class="post-title-link" href="/2017/03/10/sister-you-bold-merge/" itemprop="url">
+                妹妹你大胆的merge吧
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-10T00:00:00+08:00" content="2017-03-10">
+            2017-03-10
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/git/" itemprop="url" rel="index">
+                  <span itemprop="name">git</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/03/10/sister-you-bold-merge/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/10/sister-you-bold-merge/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>刚毕业那会，初学git的时候，很多命令都不知道咋用，比如git merge，我很害怕旧代码把我的新代码给覆盖了。后来我才发现这种想法是多余的，git从来不会让旧代码把新代码覆盖。</p>
+<p>首先先分类当merge代码的时候会发生什么？</p>
+<h2 id="简单的merge"><a href="#简单的merge" class="headerlink" title="简单的merge"></a>简单的merge</h2><p>比如你在开发一个购买水果的网站代码，这个时候有新的需求要购买苹果，然后你在master上切出一个分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b feature-sale-apple</div></pre></td></tr></table></figure>
+<p>之后你开发完成，并测试通过，需要把feature-sale-apple的代码合并到master。这个时候只要切换到master分支：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout master</div></pre></td></tr></table></figure>
+<p>然后合并 feature-sale-apple就行了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge feature-sale-apple</div></pre></td></tr></table></figure>
+<p>那么如果你当时在feature-sale-apple试图merge master呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git merge master</div></pre></td></tr></table></figure>
+<p>实际上什么都不会发生。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/10/sister-you-bold-merge/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/02/24/castration-fear/" itemprop="url">
                 阉割恐惧
               </a>
@@ -727,98 +825,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/02/01/user-buffer-and-kernel-buffer/" itemprop="url">
-                用户进程缓冲区和内核缓冲区
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-02-01T00:00:00+08:00" content="2017-02-01">
-            2017-02-01
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/操作系统/" itemprop="url" rel="index">
-                  <span itemprop="name">操作系统</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/02/01/user-buffer-and-kernel-buffer/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/01/user-buffer-and-kernel-buffer/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>常常听到有程序员会跟你讨论：“我们在读写文件的时候，系统是有缓存的”。但实际上有一部分人把用户进程缓冲区和系统空间的缓冲区的概念混淆了，包括这两种缓冲区的用法和所要解决的问题，还有其它类似的概念。这篇博客就来区分一下不同的缓冲区概念。</p>
-<p>这篇博客指针对类unix平台，windows的我并不熟悉，但我觉得应该差不多。</p>
-<h2 id="用户进程与操作系统的关系"><a href="#用户进程与操作系统的关系" class="headerlink" title="用户进程与操作系统的关系"></a>用户进程与操作系统的关系</h2><p>首先我用一张图来解释“用户进程和操作系统的关系”</p>
-<p><img src="/img/process-os.jpg" alt="process-os"></p>
-<p>这是一个计算机系统运行时的简化模型，我们把所有运行在操作系统上的进程成为用户进程，它们都运行在用户空间（可以看到用户空间有很多进程）。把操作系统运行的空间成为系统空间。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/01/user-buffer-and-kernel-buffer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -857,7 +863,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">199</span>
+              <span class="site-state-item-count">200</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -871,7 +877,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">89</span>
+              <span class="site-state-item-count">90</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

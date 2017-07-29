@@ -174,6 +174,102 @@
           
           
             
+              <a class="post-title-link" href="/2016/10/29/from-python-to-java-future-object/" itemprop="url">
+                从python到java之并行程序设计中的Future对象
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-10-29T00:00:00+08:00" content="2016-10-29">
+            2016-10-29
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/10/29/from-python-to-java-future-object/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/29/from-python-to-java-future-object/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近我在从python的开发转向java，打算在转移技术栈的时候，通过比较python与java，去更深刻的理解动态语言与静态语言的优势与劣势，从而在工作中有效的搭配。所以接下来很长一段时间，我都会坚持写一些关于java和python两者比较的博客，当然刚入门java，自然写的东西就比较“弱智”了，但这一步早晚都要走的，先勇于接受吧。。</p>
+<p>我一开始在想，如何入手java，从什么语言基础或者是设计模式，我觉得都不是好的方式，毕竟已经对这些比较熟了。静态语言本来也没有什么奇技淫巧，就算有也百八十年用不到，框架的话也不用急着去看，因为用着用着该会的也就会了。一堆不知道怎么用的规则更没必要记了，再加上自己也想让自己的水平提升一个台阶，所以我想要不就从java并行程序设计开始吧。</p>
+<p>这篇博客我要写一些关于Future对象的东西。</p>
+<h2 id="java中的Future"><a href="#java中的Future" class="headerlink" title="java中的Future"></a>java中的Future</h2><p>你在一开始学习java多线程的时候，书上都会告诉你一个简单的例子，就是先创建一个任务，这个任务对象继承一个Runnable接口，并且实现了其中的run方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</div><div class="line">	</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</div><div class="line">		System.out.println(<span class="string">"Hello,World"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后你就可以用线程来执行此任务，比如直接提交给一个Thread的构造函数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Thread t = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Task());</div><div class="line">t.start();</div></pre></td></tr></table></figure>
+<p>或者直接扔给执行器(Executor)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ExecutorService exec = Executors.newCachedThreadPool();</div><div class="line">exec.submit(<span class="keyword">new</span> Task());</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/29/from-python-to-java-future-object/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/10/17/why-we-can-use-recursive/" itemprop="url">
                 递归为什么可以运行下去
               </a>
@@ -703,97 +799,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/07/20/because-and-so/" itemprop="url">
-                因果关系
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-07-20T00:00:00+08:00" content="2016-07-20">
-            2016-07-20
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/思考/" itemprop="url" rel="index">
-                  <span itemprop="name">思考</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/07/20/because-and-so/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/20/because-and-so/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>很早以前，我曾幼稚的认为，“只有聪明人，才会探究事物的因果。而大部分人仅仅停留在事物的表面”。后来我发现自己错了，或者说仅仅对了很小的一部分，实际上，每个人都会沉迷于因果关系，因为这是人们的天性。</p>
-<p>之前跟一个妹子聊天，她说自己挣得比以前多多了，说自己祖上原来就是土豪，所以现在有钱是因为自己骨子里就有富人的基因。将来会更有钱，反正跟互联网泡沫无关。</p>
-<p>我们总会把成功和失败都归于因果关系，只不过成功都归于内因，而失败都归于外因。</p>
-<p>而这种自圆其说的方式，不仅仅是为了让自己相信，也是为了让别人相信。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/20/because-and-so/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -832,7 +837,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">199</span>
+              <span class="site-state-item-count">200</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -846,7 +851,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">89</span>
+              <span class="site-state-item-count">90</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
