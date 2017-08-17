@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2014/12/09/csharp-cast/" itemprop="url">
+                C#类型转换
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-12-09T00:00:00+08:00" content="2014-12-09">
+            2014-12-09
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/09/csharp-cast/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/09/csharp-cast/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>这里总结c#类型转换的知识</p>
+<h2 id="值类型"><a href="#值类型" class="headerlink" title="值类型"></a>值类型</h2><p>值类型的类型转换，可以理解为<strong>用一个类型A的值去初始化一个类型B的变量。</strong></p>
+<h4 id="变宽转换"><a href="#变宽转换" class="headerlink" title="变宽转换"></a>变宽转换</h4><p>如果是<strong>变宽转换</strong>，那么不会有问题。比如32位的int到64位的int，或者是int到float。</p>
+<h4 id="变窄转换"><a href="#变窄转换" class="headerlink" title="变窄转换"></a>变窄转换</h4><p>如果是<strong>变窄转换</strong>，那么就可能有问题。（可能会发生溢出）</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/09/csharp-cast/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/12/08/staging-price-calculation/" itemprop="url">
                 记一次工作中的金融计算程序
               </a>
@@ -711,97 +802,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/11/07/design-patterns-observer/" itemprop="url">
-                c#事件处理之观察者模式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-11-07T00:00:00+08:00" content="2014-11-07">
-            2014-11-07
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/11/07/design-patterns-observer/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/07/design-patterns-observer/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>c#中事件处理的第二部分写观察者模式。</p>
-<p>观察者模式是一种常用的设计模式，主要用在事件通知上。</p>
-<p>观察者模式中，主要分为两种类，主题类（subject）和观察者类（observe）。两者是一对多的关系，也就是一个主题类上注册了多个观察者。当主题类发生变化时，能够主动将变化推送给每个观察者。</p>
-<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>首先，如果我们完全不谈观察者模式中的推送数据，调用方法的模块。仅仅谈论对象建模，观察者模式本身其实在定义对象之间的一对多的关系。其中主题类在维护一个观察者类的容器。注册和注销都是在维护这个容器。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/11/07/design-patterns-observer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -840,7 +840,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">200</span>
+              <span class="site-state-item-count">201</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

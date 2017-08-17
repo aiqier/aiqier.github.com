@@ -174,6 +174,102 @@
           
           
             
+              <a class="post-title-link" href="/2017/03/11/how-can-i-deal-with-null-in-my-code/" itemprop="url">
+                我的代码要如何处理NULL
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-03-11T00:00:00+08:00" content="2017-03-11">
+            2017-03-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/03/11/how-can-i-deal-with-null-in-my-code/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/11/how-can-i-deal-with-null-in-my-code/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在运行代码的时候，最烦的就是看见Null了，而程序经常遇到的错误也是NullPointException(空指针异常)。就算是写代码处理Null，也烦的要死，因为要在各处重复的写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (xxx == <span class="keyword">null</span>)&#123;</div><div class="line">   ...</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然而很多时候你可能就忘写了。</p>
+<p>当然还有的人，跟我一样纠结，认为代码不能写太多的废话，比如我明知道这个函数不会返回null，那我为什么要在这里判断是否为null，那这样我的代码是不是显得非常蠢啊？</p>
+<p>但是你还是会有点犹豫，毕竟你害怕哪天，真的就空指针了，而你并没有判断。所以很多强迫症患者一直在思考，这代码怎样写才算好。</p>
+<p>所以这篇博客。总结一下，到底应该怎样处理这个null</p>
+<h2 id="什么是null"><a href="#什么是null" class="headerlink" title="什么是null"></a>什么是null</h2><p>在语言层面，定义null，返回null，没有任何问题，因为它确实代表着什么都没有，而且也不和0，空字符串等价。就像数据库，也是既有null值又有空类型的值（比如空字符串），它们并不能被混淆。</p>
+<p>而在代码层面（工程层面），之所以报错，也就是所谓的NullPointException，只不过因为对一个不存在的东西进行了解引用罢了。</p>
+<p>比如你调用了一个null对象的属性或者方法。类似a.b(),那这就自然会报空指针异常了。<br>再或者对一个null的容器，通过索引进行调用，也会出现空指针异常。<br>还有就是用for去迭代一个null容器。<br>以上这些都是常见的空指针异常错误的原因。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/11/how-can-i-deal-with-null-in-my-code/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/03/10/sister-you-bold-merge/" itemprop="url">
                 妹妹你大胆的merge吧
               </a>
@@ -734,97 +830,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/02/05/common-way-of-humor/" itemprop="url">
-                一种小品中常用的幽默方式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-02-05T00:00:00+08:00" content="2017-02-05">
-            2017-02-05
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/考据/" itemprop="url" rel="index">
-                  <span itemprop="name">考据</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/02/05/common-way-of-humor/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/05/common-way-of-humor/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="starting"><a href="#starting" class="headerlink" title="starting"></a>starting</h2><p>我之前写过一篇博客介绍幽默的方式，其中就提到，幽默的本质其实就是伤害，包括自嘲式的伤害自己，还有讽刺式的伤害别人。<br>比如我们从小调侃男女同学的关系，长大调侃男女同事的关系一样，本质都是伤害。</p>
-<p>这篇博客介绍一种在小品中常见的幽默方式，就是“构造欺骗差”。当然这个名词是我编的，我并不知道是否真的有“构造欺骗差”这个词，也没怎么看过喜剧设计的书。（取这个名字是为了表达一种信息不对称）</p>
-<p>简单的来说，我所指的欺骗差，就是让舞台上的演员，一部分人明白事情真相，另一部分蒙在鼓里，但其中的关键的是，台下的观众也知道事情真相。这样观众们就等着看蒙在鼓里人的笑话，等着他们被欺骗，这样就达到了一种欺骗差。</p>
-<p>而且仅仅是欺骗不够，关键是后续，欺骗者为了欺骗，要不停的圆谎，而被欺骗者只能用现有的知识，去理解这个谎。这样如果被欺骗者所理解的和欺骗者所构造的情节，还刚好还吻合在了一起，那才是真正的笑点。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/05/common-way-of-humor/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -863,7 +868,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">200</span>
+              <span class="site-state-item-count">201</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -1,0 +1,691 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="git 的文档中会介绍到git reset 有几个参数
+git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] []
+其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。
+首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git reset 中的三个参数到底有啥区别？">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/index.html">
+<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:description" content="git 的文档中会介绍到git reset 有几个参数
+git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] []
+其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。
+首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset1.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset2.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset3.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset4.png">
+<meta property="og:updated_time" content="2017-08-17T14:34:49.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git reset 中的三个参数到底有啥区别？">
+<meta name="twitter:description" content="git 的文档中会介绍到git reset 有几个参数
+git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] []
+其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。
+首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/git-reset1.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> git reset 中的三个参数到底有啥区别？ | Pulpcode-低俗代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode-低俗代码</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              git reset 中的三个参数到底有啥区别？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-08-17T00:00:00+08:00" content="2017-08-17">
+            2017-08-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/git/" itemprop="url" rel="index">
+                  <span itemprop="name">git</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/08/17/what-different-git-reset-params/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/17/what-different-git-reset-params/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>git 的文档中会介绍到git reset 有几个参数</p>
+<p>git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] [<commit>]</commit></p>
+<p>其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。</p>
+<p>首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你要知道git reset，无论使用哪个参数，你的那些回退之前的commit都“找不到”了。（用git reflog可以找回来）</p>
+<a id="more"></a>
+<p><img src="/img/git-reset1.png" alt="git-reset"></p>
+<p>当你reset 回到2版本的时候，再次新的开发肯定是在2的基础上，如第三幅图所示，所以问题就在于你在回退版本的时候，是否还想要commit3和commit4这部分修改的代码了？</p>
+<p>如果你想要的话，可以使用soft参数，这会让这部分变化的代码（commit3 到commit4）都放在当前工作目录中，也就是说你用 git status 将会发现一堆可以被git add 然后commit的“变化”。<br>或者使用mixed参数，来让这部分变化放在暂存区stage中，你可以选择将这部分变化的代码（commit3到commit4） commit。</p>
+<p>所以如果你再把这些变化“补充”回去，那么将得到的代码会和commit4是一样的，只不过不是当时的commit4了。</p>
+<p>当然如果你使用hard选项就是不打算要commit3到commit4的代码了。</p>
+<p>能够实现将变化放到当前工作目录的方式，类似于 diff和patch的原理。就是a 和 b 比较，总能得到一个 diff c，那么这个c就相当于一个patch，对a打一个c patch，就可以得到b了。</p>
+<p>同样的commit2 和commit4比较，是可以得到一个diff的，然后把当前分支回退到commit2，然后在把当前目录“运行”diff。</p>
+<p>注意我是说commit2和commit4之间的比较，所以如果在commit3中给某个文件加入一行，在commit 4中又把它删了，那实际上我们reset之后是发不现这种变化的。提到这点为了引出git的设计思路，每个commit都是独立的版本快照，而非什么存储变化，所以你用git diff只是看到当前目录与git库的区别，git并非把这些区别存储于git中。（会在后面讲到）</p>
+<p>顺便说一下，因为reset 回到了以前的版本，如果这部分被回退的代码在之前已经提交到服务器上，你是不能把这次commit，push到远程服务器上的，因为git是不容许旧版本覆盖新版本的，这就是所谓的“只做加法，不做减法。”<br>你可能知道<code>git push -f</code>，但这是个很不好的习惯，很可能把别人的代码都影响了。所以你想修改远程分支，最好的方式是使用revert。</p>
+<p>所以要记住如果你的commit已经发布到远程，就不要使用reset的方式了。</p>
+<h2 id="git的一部分底层知识"><a href="#git的一部分底层知识" class="headerlink" title="git的一部分底层知识"></a>git的一部分底层知识</h2><p>我之前一直认为，git commit 之间是存储的是变化，也就是说commit2不会存一份新的代码，而是只存储对于commit1的diff，后来我阅读了一部分git的底层原理知识，发现这个想法基本可以不去考虑了（即使git 为了优化空间，会以“diff”的方式，来压缩，从而减小空间。但是这部分底层优化对于你理解这个模型没什么意义，本质上你还是要认为每个版本都是独立的单元。）</p>
+<p><img src="/img/git-reset2.png" alt="git-reset"></p>
+<p>git基本上是一个数据库，所有的数据都可以用key value的方式去引用到，那个key基本上就是一段哈希序，数据库的数据类型有上图几种。</p>
+<p>红色的是 blob 对象 ，基本上一个代码文件就存储为一个 blob 对象，除非代码文件被修改了，否则新的commit还会引用到之前版本的blob对象。（如上图，commit3 也在引用 test.txt version2）</p>
+<p>紫色的是tree对象，它可以说类似于文件夹目录，所以tree可以指向多个其它的tree或者blob对象。</p>
+<p>绿色的被称为commit (提交) 对象，可以说一个commit对象，指向一个tree对象（项目的根目录），这样一个commit对象就代表一次完整的提交，表示当前项目的状态。同时commit对象也会指向它的父commit。</p>
+<p>灰色的被称为引用对象，也就是分支对象了。 基本上 Git 中的一个分支其实就是一个指向某个工作版本一条 HEAD 记录的指针或引用。<br>而HEAD 是一个指向你当前所在分支的引用标识符。<br>这个数据库可以说就是在你运行git init的时候创建的，init后，你会看到各种各样的文件夹和文件，如下就是git的数据库的样子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ ls</div><div class="line">    HEAD</div><div class="line">    branches/</div><div class="line">    config</div><div class="line">    description</div><div class="line">    hooks/</div><div class="line">    index</div><div class="line">    info/</div><div class="line">    objects/</div><div class="line">    refs/</div></pre></td></tr></table></figure>
+<p>我们所做的git操作，就是把工作目录修改的内容，存储到这个git数据库，或者选择某个版本的仓库，把它载入到当前工作目录中来。</p>
+<p>所以有了上面的知识，你就不难理解，git是如何比较commit之间的不同，然后进行回退的了，因为它根本没有“存差异”（试想如果是存差异 ，是不是还要合并或者重放这些差异），存的就是每个版本的快照。<br>这个在pro git这本书一开始就提到了：</p>
+<p>其他系统在每个版本中记录着各个文件的具体差异</p>
+<p><img src="/img/git-reset3.png" alt="git-reset"></p>
+<p>Git 保存每次更新时的文件快照</p>
+<p><img src="/img/git-reset4.png" alt="git-reset"></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag">#git</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/29/for-200-blogs/" rel="next">写给第200篇博客</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/08/17/what-different-git-reset-params/"
+     data-title="git reset 中的三个参数到底有啥区别？"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2017/08/17/what-different-git-reset-params/"
+                   data-title="git reset 中的三个参数到底有啥区别？" data-url="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">201</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">90</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git的一部分底层知识"><span class="nav-number">1.</span> <span class="nav-text">git的一部分底层知识</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

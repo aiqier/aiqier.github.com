@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2014/11/07/design-patterns-observer/" itemprop="url">
+                c#事件处理之观察者模式
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-11-07T00:00:00+08:00" content="2014-11-07">
+            2014-11-07
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/11/07/design-patterns-observer/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/07/design-patterns-observer/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>c#中事件处理的第二部分写观察者模式。</p>
+<p>观察者模式是一种常用的设计模式，主要用在事件通知上。</p>
+<p>观察者模式中，主要分为两种类，主题类（subject）和观察者类（observe）。两者是一对多的关系，也就是一个主题类上注册了多个观察者。当主题类发生变化时，能够主动将变化推送给每个观察者。</p>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>首先，如果我们完全不谈观察者模式中的推送数据，调用方法的模块。仅仅谈论对象建模，观察者模式本身其实在定义对象之间的一对多的关系。其中主题类在维护一个观察者类的容器。注册和注销都是在维护这个容器。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/11/07/design-patterns-observer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/11/06/c-sharp-event-delegate/" itemprop="url">
                 c#事件处理之委托
               </a>
@@ -719,97 +810,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/10/06/multi-line-strings/" itemprop="url">
-                python中的跨行字符串
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-10-06T00:00:00+08:00" content="2014-10-06">
-            2014-10-06
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/10/06/multi-line-strings/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/10/06/multi-line-strings/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>之前编程写到跨行字符串的时候，在c#中，总是使用<code>+</code>字符拼接。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">string s = &quot;The path of the righteous man is beset on all sides by the inequities of the tyranny of evil man.&quot;</div><div class="line">+ &quot;blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness,&quot;</div><div class="line">+ &quot;for he is truly his brother&apos;s keeper and the finder of lost children.&quot;</div><div class="line">+ &quot;And i will strike down upon thee with great vengeance and furious anger those who attempt to poison and destroy my brothers.&quot;</div><div class="line">+ &quot;And you will know my name is the lord when i lay my vengeance upon thee.&quot;;</div></pre></td></tr></table></figure>
-<p>后来我使用@符号编写跨行字符串，这样就可以直接编写字符串了。</p>
-<p>需要注意的是，在这段由@””包围的字符串中，你的所有<strong>格式</strong>，都被保留下来了。比如换行符，换行符后面的空格，还是文字前面用于缩进的空白符，都保存在这个字符串中。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/10/06/multi-line-strings/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -848,7 +848,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">200</span>
+              <span class="site-state-item-count">201</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
