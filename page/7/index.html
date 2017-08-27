@@ -264,6 +264,98 @@
           
           
             
+              <a class="post-title-link" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="url">
+                如何解决hexo无法展示博客内容的问题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-11-05T00:00:00+08:00" content="2016-11-05">
+            2016-11-05
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/运维/" itemprop="url" rel="index">
+                  <span itemprop="name">运维</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>今天写了一篇博客，然后更新到github上就不展示了，整个页面的框架还在，但是就是文章不展示，在经过一番折腾之后，我终于又让自己的博客回复正常了，这里分享下我是如何解决的。</p>
+<p>先说明环境，我使用的是hexo的next主题，而且我是眼睁睁的看着，我发布文章之后，旧的页面是好的，一刷新是坏的，我想到了是不是自己发布坏了，但是我在本地启动<code>hexo server</code>没有任何问题，然后我又试着<code>hexo clean</code>后发布，依旧没什么用。</p>
+<p>我看了下自己主页的源码，发现了一个问题，就是</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>这条连接点不进去了，出现了github page 404的页面，然后我去自己的github看了一下，这个路径有的。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/10/29/from-python-to-java-future-object/" itemprop="url">
                 从python到java之并行程序设计中的Future对象
               </a>
@@ -710,96 +802,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/08/27/use-add-not-sub/" itemprop="url">
-                做加法不做减法
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-08-27T00:00:00+08:00" content="2016-08-27">
-            2016-08-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/软件设计/" itemprop="url" rel="index">
-                  <span itemprop="name">软件设计</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/08/27/use-add-not-sub/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/27/use-add-not-sub/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近在新机器上发布代码的时候发现了一个bug。但是我的老机器从来没有报错，查了以后才发现代码中引用了一个已经被我从git项目中移除的旧包。旧机器不报错是因为在发布的时候远程主机上这个文件并没有被删除，新机器报错是因为git中早已经没这个文件了。</p>
-<p>实际上在发布工具有一个配置选项可以选择<strong>是否删除发布项中不存在的文件</strong>，但是如果你勾选此项，发布工具还是会警告提示你，<strong>是否确定勾选此项</strong>，因为这样可能会让服务出错。比如就我们那个服务而言，项目所在的文件夹中，还有由另一个服务负责定时更新的一些配置，所以如果你删除了git项目中不存在的文件，那么这些配置项也就都没了。</p>
-<p>“软件设计，都是只做加法，不做减法。”，我认为这其实是编程中常见的设计思路，本文就来举例考据一下。要注意的是本文讨论的是编程技术底层实现的思路，与交互功能设计的那一套“做减法”的思想不矛盾也无关。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/27/use-add-not-sub/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -838,7 +840,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">201</span>
+              <span class="site-state-item-count">202</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
