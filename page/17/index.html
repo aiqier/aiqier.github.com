@@ -174,6 +174,101 @@
           
           
             
+              <a class="post-title-link" href="/2015/07/05/this-would-be-very-complicated/" itemprop="url">
+                这本来就很复杂
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-05T00:00:00+08:00" content="2015-07-05">
+            2015-07-05
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/07/05/this-would-be-very-complicated/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/05/this-would-be-very-complicated/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>不知从何时起，优雅，简洁一词，一直充实着编程世界。</p>
+<p>尤其那些跟python有关的项目，和开源的各种精神，一直想要表达一种:“编程其实很简单，这个世界其实很简单，是你们太蠢了，把他们想复杂了而已”的想法。</p>
+<p>less is more，make it simple stupid，各种所谓的编程哲学，在unix编程中，你也可以看到大量这种想法。</p>
+<p>如果你觉得这还不够酸，你就去读读《可爱的python》，这上面的人，打油诗写的足够多，就像酸秀才一样。充斥这各种优雅。</p>
+<p>那么什么叫优雅，他们的意思就是把一个复杂的问题，用简单的方式解决了。</p>
+<p>其实大多数优雅者，就像高科技环保设计一样。完全是耗费大量资源，制作了一个不怎么实用的环保型产品。</p>
+<p>类似于百度一个牛逼的linux命令，然后试了半天，最后解决一个几十行的替换，还不如早点自己用手替换来的快</p>
+<p>大多数的优雅解决问题,也就是精简了一部分模型,能解决比较针对性的问题之后，就觉得自己已经牛逼到上天了，然后给自己套了一个less is more的帽子。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/07/05/this-would-be-very-complicated/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/06/28/dinosaurs-are-never-the-leading-role/" itemprop="url">
                 恐龙从来都不是主角
               </a>
@@ -725,102 +820,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/05/22/varchar-equal-zero-for-mysql/" itemprop="url">
-                mysql中varchar字段=0的问题
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-05-22T00:00:00+08:00" content="2015-05-22">
-            2015-05-22
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/05/22/varchar-equal-zero-for-mysql/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/22/varchar-equal-zero-for-mysql/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>今天同事一下子删除了n条数据库的内容，原因是where语句的部分是这样的：</p>
-<pre><code>where tran_no = 0;
-</code></pre><p>但是<code>tran_no</code> 是一个varchar类型的，为什么varchar的类型会导致这条where语句成功？</p>
-<p>先看结论：</p>
-<p>当比较数字和varchar时，mysql会把varchar转换为数字，首字符为数字0的，或者其他字符的都会转换为0。</p>
-<p>所以varchar类型字段=0 只能排除首字符为非零数字的字符串</p>
-<p>所以，除了像’2two’这样的字符，大多数字符都被where“抓”到了。</p>
-<p>这对于那些在动态语言中（比如php），null，””, 0 各种乱写乱用的人而言，简直就是噩梦。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="extend next" rel="next" href="/page/18/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/16/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/18/">&raquo;</a>
   </nav>
 
  </div>
@@ -854,7 +858,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">203</span>
+              <span class="site-state-item-count">204</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -868,7 +872,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">90</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

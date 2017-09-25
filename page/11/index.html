@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2016/04/25/my-story-with-game-01/" itemprop="url">
+                我和游戏的故事01
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-04-25T00:00:00+08:00" content="2016-04-25">
+            2016-04-25
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/随笔/" itemprop="url" rel="index">
+                  <span itemprop="name">随笔</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/04/25/my-story-with-game-01/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/25/my-story-with-game-01/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>我如果深度回忆起自己的小时候，我记得第一次接触游戏因该是几次看游戏的回忆。</p>
+<p>一次是在我奶奶的邻居家，一个比我大一些的哥哥在玩一个游戏，如果没错的话，应该是《荒野大镖客》，当然这个哥哥自从搬走之后就再也没有见过了。还有一次是在我一个亲戚家，看见我的姨和舅们在那里玩，我记得他们笑得不亦乐乎，后来我才知道那个游戏叫《马戏团》。还有一次是在一个离家不远的理发馆，里面居然有一个街机，我看见一个比我大的人在玩，他还骗走我的两毛钱，实际上，到现在我也不知道那个街机游戏是什么。实际上我都不知道哪一件是先发生的，反正都是在小学的时候。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/25/my-story-with-game-01/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/03/31/talk-about-python-decorator/" itemprop="url">
                 聊聊python装饰器
               </a>
@@ -709,103 +798,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/01/26/vim-indent-python/" itemprop="url">
-                在vim中复制python代码遇到的问题
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-01-26T00:00:00+08:00" content="2016-01-26">
-            2016-01-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/01/26/vim-indent-python/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/26/vim-indent-python/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>你把你的python代码粘贴到你的vim中，就会出现类似的场景：</p>
-<p><img src="/img/indent.png" alt="vimindent"></p>
-<p>实际上，不仅仅是vim，我的服务器emacs和mac上的emacs，因为进行了配置，也会在粘贴python代码的时候出现过类似的场景，就是缩进不对。要么没缩进了，要么缩进的乱七八糟。</p>
-<p>这明显是你给你的编辑器配置了一些缩进功能，而这些缩进功能对于手敲代码是没问题的，但是直接粘贴来的代码，就会出现各种各样的问题。</p>
-<p>首先来看vim编辑器下的两个配置选项：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">set autoindent</div><div class="line"># 自动缩进，指的是插入下一行，下一行的缩进将与当前行保持一致。</div><div class="line">set cindent</div><div class="line"># 按照被编辑的代码，进行缩进，比如python的冒号，比如c++大括号</div></pre></td></tr></table></figure>
-<p>我不知道具体的原因和解释，但是可以猜到就是上面缩进配置，造成了此问题。</p>
-<p>网上提供的一种解决办法是使用：<code>set paste</code>,这样就进入了粘贴模式，此模式将取消自动缩进。<br>这样插入就没有问题了，在插入完成之后，再选择<code>set nopaste</code>就可以了,（因为你还是想要自动缩进这个功能。）</p>
-<p>这里并没有讲解emacs的解决办法，因为不想再去折腾了。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="extend next" rel="next" href="/page/12/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/10/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/12/">&raquo;</a>
   </nav>
 
  </div>
@@ -839,7 +836,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">203</span>
+              <span class="site-state-item-count">204</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -853,7 +850,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">90</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

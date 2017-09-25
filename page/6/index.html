@@ -174,6 +174,103 @@
           
           
             
+              <a class="post-title-link" href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/" itemprop="url">
+                从python到java设计模式之命令模式
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-01-07T00:00:00+08:00" content="2017-01-07">
+            2017-01-07
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/设计模式/" itemprop="url" rel="index">
+                  <span itemprop="name">设计模式</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/07/from-python-to-java-design-pattern-command-pattern/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近在看Hystrix，有博客提到这个里面使用到了命令模式。虽然命令模式在web开发中很少见，但神奇的是我也在前段时间的一次设计中使用了命令模式（或者说类似的模式）。</p>
+<p>命令模式算是一个比较特别的模式，为什么说它特别？因为很多教你如何做好oop设计的书都会提到类似的观点：</p>
+<blockquote>
+<p>不要把操作变成类。</p>
+</blockquote>
+<p>然而命令模式就是把某一个操作封装成为类。</p>
+<p>简单的说命令模式干了这样一件事：</p>
+<blockquote>
+<p>一开始你的程序是A，B，C…对象对X，Y，Z…对象的直接操作。然后为了让（A，B，C）和（X，Y，Z）解耦，你在A和B之间加入了一个中介对象F1，F2，F3，这个中介对象的意义是包装对X，Y，Z的操作。这样你的（A，B，C）就不直接操作（X，Y，Z）了，而是使用（F1，F2，F3）对象，而这个F对象就被称为命令。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/01/02/why-your-multi-core-phone-not-have-any-useful/" itemprop="url">
                 为啥你的多核手机打游戏没啥提升
               </a>
@@ -722,106 +819,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/12/03/what-is-strong-weak-language/" itemprop="url">
-                强弱类型到底是个啥？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-12-03T00:00:00+08:00" content="2016-12-03">
-            2016-12-03
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/语言/" itemprop="url" rel="index">
-                  <span itemprop="name">语言</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/12/03/what-is-strong-weak-language/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/03/what-is-strong-weak-language/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>程序员们喜欢撕逼，他们会争论vim和emacs那个才是最牛逼的编辑器，会比较linux和Windows哪个更牛逼些，还会比较java和c#哪个更强大一些，因为他们总喜欢追寻自己的教条和信仰，跟别的队伍吵个不停。最近总听见有人在讨论关于编程语言的强弱类型，他们常常为某种语言是不是弱类型吵得不可开交。jser，PHPer们可能是因为被黑惯了,他们一般表现出”你说啥都行,弱类型就弱类型,无所谓，你们开心就好的心态。”但是pythoner不这么想，作为一个向往逼格的pythoner，如果有一个javaer跟他说：“python是弱类型，java是强类型”，那他一定会跟他争论个面红耳赤，再跟他讲“强类型，弱类型，静态语言，动态语言之间的区别与联系”。我原来就是这样的一个pythoner。但是最近我突然想起来大四的一节软件工程课上，老师谈到从第一代编程语言到第五代编程语言的区别，我发现分类方式和我在图书馆读到的不一样，所以我下课之后还去找他讨论了一番，但老师只是很平静的对我说，其实这个定义只是一个简单的分类说法，没什么严格标准的定义说某种语言就是第三代语言。这个经历让我突然想问自己，“我们在天天撕的强弱类型，它到底是个啥？”</p>
-<h2 id="大众的现状"><a href="#大众的现状" class="headerlink" title="大众的现状"></a>大众的现状</h2><p>目前而言，大部分人眼中c，java,C#这样的语言就被称为强类型语言，而php，js，python就被称为弱类型，因为他们认为像java这样的语言，任何一个变量在声明的时候，都要明确指定其类型，比如像这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"SB!"</span>);</div></pre></td></tr></table></figure>
-<p>而python并不用在声明的时候，给它定义一个类型：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">"123"</span></div></pre></td></tr></table></figure>
-<p>而且python的变量貌似看上去还可以随便赋值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">i = <span class="number">1</span></div><div class="line">i = <span class="string">"123"</span></div></pre></td></tr></table></figure>
-<p>所以他们就认为python是弱类型。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/03/what-is-strong-weak-language/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="extend next" rel="next" href="/page/7/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/7/">&raquo;</a>
   </nav>
 
  </div>
@@ -855,7 +857,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">203</span>
+              <span class="site-state-item-count">204</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -869,7 +871,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">90</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
