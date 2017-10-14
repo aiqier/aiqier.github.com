@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/21/write-something-about-yield/" itemprop="url">
+                写一些关于yield的东西
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-21T00:00:00+08:00" content="2015-08-21">
+            2015-08-21
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/21/write-something-about-yield/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/21/write-something-about-yield/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>用了这么多年的python不可能不知道<code>yield</code>这个利器，迭代器离不开它，协程也离不开它，甚至是那些用yield写好的递归，这里准备写一篇博客，讨论这么长时间，自己对yield的感悟。</p>
+<p>本文假设你知道yield，会使用基础的yield，并不会写一些完全入门的介绍。另外，我们把包含yield的函数称之为生成器。</p>
+<h2 id="三种yield写法"><a href="#三种yield写法" class="headerlink" title="三种yield写法"></a>三种yield写法</h2><h4 id="第一种："><a href="#第一种：" class="headerlink" title="第一种："></a>第一种：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"start..."</span></div><div class="line">    <span class="keyword">yield</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"end...."</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a =foo()</div><div class="line">a =foo()</div><div class="line">&gt;&gt;&gt; a</div><div class="line">a</div><div class="line">&lt;generator object foo at 0x1089a5e60&gt;</div><div class="line">&gt;&gt;&gt; a.next()</div><div class="line">a.next()</div><div class="line">start...</div><div class="line">&gt;&gt;&gt; a.next()</div><div class="line">a.next()</div><div class="line">end...</div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line 1, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">StopIteration</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/08/21/write-something-about-yield/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/20/100th-blog/" itemprop="url">
                 写给第100篇博客
               </a>
@@ -717,101 +808,6 @@ Mac: 以\r结尾。
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/07/14/python-import/" itemprop="url">
-                从几个实验来分析python import
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-07-14T00:00:00+08:00" content="2015-07-14">
-            2015-07-14
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/07/14/python-import/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/14/python-import/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="一些实验："><a href="#一些实验：" class="headerlink" title="一些实验："></a>一些实验：</h2><p>首先a文件中有：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">"this is a"</span></div></pre></td></tr></table></figure>
-<p>b文件中有：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> a</div><div class="line"><span class="keyword">print</span> <span class="string">"this is b"</span></div></pre></td></tr></table></figure></p>
-<p>然后执行b： <code>python b.py</code></p>
-<p>结果为：</p>
-<pre><code>this is a
-this is b
-</code></pre><p>结论：在import a的时候，执行了a脚本</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/07/14/python-import/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -850,7 +846,7 @@ this is b
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">205</span>
+              <span class="site-state-item-count">206</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -864,7 +860,7 @@ this is b
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">92</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
