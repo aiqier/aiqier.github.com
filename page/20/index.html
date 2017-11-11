@@ -174,6 +174,100 @@
           
           
             
+              <a class="post-title-link" href="/2015/03/26/unix-shell-command-study-note/" itemprop="url">
+                unix shell 命令行总结
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-03-26T00:00:00+08:00" content="2015-03-26">
+            2015-03-26
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/03/26/unix-shell-command-study-note/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/26/unix-shell-command-study-note/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>我一直所理解的学习模式是：<code>尝试 --&gt; 实用熟练 --&gt; 探究原理 --&gt; 总结均衡，选择性忽略。</code></p>
+<p>新公司的开发环境是mac，再一次从win开发回到了linux开发模式，好多命令基本都忘记了，是时候重新总结了。</p>
+<p>这篇博客会不断更新，主要总结常用场景下的命令。</p>
+<h2 id="删除命令"><a href="#删除命令" class="headerlink" title="删除命令"></a>删除命令</h2><h4 id="将当前文件夹下的名字以mode结尾的文件夹全部删除-注意此命令结尾的写法"><a href="#将当前文件夹下的名字以mode结尾的文件夹全部删除-注意此命令结尾的写法" class="headerlink" title="将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)"></a>将当前文件夹下的名字以mode结尾的文件夹全部删除(注意此命令结尾的写法)</h4><pre><code>find . -type d -name &quot;*mode&quot;  -exec rm -rf {} \;
+</code></pre><h2 id="查找进程"><a href="#查找进程" class="headerlink" title="查找进程"></a>查找进程</h2><h4 id="查开80号端口被哪个进程占用"><a href="#查开80号端口被哪个进程占用" class="headerlink" title="查开80号端口被哪个进程占用"></a>查开80号端口被哪个进程占用</h4><pre><code>netstat -anp | grep 80
+</code></pre><h4 id="查找一个叫tornado的进程"><a href="#查找一个叫tornado的进程" class="headerlink" title="查找一个叫tornado的进程"></a>查找一个叫tornado的进程</h4><pre><code>ps aux | grep tornado
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/03/26/unix-shell-command-study-note/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/03/08/data-struct-tree/" itemprop="url">
                 数据结构总结之tree
               </a>
@@ -723,98 +817,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/02/03/annual-technical-common-models/" itemprop="url">
-                2014年终技术总结之常见的编程模型
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-02-03T00:00:00+08:00" content="2015-02-03">
-            2015-02-03
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/02/03/annual-technical-common-models/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/03/annual-technical-common-models/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>对于一个要解决的问题，总会提供一种解决思路。这种思路如果是成熟的，不一定处处都是部分最优，但是能够保证全局最优。</p>
-<p>所以我在这里总结这种编程中常用的成熟的设计思路，避免自己再走弯路，提高自己在开发和设计时的效率。</p>
-<h2 id="只做加法，不做减法"><a href="#只做加法，不做减法" class="headerlink" title="只做加法，不做减法"></a>只做加法，不做减法</h2><h4 id="数据库与orm同步"><a href="#数据库与orm同步" class="headerlink" title="数据库与orm同步"></a>数据库与orm同步</h4><p>这一年主要使用c#开发系统，我们使用的orm是XAF下的XPO，XPO是一种强大的ORM工具，能够通过数据库表生成业务模型，也可以通过写好的业务模型直接去生成数据库表。</p>
-<p>而且你在使用XPO的时候，使用什么类型的数据库对于orm而言是完全透明的，根本不用关心，只要配置一下连接字符串就行了。</p>
-<p>但问题是如果我们通过业务类来直接生成表结构，而在开发的过程中，我们又修改了业务类，那么orm会如何处理？保证业务类和表结构同步？</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/02/03/annual-technical-common-models/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -853,7 +855,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">206</span>
+              <span class="site-state-item-count">207</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -867,7 +869,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">95</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
