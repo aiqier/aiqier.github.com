@@ -49,14 +49,14 @@
 <meta property="og:description" content="我一直好奇，编辑器的undo和redo是如何实现的，而且因为不了解uodo和redo工作原理到底是怎样的。常常会发现它并不能我所想的去工作。
 这篇文章用一种模型解释undo和redo，我在编辑器上试过这种思路是没问题的，但我不能把握这种模型一定是对的，如果在以后的学习中发现还有问题，我会进一步修改。
 清晰的思路首先要明白，为什么有的时候我们点击redo是没用的，因为只有undo的才能redo，你在">
-<meta property="og:image" content="http://www.pulpcode.cn/img/undo-redo.jpg">
-<meta property="og:updated_time" content="2016-09-24T09:56:35.791Z">
+<meta property="og:image" content="http://www.pulpcode.cn/img/undo-redo.png">
+<meta property="og:updated_time" content="2017-12-02T14:38:21.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编辑器的撤销和重做如何实现">
 <meta name="twitter:description" content="我一直好奇，编辑器的undo和redo是如何实现的，而且因为不了解uodo和redo工作原理到底是怎样的。常常会发现它并不能我所想的去工作。
 这篇文章用一种模型解释undo和redo，我在编辑器上试过这种思路是没问题的，但我不能把握这种模型一定是对的，如果在以后的学习中发现还有问题，我会进一步修改。
 清晰的思路首先要明白，为什么有的时候我们点击redo是没用的，因为只有undo的才能redo，你在">
-<meta name="twitter:image" content="http://www.pulpcode.cn/img/undo-redo.jpg">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/undo-redo.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -238,7 +238,7 @@
 <a id="more"></a>
 <p>还有我们要明白，任何一个操作都是可以被反转义为一个逆操作。比如“在xxx位置插入”abc”字符”的逆操作就是“将xxx位置到len（”abc”）长度的字符删除”。</p>
 <h2 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h2><p><code>undo</code>和<code>redo</code>的模型类似于下图:</p>
-<p><img src="/img/undo-redo.jpg" alt="undo-redo"></p>
+<p><img src="/img/undo-redo.png" alt="undo-redo"></p>
 <p>我们的每一次操作，就被放到一个类似栈的容器中（说类似，是因为它的属性和栈并不完全相同）。我们把编辑器底层维护的这块字符内存成为缓冲区，而在栈中存放的都是类似的操作：</p>
 <pre><code>在缓冲区的xx位置插入&quot;abc&quot;。
 将缓冲区xx到yy位置的字符串删除。
