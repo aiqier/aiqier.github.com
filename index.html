@@ -174,6 +174,100 @@
           
           
             
+              <a class="post-title-link" href="/2017/12/30/why-java-generic-use-type-eraser/" itemprop="url">
+                java为什么要用类型擦除实现泛型？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-12-30T00:00:00+08:00" content="2017-12-30">
+            2017-12-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/12/30/why-java-generic-use-type-eraser/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/30/why-java-generic-use-type-eraser/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>很长一段时间我只知道java的泛型使用了被成为“类型擦除”的技术，但是具体的原因和实现细节一直不清楚，最近仔细“研究”了一下，发现了许多有趣的地方。其实有关泛型的知识我已经在组内做过一次分享。但我还是觉得有些地方讲的不够透彻，所以我打算把分享的一部分内容提取出来写成博客，串讲清楚其中的几个知识点，所以就有了这篇：《java为什么要用类型擦除实现泛型？ 》</p>
+<h2 id="为什么需要泛型？"><a href="#为什么需要泛型？" class="headerlink" title="为什么需要泛型？"></a>为什么需要泛型？</h2><p>试想你需要一个简单的容器类，或者说句柄类，比如要存放一个苹果的篮子，那你可以这样简单的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Fruit&#123;&#125;</div><div class="line">class Apple extends Fruit&#123;&#125;</div><div class="line"></div><div class="line">class Bucket&#123;</div><div class="line">    private Apple apple;</div><div class="line">   </div><div class="line">     public void set(Apple apple)&#123;</div><div class="line">        this.apple = apple;</div><div class="line">    &#125;</div><div class="line">   </div><div class="line">    public Apple get()&#123;</div><div class="line">        return this.apple;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样一个简单的篮子就实现了，但问题是它只能存放苹果，之后又出现了另外的一大堆水果类，那你就不得不为这些水果类分别实现容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">class Fruit&#123;&#125;</div><div class="line">class Apple extends Fruit&#123;&#125;</div><div class="line">class Banana extends Fruit&#123;&#125;</div><div class="line">class Orange extends Fruit&#123;&#125;</div><div class="line"></div><div class="line">class BucketApple&#123;</div><div class="line">    private Apple apple;</div><div class="line"></div><div class="line">    public void set(Apple apple)&#123;</div><div class="line">        this.apple = apple;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Apple get()&#123;</div><div class="line">        return this.apple;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class BucketBanana&#123;</div><div class="line">    private Banana banana;</div><div class="line"></div><div class="line">    public void set(Banana banana)&#123;</div><div class="line">        this.banana = banana;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Banana get()&#123;</div><div class="line">        return this.banana;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">class BucketOrange&#123;</div><div class="line">    private Orange orange;</div><div class="line"></div><div class="line">    public void set(Orange orange)&#123;</div><div class="line">        this.orange = orange;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Orange get()&#123;</div><div class="line">        return this.orange;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后你发现你其实在做大量的重复劳动。所以你幻想你的语言编译器要是支持某一种功能，能够帮你自动生成这些代码就好了。</p>
+<p>不过在祈求让编译器帮你生成这些代码之前，你突然想到了Object能够引用任何类型的对象，所以你只要写一个Object类型的Bucket就可以存放任何类型了。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/12/30/why-java-generic-use-type-eraser/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/11/11/cost-performance-for-fe/" itemprop="url">
                 性价比学习前端知识
               </a>
@@ -711,97 +805,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/08/17/what-different-git-reset-params/" itemprop="url">
-                git reset 中的三个参数到底有啥区别？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-08-17T00:00:00+08:00" content="2017-08-17">
-            2017-08-17
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/git/" itemprop="url" rel="index">
-                  <span itemprop="name">git</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/08/17/what-different-git-reset-params/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/17/what-different-git-reset-params/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>git 的文档中会介绍到git reset 有几个参数</p>
-<p>git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] [<commit>]</p>
-<p>其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。</p>
-<p>首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你要知道git reset，无论使用哪个参数，你的那些回退之前的commit都“找不到”了。（用git reflog可以找回来）</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/17/what-different-git-reset-params/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -840,7 +843,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">207</span>
+              <span class="site-state-item-count">208</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

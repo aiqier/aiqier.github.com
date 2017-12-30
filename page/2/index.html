@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2017/08/17/what-different-git-reset-params/" itemprop="url">
+                git reset 中的三个参数到底有啥区别？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-08-17T00:00:00+08:00" content="2017-08-17">
+            2017-08-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/git/" itemprop="url" rel="index">
+                  <span itemprop="name">git</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/08/17/what-different-git-reset-params/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/17/what-different-git-reset-params/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>git 的文档中会介绍到git reset 有几个参数</p>
+<p>git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] [<commit>]</p>
+<p>其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。</p>
+<p>首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你要知道git reset，无论使用哪个参数，你的那些回退之前的commit都“找不到”了。（用git reflog可以找回来）</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/08/17/what-different-git-reset-params/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/07/29/for-200-blogs/" itemprop="url">
                 写给第200篇博客
               </a>
@@ -712,97 +803,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/" itemprop="url">
-                java排序抛出的Comparison method violates its general contract 异常
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-06-18T00:00:00+08:00" content="2017-06-18">
-            2017-06-18
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/18/comparison-method-violates-its-general-contractfor-sort/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>上周线上的一段排序的java代码出现了一个<code>Comparison method violates its general contract</code>，在解决这个问题的途中学到了一些知识这里总结分享一下。</p>
-<h2 id="异常原因"><a href="#异常原因" class="headerlink" title="异常原因"></a>异常原因</h2><p>这个排序导致的异常将会在java7以上的版本出现，所以如果你的JDK从6升级到了7或者8，那一定要小心此异常。<br>在java7的兼容列表中，就有对此排序不兼容的说明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Area: API: Utilities</div><div class="line">Synopsis: Updated sort behavior for Arrays and Collections may throw an IllegalArgumentException</div><div class="line">Description: The sorting algorithm used by java.util.Arrays.sort and (indirectly) by java.util.Collections.sort has been replaced. The new sort implementation may throw an IllegalArgumentException if it detects a Comparable that violates the Comparable contract. The previous implementation silently ignored such a situation.</div><div class="line">If the previous behavior is desired, you can use the new system property, java.util.Arrays.useLegacyMergeSort, to restore previous mergesort behavior.</div><div class="line">Nature of Incompatibility: behavioral</div><div class="line">RFE: 6804124</div></pre></td></tr></table></figure>
-<p>我从资料中查阅到java7开始引入了Timsort的排序算法。我之前一直以为大部分标准库的内置排序算法都是快速排序。现在才得知很多语言内部都使用Timsort排序。随后我在wiki百科上找到了这样一句话：</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -841,7 +841,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">207</span>
+              <span class="site-state-item-count">208</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
