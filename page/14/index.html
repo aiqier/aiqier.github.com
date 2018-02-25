@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2015/12/21/function_dafault_and_local_variable/" itemprop="url">
+                python默认参数和局部变量的两个坑
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-12-21T00:00:00+08:00" content="2015-12-21">
+            2015-12-21
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/12/21/function_dafault_and_local_variable/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/function_dafault_and_local_variable/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近琐事一堆，没时间更新博客，忙完了这段时间在好好填坑吧。</p>
+<p>这里写一篇关于python的两个坑。</p>
+<h2 id="函数默认参数"><a href="#函数默认参数" class="headerlink" title="函数默认参数"></a>函数默认参数</h2><p>先说结论，我们的函数，如果传入的参数是一个容器，那么应该以这样的方式设置默认值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(li=None)</span>:</span></div><div class="line">    xxxx</div><div class="line">    xxxx</div><div class="line">    ....</div></pre></td></tr></table></figure>
+<p>而不是这种方式:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">(li=[])</span>:</span></div><div class="line">    xxxx</div><div class="line">    xxxx</div><div class="line">    ....</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/21/function_dafault_and_local_variable/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/12/09/python-requests-post-unicode-lose-data/" itemprop="url">
                 python requests post发送unicode丢失字符串
               </a>
@@ -717,102 +810,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/07/how-to-write-well-python-code/" itemprop="url">
-                如何写出有质量的python代码
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-11-07T00:00:00+08:00" content="2015-11-07">
-            2015-11-07
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/07/how-to-write-well-python-code/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/07/how-to-write-well-python-code/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。</p>
-<p>实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。</p>
-<h2 id="多考虑前期需求分析和设计"><a href="#多考虑前期需求分析和设计" class="headerlink" title="多考虑前期需求分析和设计"></a>多考虑前期需求分析和设计</h2><p>之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（uml和文档），花一两天去实现。这件事，编码的年龄越大，领悟越透彻。</p>
-<h2 id="写好异常"><a href="#写好异常" class="headerlink" title="写好异常"></a>写好异常</h2><p>异常本身不算是python特有的，这本身算是编程的基本功了，那我就从异常本身和python特性两方面，来谈谈异常。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/07/how-to-write-well-python-code/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/15/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/13/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><a class="extend next" rel="next" href="/page/15/">&raquo;</a>
   </nav>
 
  </div>
@@ -846,7 +848,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">210</span>
+              <span class="site-state-item-count">211</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

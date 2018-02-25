@@ -174,6 +174,100 @@
           
           
             
+              <a class="post-title-link" href="/2015/02/27/c-sharp-technical-summary/" itemprop="url">
+                c#基础技术问题总结
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-02-27T00:00:00+08:00" content="2015-02-27">
+            2015-02-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/02/27/c-sharp-technical-summary/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/27/c-sharp-technical-summary/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>此篇文章总结c#一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中…</p>
+<h2 id="const与readonly"><a href="#const与readonly" class="headerlink" title="const与readonly"></a>const与readonly</h2><p>readonly为运行时常量，const为编译时常量。</p>
+<p>编译时常量比运行时常量快，性能好，但是缺乏灵活性（编译时常量需要重新编译应用程序）。</p>
+<p>编译时常量（const）仅限于数值和字符串（基元类型），C#不允许使用new来初始化一个编译时常量</p>
+<p>const修饰的常量默认是静态的（类型）。</p>
+<p>readonly修饰的字段可以在构造函数中被修改。</p>
+<p>使用const较之使用readonly的唯一好处就是性能。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/02/27/c-sharp-technical-summary/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/02/26/python-technical-summary/" itemprop="url">
                 python基础技术问题总结
               </a>
@@ -720,108 +814,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/01/28/annual-technical-code-cleanliness/" itemprop="url">
-                2014年终技术总结之代码洁癖
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-01-28T00:00:00+08:00" content="2015-01-28">
-            2015-01-28
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/01/28/annual-technical-code-cleanliness/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/28/annual-technical-code-cleanliness/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>本文算是两部分，一部分是对《编写可读代码的艺术》一书的总结，一部分算是自己这一年来对代码书写的心得体会。</p>
-<p>虽然项目的整体构架和设计模式很重要，但程序员日常工作的大部分时间，还是会花在一些“基本”的事上，所以写的一手“好代码”，也十分重要。</p>
-<p>这些代码洁癖包括：</p>
-<pre><code>命名，注释以及审美-可以用于代码库每一行的小提示。
-简化循环和逻辑。
-在程序中定义循环，逻辑和变量，从而使得代码更容易理解。
-重新组织你的代码。
-在更高层次上组织大的代码块以及在功能层次上解决问题的方法。
-</code></pre><p>而代码洁癖，本身就是为了使代码更容易理解，你会发现，如果一个人的代码写的很干净，那么他的编程思路也绝对是清晰的。相反代码写的乱的人，他们的编程思路，甚至做事态度都是含糊不清的。</p>
-<p>关键思想: 代码的写法应当使别人理解它所需的时间最小化。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/01/28/annual-technical-code-cleanliness/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/20/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/22/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/20/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><a class="extend next" rel="next" href="/page/22/">&raquo;</a>
   </nav>
 
  </div>
@@ -855,7 +852,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">210</span>
+              <span class="site-state-item-count">211</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
