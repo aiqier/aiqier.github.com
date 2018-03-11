@@ -174,6 +174,96 @@
           
           
             
+              <a class="post-title-link" href="/2014/11/28/how-to-design-dota/" itemprop="url">
+                如何设计一款dota类的游戏
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-11-28T00:00:00+08:00" content="2014-11-28">
+            2014-11-28
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/游戏/" itemprop="url" rel="index">
+                  <span itemprop="name">游戏</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/11/28/how-to-design-dota/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/28/how-to-design-dota/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>其实我早就想写一篇这样的博客了，但我又知道写这样一篇文章只能是“献丑”而已。我是没开发过游戏，更没设计过游戏，我只是把我对Dota的一些思考总结出来而已。<br>题目叫“如何设计一款Dota类的游戏”，这句话也许太狂了。叫“我对Dota的一些理解”也许更好。</p>
+<p><img src="/img/dota.jpg" alt="Dota"></p>
+<h4 id="开发方式"><a href="#开发方式" class="headerlink" title="开发方式"></a>开发方式</h4><p>首先dota的开发过程很是像开源软件的开发过程。我的意思不是说dota是开源的，而是说<strong>dota是冰蛙在与玩家一次一次的交流中逐渐开发成型的</strong>。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/11/28/how-to-design-dota/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/11/18/use-CSharp-linq-and-python-funcprogram-operator-collection/" itemprop="url">
                 使用c#的linq和python的函数式编程操作集合
               </a>
@@ -717,98 +807,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/11/01/sql-subquery/" itemprop="url">
-                sql知识总结之子查询
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-11-01T00:00:00+08:00" content="2014-11-01">
-            2014-11-01
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/11/01/sql-subquery/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/11/01/sql-subquery/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近sql语句接触的比较多，这里总结一下子查询的相关知识，我使用的数据库是<code>postgres</code>(所以sql语句会与mysql之类的有所不同,字段，表名需要被双引号括住)</p>
-<p>但如果是使用方法，那我直接看文档就好了，之所以写成博客，是分享我对子查询的理解方式。</p>
-<h4 id="从输入和输出的方式理解子查询。"><a href="#从输入和输出的方式理解子查询。" class="headerlink" title="从输入和输出的方式理解子查询。"></a>从输入和输出的方式理解子查询。</h4><p>首先我们要理解，在关系数据库中，始终是对二维表的操作，比如你的<code>SELECT</code>结果是一张表，你的<code>FROM</code>也是要对一张表。</p>
-<p><code>WHERE</code>是一个谓词没错，但是构成这个谓词的，可能需要一个值： <code>WHERE &quot;NAME&quot; = &#39;aiqier&#39;</code></p>
-<p>或者可能需要一个多行(类似于python的元组)： <code>WHERE &quot;Oid&quot; IN (111, 222, 333, 444))</code></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/11/01/sql-subquery/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -847,7 +845,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">211</span>
+              <span class="site-state-item-count">212</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
