@@ -53,8 +53,8 @@
 当然我思考过如果把公钥当私钥使用，私钥当公钥使用会怎样的问题，讨论请看这里:传送门
 简单的来说，通过私钥推算出公钥是非常容易的。
 公钥加密，私钥">
-<meta property="og:image" content="http://www.pulpcode.cn/img/signature.jpg">
-<meta property="og:updated_time" content="2016-09-24T09:56:35.763Z">
+<meta property="og:image" content="http://www.pulpcode.cn/img/signature.png">
+<meta property="og:updated_time" content="2018-03-17T07:24:01.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="非对称加密">
 <meta name="twitter:description" content="首先明确一点，此博客讨论的非对称秘钥只限于RSA，而非DSA。
@@ -62,7 +62,7 @@
 当然我思考过如果把公钥当私钥使用，私钥当公钥使用会怎样的问题，讨论请看这里:传送门
 简单的来说，通过私钥推算出公钥是非常容易的。
 公钥加密，私钥">
-<meta name="twitter:image" content="http://www.pulpcode.cn/img/signature.jpg">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/signature.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -257,7 +257,7 @@ Bob收到Alice的合同M及合同的数字签名S；
 Bob用Alice的公钥对合同签名S进行解密，得到Alice计算的合同摘要MD；
 Bob采用相同摘要算法对收到的合同重新计算消息摘要MD&apos;；
 Bob比较MD与MD&apos;是否相等？
-</code></pre><p><img src="/img/signature.jpg" alt="signature"></p>
+</code></pre><p><img src="/img/signature.png" alt="signature"></p>
 <p>如果结果相等，根据摘要算法的特性表明合同在传输过程中未被篡改。同时由于非对称加密算法的特性可以断定合同确实是Alice发送的，因为用Alice公钥能解密成功的数据只有Alice用她自己私钥对其进行加密才能产生，而她的私钥其它人是无法获取的。</p>
 <p>其目的在于验证数据的完整性和不可否认性。</p>
 <p>这里需要特别注意一点的是，数字签名并不能保证数据在传输过程中是保密的。也就是说抓包是可以看到的。所以数字签名适合与那些，只要证明是我写的就行了，你看见内容也没什么卵用的信息。</p>

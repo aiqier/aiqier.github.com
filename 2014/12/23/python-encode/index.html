@@ -55,8 +55,8 @@ s是个字符串，它本身存储的就是字">
 str与字节码首先，我们完全不谈unicode。
 1s = &quot;人生苦短&quot;
 s是个字符串，它本身存储的就是字">
-<meta property="og:image" content="http://www.pulpcode.cn/img/encode.jpg">
-<meta property="og:updated_time" content="2016-09-24T09:56:35.766Z">
+<meta property="og:image" content="http://www.pulpcode.cn/img/encode.png">
+<meta property="og:updated_time" content="2018-03-17T07:34:53.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python中的str与unicode处理方法">
 <meta name="twitter:description" content="python2.x中处理中文，是一件头疼的事情。网上写这方面的文章，测次不齐，而且都会有点错误，所以在这里打算自己总结一篇文章。
@@ -65,7 +65,7 @@ s是个字符串，它本身存储的就是字">
 str与字节码首先，我们完全不谈unicode。
 1s = &quot;人生苦短&quot;
 s是个字符串，它本身存储的就是字">
-<meta name="twitter:image" content="http://www.pulpcode.cn/img/encode.jpg">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/encode.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -254,7 +254,7 @@ s是个字符串，它本身存储的就是字">
 <p>你可以用如下两种方式定义一个unicode:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s1 = <span class="string">u"人生苦短"</span></div><div class="line">s2 = unicode(<span class="string">"人生苦短"</span>, <span class="string">"utf-8"</span>)</div></pre></td></tr></table></figure>
 <h2 id="encode与decode"><a href="#encode与decode" class="headerlink" title="encode与decode"></a>encode与decode</h2><p>在python中的编码解码是这样的：</p>
-<p><img src="/img/encode.jpg" alt="encode-decode"></p>
+<p><img src="/img/encode.png" alt="encode-decode"></p>
 <p>所以我们可以写这样的代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line">su = <span class="string">"人生苦短"</span></div><div class="line"><span class="comment"># ： su是一个utf-8格式的字节串</span></div><div class="line">u  = s.decode(<span class="string">"utf-8"</span>)</div><div class="line"><span class="comment"># ： s被解码为unicode对象，赋给u</span></div><div class="line">sg = u.encode(<span class="string">"gbk"</span>)</div><div class="line"><span class="comment"># ： u被编码为gbk格式的字节串，赋给sg</span></div><div class="line"><span class="keyword">print</span> sg</div><div class="line"><span class="comment"># 打印sg</span></div></pre></td></tr></table></figure>
 <p>但是事实情况要比这个复杂，比如看如下代码：</p>

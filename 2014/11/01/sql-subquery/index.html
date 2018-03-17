@@ -49,14 +49,14 @@
 <meta property="og:description" content="最近sql语句接触的比较多，这里总结一下子查询的相关知识，我使用的数据库是postgres(所以sql语句会与mysql之类的有所不同,字段，表名需要被双引号括住)
 但如果是使用方法，那我直接看文档就好了，之所以写成博客，是分享我对子查询的理解方式。
 从输入和输出的方式理解子查询。首先我们要理解，在关系数据库中，始终是对二维表的操作，比如你的SELECT结果是一张表，你的FROM也是要对一张表。">
-<meta property="og:image" content="http://www.pulpcode.cn/img/sql-select.jpg">
-<meta property="og:updated_time" content="2016-09-24T09:56:35.779Z">
+<meta property="og:image" content="http://www.pulpcode.cn/img/sql-select.png">
+<meta property="og:updated_time" content="2018-03-17T07:28:56.329Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sql知识总结之子查询">
 <meta name="twitter:description" content="最近sql语句接触的比较多，这里总结一下子查询的相关知识，我使用的数据库是postgres(所以sql语句会与mysql之类的有所不同,字段，表名需要被双引号括住)
 但如果是使用方法，那我直接看文档就好了，之所以写成博客，是分享我对子查询的理解方式。
 从输入和输出的方式理解子查询。首先我们要理解，在关系数据库中，始终是对二维表的操作，比如你的SELECT结果是一张表，你的FROM也是要对一张表。">
-<meta name="twitter:image" content="http://www.pulpcode.cn/img/sql-select.jpg">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/sql-select.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -238,7 +238,7 @@
 <p>或者可能需要一个多行(类似于python的元组)： <code>WHERE &quot;Oid&quot; IN (111, 222, 333, 444))</code></p>
 <a id="more"></a>
 <p>而这些部分，可以被<code>SELECT</code>中的筛选字段所提供，所以<strong>只要它们的数据结果类型和他们数据需要类型相一致，就可以看作是将输入输出连接起来，这就是所谓的子查询。</strong></p>
-<p><img src="/img/sql-select.jpg" alt="sql"></p>
+<p><img src="/img/sql-select.png" alt="sql"></p>
 <p>假设有这样两张表,<strong>Message</strong>和<strong>MessageReceive</strong>是一对多的关系：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"Message"</span></div><div class="line">(</div><div class="line"><span class="string">"Oid"</span> <span class="built_in">bigint</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line"><span class="string">"Subject"</span> <span class="built_in">character</span> <span class="built_in">varying</span>(<span class="number">255</span>),</div><div class="line"><span class="string">"Information"</span> <span class="built_in">character</span> <span class="built_in">varying</span>(<span class="number">100</span>),</div><div class="line"><span class="keyword">CONSTRAINT</span> <span class="string">"PK_Message"</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">"Oid"</span>),</div><div class="line">);</div><div class="line"></div><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"MessageReceive"</span></div><div class="line">(</div><div class="line"><span class="string">"Oid"</span> <span class="built_in">bigint</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</div><div class="line"><span class="string">"Message"</span> <span class="built_in">bigint</span>,</div><div class="line"><span class="string">"Employee"</span> <span class="built_in">bigint</span>,</div><div class="line"><span class="keyword">CONSTRAINT</span> <span class="string">"FK_MessageReceive"</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">"Oid"</span>),</div><div class="line"><span class="keyword">CONSTRAINT</span> <span class="string">"FK_MessageReceive_Message"</span> FOREIGN <span class="keyword">KEY</span> (<span class="string">"Message"</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
 <h4 id="例子1-将WHERE部分用子查询替换"><a href="#例子1-将WHERE部分用子查询替换" class="headerlink" title="例子1: 将WHERE部分用子查询替换"></a>例子1: 将WHERE部分用子查询替换</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">"MessageReceive"</span> <span class="keyword">WHERE</span> <span class="string">"Message"</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="string">"Oid"</span> <span class="keyword">FROM</span> <span class="string">"Message"</span> <span class="keyword">WHERE</span> <span class="string">"Subject"</span> = <span class="string">'会议室申请'</span>);</div></pre></td></tr></table></figure>

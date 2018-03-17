@@ -47,13 +47,13 @@
 <meta property="og:site_name" content="Pulpcode-低俗代码">
 <meta property="og:description" content="我一直理解，这个世界有两种人反应快。一种是想问题比较简单的人，另一种是试图把问题简单化的人。能够在脑海中建立有效的问题模型，对于快速思考很有帮助。这篇博客将教你如何理解递归。
 从反证法说起在高中的时候，一开始不理解“反证法”，因为我一直“担心”这样一件事，就是要证明“A是苹果。”，我就算假设A是香蕉，然后证明了A不是香蕉，A不是桃子，但是我并没有证明A就是苹果啊，后来我才明白，我的理解是有误的。">
-<meta property="og:image" content="http://www.pulpcode.cn/img/tower-hanoi.jpg">
-<meta property="og:updated_time" content="2016-10-17T16:31:02.093Z">
+<meta property="og:image" content="http://www.pulpcode.cn/img/tower-hanoi.png">
+<meta property="og:updated_time" content="2018-03-17T07:16:25.073Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="递归为什么可以运行下去">
 <meta name="twitter:description" content="我一直理解，这个世界有两种人反应快。一种是想问题比较简单的人，另一种是试图把问题简单化的人。能够在脑海中建立有效的问题模型，对于快速思考很有帮助。这篇博客将教你如何理解递归。
 从反证法说起在高中的时候，一开始不理解“反证法”，因为我一直“担心”这样一件事，就是要证明“A是苹果。”，我就算假设A是香蕉，然后证明了A不是香蕉，A不是桃子，但是我并没有证明A就是苹果啊，后来我才明白，我的理解是有误的。">
-<meta name="twitter:image" content="http://www.pulpcode.cn/img/tower-hanoi.jpg">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/tower-hanoi.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -235,7 +235,7 @@
 <a id="more"></a>
 <h2 id="汉诺塔"><a href="#汉诺塔" class="headerlink" title="汉诺塔"></a>汉诺塔</h2><p>在大学的时候，学习编程课时，一开始我并不能很好的理解汉诺塔问题。因为我一直好奇，这东西递归一步步是如何解出答案的。</p>
 <p>你应该可以理解当有一块盘子时，只需要将盘子从第一个塔移动到第三个塔。</p>
-<p><img src="/img/tower-hanoi.jpg" alt="Hanoi"></p>
+<p><img src="/img/tower-hanoi.png" alt="Hanoi"></p>
 <p>那么有n块盘子的时候，当第一个塔，塔上有n个盘子时候，先将第一个塔塔上编号1至n-1的盘子（共n-1个）移动到第二个塔上（借助第三个塔），然后将第一个塔塔上最大的n号盘子移动到第三个塔上，最后将第二个塔，塔上的n-1个盘子借助第一个塔移动到第三个塔上。然后再去求解一个n-1的子问题，直到子问题是一个再简单不过的一块盘子，所以问题就这样用描述的方式就解答了。</p>
 <p>听着很绕很烧脑是不是？只要我告诉你，理解这个问题的关键在于，递归是把一个问题，分解为当前要解决的问题+子问题。而<strong>子问题和当前要解决的问题完全独立不相关</strong>。我的意思是指没有任何上下文依赖。比如你在解决“n-1块盘子”的移动这个子问题的时候，第n块盘子完全不用关心它，甚至可以理解为第n块盘子和塔融为一体了。如果你能理解这种无关，那么你的思路就会非常清晰。你可以在脑海中“大胆”的运行这个递归问题，而不是总是放不下怀疑的心态，思考这玩意为啥就能求出结果。</p>
 <h2 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h2><p>背包问题的递归描述是这样的：</p>
