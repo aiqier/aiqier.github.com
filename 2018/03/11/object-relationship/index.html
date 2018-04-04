@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="Pulpcode-低俗代码">
 <meta property="og:description" content="回顾在我上学的时候，一聊到设计模式都是很有格调的话题，仿佛设计模式就是解决软件开发的精髓，但是很长一段时间，我从骨子里是排斥设计模式的，因为我觉得自己连面向对象的知识都没有领悟，谈论设计模式还为时尚早，我尤其排斥那本被吹到爆炸的《大话设计模式》，那本设计模式看上去给你用形象的比喻讲明白了一个东西，但实际上你真正开始写代码的时候，发现自己什么都写不出来。
 这篇博客是想退一步思考，总结一些面向对象的知">
-<meta property="og:updated_time" content="2018-03-17T07:49:14.926Z">
+<meta property="og:updated_time" content="2018-04-04T14:43:21.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对象与对象的关系">
 <meta name="twitter:description" content="回顾在我上学的时候，一聊到设计模式都是很有格调的话题，仿佛设计模式就是解决软件开发的精髓，但是很长一段时间，我从骨子里是排斥设计模式的，因为我觉得自己连面向对象的知识都没有领悟，谈论设计模式还为时尚早，我尤其排斥那本被吹到爆炸的《大话设计模式》，那本设计模式看上去给你用形象的比喻讲明白了一个东西，但实际上你真正开始写代码的时候，发现自己什么都写不出来。
@@ -252,7 +252,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Class Car&#123;</div><div class="line">	void get_gasoline()&#123;</div><div class="line">		GasStation gasStation = new GasStation();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>还有一种退一步的方式，是从另一个地图对象来获得加油站对象，不过这又引出了另一个问题，这个地图对象是从哪来的？</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Class Car&#123;</div><div class="line">	void get_gasoline()&#123;</div><div class="line">		GasStation gasStation = map.getGasStation();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>以上的这些都是一个对象想使用另一个对象的方式，我要特别提醒一下那个作为一个属性的方式，同样是定义一个类的属性，比如一个person有一个name属性，那就是它拥有一个属性，算包含关系，而如果是一个person有一个country属性，这个时候就是关联关系了，就像是数据库里面的关联字段一样。不过更官方的叫法,其实将对象与对象的关系分为四种:依赖关系（Dependency）,关联关系（Association）,聚合关系（Aggregation）,组合关系（Compostion）。</p>
+<p>以上的这些都是一个对象想使用另一个对象的方式，我要特别提醒一下那个作为一个属性的方式，同样是定义一个类的属性，比如一个person有一个name属性，那就是它拥有一个属性，算包含关系，而如果是一个person有一个country属性，这个时候就是关联关系了，就像是数据库里面的关联字段一样。不过更官方的叫法,其实将对象与对象的关系分为四种:依赖关系（Dependency）,关联关系（Association）,聚合关系（Aggregation）,组合关系（Compostion）。其中把作为局部变量，方法参数，或者调用一个类的静态方法称为依赖关系。而关联关系，聚合关系，组合关系，都用成员变量的方式表现，但是它们所表达的对象声明周期和耦合度是不一样的。</p>
 <h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>除了使用一个对象，还可以通过继承的方式来获得这份“代码”，不过汽车继承一个加油站看上去太奇怪了。前面提到了，多态是动态的获得，而继承更像是静态的获得，就好像编译器把这份代码给你拷贝过去了一样。设计模式的书常常把继承说的一文不值，说“用组合不用继承”，但如果两个类真有某种父子关系，使用组合而不是继承看上去是很怪的，而且维护性也很差，比如你子类继承了你的父类，那只要给父类添加一个方法，那子类是默认就获得了，但是如果你使用了组合，你就不能方便的拥有这些方法，要一个个的子类去引用这个新的实现。</p>
 <h2 id="多重继承"><a href="#多重继承" class="headerlink" title="多重继承"></a>多重继承</h2><p>提到继承就不得不提到多重继承，这个东西在java这种语言中被禁用了，很多人说java可以实现多个接口，但是接口和继承类完全不是一个概念，继承类是重用，那接口有能啥重用的地方？充其量是定义协议而已。多重继承这个思想本身没有问题，比如一个木头门继承于门和木头两个父类。这样任何一个父类添加一个新的属性或方法，都会默认被木头门继承，这是很自然的建模。而一个木头门有两个属性分别是门和木头，这个就很诡异。多重继承比较被人抨击的主要是那种钻石继承，父类之间签名相同之类的问题，不过有些语言会提供“限制版”的多重继承，来既让你使用多重继承，又不会提升代码的复杂度。比如Mixin(混入类)。</p>
 <h2 id="元类"><a href="#元类" class="headerlink" title="元类"></a>元类</h2><p>最后在说说元类，这个概念来源于元编程，什么是元编程，就是编写生成代码的代码。比如DSL，比如c++中的模板，元类呢就算是用来创建类的类。这个我在python中偶尔会使用一下。一个简单的入门是你可以用type来创建一个类对象（type就是元类）。</p>
