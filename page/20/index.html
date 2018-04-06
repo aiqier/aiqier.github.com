@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2015/05/01/mysql-study-base/" itemprop="url">
+                mysql基础知识总结
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-05-01T00:00:00+08:00" content="2015-05-01">
+            2015-05-01
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/01/mysql-study-base/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/01/mysql-study-base/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="cookbook"><a href="#cookbook" class="headerlink" title="cookbook"></a>cookbook</h2><h4 id="如何添加一个用户，并将数据库中所有表的权限赐予此用户："><a href="#如何添加一个用户，并将数据库中所有表的权限赐予此用户：" class="headerlink" title="如何添加一个用户，并将数据库中所有表的权限赐予此用户："></a>如何添加一个用户，并将数据库中所有表的权限赐予此用户：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'testuser'</span>@<span class="string">'localhost'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'test623'</span>;</div><div class="line"></div><div class="line"><span class="keyword">GRANT</span> ALL <span class="keyword">ON</span> testdb.* <span class="keyword">TO</span> <span class="string">'testuser'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure>
+<h4 id="关于一些修改表结构的语法"><a href="#关于一些修改表结构的语法" class="headerlink" title="关于一些修改表结构的语法"></a>关于一些修改表结构的语法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- 修改一个字段属性</span></div><div class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">modify</span> <span class="keyword">column</span> column_name <span class="keyword">attribute</span>;</div><div class="line"></div><div class="line"><span class="comment">-- 修改表名</span></div><div class="line"><span class="keyword">rename</span> <span class="keyword">table</span> table_name1 <span class="keyword">to</span> table_name2;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">-- 重命名字段</span></div><div class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">change</span> column_old_name column_new_name <span class="keyword">attribute</span>;</div><div class="line"></div><div class="line"><span class="comment">-- 在某个字段的后面添加一个新的字段</span></div><div class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> new_column_name <span class="keyword">attribute</span> <span class="keyword">after</span> old_column_name;</div><div class="line"></div><div class="line"><span class="comment">-- 创建一个联合唯一索引</span></div><div class="line"><span class="keyword">create</span> <span class="keyword">unique</span> <span class="keyword">index</span> index_name <span class="keyword">on</span> table_name(column1, column2);</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/05/01/mysql-study-base/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/04/26/when-do-we-use-tornado/" itemprop="url">
                 什么时候使用tornado
               </a>
@@ -721,97 +810,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/03/08/data-struct-tree/" itemprop="url">
-                数据结构总结之tree
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-03-08T00:00:00+08:00" content="2015-03-08">
-            2015-03-08
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/03/08/data-struct-tree/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/08/data-struct-tree/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>最近要准备面试，复习和准备一下数据结构的相关知识，这里总结树的相关知识。</p>
-<p>大二学数据结构的时候，我就很不喜欢某些书中对一些数据结构的描述，比如说栈的特点是先进后出，这听上去很对，其实一点用没有。</p>
-<p>我就比较喜欢这样的描述，栈的作用是保存状态，队列的作用是做缓存，而树呢，其展开的特性，就是为了查找。</p>
-<h2 id="不仅仅是结构"><a href="#不仅仅是结构" class="headerlink" title="不仅仅是结构"></a>不仅仅是结构</h2><p>在c中我们可能用结构体来定义一棵树，而在c++，java这样的面向对象语言中，我们可能用类来表示一棵树，但是我在这一节来解释一下，我们的思维一定要开阔，我的意思是说，<strong>不仅仅是我们定义了一棵树，才会有一棵树。</strong></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/03/08/data-struct-tree/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -850,7 +848,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">212</span>
+              <span class="site-state-item-count">213</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -864,7 +862,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">95</span>
+              <span class="site-state-item-count">96</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
