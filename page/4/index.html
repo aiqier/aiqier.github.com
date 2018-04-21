@@ -263,6 +263,95 @@
           
           
             
+              <a class="post-title-link" href="/2017/06/11/locks-in-concurrent-programming/" itemprop="url">
+                并发编程中的锁
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-11T00:00:00+08:00" content="2017-06-11">
+            2017-06-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/06/11/locks-in-concurrent-programming/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/11/locks-in-concurrent-programming/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="锁的由来"><a href="#锁的由来" class="headerlink" title="锁的由来"></a>锁的由来</h2><p>并行的程序访问共享变量的时候，如果至少有一个访问是更新操作，就会出现问题。<br>书本上常常拿银行账户取款来举例子。我就不写了，因为我说道银行账户取款，你就知道我在说什么了，无非就是某个执行的上下文在执行的中途被修改了，解决这个问题的方式就是利用锁，来保证一次只允许一个线程执行该段代码。</p>
+<h2 id="锁的危害"><a href="#锁的危害" class="headerlink" title="锁的危害"></a>锁的危害</h2><p>n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/11/locks-in-concurrent-programming/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/06/04/strange-demand/" itemprop="url">
                 奇怪的需求
               </a>
@@ -704,96 +793,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/04/23/from-python-to-java-hashtable/" itemprop="url">
-                从python到java之哈希表
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-04-23T00:00:00+08:00" content="2017-04-23">
-            2017-04-23
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/数据结构/" itemprop="url" rel="index">
-                  <span itemprop="name">数据结构</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/04/23/from-python-to-java-hashtable/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/23/from-python-to-java-hashtable/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>首先要区分几个概念，Map这种东西，其实是一种统称的数据结构，翻译过来应该是映射表或者是关联数组。它的作用其实是提供一种映射来维护键值对，也就是说你可以通过键来找到值。而这些key组成的集合必须要是一个set。</p>
-<p>然后再说实现，java的标准库中针对Map提供了好几种实现，比如所有哈希表实现的HashMap，还有基于红黑树实现的TreeMap。而在python中最常用的数据结构，dict也是哈希表实现的。</p>
-<p>在java中一个对象要想能够作为Map的key，有一个关键的函数是equals，这个方法是用来判断两个对象是否相等的。如果你不重载此方法的时候，equals其实默认调用的 <code>==</code> 运算符。而等号运算符在堆中创建的对象其实是比较引用。所以对于字符串这样的对象，java重写了equals方法。这个方法对Map的用处是，Map使用此方法来确定两个对象是否相等，也就是说用Map的get方法获得数据的时候，其实是通过equals来比较key的。而如果是以HashMap实现的Map，那还需要一个关键的函数，就是hashCode，这个函数被称为散列函数，用来返回一个散列码，这就是对应哈希表的数据结构实现时的数组索引。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/04/23/from-python-to-java-hashtable/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -832,7 +831,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">213</span>
+              <span class="site-state-item-count">214</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
