@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2017/05/06/summarize-BST/" itemprop="url">
+                总结一些二叉查找树的知识
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-05-06T00:00:00+08:00" content="2017-05-06">
+            2017-05-06
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/数据结构/" itemprop="url" rel="index">
+                  <span itemprop="name">数据结构</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/05/06/summarize-BST/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/06/summarize-BST/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>树是一种很实用的数据结构，往往和查找，决策挂钩。提供对数级的时间复杂度。<br>而且树还有一点，因为它是结构递归的，所以它的很多算法，都可以用递归去实现。</p>
+<p>这算是对《算法》这本书的总结，真心觉得这本书太好看了，不像算法导论那么难懂。</p>
+<p>需要记住的是一颗树的深度，表示了它查找最深需要多深，而可以将所有节点的深度进行相加，再除以节点个数，来求出一个二叉查找树的平均高度。1979年，J.Robson证明了随机键构造的二叉查找树的平均高度为树的结点数的对数级别，随后L.Devroye证明了对于足够大的N，这个值趋近于2.99lgN。</p>
+<p>二叉查找树被称为（BST），首先它是一颗二叉树，而且每个节点的左子树，键都比它小，每个节点的右子树，键都比它大。</p>
+<p><img src="/img/bst.png" alt="bst"></p>
+<p>下面分别讲解其对应的接口：</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/06/summarize-BST/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/04/23/from-python-to-java-hashtable/" itemprop="url">
                 从python到java之哈希表
               </a>
@@ -720,102 +813,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/03/11/how-can-i-deal-with-null-in-my-code/" itemprop="url">
-                我的代码要如何处理NULL
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-03-11T00:00:00+08:00" content="2017-03-11">
-            2017-03-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/03/11/how-can-i-deal-with-null-in-my-code/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/11/how-can-i-deal-with-null-in-my-code/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>在运行代码的时候，最烦的就是看见Null了，而程序经常遇到的错误也是NullPointException(空指针异常)。就算是写代码处理Null，也烦的要死，因为要在各处重复的写：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">if</span> (xxx == <span class="keyword">null</span>)&#123;</div><div class="line">   ...</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然而很多时候你可能就忘写了。</p>
-<p>当然还有的人，跟我一样纠结，认为代码不能写太多的废话，比如我明知道这个函数不会返回null，那我为什么要在这里判断是否为null，那这样我的代码是不是显得非常蠢啊？</p>
-<p>但是你还是会有点犹豫，毕竟你害怕哪天，真的就空指针了，而你并没有判断。所以很多强迫症患者一直在思考，这代码怎样写才算好。</p>
-<p>所以这篇博客。总结一下，到底应该怎样处理这个null</p>
-<h2 id="什么是null"><a href="#什么是null" class="headerlink" title="什么是null"></a>什么是null</h2><p>在语言层面，定义null，返回null，没有任何问题，因为它确实代表着什么都没有，而且也不和0，空字符串等价。就像数据库，也是既有null值又有空类型的值（比如空字符串），它们并不能被混淆。</p>
-<p>而在代码层面（工程层面），之所以报错，也就是所谓的NullPointException，只不过因为对一个不存在的东西进行了解引用罢了。</p>
-<p>比如你调用了一个null对象的属性或者方法。类似a.b(),那这就自然会报空指针异常了。<br>再或者对一个null的容器，通过索引进行调用，也会出现空指针异常。<br>还有就是用for去迭代一个null容器。<br>以上这些都是常见的空指针异常错误的原因。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/03/11/how-can-i-deal-with-null-in-my-code/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -854,7 +851,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">214</span>
+              <span class="site-state-item-count">215</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
