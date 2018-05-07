@@ -50,7 +50,7 @@
 某天，我刚午睡醒来，准备给自己做一杯手冲咖啡，拿着手冲壶走向饮水机的时候，无意中看到两个开发对着屏幕在那里指指点点的，仿佛在说着什么，只见一个说的头头是道，一个听得津津有味，我当时觉得他们肯定在谈论什么有意思的事情，所以凑过去打算听听，结果他们谈论的事情令我醍醐灌顶，可以说让我对编程有了新的思路，所以这里我尝试将他们的对话总结出来，分享给你们。
 哦对了，他俩的名">
 <meta property="og:image" content="http://www.pulpcode.cn/img/lisp.jpg">
-<meta property="og:updated_time" content="2018-05-06T12:45:48.524Z">
+<meta property="og:updated_time" content="2018-05-07T03:27:37.721Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我的代码能有多灵活?">
 <meta name="twitter:description" content="本故事纯属虚构，如有雷同，纯属巧合
@@ -257,7 +257,7 @@
 <p>老铁：“看这次，因为一个函数的输入是另一个函数的输出，所以你用for循环的方式把他们给套起来了。所以这个时候，你其实在这样调用函数：”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">addOne(addOne(addOne(addOne(addOne(addOne(addOne(addOne(addOne(addOne(0))))))))))</div></pre></td></tr></table></figure>
 <p>小铁：“嗯嗯，看上去输入和输出像是锁扣，将这一个个函数给扣起来了。”</p>
-<p>老铁：“但是其实还是可以有重复利用的地方的。”</p>
+<p>老铁：“对，因为在这个时候，我们把一个大问题，分成了n个相同的子问题，然后再想办法逐一解决，但是其实还是可以有重复利用的地方的。”</p>
 <p>小铁：“这还能怎么优化？”</p>
 <p>老铁：“我们在编程语言的课程中，大概学到过，系统是如何保证函数调用的？”</p>
 <p>小铁：“栈？”</p>
@@ -277,7 +277,7 @@
 <p>小铁：“什么是本质？”</p>
 <p>老铁：“最开始我们能够把一些类似的功能抽象成函数，是因为具有某种共性，但是当我们能够用输入和输出的方式来穿起这些方法的时候，其实我们在抽象出问题和子问题，也就是问题与问题的关系。”</p>
 <p>小铁：“你的意思是，计算n个1的和可以拆分为1和 n-1个1的和这两个子问题？”</p>
-<p>老铁：“对，而且相比与用循环来设计解决步骤。我们在定义递归函数的时候，是在描述问题的时候，就把这个问题给解决了。”</p>
+<p>老铁：“对，而且相比与拆分为n个相同的子问题，然后用循环来设计解决步骤。我们在定义递归函数的时候，是把问题描述成更小的问题，关键这个问题与原问题在结构上等价，所以是在描述问题的时候，就把这个问题给解决了。”</p>
 <p>小铁：“对啊，你这么一说是挺神奇的，抽象出更本质的模型，比折腾各种细节的优化更重要。”</p>
 <p>小铁：“但我之前理解的建模好像都是定一个struct或者定义一个class啥的。”</p>
 <p>老铁：“这个想法有点片面了，但是既然你说到class了，那你说说你是如何提高你class的重用性的。”</p>
@@ -335,6 +335,7 @@
 <p>老铁：“比如像是c语言这样的偏向于硬件的语言，有宏这个东西，宏能够根据在编译前（预处理）的时候，对代码进行替换，这就是一种用代码来生成代码了。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#define sqrt(x) x*x</div><div class="line"></div><div class="line">int a = sqrt(5);</div></pre></td></tr></table></figure>
 <p>老铁：“还有像是c++模板这样的功能，比宏更安全，也更强大，它能在编译器编译前，先用模板生成想要的代码，比如c++的泛型就是用定义的template来生成多个类。”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Printer &#123;</div><div class="line">public:</div><div class="line">    template&lt;typename T&gt;</div><div class="line">    void print(const T&amp; t) &#123;</div><div class="line">        cout &lt;&lt; t &lt;&lt;endl;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>老铁：“用类生成类的思路，不仅仅是想c++这种静态类型语言，像是python，ruby这些语言，因为本身作为动态语言就更灵活，生成代码就更容易，比如元类。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 用元类在代码中动态的创建类。</div><div class="line">Hello = type(&apos;Hello&apos;, (object,), dict(hello=fn)) # 创建Hello class</div></pre></td></tr></table></figure>
 <p>老铁：“而且我认为，这些动态语言的函数可以作为一阶公民（可以被赋值，被当做入参，被当做返回值），所以本身也可以把某些特性理解为用函数来生成函数。比如：”</p>
