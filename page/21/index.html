@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2015/04/20/python-program-some-hole/" itemprop="url">
+                python编程中遇到的一些“小坑”
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-04-20T00:00:00+08:00" content="2015-04-20">
+            2015-04-20
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/04/20/python-program-some-hole/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/20/python-program-some-hole/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="这里记录自己在python编程中遇到的一些小坑，不断更新中。"><a href="#这里记录自己在python编程中遇到的一些小坑，不断更新中。" class="headerlink" title="这里记录自己在python编程中遇到的一些小坑，不断更新中。"></a>这里记录自己在python编程中遇到的一些小坑，不断更新中。</h2><h4 id="关于tornado的handler终结"><a href="#关于tornado的handler终结" class="headerlink" title="关于tornado的handler终结"></a>关于tornado的handler终结</h4><p>一开始我一直以为tornado在调用write之后就表示此handler终结了，后来我发现错了。</p>
+<p>首先，我发现write方法可以被调用两次：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.write(<span class="string">"hello"</span>)</div><div class="line">self.write(<span class="string">"world!"</span>)</div></pre></td></tr></table></figure>
+<p>即使是finsh方法，后面的代码也会继续执行。</p>
+<p>而且<code>self.finish()</code>是用来主动与客户端断开连接的，一般也是因为<code>@tornado.web.asynchronous</code>装饰器会一直保持连接而配合使用。</p>
+<p>所以还是要加return:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.write(<span class="string">"give me five"</span>)</div><div class="line"><span class="keyword">return</span></div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/04/20/python-program-some-hole/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/04/14/pub-key-private-key/" itemprop="url">
                 非对称加密
               </a>
@@ -719,105 +812,11 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/02/27/c-sharp-technical-summary/" itemprop="url">
-                c#基础技术问题总结
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-02-27T00:00:00+08:00" content="2015-02-27">
-            2015-02-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/02/27/c-sharp-technical-summary/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/27/c-sharp-technical-summary/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>此篇文章总结c#一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中…</p>
-<h2 id="const与readonly"><a href="#const与readonly" class="headerlink" title="const与readonly"></a>const与readonly</h2><p>readonly为运行时常量，const为编译时常量。</p>
-<p>编译时常量比运行时常量快，性能好，但是缺乏灵活性（编译时常量需要重新编译应用程序）。</p>
-<p>编译时常量（const）仅限于数值和字符串（基元类型），C#不允许使用new来初始化一个编译时常量</p>
-<p>const修饰的常量默认是静态的（类型）。</p>
-<p>readonly修饰的字段可以在构造函数中被修改。</p>
-<p>使用const较之使用readonly的唯一好处就是性能。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/02/27/c-sharp-technical-summary/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/20/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><a class="extend next" rel="next" href="/page/22/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/20/">&laquo;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/22/">&raquo;</a>
   </nav>
 
  </div>
@@ -851,7 +850,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">217</span>
+              <span class="site-state-item-count">218</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -899,7 +898,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
