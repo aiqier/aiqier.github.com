@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2016/10/17/why-we-can-use-recursive/" itemprop="url">
+                递归为什么可以运行下去
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-10-17T00:00:00+08:00" content="2016-10-17">
+            2016-10-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/10/17/why-we-can-use-recursive/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/17/why-we-can-use-recursive/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>我一直理解，这个世界有两种人反应快。一种是想问题比较简单的人，另一种是试图把问题简单化的人。能够在脑海中建立有效的问题模型，对于快速思考很有帮助。这篇博客将教你如何理解递归。</p>
+<h2 id="从反证法说起"><a href="#从反证法说起" class="headerlink" title="从反证法说起"></a>从反证法说起</h2><p>在高中的时候，一开始不理解“反证法”，因为我一直“担心”这样一件事，就是要证明“A是苹果。”，我就算假设A是香蕉，然后证明了A不是香蕉，A不是桃子，但是我并没有证明A就是苹果啊，后来我才明白，我的理解是有误的。</p>
+<p>反证法的意思是指，如果我要证明“A是苹果”，那我先要假设A不是苹果，然后去论证这个假设是错误的，然后A就一定是了。其关键点就在于这是一个谓词，非真既假，相当于告诉你集合中只有两个元素0和1，如果不是0，那就自然是1了。</p>
+<p>之所以讲这样一个例子，是因为我想说我一开始总担心反证法不能正确证明，是因为我没有理解反证法是一个“谓词模型”。同样的，我原来也担心过，递归这东西为啥能求出结果，等我弄懂了之后，我就再也没对此怀疑过。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/17/why-we-can-use-recursive/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/10/07/ant-colony-optimization/" itemprop="url">
                 蚁群算法实现
               </a>
@@ -703,101 +794,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/07/11/talk-about-epoll/" itemprop="url">
-                聊聊epoll
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-07-11T00:00:00+08:00" content="2016-07-11">
-            2016-07-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/python/" itemprop="url" rel="index">
-                  <span itemprop="name">python</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/07/11/talk-about-epoll/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/11/talk-about-epoll/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>这篇博客，我早就想写了，结果一直拖到现在（快一年），一方面是这篇博客涉及的知识会比较多，“完美主义拖延症”搞得我一直没有去写。但是现在虽然写完了，很多细节我依旧不是很清楚。</p>
-<p>这里主要提以下几点:</p>
-<ol>
-<li>epoll是一个什么样的模型，它和其它的io多路复用，比如select poll有什么不同。</li>
-<li>相比与多进程和多线程的web服务设计，它好在哪。</li>
-<li>写写在python编程中使用tornado注意的事项。</li>
-<li>写一些关于epoll调用的细节内容。包括水平触发和边缘触发等等。</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/11/talk-about-epoll/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -836,7 +832,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">219</span>
+              <span class="site-state-item-count">220</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
