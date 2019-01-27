@@ -174,6 +174,96 @@
           
           
             
+              <a class="post-title-link" href="/2014/10/05/think-about-windows-refresh/" itemprop="url">
+                我们经常在做一些没有用的操作
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-10-05T00:00:00+08:00" content="2014-10-05">
+            2014-10-05
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/10/05/think-about-windows-refresh/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/10/05/think-about-windows-refresh/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>最近使用<code>vs2012</code>开发程序，在vs中有”清理”，”生成”和”重新生成”这几个选项。</p>
+<h2 id="生成和重新生成"><a href="#生成和重新生成" class="headerlink" title="生成和重新生成"></a>生成和重新生成</h2><p>我回想到当年学的<code>make</code>，这些用来构建代码的工具，大多都是类似的操作，vs的清理就和make中的clean一样。类似的，重新生成就像是先清理再生成。<br>而生成的规则也是类似的：看源文件是否修改，如果修改那么就需要生成目标文件。</p>
+<p>问题就是，有多少错误的原因来源于没有生成？很多人不管何时，清理生成的挨个点过来。不爽的还会清理+重新生成。要知道，大多数情况，我们是没有必要重新生成的，因为系统会给据源文件是否修改，自行判断。<br>而且，重新生成就是清理+生成。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/10/05/think-about-windows-refresh/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/10/02/1900-01-00/" itemprop="url">
                 Excel的开始日期
               </a>
@@ -691,99 +781,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/09/05/how-to-use-tab-key/" itemprop="url">
-                Tab键，制表符如何使用?
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-09-05T00:00:00+08:00" content="2014-09-05">
-            2014-09-05
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/09/05/how-to-use-tab-key/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/05/how-to-use-tab-key/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p><img src="/img/tab.jpg" alt="Tab"></p>
-<p>上大学的时候，我就一直疑惑这个制表符有什么用？<br>但是我当时怕被人鄙视，所有一直没敢问别人。<br>后来我发现，不仅仅是我，我的一些同学也在不知道。(因为确实不是那个年代的人)</p>
-<p>这是早期人们在“绘制”无边框表格的时候必备的东西，<br>那时候只有纯字符文本，所以表格只能使用文本列对齐的方式实现。</p>
-<p>一般的编辑器都可以设置tab键的长度(默认是8个空格长)。<br>当你输入一个单词后(比如apple 5个字符)，按下制表符，那么光标会自动跳到第8个光标位置(相对于行首)，和单词长度加起来刚好能被8整除，然后你就可以输入第二个单词了。<br>这样一行一行下去，每一行都已8个字符长度为单位进行列对齐。</p>
-<pre><code>apple    pear    banana    orange
-dogdog    catcat    rabbit    monkey
-</code></pre><p>而且，即使你在apple的后面输入一个字符s,也不会影响到这一行的其它字符的位置。<br>这就是制表符本来的作用。</p>
-<p>之后渐渐这个键有了别的作用，比如用它来控制缩进，或者作为补全文本的快捷键。</p>
-<p>当然作为缩进，使用空白符还是制表符，这就是一场漫无边际的争吵。</p>
-<p>作为python这门语言来说，官方建议是使用空格，因为不同的人设置不同的tab键长度，这样看上去很难看。<br>所以有的人会将自己的编辑器配置为 “当按下制表符时，自动输入4个空格“。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -822,7 +819,7 @@ dogdog    catcat    rabbit    monkey
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">220</span>
+              <span class="site-state-item-count">221</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
