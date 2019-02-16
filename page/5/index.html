@@ -174,6 +174,187 @@
           
           
             
+              <a class="post-title-link" href="/2017/07/02/what-exactly-is-a-full-block-call/" itemprop="url">
+                一次完整的阻塞调用到底是怎样的
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-07-02T00:00:00+08:00" content="2017-07-02">
+            2017-07-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/07/02/what-exactly-is-a-full-block-call/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/02/what-exactly-is-a-full-block-call/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>作为一个程序员，你一定知道这个简单的模型，你想从文件中读取数据，你需要调用read函数，然后read函数会阻塞直到有数据返回给你，之后你就可以进行下一步操作了。一个简单的模型，就像是一个远景画，而你是否了解细节，在于当你把镜头拉近的时候，你能看到的是清晰的细节还是一堆马赛克。</p>
+<p>所以在这个基础之上，你可能理解的比这更复杂一些，你知道有些资源只能在核心态才能被访问。知道进程缓冲区和内核缓冲区。那么这个模型在你眼里就变成了这个样子：</p>
+<p><img src="/img/blocking-io.png" alt="blocking-io"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/02/what-exactly-is-a-full-block-call/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/" itemprop="url">
+                java排序抛出的Comparison method violates its general contract 异常
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-18T00:00:00+08:00" content="2017-06-18">
+            2017-06-18
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/18/comparison-method-violates-its-general-contractfor-sort/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>上周线上的一段排序的java代码出现了一个<code>Comparison method violates its general contract</code>，在解决这个问题的途中学到了一些知识这里总结分享一下。</p>
+<h2 id="异常原因"><a href="#异常原因" class="headerlink" title="异常原因"></a>异常原因</h2><p>这个排序导致的异常将会在java7以上的版本出现，所以如果你的JDK从6升级到了7或者8，那一定要小心此异常。<br>在java7的兼容列表中，就有对此排序不兼容的说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Area: API: Utilities</div><div class="line">Synopsis: Updated sort behavior for Arrays and Collections may throw an IllegalArgumentException</div><div class="line">Description: The sorting algorithm used by java.util.Arrays.sort and (indirectly) by java.util.Collections.sort has been replaced. The new sort implementation may throw an IllegalArgumentException if it detects a Comparable that violates the Comparable contract. The previous implementation silently ignored such a situation.</div><div class="line">If the previous behavior is desired, you can use the new system property, java.util.Arrays.useLegacyMergeSort, to restore previous mergesort behavior.</div><div class="line">Nature of Incompatibility: behavioral</div><div class="line">RFE: 6804124</div></pre></td></tr></table></figure>
+<p>我从资料中查阅到java7开始引入了Timsort的排序算法。我之前一直以为大部分标准库的内置排序算法都是快速排序。现在才得知很多语言内部都使用Timsort排序。随后我在wiki百科上找到了这样一句话：</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/06/11/why-did-Japanese-Katana-so-long/" itemprop="url">
                 为啥太刀这么长
               </a>
@@ -608,191 +789,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/05/07/what-about-the-user-stickiness-of-narrative-games/" itemprop="url">
-                叙事性游戏的用户粘性怎么办？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-05-07T00:00:00+08:00" content="2017-05-07">
-            2017-05-07
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/游戏/" itemprop="url" rel="index">
-                  <span itemprop="name">游戏</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/05/07/what-about-the-user-stickiness-of-narrative-games/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/07/what-about-the-user-stickiness-of-narrative-games/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>前段时间有朋友推荐我一起玩《王者荣耀》，我说我不打算玩此游戏，然后被她当成“高冷，装逼，站在主机党的高塔上，鄙视pc党和手机党的那种玩家。”。其实原因是因为我太喜欢玩游戏了，也尝试过太多的游戏了，而且知道什么游戏适合我的胃口。 所以不局限于玩游戏就是为了“休闲放松”，这种浅层次的主观感受。</p>
-<p>那我喜欢玩什么游戏呢？就是叙事性强的游戏，比如角色扮演类的RPG游戏，因为这种能自己演电影的感觉深深吸引着我。</p>
-<p>小说和电影就是这样，想象一下你在读一本武侠小说的时候，就幻想过自己像男主角一样，惩恶扬善，儿女情长。而电影不但给你一个故事，还带来更多视觉和听觉的感官刺激。就像男人都希望自己是那个有豪车，有美女，有枪械，有正义感，又可以冒险的007一样。人生来就对故事如此痴迷，但是小说和电影的局限毕竟是看别人的故事。如果有一天你可以自己扮演主角呢？这就是角色扮演类游戏的魅力。</p>
-<p>比如在《巫师3》中，你可以扮演一个生活一个中世纪世界里，以猎杀怪物赚取赏金，和女术士各种滥情，穿梭不同风格王国的魔猎人，这里有吸血鬼，狮鹫，骑士，难民，长寿的精灵，还有像维京人那样的野蛮人。</p>
-<p><img src="/img/witcher3.png" alt="witcher3"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/07/what-about-the-user-stickiness-of-narrative-games/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/05/06/summarize-BST/" itemprop="url">
-                总结一些二叉查找树的知识
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-05-06T00:00:00+08:00" content="2017-05-06">
-            2017-05-06
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/数据结构/" itemprop="url" rel="index">
-                  <span itemprop="name">数据结构</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/05/06/summarize-BST/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/06/summarize-BST/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>树是一种很实用的数据结构，往往和查找，决策挂钩。提供对数级的时间复杂度。<br>而且树还有一点，因为它是结构递归的，所以它的很多算法，都可以用递归去实现。</p>
-<p>这算是对《算法》这本书的总结，真心觉得这本书太好看了，不像算法导论那么难懂。</p>
-<p>需要记住的是一颗树的深度，表示了它查找最深需要多深，而可以将所有节点的深度进行相加，再除以节点个数，来求出一个二叉查找树的平均高度。1979年，J.Robson证明了随机键构造的二叉查找树的平均高度为树的结点数的对数级别，随后L.Devroye证明了对于足够大的N，这个值趋近于2.99lgN。</p>
-<p>二叉查找树被称为（BST），首先它是一颗二叉树，而且每个节点的左子树，键都比它小，每个节点的右子树，键都比它大。</p>
-<p><img src="/img/bst.png" alt="bst"></p>
-<p>下面分别讲解其对应的接口：</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/06/summarize-BST/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -831,7 +827,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">221</span>
+              <span class="site-state-item-count">223</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

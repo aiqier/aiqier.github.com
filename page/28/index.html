@@ -174,6 +174,175 @@
           
           
             
+              <a class="post-title-link" href="/2014/09/12/py-and-pyc-el-and-elc/" itemprop="url">
+                python的py和pyc文件
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-09-12T00:00:00+08:00" content="2014-09-12">
+            2014-09-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/09/12/py-and-pyc-el-and-elc/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/12/py-and-pyc-el-and-elc/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>今天有一个朋友问我，是否在更新一个<code>py</code>文件的时候，<code>pyc</code>文件也会跟着更新。</p>
+<p>这其实是一个很有趣的问题。</p>
+<p>我们来做个实验就知道了,首先我来写这样两段代码:</p>
+<pre><code>foo.py 文件
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">echo</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"hehe"</span></div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/09/12/py-and-pyc-el-and-elc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2014/09/06/untangle-list-use-recursive-yield/" itemprop="url">
+                一个递归列表解引用为单列表
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-09-06T00:00:00+08:00" content="2014-09-06">
+            2014-09-06
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/09/06/untangle-list-use-recursive-yield/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/06/untangle-list-use-recursive-yield/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>今天有一个同事给我出了一个这样的问题:</p>
+<pre><code>你如何把list of list 变成list 比如[[1,2],[3]] --&gt; [1,2,3]
+</code></pre><p>程序的目的就是将一个递归的列表转化为一个普通的”单”列表</p>
+<p>本来这个程序是可以使用一个简单的方法来实现的：</p>
+<p>先定义一个全局的列表，然后遍历列表中的元素，如果是元素就加入到全局列表，<br>但如果是列表，那就用递归或是迭代的方式继续遍历它。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/09/06/untangle-list-use-recursive-yield/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/09/05/how-to-use-tab-key/" itemprop="url">
                 Tab键，制表符如何使用?
               </a>
@@ -619,192 +788,6 @@ dog   cat  rabbit  monkey
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/08/04/write-code-if-statement/" itemprop="url">
-                关于If的几种写法
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-08-04T00:00:00+08:00" content="2014-08-04">
-            2014-08-04
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/08/04/write-code-if-statement/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/04/write-code-if-statement/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。<br>可是每每当自己在写 <strong>if语句</strong> 和看到一些同事写的 <strong>很糟糕的if语句</strong> 时，我就忍不住去想：怎样写才好？</p>
-<p><strong>目录</strong></p>
-<ul>
-<li><a href="#if-if-and-if-else-if-else-if-else">if … if  和 if … else if … else if … else</a></li>
-<li><a href="#if-else-and-Three-binary-operators">if … else 和三元运算符</a></li>
-<li><a href="#return-and-if">return 的 if</a></li>
-<li><a href="#else">else处女座最后的纠结</a></li>
-</ul>
-<h2 id="if-…-if-和-if-…-else-if-…-else-if-…-else"><a href="#if-…-if-和-if-…-else-if-…-else-if-…-else" class="headerlink" title="if … if  和 if … else if … else if … else"></a><a name="if-if-and-if-else-if-else-if-else">if … if  和 if … else if … else if … else</a></h2><p>这其实并不是写法的问题，其实我发现真的有人会把该用 <code>if ... else if ... else if ... else</code> 的地方写成 <code>if ... if</code>。表面上看起来没问题，其实他们确实是误打误撞，当出错的时候原因是什么都不知道。</p>
-<p>首先请看下面两段代码：</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/04/write-code-if-statement/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/07/15/local-value-name/" itemprop="url">
-                临时变量应该叫啥?
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-07-15T00:00:00+08:00" content="2014-07-15">
-            2014-07-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/07/15/local-value-name/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/15/local-value-name/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。<br>同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。</p>
-<p>我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。<br>如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭问题呢？我觉得就是<strong>大多数临时变量就没必要命名</strong>。<br>等你明白我的这句话，就会发现你<strong>命名的好坏，表示你会不会用临时变量，而这临时变量又和你的代码结构，代码的简练程度息息相关</strong>。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/07/15/local-value-name/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -843,7 +826,7 @@ dog   cat  rabbit  monkey
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">221</span>
+              <span class="site-state-item-count">223</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
