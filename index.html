@@ -174,89 +174,6 @@
           
           
             
-              <a class="post-title-link" href="/2019/02/16/where-is-string-in-java-virtual-machine/" itemprop="url">
-                java的字符串到底放在哪？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2019-02-16T00:00:00+08:00" content="2019-02-16">
-            2019-02-16
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/生活/" itemprop="url" rel="index">
-                  <span itemprop="name">生活</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2019/02/16/where-is-string-in-java-virtual-machine/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2019/02/16/where-is-string-in-java-virtual-machine/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2019/02/16/destiny/" itemprop="url">
                 关于宿命的几个故事
               </a>
@@ -320,98 +237,6 @@
 </ol>
           <div class="post-more-link text-center">
             <a class="btn" href="/2019/02/16/destiny/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2019/01/27/question-and-answer/" itemprop="url">
-                2018年编程问答
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2019-01-27T00:00:00+08:00" content="2019-01-27">
-            2019-01-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2019/01/27/question-and-answer/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/27/question-and-answer/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="操作系统既然有内存分页为什么还要内存分段？"><a href="#操作系统既然有内存分页为什么还要内存分段？" class="headerlink" title="操作系统既然有内存分页为什么还要内存分段？"></a>操作系统既然有内存分页为什么还要内存分段？</h2><p>一句话来说就是为了兼容。</p>
-<p>早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。</p>
-<p>后来32的80386采用了分页内存管理，使用虚拟内存地址映射到物理内存，所以让每个进程看上去自己都有4GB的内存空间（虚拟内存地址）可用。每一个页大概有4K，而且真正被使用的时候才会分配真实的内存，否则可能在硬盘上，或者就没有被分配。但后来的80386还保留了分段模式主要是为了兼容。</p>
-<p>再后来使用了“段页式管理”，结合了分段和分页两种内存管理思路，用户程序的逻辑地址空间首先被划分成若干的逻辑段，每个段都有自己的段号(常量段，堆栈段)，然后再将这些段分页。所以不要把最早的内存分段管理和如今的段页式管理搞混，即使他们都有所谓的“堆栈段”，要分清它们的区别和联系。</p>
-<p>总结一下分段内存管理的优势在于内存共享和安全控制，而分页内存管理的优势在于提高内利用率。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2019/01/27/question-and-answer/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -520,6 +345,98 @@
 </li>
 </ol>
 </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2019/01/27/question-and-answer/" itemprop="url">
+                2018年编程问答
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2019-01-27T00:00:00+08:00" content="2019-01-27">
+            2019-01-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2019/01/27/question-and-answer/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/27/question-and-answer/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="操作系统既然有内存分页为什么还要内存分段？"><a href="#操作系统既然有内存分页为什么还要内存分段？" class="headerlink" title="操作系统既然有内存分页为什么还要内存分段？"></a>操作系统既然有内存分页为什么还要内存分段？</h2><p>一句话来说就是为了兼容。</p>
+<p>早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。</p>
+<p>后来32的80386采用了分页内存管理，使用虚拟内存地址映射到物理内存，所以让每个进程看上去自己都有4GB的内存空间（虚拟内存地址）可用。每一个页大概有4K，而且真正被使用的时候才会分配真实的内存，否则可能在硬盘上，或者就没有被分配。但后来的80386还保留了分段模式主要是为了兼容。</p>
+<p>再后来使用了“段页式管理”，结合了分段和分页两种内存管理思路，用户程序的逻辑地址空间首先被划分成若干的逻辑段，每个段都有自己的段号(常量段，堆栈段)，然后再将这些段分页。所以不要把最早的内存分段管理和如今的段页式管理搞混，即使他们都有所谓的“堆栈段”，要分清它们的区别和联系。</p>
+<p>总结一下分段内存管理的优势在于内存共享和安全控制，而分页内存管理的优势在于提高内利用率。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2019/01/27/question-and-answer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -814,6 +731,104 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2018/05/06/how-flexible-can-my-code-be/" itemprop="url">
+                我的代码能有多灵活?
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2018-05-06T00:00:00+08:00" content="2018-05-06">
+            2018-05-06
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2018/05/06/how-flexible-can-my-code-be/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/06/how-flexible-can-my-code-be/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>本故事纯属虚构，如有雷同，纯属巧合</p>
+<p>某天，我刚午睡醒来，准备给自己做一杯手冲咖啡，拿着手冲壶走向饮水机的时候，无意中看到两个开发对着屏幕在那里指指点点的，仿佛在说着什么，只见一个说的头头是道，一个听得津津有味，我当时觉得他们肯定在谈论什么有意思的事情，所以凑过去打算听听，结果他们谈论的事情令我醍醐灌顶，可以说让我对编程有了新的思路，所以这里我尝试将他们的对话总结出来，分享给你们。</p>
+<p>哦对了，他俩的名字我不能告诉你们，本来我想用鲍勃(Bob)和爱丽丝(Alice)来代指他俩的，但是又觉得这个梗早已经被编程界给玩烂了。所以我打算给他俩起名叫老铁和小铁。</p>
+<p>小铁：“其实我一直想尝试让自己的代码变得灵活起来，比如把写死的东西给改成配置，但是我并不能满足于此，因为我总觉得自己代码还不够灵活，你能在给我一些思路么？”</p>
+<p>老铁：“哈，说道思路，我确实可以给你提供一些，不过我尽量不会给你讲一些具体的例子，因为授人与鱼不如授人于渔，所以我会给你提供一些编程思想上的东西，帮你开阔视野。”</p>
+<p>小铁：“好的，我洗耳恭听。”</p>
+<p>老铁：“首先我们先来思考下，什么是所谓的灵活性。不说那些课本上比较官方的词汇，你所理解的代码灵活是什么样的？”</p>
+<p>小铁：“最起码不用我每次有个什么新需求，都要让我改来改去的上线。”</p>
+<p>老铁：“但是有的需求你是不得不上线。”</p>
+<p>小铁：“对，这我知道，但是对于有些需求，其实是有些重复的东西，提取出来，然后在调整的时候，修改下配置就行了。”</p>
+<p>老铁：“恩，很好，你提到你可以把某些共性的东西，提取出来，所以我们先来看你在初学代码时候的第一个例子。让你从1打印到10，你最开始会写出这样的代码.”</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2018/05/06/how-flexible-can-my-code-be/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -852,7 +867,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">223</span>
+              <span class="site-state-item-count">222</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
