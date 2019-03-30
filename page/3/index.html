@@ -41,12 +41,12 @@
 
 <meta name="description" content="搅碎,暴力,拼接,吞咽">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Pulpcode-低俗代码">
+<meta property="og:title" content="Pulpcode">
 <meta property="og:url" content="http://www.pulpcode.cn/page/3/index.html">
-<meta property="og:site_name" content="Pulpcode-低俗代码">
+<meta property="og:site_name" content="Pulpcode">
 <meta property="og:description" content="搅碎,暴力,拼接,吞咽">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pulpcode-低俗代码">
+<meta name="twitter:title" content="Pulpcode">
 <meta name="twitter:description" content="搅碎,暴力,拼接,吞咽">
 
 
@@ -57,7 +57,7 @@
   };
 </script>
 
-  <title> Pulpcode-低俗代码 </title>
+  <title> Pulpcode </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -87,7 +87,7 @@
       <span class="logo">
         <i class="icon-next-logo"></i>
       </span>
-      <span class="site-title">Pulpcode-低俗代码</span>
+      <span class="site-title">Pulpcode</span>
   </a>
   <span class="logo-line-after"><i></i></span>
 </h1>
@@ -162,6 +162,96 @@
       <div class="main-inner">
         <div id="content" class="content"> 
   <section id="posts" class="posts-expand">
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2018/01/07/cost-performance-for-study-git/" itemprop="url">
+                性价比学习git
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2018-01-07T00:00:00+08:00" content="2018-01-07">
+            2018-01-07
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2018/01/07/cost-performance-for-study-git/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/07/cost-performance-for-study-git/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>其实我一直想写一篇博客总结git的使用。但是却又没想好怎么写，即使我知道这篇博客的题目应该叫《性价比学习git》，我也没有想好如何性价比的学习git，我不可能把《pro git》上大段的git底层知识贴过来我用自己的话再描述一遍，也不能给你讲一些你这辈子都不会用到的git命令。直到最近我才有了灵感，所以在这篇博客里，我将试图先假设一个场景，并描述清楚你所遇到的问题，然后再告诉你要用git如何解决，最后我才可能会提到这背后的原理是啥，即-“为什么git可以这么玩？”，所以我所指的性价比学习git是说如何通过真实的使用场景学习git。不过我举得例子绝对都是自己开发真正遇到过的问题，同时也有一点点难度，而不是诸如“我想开发一个新功能”这样的简单例子。所以这篇博客也假设你已经学会了git的基本操作，而不会教你一些基础简单的命令，比如什么是分支？如何创建一个分支？BTW,这种写作方式，像极了《xxx cookbook系列丛书》</p>
+<h2 id="开发前忘记checkout一个分支"><a href="#开发前忘记checkout一个分支" class="headerlink" title="开发前忘记checkout一个分支"></a>开发前忘记checkout一个分支</h2><p>你打算为你的项目开发一个新功能，原本你应该在你的master分支上checkout出来一个feature-xxx-xxx，然后在测试完成后合并到你的master分支上。然而当你开发到一半的时候，发现你根本没有checkout一个分支，你的开发都是在master上完成的，这个时候你要怎么办？</p>
+<p>实际上，如果你只是忘记从master分支checkout出来一个新分支feature-xxx-xxx这么简单的话，那么你只需要现在checkout就行了，你会发现你现在已经有了feature-xxx-xxx，并且你所修改的文件都被标记为：“M(odify)”,那现在你就当自己就是在新分支上做的开发就行了。不过还有一些棘手的时候，就是你本来想在feature-1上做开发，但是却错误的在feature-2上做了开发。现在你要如何让这些修改放到feature-1上？其实问题的本质还是feature-2的这些修改直接平移到feature-1会不会产生冲突，如果你修改的某个文件，两个分支已经提交的部分就不同，那你根本不能checkout成功：</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2018/01/07/cost-performance-for-study-git/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -712,99 +802,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/08/27/where-the-hell-is-tyrion-Lannister-smart/" itemprop="url">
-                小恶魔提里昂兰尼斯特到底聪明在哪？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-08-27T00:00:00+08:00" content="2017-08-27">
-            2017-08-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/电影/" itemprop="url" rel="index">
-                  <span itemprop="name">电影</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/08/27/where-the-hell-is-tyrion-Lannister-smart/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/27/where-the-hell-is-tyrion-Lannister-smart/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>这里详细分析一下提里昂兰尼斯特的聪明过人之处，本文将从电视剧的截图和书中的桥段来逐步分析 ，主要涉及第一季，因为第一季和原著的相似度最高。之所以要结合小说分析，是因为小说才能体现马丁老爷子到底刻画了怎样一个人物。剧集后期你会发现，小恶魔明显智商下线，天天喝酒出谋划策没有存在感。编剧已经偏离了原著而赶工。所以马丁老爷子“拖延症”是有理由的。毕竟一部好的小说，需要仔细打磨。</p>
-<p>让我们先看看，在酒馆凯特琳绑架小恶魔时书中的桥段，看看双方是如何斗智斗勇的：</p>
-<blockquote>
-<p>“我们要把他带回临冬城去。”她说，提利昂听了心想：要是这样的话，或许……当时他已趁短暂余暇环顾四周，对当下情形更有掌握。眼前所见不至于让他绝望。噢，那史塔克女人反应倒是机敏，这无庸置疑。她先逼他们公开承认自家主子对她父亲的誓约，然后再请他们拔刀相助，何况她又是区区一个弱女子。没错，这招厉害。然而她也没有赢得太彻底。据他约略估算，饭厅里将近有五十个人。凯特琳·史塔克不过说动了十来个，其他人有的困惑，有的害怕，还有的冷漠。提利昂注意到，佛雷家那群人只有两个准备响应，而他们眼看带头的没动静，便又很快坐回去了。若不是不敢，否则他还真想偷笑。</p>
-</blockquote>
-<p>在这一段，凯特琳先是一个个问自己家族的封臣，然后在请他们拔刀相助。因为自己没有足够的力量去逮捕小恶魔，但是小恶魔也很聪明，首先他并没有硬碰硬，而且也没有慌张，或是乖乖就范，他先冷静的分析了局势，就是虽然她家的封臣很多，但是响应她去抓小恶魔的没有几个。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/27/where-the-hell-is-tyrion-Lannister-smart/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -843,14 +840,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">222</span>
+              <span class="site-state-item-count">223</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
