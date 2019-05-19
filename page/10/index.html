@@ -174,8 +174,8 @@
           
           
             
-              <a class="post-title-link" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="url">
-                如何解决hexo无法展示博客内容的问题
+              <a class="post-title-link" href="/2016/11/27/a-program-for-snap-trace/" itemprop="url">
+                记一次跟踪系统的设计改进
               </a>
             
           
@@ -185,8 +185,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2016-11-05T00:00:00+08:00" content="2016-11-05">
-            2016-11-05
+          <time itemprop="dateCreated" datetime="2016-11-27T00:00:00+08:00" content="2016-11-27">
+            2016-11-27
           </time>
         </span>
 
@@ -195,8 +195,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/运维/" itemprop="url" rel="index">
-                  <span itemprop="name">运维</span>
+                <a href="/categories/设计/" itemprop="url" rel="index">
+                  <span itemprop="name">设计</span>
                 </a>
               </span>
 
@@ -211,8 +211,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="commentsCount"></span>
+              <a href="/2016/11/27/a-program-for-snap-trace/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/27/a-program-for-snap-trace/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -227,13 +227,15 @@
 
       
         
-          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>今天写了一篇博客，然后更新到github上就不展示了，整个页面的框架还在，但是就是文章不展示，在经过一番折腾之后，我终于又让自己的博客回复正常了，这里分享下我是如何解决的。</p>
-<p>先说明环境，我使用的是hexo的next主题，而且我是眼睁睁的看着，我发布文章之后，旧的页面是好的，一刷新是坏的，我想到了是不是自己发布坏了，但是我在本地启动<code>hexo server</code>没有任何问题，然后我又试着<code>hexo clean</code>后发布，依旧没什么用。</p>
-<p>我看了下自己主页的源码，发现了一个问题，就是</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"</span>/&gt;</span></div></pre></td></tr></table></figure>
-<p>这条连接点不进去了，出现了github page 404的页面，然后我去自己的github看了一下，这个路径有的。</p>
+          <p>最近有一个需求，要跟踪一个计算机票报价系统的动作，这个系统会根据不同的策略做一些筛选，过滤，加减价之类的操作。最后再将这些报价打包成一个个的产品。因为不同的情况，计算出来的报价结果可能不一样，所以缺少某些报价的问题经常会让大家很头疼。也无法明确的排查为什么没有报价，也无法定位没有报价的原因。所以这个需求的目的，就是要能够明确的知道，我成功的计算出来了哪些报价，哪些报价被我过滤了，而且为什么被过滤了。</p>
+<h2 id="第一个想法"><a href="#第一个想法" class="headerlink" title="第一个想法"></a>第一个想法</h2><p>一开始我的思路是对每一个动作和操作打日志，然后收集这些日志。最后在展现它们，那么最终用户看到的效果就是这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2016 12 09 15:34:35 MU2323 U仓报价被过滤，原因非最低</div><div class="line">2016 12 09 15:34:36 MU2424 V仓报价被过滤，原因此渠道仅售</div></pre></td></tr></table></figure>
+<p>这看上去像是一个标准的日志记录，在游戏中常见</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">2016 12 09 15:34:35 你打开了宝箱</div><div class="line">2016 12 09 15:34:36 你获得了守护者的传说之杖</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>但问题是这样散落到各处的日志并不好收集，而且也不容易对这些日志进行统计分析（自动化分析），还有这个设计并没有从用户的角度出发（从产品设计的角度出发），使用者并不想知道你系统的每一步执行步骤，你直接告诉他为什么没报价就好了，让不是让他自己找，让他自己分析，所以这个设计完全是一个技术实现。</p>
+<p>还有一个更重要的问题是展示率的计算，展示率的公式是：实际展示的报价/应该展示的报价，那问题是我们在之前过滤掉了一些报价，但是这些过滤，有些原因是要算展示率的，有些则不算，如果你维护一个全局变量计数器，来根据不同的原因选择是否给分子加一，那你的程序一定非常容易出bug。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#more" rel="contents">
+            <a class="btn" href="/2016/11/27/a-program-for-snap-trace/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -324,6 +326,98 @@
 <p>实际上一支凌美钢笔还是挺贵的，烫坏了就划不来了。<br>之所以有这样的传说，其实因为早期钢笔都有一层封蜡，烫的原因主要就是烫掉那层封蜡，但实际上现在很多钢笔已经没有那层封蜡了，还有就是当时用的钢笔都是几块钱的钢笔，构造比较粗糙，经常需要用比较烫的水反复冲洗，而且这个水也不能太烫（50度应该就差不多了），要不钢笔的塑料就烫坏了。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/11/05/gossip-of-youth/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="url">
+                如何解决hexo无法展示博客内容的问题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-11-05T00:00:00+08:00" content="2016-11-05">
+            2016-11-05
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/运维/" itemprop="url" rel="index">
+                  <span itemprop="name">运维</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>今天写了一篇博客，然后更新到github上就不展示了，整个页面的框架还在，但是就是文章不展示，在经过一番折腾之后，我终于又让自己的博客回复正常了，这里分享下我是如何解决的。</p>
+<p>先说明环境，我使用的是hexo的next主题，而且我是眼睁睁的看着，我发布文章之后，旧的页面是好的，一刷新是坏的，我想到了是不是自己发布坏了，但是我在本地启动<code>hexo server</code>没有任何问题，然后我又试着<code>hexo clean</code>后发布，依旧没什么用。</p>
+<p>我看了下自己主页的源码，发现了一个问题，就是</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>这条连接点不进去了，出现了github page 404的页面，然后我去自己的github看了一下，这个路径有的。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -713,95 +807,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/09/03/cost-reduction/" itemprop="url">
-                降低成本
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2016-09-03T00:00:00+08:00" content="2016-09-03">
-            2016-09-03
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/思考/" itemprop="url" rel="index">
-                  <span itemprop="name">思考</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/09/03/cost-reduction/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/03/cost-reduction/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>火枪在一开始是中国宋朝就发明了，但是这东西制造的成本太高，所以没啥关键性变革。后来欧洲有了工业革命，导致生产火枪的成本降低，他们便开始量产。其实火枪这东西一开始的杀伤力，射程和精准度比弓箭差远了。但是这种东西还能被接受的原因就是，与训练出一个弓箭手相比，训练一个火枪手的成本低多了。</p>
-<p>看来我们无时无刻在玩这种“降低成本”的把戏，这也是我最近在阅读和思考中体会到的。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/03/cost-reduction/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -840,7 +845,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">223</span>
+              <span class="site-state-item-count">224</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -854,7 +859,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

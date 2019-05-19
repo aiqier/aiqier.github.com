@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2015/04/14/pub-key-private-key/" itemprop="url">
+                非对称加密
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-04-14T00:00:00+08:00" content="2015-04-14">
+            2015-04-14
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/04/14/pub-key-private-key/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/14/pub-key-private-key/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>首先明确一点，此博客讨论的非对称秘钥只限于RSA，而非DSA。</p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>如果我们不谈公钥和私钥，仅仅谈非对称秘钥：假如你用一个算法，生成了两把key，key1和key2。那么key1加密的数据，只有key2能解开，而key2加密的数据只有key1能解开。</p>
+<p>当然我思考过如果把公钥当私钥使用，私钥当公钥使用会怎样的问题，讨论请看这里:<a href="http://www.v2ex.com/t/200992#reply5">传送门</a></p>
+<p>简单的来说，通过私钥推算出公钥是非常容易的。</p>
+<h4 id="公钥加密，私钥解密："><a href="#公钥加密，私钥解密：" class="headerlink" title="公钥加密，私钥解密："></a>公钥加密，私钥解密：</h4><p>此处是为了<strong>安全性</strong>，比如对称加密，那就只有一种钥匙，那么传播传播着，大家就都知道了。而如果是非对称加密，我将自己的公钥公开，而只有私钥才能打开，这样我维护好自己的私钥不让别人知道，就一定可以保证数据的安全性。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/04/14/pub-key-private-key/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/04/07/ready-to-web/" itemprop="url">
                 准备web开发
               </a>
@@ -721,96 +813,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/02/26/python-technical-summary/" itemprop="url">
-                python基础技术问题总结
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-02-26T00:00:00+08:00" content="2015-02-26">
-            2015-02-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/02/26/python-technical-summary/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/02/26/python-technical-summary/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>此篇文章总结python一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中…</p>
-<h2 id="解释一下python的-and-or-语法"><a href="#解释一下python的-and-or-语法" class="headerlink" title="解释一下python的 and-or 语法"></a>解释一下python的 and-or 语法</h2><p>python的<code>and-or</code>常常被用来实现类C语言中的三元运算符<code>:?</code>,更骚包的写法是 <code>xxx and xxx or xxx and xxx or xxx</code>，连接多个表达式，一行就够了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> a &gt; <span class="number">10</span>:</div><div class="line">    <span class="keyword">return</span> <span class="string">"big"</span></div><div class="line"><span class="keyword">elif</span> a &gt; <span class="number">5</span>:</div><div class="line">    <span class="keyword">return</span> <span class="string">"middle"</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="keyword">return</span> <span class="string">"small"</span></div><div class="line"></div><div class="line">a &gt; <span class="number">5</span> <span class="keyword">and</span> <span class="string">"big"</span> <span class="keyword">or</span> a &gt; <span class="number">3</span> <span class="keyword">and</span> <span class="string">"middle"</span> <span class="keyword">or</span> <span class="string">"small"</span></div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/02/26/python-technical-summary/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -849,7 +851,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">223</span>
+              <span class="site-state-item-count">224</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -863,7 +865,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

@@ -174,6 +174,91 @@
           
           
             
+              <a class="post-title-link" href="/2015/10/24/b-tree-and-b+-tree/" itemprop="url">
+                b树和b+树
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-24T00:00:00+08:00" content="2015-10-24">
+            2015-10-24
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/24/b-tree-and-b+-tree/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/24/b-tree-and-b+-tree/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="starting"><a href="#starting" class="headerlink" title="starting"></a>starting</h2><p>树是一种非常重要的非线性结构。线性表，栈和队列相对简单。图呢，在目前项目中我几乎就没碰到过。<br>分叉的特性让其非常的容易用于查找，这篇博客是想总结一下b树和b+树。</p>
+<h2 id="查找树"><a href="#查找树" class="headerlink" title="查找树"></a>查找树</h2><p>按照数据结构书上的定义，查找的数据结构，分为静态查找表，动态查找表和哈希表。<br>首先静态查找表本身并不实用，因为不能动态的插入和删除元素，动态查找表中的二叉排序树和平衡二叉树又不符合真实的硬件场景。而b树和b+树才是真真确确被用到现实场景，比如mysql数据库引擎的InnoDB和MyISAM都使用了b+树，虽然在实现方式上可能稍有不同。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/20/find-a-web-server-for-the-python-project/" itemprop="url">
                 为python web项目找一个服务器
               </a>
@@ -709,101 +794,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/10/plan-python-project-folder/" itemprop="url">
-                合理的规划python项目
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-10T00:00:00+08:00" content="2015-09-10">
-            2015-09-10
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/开发/" itemprop="url" rel="index">
-                  <span itemprop="name">开发</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/10/plan-python-project-folder/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/10/plan-python-project-folder/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>之前看过一些别人写的python项目目录结构，自己其实也一直尝试把python项目结构做好，规范的项目结构，能为代码带来很多方便。</p>
-<h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>规范的项目结构是使用标准import的前提，我之前的一篇博客，提到过这点，对于三种引用方式，<code>implicit relative import，explicit relative import，absolute import</code>。</p>
-<p>实际上只有第三种，才是官方推荐的，第一种是官方强烈不推荐的，python3中已经不可以使用了，我们的<code>from future import absolute_import</code>也就是为了禁用这种方式。参见我之前的一篇博客：<a href="http://www.pulpcode.cn/2015/08/12/analysis-python-import/">详解python import</a></p>
-<p>就像我说的那样，你要把主控<code>main.py</code>放到最外层，将其它模块都构造成完整的包。</p>
-<p>就是你test目录下的单测，也要在主控的目录下负责调用才行。我想说的是如果你的代码中出现了其它两种方式，比如这种写法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import sys</div><div class="line">sys.path.append(&apos;..&apos;)</div></pre></td></tr></table></figure>
-<p>你要想想，是不是，你一开始设计的就有问题。</p>
-<p>我现在的python目录结构大概是这样，平时用的python框架主要是flask和tornado，<br>实际上flask的项目偏业务重些，所以代码量也非常多，但是一般而言，flask的项目都比较规范，<br>因为一些文档已经在告诉你如何构建项目结构，如何使用它的一系列插件。</p>
-<p>到是tornado的项目，因为其本身就用来写些接口和微服务，更偏基础服务，所以很多开发者很少注意其项目结构。</p>
-<p>我比较中意的python项目结构，大概是这样的（这算是我的标配了）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">README.md</div><div class="line">manage.py : 管理server的启动，停止，载入预制数据，运行单测,命令行管理文件</div><div class="line">requirements.txt : 需要文件导入包（但是我觉得，这个算是载入的）</div><div class="line">fabfile.py: 管理和发布程序</div><div class="line">config.py：配置文件，一般里面会有三个类，develop(开发)，<span class="built_in">test</span>(测试)，product（生产）</div><div class="line">const.py：类似于数据字典,常量配置，避免魔数</div><div class="line">logic : 些被封装起来的业务函数和业务类</div><div class="line">app: 后台服务，前端api,里面一般会包含，handler，等文件夹</div><div class="line">batch: 定时任务</div><div class="line">orm：用来存放orm和一些封装起来的数据库操作函数</div><div class="line">doc: 文档</div><div class="line">sample: 实例程序</div><div class="line"><span class="built_in">test</span>: 所有的单元测试</div><div class="line">utils：自定义工具类，可以放一些自己写的函数，比如我自己写过一个好用的时间类</div><div class="line">static：静态文件夹</div><div class="line">sql： sql文件</div></pre></td></tr></table></figure>
-<p>注意不要log文件目录放在项目文件目录里。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -842,7 +832,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">223</span>
+              <span class="site-state-item-count">224</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -856,7 +846,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
