@@ -47,7 +47,7 @@
 <meta property="og:description" content="其实我一直想写一篇博客总结git的使用。但是却又没想好怎么写，即使我知道这篇博客的题目应该叫《性价比学习git》，我也没有想好如何性价比的学习git，我不可能把《pro git》上大段的git底层知识贴过来我用自己的话再描述一遍，也不能给你讲一些你这辈子都不会用到的git命令。直到最近我才有了灵感，所以在这篇博客里，我将试图先假设一个场景，并描述清楚你所遇到的问题，然后再告诉你要用git如何解决，">
 <meta property="og:image" content="http://www.pulpcode.cn/img/git-rebase1.png">
 <meta property="og:image" content="http://www.pulpcode.cn/img/git-rebase2.png">
-<meta property="og:updated_time" content="2018-01-13T12:05:32.101Z">
+<meta property="og:updated_time" content="2020-04-08T15:28:57.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性价比学习git">
 <meta name="twitter:description" content="其实我一直想写一篇博客总结git的使用。但是却又没想好怎么写，即使我知道这篇博客的题目应该叫《性价比学习git》，我也没有想好如何性价比的学习git，我不可能把《pro git》上大段的git底层知识贴过来我用自己的话再描述一遍，也不能给你讲一些你这辈子都不会用到的git命令。直到最近我才有了灵感，所以在这篇博客里，我将试图先假设一个场景，并描述清楚你所遇到的问题，然后再告诉你要用git如何解决，">
@@ -241,8 +241,11 @@
 <p>顺便说一句，只有你成功的git stash pop才会删除掉原来的那个stash，如果你在stash pop的时候产生了冲突，或者因为有未提交文件导致的stash pop失败，都不会在stash栈上去删除你的stash的。这种失败可能是因为你在错误的分支上进行了stash pop，也可能是你已经在上次stash的基础上又开发了一些新功能，从而导致了冲突。反正git本身并不在乎你是否在一个分支A上pop了一个分支B的stash，不产生冲突就算成功。</p>
 <h2 id="如何让远程分支也回到过去"><a href="#如何让远程分支也回到过去" class="headerlink" title="如何让远程分支也回到过去"></a>如何让远程分支也回到过去</h2><p>你开发了一部分代码，并合并到本地的master，然后推送到了服务器，接着你不想要这部分功能了，所以你在本地的master reset了这部分代码，但是你并不能提交它们（软件定律之一：只做加法，不做减法），你要怎么让远程分支上的代码也回到过去？</p>
 <p><code>git push -f</code> ，虽然你可以这么做，但你的同事会杀了你的。其实不要这部分功能最好的方式是git revert，但是git revert只是针对某次提交做一个反向操作，所以不要以为你revert到某个版本就行了，实际上你应该把每个提交的commit都revert才可以。不过有些直男会选择自己手工改回去。</p>
-<h2 id="你想reset，但是你还想利用这些修改"><a href="#你想reset，但是你还想利用这些修改" class="headerlink" title="你想reset，但是你还想利用这些修改"></a>你想reset，但是你还想利用这些修改</h2><p>你知道git reset可以让代码回归到某个版本，所以你经常使用git reset —hard来放弃这些修改，但是有一天，你想回到某个版本的状态，同时在这些修改的部分上做一些处理，再次提交，而不是直接扔掉它们你要怎么做？<br>你可以选择-mixed 来让这部分修改都放到stage，或者用-soft来让这部分变化都放到工作目录中。实际上我之前写过一篇博客介绍: <a href="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">git reset </a></p>
+<p>这里多提一句，revert并不是回到某个版本，而是将某个版本的代码进行撤销。</p>
+<h2 id="你想reset，但是你还想利用这些修改"><a href="#你想reset，但是你还想利用这些修改" class="headerlink" title="你想reset，但是你还想利用这些修改"></a>你想reset，但是你还想利用这些修改</h2><p>你知道git reset可以让代码回归到某个版本，所以你经常使用git reset —hard来放弃这些修改，但是有一天，你想回到某个版本的状态，同时在这些修改的部分上做一些处理，再次提交，而不是直接扔掉它们你要怎么做？<br>你可以选择-mixed 来让这部分修改都放到stage，或者用-soft来让这部分修改都放到工作目录中。实际上我之前写过一篇博客介绍: <a href="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">git reset </a></p>
 <p>不过顺便说一句，<code>git reset</code>的用法并不是回到过去这么简单，比如<code>git reset --mixed</code>，看上去是把变化放到暂存区，但其实算是一个把多次commit合并为一次的操作。</p>
+<p>但是因为这篇博客讨论的是性价比，所以你并不应该过于详细的了解git reset的底层原理，或者是死记硬背他们，只要记用法和规则就行了，比如：</p>
+<p><code>git reset --hard</code>：完全不要这部分修改。<br><code>git reset --mixed</code>：把多次commit 合并为一次的操作。<br><code>git reset --soft</code>：在提交前想在做点修改。</p>
 <h2 id="如何让某几个文件回归到历史版本？"><a href="#如何让某几个文件回归到历史版本？" class="headerlink" title="如何让某几个文件回归到历史版本？"></a>如何让某几个文件回归到历史版本？</h2><p>你并不想要整个commit都回退，你只想让某个文件回退到某个版本。</p>
 <p>git log能看修改记录，git log 后面如果跟上 分支名，就能看到某个分支的修改记录，同理，如果你在git log后面跟上 文件名，是可以看到某个文件的修改记录的，然后你只要git reset hash值 文件名就可以了。文件的提交历史和版本的提交历史，看上去是同构的。</p>
 <h2 id="如何找回已经被你reset的分支？"><a href="#如何找回已经被你reset的分支？" class="headerlink" title="如何找回已经被你reset的分支？"></a>如何找回已经被你reset的分支？</h2><p>你不小心一个 git reset —hard了一些commit，你要如何找回这些commit?</p>
