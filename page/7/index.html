@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2017/04/09/how-to-write-a-wx-robot/" itemprop="url">
+                如何实现一个微信机器人
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-04-09T00:00:00+08:00" content="2017-04-09">
+            2017-04-09
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/04/09/how-to-write-a-wx-robot/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/09/how-to-write-a-wx-robot/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>之前公司有一个需求，需要搭建一个微信机器人，查阅了相关资料，整理了一些Demo之后，我大概实现了一个python的微信机器人聊天程序，这里就把经验拿出来分享下。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>首先你要明白，微信并没有给你提供一套接口，一套文档，让你开发聊天机器人。如果你想实现一个机器人，能够被拉到群里，与群里的人聊天，就必须用点hack的办法。</p>
+<p>这个原理就是web版本的微信，想想你登录web版的微信，在浏览器输入地址后，先会给你返回一个二维码。然后你用你的手机扫描了此二维码，接着就登录成功了。</p>
+<p>这个扫二维码登录的过程，其实就是一个授权的过程，即你授权给web界面，使得可以通过web页面，用http的方式与微信服务器建立交互。所以微信机器人的实现方式就是基于此。你创建一个账号，然后这个账号就是微信机器人，你通过扫码的方式登录，使得可以通过http的方式与微信服务器建立交互。就这样，我们的服务托管了你的机器人账户，从而与群里的人进行交流，解析他们的聊天记录，匹配关键字，生成相应的回复信息。</p>
+<h2 id="交互流程"><a href="#交互流程" class="headerlink" title="交互流程"></a>交互流程</h2><p>首先想想和微信服务器建立交互的时序图。</p>
+<p><img src="/img/weixin01.png" alt="weixin01"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/04/09/how-to-write-a-wx-robot/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/04/03/how-to-use-git-back-to-the-past/" itemprop="url">
                 如何用git回到过去
               </a>
@@ -735,100 +828,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/02/21/from-python-to-java-design-pattern-factory-method/" itemprop="url">
-                从python到java设计模式-工厂方法模式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-02-21T00:00:00+08:00" content="2017-02-21">
-            2017-02-21
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/设计模式/" itemprop="url" rel="index">
-                  <span itemprop="name">设计模式</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/02/21/from-python-to-java-design-pattern-factory-method/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/21/from-python-to-java-design-pattern-factory-method/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>工厂方法模式也是一种创建型模式，之前提到过创建型模式用来解耦 ”被创建的对象“和”创建对象的对象“，两者之间的关系。</p>
-<p>既A与B的关系是使用关系，但是A并没有把B当成一个属性，因为它并不应该是A的一个属性，类似人使用苹果，但是苹果不能被作为人的一个属性。</p>
-<p>比如对于苹果而言，是一种水果，还有很多水果，比如Banana， Orange, Peach.</p>
-<p>人有一个方法叫eatFruit();</p>
-<p>但是你并不能在这个方法中直接new一个fruit</p>
-<p>因为这样太耦合，你可以把一个fruit对象作为参数传入到eatFruit方法中去，但你只不过把问题给拖延了，那这个Fruit又是从哪来的的呢？</p>
-<p>所以最好你自带一个工厂方法FruitFactory，可以getFruit(),而这个FruitFactory就可以作为你人类的属性被注入进来。这样，我们就把创建水果和人吃水果的动作进行解耦。将水果的实例化拖延到FruitFactory工厂中去。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/21/from-python-to-java-design-pattern-factory-method/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -867,7 +866,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">225</span>
+              <span class="site-state-item-count">226</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -915,7 +914,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
