@@ -174,6 +174,96 @@
           
           
             
+              <a class="post-title-link" href="/2021/04/03/regular-files-with-epoll/" itemprop="url">
+                为什么epoll不支持磁盘IO
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-04-03T00:00:00+08:00" content="2021-04-03">
+            2021-04-03
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2021/04/03/regular-files-with-epoll/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2021/04/03/regular-files-with-epoll/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>对epoll不支持磁盘IO这件事，很长一段时间都是只知道结论，但是从来没搞清楚原因，网上找了一些中文的解释都让人看的云里雾里。最近在查找资料的时候，无意中发现如果自己按照“DISK Io”这样的方式去搜索英文资料，那可能不会找到想要的答案，因为在linux官方的叫法中，磁盘文件准确的称呼应该是“regular files”。然后我按照“epoll regular files”的方式得到的内容一下多了许多。最后也是得到了比较满意的答案，这里写出来分享一下。</p>
+<h2 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h2><p>首先在谈论epoll不支持磁盘IO文件之前，先理清阻塞和非阻塞指的阶段是什么，我们在讨论IO操作阻塞非阻塞时，是指当你发起一个IO操作后，如果IO没有准备好，你的线程是否要停留在那里等待IO准备好。这里特别说明了只是说等待io准备好，系统真正开始io操作的时候，虽然也有耗时，但是那并不算讨论阻塞非阻塞的范畴。</p>
+<p>接着在说回到磁盘IO这件事上，虽然linux的哲学是一切都是文件，磁盘和网络的读写都可以理解为文件的读写，但是文件和文件还是有不同的。比如说你并不能对一个磁盘文件描述符设置非阻塞，但是可以对一个网络io设置非阻塞。理解这事的核心点是理解阻塞发生的原因， 既你向操作系统发起io操作的时候，IO还没有准备好，比如在读请求的时候，缓冲区里的数据不够，或者在执行写操作的时候，缓冲区满了，这对网络来说是常态，因为你根本不确定网络连接的另一头到底什么时候会和你收发数据，所以默认阻塞是常态，然后才为了可以让你的程序不用傻等在这里，才设计了非阻塞。但是对于磁盘来说，根本就没有等待可读或可写一说，因为它一直是就绪的，始终可读可写，POSIX规范中明确指出了这一点。我猜测是设计者当时也觉得给磁盘文件io设置非阻塞没什么意义。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2021/04/03/regular-files-with-epoll/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2021/03/21/how-to-design-a-good-question/" itemprop="url">
                 如何设计好一道面试题
               </a>
@@ -727,98 +817,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2019/01/27/question-and-answer/" itemprop="url">
-                2018年编程问答
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2019-01-27T00:00:00+08:00" content="2019-01-27">
-            2019-01-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2019/01/27/question-and-answer/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/27/question-and-answer/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="操作系统既然有内存分页为什么还要内存分段？"><a href="#操作系统既然有内存分页为什么还要内存分段？" class="headerlink" title="操作系统既然有内存分页为什么还要内存分段？"></a>操作系统既然有内存分页为什么还要内存分段？</h2><p>一句话来说就是为了兼容。</p>
-<p>早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。</p>
-<p>后来32的80386采用了分页内存管理，使用虚拟内存地址映射到物理内存，所以让每个进程看上去自己都有4GB的内存空间（虚拟内存地址）可用。每一个页大概有4K，而且真正被使用的时候才会分配真实的内存，否则可能在硬盘上，或者就没有被分配。但后来的80386还保留了分段模式主要是为了兼容。</p>
-<p>再后来使用了“段页式管理”，结合了分段和分页两种内存管理思路，用户程序的逻辑地址空间首先被划分成若干的逻辑段，每个段都有自己的段号(常量段，堆栈段)，然后再将这些段分页。所以不要把最早的内存分段管理和如今的段页式管理搞混，即使他们都有所谓的“堆栈段”，要分清它们的区别和联系。</p>
-<p>总结一下分段内存管理的优势在于内存共享和安全控制，而分页内存管理的优势在于提高内利用率。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2019/01/27/question-and-answer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -857,7 +855,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">227</span>
+              <span class="site-state-item-count">228</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -871,7 +869,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

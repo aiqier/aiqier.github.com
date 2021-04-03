@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2016/01/31/redis-cluster-one/" itemprop="url">
+                redis cluster学习笔记1(搭建redis cluster环境)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-01-31T00:00:00+08:00" content="2016-01-31">
+            2016-01-31
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/01/31/redis-cluster-one/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/31/redis-cluster-one/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h2><p>去官网上下载最新的redis3.0.7</p>
+<h4 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tar xvzf redis-3.0.7.tar.gz</div><div class="line"><span class="built_in">cd</span> redis-3.0.7</div><div class="line">make</div><div class="line">make <span class="built_in">test</span></div><div class="line">make install</div></pre></td></tr></table></figure>
+<p>如果说能用redis-server启动，并且用redis-cli连接，则说明安装成功。</p>
+<h4 id="构建目录"><a href="#构建目录" class="headerlink" title="构建目录"></a>构建目录</h4><p>创建目录 <code>/opt/redis-cluster</code></p>
+<p>在此目录下创建多个文件夹:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">7000 7001 7002 7003 7004 7005</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/31/redis-cluster-one/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/01/30/it-is-a-pity-that-you-dont-have-the-kind-of-you-want/" itemprop="url">
                 很遗憾没有你想要的那种剧情
               </a>
@@ -718,97 +811,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/12/26/python-web-design-pattern/" itemprop="url">
-                python web开发中的设计模式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-12-26T00:00:00+08:00" content="2015-12-26">
-            2015-12-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/26/python-web-design-pattern/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/26/python-web-design-pattern/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>之前一直总结了很长时间的设计模式，只不过一直都是写在笔记上，并没有整理成博客。之前在学校跟一个老师聊起来的时候，他还说过，有很多东西，他只会写在本子上，从来不会公开的，我见过一些开发了十几年的java大牛，他们也不会轻易的把自己值钱的经验随便告诉给别人，跟他们一起工作，都要相近一切办法才能把值钱的东西挖过来。实际上就是这样，分享归分享，有些东西是会垄断的，你们所谓的google，facebook开源，实际上都是他们觉得不值钱的东西，值钱的东西当然不能开源，毕竟研究起来太费劲，耗费大量人力物力。还有很多人问我问题的时候会说，自己懒得看了，直接告诉他算了。对于这种伸手党也是呵呵了。</p>
-<p>那么为什么我要总结这样一篇博客呢？因为我觉得这真不是啥值钱的玩意儿，如果把这点东西还当宝贝，那这辈子眼界也就这么窄了，还有我觉得很少有人会看我的博客。</p>
-<p>以上就当我扯淡了，这篇博客的题目叫python的web设计模式。为什么会叫一个这样的题目呢？<br>首先我觉得，要给自己在工作中所做的事，下一个定义，首先我是一个python工程师，并且我在做web开发，那么一些设计模式，对于我而言是没有用的（当然实际上我也是会的）。而另一些，是我要去加强的。</p>
-<p>那么我们就来讲讲，作为一个python web开发者，我们可以忽略掉哪些设计模式，可以加强哪些设计模式？ 那么在看这篇博客之前，你自然需要先了解设计模式啦，否则下面的内容你是看不懂的。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/26/python-web-design-pattern/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -847,7 +849,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">227</span>
+              <span class="site-state-item-count">228</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -861,7 +863,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

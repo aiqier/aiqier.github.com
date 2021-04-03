@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2019/01/27/question-and-answer/" itemprop="url">
+                2018年编程问答
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2019-01-27T00:00:00+08:00" content="2019-01-27">
+            2019-01-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2019/01/27/question-and-answer/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/27/question-and-answer/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="操作系统既然有内存分页为什么还要内存分段？"><a href="#操作系统既然有内存分页为什么还要内存分段？" class="headerlink" title="操作系统既然有内存分页为什么还要内存分段？"></a>操作系统既然有内存分页为什么还要内存分段？</h2><p>一句话来说就是为了兼容。</p>
+<p>早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。</p>
+<p>后来32的80386采用了分页内存管理，使用虚拟内存地址映射到物理内存，所以让每个进程看上去自己都有4GB的内存空间（虚拟内存地址）可用。每一个页大概有4K，而且真正被使用的时候才会分配真实的内存，否则可能在硬盘上，或者就没有被分配。但后来的80386还保留了分段模式主要是为了兼容。</p>
+<p>再后来使用了“段页式管理”，结合了分段和分页两种内存管理思路，用户程序的逻辑地址空间首先被划分成若干的逻辑段，每个段都有自己的段号(常量段，堆栈段)，然后再将这些段分页。所以不要把最早的内存分段管理和如今的段页式管理搞混，即使他们都有所谓的“堆栈段”，要分清它们的区别和联系。</p>
+<p>总结一下分段内存管理的优势在于内存共享和安全控制，而分页内存管理的优势在于提高内利用率。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2019/01/27/question-and-answer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2019/01/27/2018-best-talk/" itemprop="url">
                 2018年aiqier说说精选
               </a>
@@ -716,95 +808,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2018/04/21/what-are-we-watching-when-we-are-watching-a-movie02/" itemprop="url">
-                当我们在看电影的时候，我们在看什么？（二）好剧本
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2018-04-21T00:00:00+08:00" content="2018-04-21">
-            2018-04-21
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/随笔/" itemprop="url" rel="index">
-                  <span itemprop="name">随笔</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2018/04/21/what-are-we-watching-when-we-are-watching-a-movie02/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/21/what-are-we-watching-when-we-are-watching-a-movie02/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>上篇关于电影的博客，目的是让你摆脱“简单俗套的故事剧情”和“看个什么电影都要找个意义”的思维陷阱。这篇博客我想聊聊什么才是一个好的电影剧本，或者如何讲一个好故事。</p>
-<h2 id="掌握好的节奏"><a href="#掌握好的节奏" class="headerlink" title="掌握好的节奏"></a>掌握好的节奏</h2><p>如果你尝试把所有电影的高潮部分都剪辑出来，拼成两个小时，那你的“高潮”也不可能有两个小时，可能十分钟就瞌睡了。前辈们所说的起承转合是有道理的，你无法让一个人，一直集中注意力的看两个小时的高潮。即使你做出再暴力，再色情的画面也不行。人是一个天生就懂得对比，分得清主次的生物。他们记得住开头，记得住转折，记得住高潮，记得住结尾。所以要讲好一个故事，要把握好故事的节奏。把一个好的故事，一层层的拨开给观众看。侦探类电影就是一个最好的例子。比如2016年很火的一部叫《疯狂动物城》的动画片。这部动画片以兔子朱迪为主线。一开始就引入了故事关于食肉与食草动物的主题。并通过朱迪的第一视觉，向观众展现了疯狂动物城的全貌。并逐渐引入狮子市长，羊副市长，水牛警长，狐狸尼克等人物登场。将动物城失踪案件的迷雾一点点的剥离开来。同时带出了狐狸尼克的真实背景故事。小时候曾经欺负兔子的狐狸，在后来帮助到了兔子想到案件的关键。兔子朱迪救到的鼩鼱露露，在后来在大先生面前救下了尼克和朱迪。同时影片带有双高潮。也就是大部分侦探片都有的“第一次破获的案件是错的，真相另有隐情”的套路。最后结局兔子狐狸成为搭档+情侣故事圆满。剧情跌宕起伏，有来有回，可以说节奏把握的相当好。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2018/04/21/what-are-we-watching-when-we-are-watching-a-movie02/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -843,7 +846,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">227</span>
+              <span class="site-state-item-count">228</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -857,7 +860,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

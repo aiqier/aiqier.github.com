@@ -174,6 +174,96 @@
           
           
             
+              <a class="post-title-link" href="/2013/01/15/c-embed-python/" itemprop="url">
+                C语言嵌入python
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-01-15T00:00:00+08:00" content="2013-01-15">
+            2013-01-15
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2013/01/15/c-embed-python/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2013/01/15/c-embed-python/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h4 id="为什么要嵌入python？"><a href="#为什么要嵌入python？" class="headerlink" title="为什么要嵌入python？"></a>为什么要嵌入python？</h4><p>这个问题问的好，一般静态语言与脚本语言（不仅仅是python），相互搭配，有两种方式，一种是用c语言写好模块，然后用python去整合，也被称之为扩展python，这样的好处是即有python的灵活性，又有c语言的效率，</p>
+<p>还有一种就是c语言嵌入python，这样我们就有了一个python解释器了，在游戏编程中常用这种方法，如果你是用静态语言编程，那么修改一些属性，就意为着重新编译，如果程序很大的话，编译是一间令人很烦的事，编译起来非常慢，一种好的设计是把一些属性写在一个初始化文件中，然后在程序中去解析这个属性文件，不过这样还是不够灵活，更加灵活的方式，就是干脆嵌入python（游戏编程中常用lua）,这样，游戏更有创造性，更容易扩展。</p>
+<h4 id="一个”错误的”例子"><a href="#一个”错误的”例子" class="headerlink" title="一个”错误的”例子"></a>一个”错误的”例子</h4><p>下面先把C代码写出来，（当然，直接编译肯定是错的，因为我们还有许多东西没设置）</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2013/01/15/c-embed-python/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2013/01/13/python-markov-model/" itemprop="url">
                 python实现马尔可夫链算法
               </a>
@@ -706,95 +796,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2012/10/19/what-happen-when-i-assign-increase/" itemprop="url">
-                当i = i++时，究竟发生了什么？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2012-10-19T00:00:00+08:00" content="2012-10-19">
-            2012-10-19
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2012/10/19/what-happen-when-i-assign-increase/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2012/10/19/what-happen-when-i-assign-increase/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>之前有朋友跟我讨论过一个问题，他问在java中，<code>i=1;i=i++;</code>之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。</p>
-<p>我先在《c++ primer》上看见这样的解释：“++i的效率要比i++的效率高，因为i++必须要有一个临时变量来存放i本身的值“，那么我之前只说对了临时变量，但原因是临时变量先用来存放i的值，然后i本身自增，之后，临时变量赋值给左边，这时，i的值又被 自己之前的值覆盖了，所以又变成1,但这只是个推测，再说c语言中为什么是2？所以不得不反编译了。。。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2012/10/19/what-happen-when-i-assign-increase/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -833,7 +834,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">227</span>
+              <span class="site-state-item-count">228</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -847,7 +848,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">106</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
