@@ -174,8 +174,8 @@
           
           
             
-              <a class="post-title-link" href="/2017/06/11/locks-in-concurrent-programming/" itemprop="url">
-                并发编程中的锁
+              <a class="post-title-link" href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/" itemprop="url">
+                java排序抛出的Comparison method violates its general contract 异常
               </a>
             
           
@@ -185,8 +185,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2017-06-11T00:00:00+08:00" content="2017-06-11">
-            2017-06-11
+          <time itemprop="dateCreated" datetime="2017-06-18T00:00:00+08:00" content="2017-06-18">
+            2017-06-18
           </time>
         </span>
 
@@ -211,8 +211,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2017/06/11/locks-in-concurrent-programming/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/11/locks-in-concurrent-programming/" itemprop="commentsCount"></span>
+              <a href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/18/comparison-method-violates-its-general-contractfor-sort/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -227,10 +227,12 @@
 
       
         
-          <h2 id="锁的由来"><a href="#锁的由来" class="headerlink" title="锁的由来"></a>锁的由来</h2><p>并行的程序访问共享变量的时候，如果至少有一个访问是更新操作，就会出现问题。<br>书本上常常拿银行账户取款来举例子。我就不写了，因为我说道银行账户取款，你就知道我在说什么了，无非就是某个执行的上下文在执行的中途被修改了，解决这个问题的方式就是利用锁，来保证一次只允许一个线程执行该段代码。</p>
-<h2 id="锁的危害"><a href="#锁的危害" class="headerlink" title="锁的危害"></a>锁的危害</h2><p>n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。</p>
+          <p>上周线上的一段排序的java代码出现了一个<code>Comparison method violates its general contract</code>，在解决这个问题的途中学到了一些知识这里总结分享一下。</p>
+<h2 id="异常原因"><a href="#异常原因" class="headerlink" title="异常原因"></a>异常原因</h2><p>这个排序导致的异常将会在java7以上的版本出现，所以如果你的JDK从6升级到了7或者8，那一定要小心此异常。<br>在java7的兼容列表中，就有对此排序不兼容的说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Area: API: Utilities</div><div class="line">Synopsis: Updated sort behavior for Arrays and Collections may throw an IllegalArgumentException</div><div class="line">Description: The sorting algorithm used by java.util.Arrays.sort and (indirectly) by java.util.Collections.sort has been replaced. The new sort implementation may throw an IllegalArgumentException if it detects a Comparable that violates the Comparable contract. The previous implementation silently ignored such a situation.</div><div class="line">If the previous behavior is desired, you can use the new system property, java.util.Arrays.useLegacyMergeSort, to restore previous mergesort behavior.</div><div class="line">Nature of Incompatibility: behavioral</div><div class="line">RFE: 6804124</div></pre></td></tr></table></figure>
+<p>我从资料中查阅到java7开始引入了Timsort的排序算法。我之前一直以为大部分标准库的内置排序算法都是快速排序。现在才得知很多语言内部都使用Timsort排序。随后我在wiki百科上找到了这样一句话：</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/11/locks-in-concurrent-programming/#more" rel="contents">
+            <a class="btn" href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -320,6 +322,95 @@
 <p>首先我查阅了一些资料发现普通的太刀并没有那么长，也就是 2尺（66cm）以上、3尺（约1m）之间。可以说差不多一米左右。所以这种刀经常会和另一种长度相近的打刀搞混。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/06/11/why-did-Japanese-Katana-so-long/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/06/11/locks-in-concurrent-programming/" itemprop="url">
+                并发编程中的锁
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-11T00:00:00+08:00" content="2017-06-11">
+            2017-06-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/06/11/locks-in-concurrent-programming/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/11/locks-in-concurrent-programming/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="锁的由来"><a href="#锁的由来" class="headerlink" title="锁的由来"></a>锁的由来</h2><p>并行的程序访问共享变量的时候，如果至少有一个访问是更新操作，就会出现问题。<br>书本上常常拿银行账户取款来举例子。我就不写了，因为我说道银行账户取款，你就知道我在说什么了，无非就是某个执行的上下文在执行的中途被修改了，解决这个问题的方式就是利用锁，来保证一次只允许一个线程执行该段代码。</p>
+<h2 id="锁的危害"><a href="#锁的危害" class="headerlink" title="锁的危害"></a>锁的危害</h2><p>n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/11/locks-in-concurrent-programming/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -700,99 +791,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/05/06/summarize-BST/" itemprop="url">
-                总结一些二叉查找树的知识
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-05-06T00:00:00+08:00" content="2017-05-06">
-            2017-05-06
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/数据结构/" itemprop="url" rel="index">
-                  <span itemprop="name">数据结构</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/05/06/summarize-BST/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/06/summarize-BST/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>树是一种很实用的数据结构，往往和查找，决策挂钩。提供对数级的时间复杂度。<br>而且树还有一点，因为它是结构递归的，所以它的很多算法，都可以用递归去实现。</p>
-<p>这算是对《算法》这本书的总结，真心觉得这本书太好看了，不像算法导论那么难懂。</p>
-<p>需要记住的是一颗树的深度，表示了它查找最深需要多深，而可以将所有节点的深度进行相加，再除以节点个数，来求出一个二叉查找树的平均高度。1979年，J.Robson证明了随机键构造的二叉查找树的平均高度为树的结点数的对数级别，随后L.Devroye证明了对于足够大的N，这个值趋近于2.99lgN。</p>
-<p>二叉查找树被称为（BST），首先它是一颗二叉树，而且每个节点的左子树，键都比它小，每个节点的右子树，键都比它大。</p>
-<p><img src="/img/bst.png" alt="bst"></p>
-<p>下面分别讲解其对应的接口：</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/06/summarize-BST/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -831,7 +829,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">228</span>
+              <span class="site-state-item-count">229</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -845,7 +843,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">107</span>
+              <span class="site-state-item-count">108</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

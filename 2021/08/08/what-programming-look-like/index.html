@@ -1,0 +1,690 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="感悟," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="就“编程像什么”这个问题，我思考了很久了，可以说每隔一段时间都会有新的想法，但始终没有一个令自己满意的结论。此篇博客尝试将自己思考的一些内容都总结出来。
+1.武侠上大学的时候，在图书馆翻到一本书叫《编程高手箴言》，这本书的作者同时也是播放器“超级解霸”的作者，梁肇新。算是老一辈的大神程序员，稍微大一点的人应该知道这款播放软件，当时中国盗版光盘盛行，但播放盗版vcd，dvd电影会很卡，正是超级解霸这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程像什么？">
+<meta property="og:url" content="http://www.pulpcode.cn/2021/08/08/what-programming-look-like/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="就“编程像什么”这个问题，我思考了很久了，可以说每隔一段时间都会有新的想法，但始终没有一个令自己满意的结论。此篇博客尝试将自己思考的一些内容都总结出来。
+1.武侠上大学的时候，在图书馆翻到一本书叫《编程高手箴言》，这本书的作者同时也是播放器“超级解霸”的作者，梁肇新。算是老一辈的大神程序员，稍微大一点的人应该知道这款播放软件，当时中国盗版光盘盛行，但播放盗版vcd，dvd电影会很卡，正是超级解霸这">
+<meta property="og:image" content="http://www.pulpcode.cn/img/jingshenshiguangwu.jpeg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/zuanshicheng.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/jixiansudujiemi.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/kenan.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/zhanmusikameilong.jpg">
+<meta property="og:updated_time" content="2021-08-08T11:20:32.731Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="编程像什么？">
+<meta name="twitter:description" content="就“编程像什么”这个问题，我思考了很久了，可以说每隔一段时间都会有新的想法，但始终没有一个令自己满意的结论。此篇博客尝试将自己思考的一些内容都总结出来。
+1.武侠上大学的时候，在图书馆翻到一本书叫《编程高手箴言》，这本书的作者同时也是播放器“超级解霸”的作者，梁肇新。算是老一辈的大神程序员，稍微大一点的人应该知道这款播放软件，当时中国盗版光盘盛行，但播放盗版vcd，dvd电影会很卡，正是超级解霸这">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/jingshenshiguangwu.jpeg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 编程像什么？ | Pulpcode </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              编程像什么？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-08-08T00:00:00+08:00" content="2021-08-08">
+            2021-08-08
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2021/08/08/what-programming-look-like/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2021/08/08/what-programming-look-like/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>就“编程像什么”这个问题，我思考了很久了，可以说每隔一段时间都会有新的想法，但始终没有一个令自己满意的结论。此篇博客尝试将自己思考的一些内容都总结出来。</p>
+<h2 id="1-武侠"><a href="#1-武侠" class="headerlink" title="1.武侠"></a>1.武侠</h2><p>上大学的时候，在图书馆翻到一本书叫《编程高手箴言》，这本书的作者同时也是播放器“超级解霸”的作者，梁肇新。算是老一辈的大神程序员，稍微大一点的人应该知道这款播放软件，当时中国盗版光盘盛行，但播放盗版vcd，dvd电影会很卡，正是超级解霸这种本土软件，用了一个“跳跃的算法”，尝试在卡的视频上进行“跳帧”，满足了当时老百姓用电脑看盗版盘的需求。这段故事在这本书里也有介绍。梁肇新在书的开篇，用“手中无剑，心中有剑， 手中无剑，心中也无剑”等几个阶段，来形容编程的几个阶段，现在看来是有点中二，但是当年看到这段文字的时候，确实心中有些激动，脑海中浮现出一个通过不断练习，让自己水平越来越高的一个程序员的形象。或者说不是一个程序员，更像是一个功夫世界里的侠客。</p>
+<p>虽然我是90后，但我其实比较关注老一辈程序员的。我在学生时代，就特别喜欢听他们讲过去编程的故事，写汇编程序，在dos上开发程序，精通MSDN。当年有本叫《疯狂的程序员》的小说，是一个80后程序员将自己真实经历改编而成的。可以看到他们当时的编程环境差，日子艰苦，一本技术书翻到烂，但是又觉得很快乐。从他们的故事里，你会发现一种特别的武侠情节，也许金庸小说是他们年少时期的快乐源泉。这是一个简单直白的想法，也是许多程序员的想法，做好技术。通过练习变得更强，在这件事上，古今中外应该是统一的吧，比如在小时候看的动画片七龙珠里，甚至出现了“精神时光屋”这种东西，找一个异次元空间花大量时间练习，国外传过来这几年很火的10000小时定律也是这个思路。想要变得更强么？练习吧。</p>
+<p><img src="/img/jingshenshiguangwu.jpeg" alt="jingshenshiguangwu"></p>
+<p>但是不仅限于变得更强，学出境界，武侠情节还有另一层意思是武侠与人世间的是是非非，与世无争，所以类似侠客，还有一个词叫工匠，这个词同样描绘了一个苦心修炼技术，与世无争，牛逼又低调的人。貌似日本尤其吹嘘这种工匠精神，做一件事，把它做到极致。虽然中国也有很多的极致的工匠，比如玉雕，木雕啥的，但没有像日本吹的那么邪乎，动不动这个仙人那个仙人的。</p>
+<a id="more"></a>
+<p>我本身对工匠这种说法并不喜欢，我承认练习变得更强，但是我对与世无争并不赞同，而侠客梦同样也有这种与世无争的想法。这个其实有些脱离实际。我和一些人私下聊天，他们所推崇的工匠精神，换句话说像是“我负责变得更强，你负责给我这种强人发工资就行，别的我不操心”，这种想法有点问题，做一件事做极致并不一定对或者说一定有用，大部分人的工作不是参加竞技类项目，要争个第一。工作应当是在各种类型的问题上处理的游刃有余，得心应手。而不是把某件事做到极致。做技术本身是要跟着时代走，其实放眼望去，编程的技术更新换代很快，很多当年牛逼的技术在今天会很受限制，再过几年就会被淘汰掉。头硬一头扎到某个技术里，不停的练习本身的想法事错的，这比在武侠小说中那些武痴还可怕。热爱技术，热爱练习没什么错，但是逃避市场，逃避需求却错了，无论你事想做一个工匠，还是想做一个侠客，先了解别人想要什么往往更重要，而不是闷头的去想我要擅长什么，只是一门心思的做技术。</p>
+<h2 id="2-建筑师"><a href="#2-建筑师" class="headerlink" title="2.建筑师"></a>2.建筑师</h2><p>我在面试别人的时候，特别喜欢问这样一个问题：“你有看到什么非技术类的书籍，对你技术提升很大的”。这是个开放问题，没什么标准答案。而这个问题我也一直在思考，因为对于编程这种起步比较晚的学科，肯定会从其他成熟的学科中借鉴吸收知识的。但如果说哪门学科的知识最多的话，我想应该就是建筑学了吧。</p>
+<p>在我上学的时候，当时的设计模式很火，这里面有培训行业炒作的原因，但不得不说设计模式确实有用，GOF《设计模式》这本书里有提到设计模式的思想来源于建筑学，后来经过一个大神指点，我有幸知道了一本建筑学的书叫《建筑的永恒之道》。这本书令我受益匪浅，书中讲了很多关于建筑模式的东西，大到建筑群，小道一个牛棚都是由各种各样的建筑模式构成。你可以把模式理解成某种规则，某种限定，针对某一类问题的解决方案。比如程序设计中的装饰器模式(Decorator Pattern)用来向一个现有的对象添加新的功能,同时又不改变其结构。但这本书不是手把手举例教你如何使用设计模式的那种书，而是能给你不一样理解，提升你思维眼界的书。书中我印象深刻的内容就是作者提出建筑并不是冷冰冰的，比如你想要建一个好看的花园，就要建一个花园。而是要去了解那里人的生活习惯，建出来的花园能够和人们的生活息息相关，这时候你的建筑才算活了，它能够满足发生在公园里的各种事件。也就是说你的建筑模式能够应对各种事件模式。这个思路我在编程开发中经常使用，比如说设计一些给内部人员使用的工具时，我会思考不同类型的人员在真实的使用场景，会有哪些事件，他们有些是pm，有些是rd，有些是新手，有些是老手，我要设计的工具，目的是满足在这些使用场景下发生的真实事件。如果都能满足，就说明我的工具设计的没问题，而不是孤芳自赏的去做一个我觉得很牛逼的东西。比如说我发现查某类问题时，常常需要几个人共同排查确认，所以我一般都会把排查请求做成get链接的，这样使用者能通过请求绝对路径直接点击查看，在聊天群里贴链接就好，而不是每次截图，然后再去用工具重新查一遍浪费时间。</p>
+<p>软件的构架就像建筑的构架一样，分层分模块，不过相比于建筑，软件这东西更加抽象，它其实就是一段代码，它其实并没有像一个真实的高楼大厦那样看得见摸得着，那些所谓的构架其实更多存在于人的大脑中。这也是它的难点所在。所以我有时在想，未来为了降低开发难度，可视化编程会不会变成主流？</p>
+<p>说到程序员像建筑师，我想提下另一个观点，是关于重构的，其实在工作中我们很少会重新建设一个软件，多数情况是在一个现有的系统上进行维护和改造的，而大部分人拿到或者接手一个别人的项目的时候。都喜欢重构，但是有些人对重构的理解有问题，很多人重构都喜欢推倒重来，其实这是逃避问题的表现，他们理解的重构是用“自己能看懂的代码”再写一遍。还有一部分人喜欢证明自己，像是涂鸦爱好者一样，想用自己的涂鸦去盖住别人的涂鸦。这不是我所理解的重构，那我理解的重构是什么样的呢？我举个例子吧，《辐射》这款游戏，描述了一个在世界发生核战争后，人们在废土上重建家园的故事。因为人口锐减，生产力倒退，难民们选择在现有的废墟上建设自己的建筑，比如在一个战前棒球场建设自己的城市，富人住在高台，穷人住在周边，商业区从球场中心向两边发散，整个球场的看台像城墙一样保护着市民。当然不限于这些，设计者的脑洞大开，有在废弃游乐场，工厂建立家园的，甚至还有在废弃航母上建立家园的。所以我理解的重构也应该是这样，本身重构这件事就是时间精力都有限的情况下去做的。发现问题本质，在现有条件下，进行加工设计，解决痛点问题才是重构应当做的，而不是动不动就想推倒重来。</p>
+<p><img src="/img/zuanshicheng.jpg" alt="zuanshicheng"></p>
+<h2 id="3-修船工"><a href="#3-修船工" class="headerlink" title="3.修船工"></a>3.修船工</h2><p>几年前合租的房子到期了，打算换租搬家的时候，和我合租快两三年的夫妇要请我吃饭，吃饭时他俩聊起了我的职业，我告诉他们我是互联网程序员，他们笑着说“那程序写好了不就放那跑着就行了么，你们还有啥事干呢。”我当时明白可能很多人没考虑到一个程序，一个系统是需要在运行中维护的。</p>
+<p>这么说用建筑学来比喻建筑确实有点不合适，主要是因为大部分人理解的建筑学是设计出方案，交给施工方建造就完了。</p>
+<p>但建筑并不应该局限于此，你不能单纯的把建筑想成一个冰冷的钢筋混凝土，我对象本身从事建筑行业，我问她：“你说房车这个东西算建筑还是载具？”，她说当然算载具。“那如果再大一点呢？一艘航海的轮船。”，她说也是载具，“那再大点呢，遨游在太空的宇宙飞船呢？人们会在里面生活甚至几年，所有的生活都能在里面解决，为什么还会认为它是建筑呢，那哈尔的移动城堡是建筑还是载具？”</p>
+<p>由此我想到开发软件，尤其是互联网程序员，不应该单纯是建筑师，应该是一堆修船工，你可以理解是像邮轮或航母那样在海洋航行的巨轮，或者是在太空遨游的宇宙飞船，迭代互联网产品就是不断的优化，修复加固这艘大船一样。只不过船工在这艘真实大船上工作，程序员在一艘虚拟的大船上工作。</p>
+<p>本来我想写修飞机的，但飞机这种在天空飞几个小时的样子并不能很好的表达出我的意思，就算是国际航班也不行，因为它们运行的时间有点短，我想要表达的是在维修一个大型的不停歇运作的系统。我总不能告诉某个用户，说我们的软件要维护，需要暂停一段时间，你明天再来用吧，虽然有些不得已情况是会这样的。但是大部分时间是要系统是要二十四小时不停歇运作的。而程序员要做的，既要保证它能一直正常运作，又要在它运作的时候想办法更新迭代它。同样我之所以那船来做比喻，而不是拿车，是因为觉得车太小了。互联网一个大型项目一般都有几十个人去维护，这些人就像修船工人一样，在开着的船上修理此船。</p>
+<h2 id="4-赛车手"><a href="#4-赛车手" class="headerlink" title="4.赛车手"></a>4.赛车手</h2><p>我有段时间比较喜欢玩赛车类游戏，当然赛车是一个比较宽泛的概念，我比较喜欢像是拉力赛这种，还有欧洲卡车模拟，偶尔也会去真实的去开一次卡丁车，为了玩此游戏，我特意买了一个游戏方向盘，那是一个入门级的方向盘，罗技的G29。我的第一本关于赛车的书籍是PS3游戏《GT赛车》赠送的赛车说明书，不得不说日本人做事是挺细心，买个游戏都会附送一个册子教你赛车知识，这本小册子讲了很多关于赛车的知识，甚至有过弯摩擦力的受力分析。后来我又买了一本《赛车和高性能汽车驾驶完全指南》，这本书讲到了赛车驾驶技术的方方面面。赛车的难点就是过弯，你不能在弯道速度过快，否则车会因为转向不足飞出去，也不能太慢，因为这会让你落后别的车。把握住过弯的路线和路线上每个关键点的步骤很重要。简单来说，过弯要从外侧入弯，向内测切，最后再从外侧出弯。入弯前先制动，在合适的点转向入弯，然后在快出弯时踩油门加速。当然实际要远比这复杂，而且弯道也是多种多样。场地不通，过弯策略也会不同，比如像拉力赛这种摩擦力很小的地面，你要选择漂移的方式过弯，把车子甩出去。而像柏油路面这种，飘移绝对不是最好的过弯选择。</p>
+<p><img src="/img/jixiansudujiemi.jpg" alt="jixiansudujiemi"></p>
+<p>除了技巧，车子本身也很重要。从地盘悬架，再到发动机，制动，轮胎，变速箱，尾翼什么的，合理搭配这些设备，让车子的性能发挥到最优。虽然实际远比这些复杂，不过还好模拟器能模拟这一切，并进行适当的抽象，把各种琐碎的小细节进行折叠，让你可以在电脑前就能改造你的车辆，不断调试性能。</p>
+<p>类似调试赛车，调试程序性能其实也是一个程序员要面临的事，如果你想成为一个优秀的程序员，这点是你必须要经历的。你要考虑系统的响应时间，容量等性能上的问题。有时候要用空间去换取时间。合理利用资源，能够优化赛车的人必须要对赛车的各个零部件了如指掌，同样的如果你想优化程序，也要对程序从底到顶了如指掌，从底层硬件，cpu，到操作系统的进程，线程，系统调用。到web服务的调度方案，再在到JVM层的堆栈使用，最后到框架层的线程池等中间件。优化性能本身就是一个不断突破自我的过程。车手不断调试优化自己的车子，就如同程序员优化自己的程序性能一样。</p>
+<p>能够合理的优化系统，除了对系统深入理解，还要让优化的结果可量化，量化的结果就是指标。指标清晰的表达了一个系统的性能，像赛车有什么时速，重量，排气量，转向力等指标，程序系统同样有很多指标去描述某个部件的状况，比如cpu有两个常见的指标，使用率和Load负载，如果你不知道这两个指标的具体含义,把这两者混淆的话，那如果出现类似负载高，但是使用率很低的情况，你是不知道如何优化的。作为一个优化人员一定要对指标敏感，知道它的作用主要是什么，不要一看到很多不认识的指标就慌乱不安，指标这点很多行业都是相通的，要学会换个思路去理解，比如在玩《尘埃拉力赛》的时候，有一个指标叫转向饱和度，这个指标令我一直很疑惑，后来查阅相关资料才发现。其实就是转向的灵敏度，类似鼠标灵敏度一样。然后我就豁然开朗了。</p>
+<h2 id="5-侦探"><a href="#5-侦探" class="headerlink" title="5.侦探"></a>5.侦探</h2><p>前段时间我的系统出了一个cpu使用率高的问题，大概到了80~90%，我用火焰图先分析了一下cpu占用情况，并没有特别异常的函数调用在消耗cpu，而且我发现登录机器用top看cpu的时候，cpu的使用率一点都不高，这一点搞得我很是费解，因为以前的分析方式都不管用了，那个时候我非常难受，因为毫无头绪，之前也有几次类似的经历，排查问题无果卡住了挫败感很强，很影响心情。但是与以往不同的是，我并没有终止这次排查，而是先详细记录问题的时间节点和排查的一些指标的重要信息，为以后再查此问题做准备。后来同样的cpu使用率问题又一次暴露，我翻阅了之前的排查记录，尝试新的解决思路。我在登录机器用top看指标的时候，因为这次盯的时间比较长，无意中发现某个时间点，cpu的使用率会突然一高到300左右，后来仔细看了一下，刚好是每分钟整的时候飙高，这一下让我联想到了定时任务，因为有一些更新上下文的定时任务，会在每分钟统一执行。之后我打散了定时任务的执行时间来做削峰，此问题得以修复。整个排查问题的过程就像是侦探查案一样，寻找整个事件的蛛丝马迹，无头绪时又在一件不起眼的事上灵机一动。</p>
+<p>这里我特别想强调一下写排查记录的重要性，因为我发现很多刚入行的同学不喜欢写排查记录，嫌麻烦，觉得查完就完了。首先查问题这件事就像办案一样，有些问题可能就出现一下就在不浮现了，很难排查，而且随着时间推移，对这个事件会越来越模糊，比如人脑遗忘，日志过期等。所以你需要详细记录当时问题的表象和记录排查的过程，因为某一天这个问题又会浮现，那你之前的排查记录就能用得上了，而且书写记录能让你思考很多问题，甚至得到的比问题本身还要多的意外收获。我在小学的时候看过一部电视剧叫《黑白大搏斗》，这部剧警察在抓捕目标嫌疑人的时候，无意中抓捕了其它的一些罪犯嫌疑人，排查问题也类似，只要你分析的全面仔细，总会有意外收获，而且一个好的记录还能帮助到其它遇到此问题的同学，这样既总结了自己又帮助了别人。所以我时常建议大家，要像个侦探一样，写排查过程就像写案件侦察记录一样。</p>
+<p><img src="/img/kenan.png" alt="kenan"></p>
+<h2 id="6-导演"><a href="#6-导演" class="headerlink" title="6.导演"></a>6.导演</h2><p>我买过一本书是关于大导演詹姆斯卡梅隆的传记，名叫《天神下凡》，里面讲一些他拍电影的故事，讲了他从卡车司机到电影导演的传奇经历，拍电影是一个复杂的事，并不是你单纯的有想法有剧本就行，书里介绍了他拍电影的各种事，包括写剧本，拉投资，选角，设计分镜，搭建场景，制作道具，剪辑等等。虽然这些事不是说都要他一个人干，但是整体的把控都要由他负责，他要知道这些人到底在干嘛，他们到底擅长做什么，他要有明确的目标，还要有执行力。开发软件项目也是这样，如果你是项目的主要负责人，那项目的前期调研，各个环节的问题点把控，技术方案的选型，技术实现的细节。再到测试和灰度验收，甚至是做大以后的系统设计分享。都要由你来负责把控。而如果你对整个软件开发没有一个全局认识，只会天天催别人开发进度，那项目很难做大做好。因为你作为导演，自己都不清楚你要拍什么怎么拍，那其他人就更不知道要做什么了。作为项目的负责人，他不是一个单纯的开发人员，写写代码就行了，也不是一个单纯的管理者，每天问问进度正常不正常就完了，他要是一个导演，一个制作人，你要做的不仅仅是开发本身，而是再打造一个产品，写代码只是其中一个环罢了。</p>
+<p>当我读到卡梅隆为了拍《深渊》是制作了真的潜水艇，拍摄《泰坦尼克号》在摄影棚制作巨轮模型，拍《终结者》制作核弹爆炸场景的过程时，突然感到男人的浪漫是什么，不就是大家一起各自发挥特长，去合作去完成一件事么。</p>
+<p><img src="/img/zhanmusikameilong.jpg" alt="zhanmusikameilong"></p>
+<h2 id="7-作家"><a href="#7-作家" class="headerlink" title="7.作家"></a>7.作家</h2><p>程序员的工作离不开写作，比如像工作中的日报，周报，述职答辩，还有像是技术文档的输出，技术分享ppt，技术博客，甚至是技术作家出版的书。</p>
+<p>在我毕业后的多年时间里，我越来越觉得写作对一个程序员很重要。写作也是一种表达方式，和沟通类似。</p>
+<p>常见的技术文档写作，会设计整体的技术构架，前期调研的结果，技术选型，实现细节，接口和数据库，还有其它类似上线SOP，注意事项等，还有问题解答等。写作的关键的是你能把这些技术问题解释清楚，让人看懂，最好的技术文档是什么样的，是开发人员可以直接照着你这个文档写代码开发，去执行。或者说在这点上其实很多写作都是相通的，不仅仅局限于技术写作，我以前对与文学作品有偏见，认为技术写作要力求精简明了，而文学写作不是，力求华丽辞藻，但是我后来读到一些作家教人写作的书，我发现事实和我想的并不一样。他们也推崇语言精简，无歧义。比如史蒂芬金就在他的《写作这回事》里强调写作“少用被动语态和副词”。</p>
+<p>但写作也是痛苦的，有时候你可能突然有在脑海中冒出一个想法，或者早在脑中沉淀了许多事，但你真正的坐在电脑面前码字的时候，会发现自己根本不知道如何下手去写这样一件事，或者说写出来的东西乱七八糟的。一点结构都没有，毫无逻辑可言，前言不搭后语。写作本身就像是把你的大脑拿出来，像挤海绵里的水一样，去挤出你的想法，其过程痛苦到让那么多作家酗酒抽烟，甚至是抑郁。不过成长路上没有什么捷径，写作的过程虽然有些坎坷，但是看到自己写完的结果还是挺有成就感的。我现在也渐渐的也有了一些自己写作的方法论，比如多收集平时脑中所想，可能就是一个idea，或者是一个感悟，甚至是一句话，有的时候我真的会为了自己脑中突然蹦出来的一句话来写一篇博客。就像姜文在《邪不压正》里说的那样，“我就是为了吃这口醋才包的饺子。”在正式开始写作之前我会尝试用思维导图大概规划下自己要写的内容，这些内容并不都会写，有些会因为过于庞大，或者不够说服力，或者有点跑题而被我遗弃。初稿写完后，我会自己再读一遍精简下语句，检查下错别字，最后检查无误才算终稿完成。 在这点上每个人的习惯可能不一样，但习惯没有对错，只有适合自己的才是好的。</p>
+<p>所以为什么说程序员像个作家一样在写作，如果一个技术你不能写出来让别人看懂，那可能你自己也没懂。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/感悟/" rel="tag">#感悟</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/03/regular-files-with-epoll/" rel="next">为什么epoll不支持磁盘IO</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2021/08/08/what-programming-look-like/"
+     data-title="编程像什么？"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2021/08/08/what-programming-look-like/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2021/08/08/what-programming-look-like/"
+                   data-title="编程像什么？" data-url="http://www.pulpcode.cn/2021/08/08/what-programming-look-like/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">229</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">108</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-武侠"><span class="nav-number">1.</span> <span class="nav-text">1.武侠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-建筑师"><span class="nav-number">2.</span> <span class="nav-text">2.建筑师</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-修船工"><span class="nav-number">3.</span> <span class="nav-text">3.修船工</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-赛车手"><span class="nav-number">4.</span> <span class="nav-text">4.赛车手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-侦探"><span class="nav-number">5.</span> <span class="nav-text">5.侦探</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-导演"><span class="nav-number">6.</span> <span class="nav-text">6.导演</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-作家"><span class="nav-number">7.</span> <span class="nav-text">7.作家</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
