@@ -174,6 +174,99 @@
           
           
             
+              <a class="post-title-link" href="/2015/06/26/python-rsa/" itemprop="url">
+                python中支持rsa安装
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-06-26T00:00:00+08:00" content="2015-06-26">
+            2015-06-26
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/06/26/python-rsa/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/26/python-rsa/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>python自带的rsa库不能够适用于生产环境，必须安装M2Crypto库。</p>
+<p>但M2Crypto的安装并不简单，需要一些库的依赖。</p>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h4 id="swig下载："><a href="#swig下载：" class="headerlink" title="swig下载："></a>swig下载：</h4><p>下载版本：SWIG Version 3.0.4(注意这里必须是3.0.4,否则会报错)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">wget http://jaist.dl.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz</div><div class="line">tar zxvf swig-3.0.4.tar.gz</div><div class="line"><span class="built_in">cd</span> swig-3.0.4.tar.gz</div><div class="line">./configure</div></pre></td></tr></table></figure>
+<p>如果出现以下错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">configure: error:</div><div class="line">Cannot find pcre-config script from PCRE (Perl Compatible Regular Expressions)</div><div class="line">library package. This dependency is needed <span class="keyword">for</span> configure to complete…</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/06/26/python-rsa/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/06/22/digital-signature-for-how-to-study-technology/" itemprop="url">
                 从一次数字签名的学习中总结做技术的一些思路
               </a>
@@ -722,100 +815,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/05/15/some-time-error-processing/" itemprop="url">
-                如何处理错误
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-05-15T00:00:00+08:00" content="2015-05-15">
-            2015-05-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/05/15/some-time-error-processing/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/15/some-time-error-processing/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>很长一段时间，我一直就纠结，什么时候应该使用if处理错误，什么时候应该使用try catch处理错误，甚至是很少有人用到的Assert，我知道大多数程序员仅仅是乱用而已。</p>
-<h2 id="区分"><a href="#区分" class="headerlink" title="区分"></a>区分</h2><p>首先我们要理解，if，assert，try分别擅长处理那些错误。类似写文章一样，不要一“好”到底，一“很”到底，要学会<strong>用语言去表达一种思想。</strong></p>
-<p>不会终止程序逻辑运行的归类为错误，会终止程序逻辑运行的归类为异常。</p>
-<p>因为错误不会终止逻辑运行，所以错误是逻辑的一部分。而异常就是那些不应该出现在业务逻辑中的东西。</p>
-<p>首先要理解if本身是用来处理逻辑跳转的，其本身并不能做什么有关错误处理的事情。就一个函数而言，也就是在逻辑判断的时候返回一个值，或者直接return。而这只能算逻辑处理的一部分，最多你可以将其区分为正确的逻辑和错误的逻辑。</p>
-<p>所以我觉得如果你写出这样的代码，绝对不是一个好做法:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(a == null)&#123;</div><div class="line">    prinf(<span class="string">"程序出现错误!"</span>)</div><div class="line">    <span class="keyword">return</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/05/15/some-time-error-processing/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -854,21 +853,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">229</span>
+              <span class="site-state-item-count">230</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">108</span>
+              <span class="site-state-item-count">109</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
