@@ -174,6 +174,97 @@
           
           
             
+              <a class="post-title-link" href="/2017/09/17/simple-blood/" itemprop="url">
+                血迷宫
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-09-17T00:00:00+08:00" content="2017-09-17">
+            2017-09-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/电影/" itemprop="url" rel="index">
+                  <span itemprop="name">电影</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/09/17/simple-blood/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/17/simple-blood/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>这部电影我在去年的时候看过一遍，最近又重温了一遍，才发现它的精妙之处。</p>
+<p>总的来说科恩兄弟的处女作就定义了自己的导演风格和基调。比如在开场那段德州风景中侦探的独白和《老无所依》很类似。</p>
+<p>其实我看的第一部科恩兄弟的电影应该是《老无所依》，这部电影可以说是刷新了我对电影的认知，因为之前无论是看，《阿甘正传》，《肖申克的救赎》，《教父》，好像都是从故事中能得到一些道理，做一些总结和概括的话。但是对于科恩兄弟的电影，看完之后你就忍不住想问自己，这电影到底讲了个啥？或者说到底想表达啥？总感觉自己没看懂。很多人强行解释说，科恩兄弟想表达生活的无力感和不确定感，这还是在用旧的思路来解释。其实如果你看多了科恩兄弟的电影，就会明白，科恩兄弟不想给你什么启发或者是什么道理，你从这部电影得到了什么启发是你自己的事，电影本身就是想给你讲个好故事而已。</p>
+<p><img src="/img/simple-blood.png" alt="simple-blood"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/17/simple-blood/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/08/27/where-the-hell-is-tyrion-Lannister-smart/" itemprop="url">
                 小恶魔提里昂兰尼斯特到底聪明在哪？
               </a>
@@ -714,98 +805,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/07/11/poling-and-interrupts/" itemprop="url">
-                轮询和中断
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-07-11T00:00:00+08:00" content="2017-07-11">
-            2017-07-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/07/11/poling-and-interrupts/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/11/poling-and-interrupts/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>有一个经典的交互场景，A让B做一件事情，然后B做完了再告诉A。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BResponse  bResponse = unBlockCallB();</div></pre></td></tr></table></figure>
-<p>这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是，B在做完之后，如何通知给A？</p>
-<h2 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h2><p>一种方式是A其实专门就有一部分代码轮询这个返回结果，另一部分专门做别的事情：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">unBlockCallB();</div><div class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</div><div class="line">    <span class="keyword">boolean</span> ok = checkBResponse();</div><div class="line">    <span class="keyword">if</span>(ok) &#123;</div><div class="line">          dosomethingForBResponse();</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">          sleep();</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/07/11/poling-and-interrupts/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -844,21 +843,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">230</span>
+              <span class="site-state-item-count">231</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">110</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

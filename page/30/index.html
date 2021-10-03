@@ -174,6 +174,94 @@
           
           
             
+              <a class="post-title-link" href="/2014/08/11/why-html-commenting/" itemprop="url">
+                html的代码注释为什么只能是这个样子的？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-08-11T00:00:00+08:00" content="2014-08-11">
+            2014-08-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/08/11/why-html-commenting/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/11/why-html-commenting/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>早些年在初学html的时候，经常用类C的注释语法来注释html代码，比如<code>/**/</code> 和 <code>//</code>。<br>当然这些都是不能通过的，正确的方式只能是：</p>
+<pre><code>&lt;!-- This is a comment --&gt;
+</code></pre><p>然而html不是不能包含这些类C的注释，你可以在html的源码中，那些直接内嵌css和javascript的地方看见这些注释。<br>之所以html不支持这种写法，是因为DOM(对象文档模型)的原因。 html必须符合DOM的要求,由节点来构成一棵Dom树。<br>它的节点都是<code>&lt;x&gt;</code>这样的元素构成的，只不过有的节点内部不会在包含其它元素，比如<code>&lt;hr&gt;</code>,而有的节点是要包含其它节点的。比如<code>&lt;a&gt; ... &lt;/a&gt;</code></p>
+<p>即使是注释，也要符合DOM的要求，所以html代码的注释只能是这个样子了:</p>
+<pre><code>&lt;!-- This is a comment --&gt;
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/08/04/write-code-if-statement/" itemprop="url">
                 关于If的几种写法
               </a>
@@ -705,91 +793,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2013/11/03/mythinkpadx230i/" itemprop="url">
-                MyThinkPadx230i
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2013-11-03T00:00:00+08:00" content="2013-11-03">
-            2013-11-03
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2013/11/03/mythinkpadx230i/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2013/11/03/mythinkpadx230i/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>11月2号在京东买的小黑，11月3号就到了，虽然质感和重量都令我十分满意，但是屏幕确实有点小。<br>在不要说什么买回来的笔记本要充电3次，每次十二小时了，这都什么年代了，你是不是还要教我，开机的时候先开显示器再开主机箱？</p>
-<p>一开始就打算给我的小黑装双系统，windows8+ubuntu12.04。速速的用U盘做好启动盘后，发现预装windows8的thinkpad，安装linux 并不是那么简单的。<br>因为有 UEFI这个讨厌的东西。<br>这里有一篇关于如何在windows8上安装linux的文章，很不错。<a href="www.ruanyifeng.com/blog/2013/01/secure_boot.html">反Secure Boot垄断</a><br>我觉得要玩好thinkpad, 先要玩好它的bios。反正我现在双启动是没问题了。接下来就要深入玩硬件，bios，win8，ubuntu..</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -828,21 +831,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">230</span>
+              <span class="site-state-item-count">231</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">110</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

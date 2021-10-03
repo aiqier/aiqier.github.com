@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2015/05/21/insert-json-to-mysql-with-python/" itemprop="url">
+                使用python将json存入数据库
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-05-21T00:00:00+08:00" content="2015-05-21">
+            2015-05-21
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/21/insert-json-to-mysql-with-python/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/21/insert-json-to-mysql-with-python/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h4 id="任务描述："><a href="#任务描述：" class="headerlink" title="任务描述："></a>任务描述：</h4><p>需要将python的json字符串存到数据库中，还要保证读取出来后，能解析成字典，中间不会发生任何转义或者改变。</p>
+<p>而对于pickle生成的序列化对象，操作过程是一样的。</p>
+<p>使用到的python库有 json, MySQLdb</p>
+<h4 id="要点1"><a href="#要点1" class="headerlink" title="要点1:"></a>要点1:</h4><p>我们要保证，存储格式json的类型是BLOB类型的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">`json` blob NOT NULL  <span class="keyword">COMMENT</span> <span class="string">'json'</span>,</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/05/21/insert-json-to-mysql-with-python/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/05/15/some-time-error-processing/" itemprop="url">
                 如何处理错误
               </a>
@@ -716,98 +808,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/04/14/pub-key-private-key/" itemprop="url">
-                非对称加密
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-04-14T00:00:00+08:00" content="2015-04-14">
-            2015-04-14
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/04/14/pub-key-private-key/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/04/14/pub-key-private-key/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>首先明确一点，此博客讨论的非对称秘钥只限于RSA，而非DSA。</p>
-<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>如果我们不谈公钥和私钥，仅仅谈非对称秘钥：假如你用一个算法，生成了两把key，key1和key2。那么key1加密的数据，只有key2能解开，而key2加密的数据只有key1能解开。</p>
-<p>当然我思考过如果把公钥当私钥使用，私钥当公钥使用会怎样的问题，讨论请看这里:<a href="http://www.v2ex.com/t/200992#reply5">传送门</a></p>
-<p>简单的来说，通过私钥推算出公钥是非常容易的。</p>
-<h4 id="公钥加密，私钥解密："><a href="#公钥加密，私钥解密：" class="headerlink" title="公钥加密，私钥解密："></a>公钥加密，私钥解密：</h4><p>此处是为了<strong>安全性</strong>，比如对称加密，那就只有一种钥匙，那么传播传播着，大家就都知道了。而如果是非对称加密，我将自己的公钥公开，而只有私钥才能打开，这样我维护好自己的私钥不让别人知道，就一定可以保证数据的安全性。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/04/14/pub-key-private-key/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -846,21 +846,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">230</span>
+              <span class="site-state-item-count">231</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">110</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
