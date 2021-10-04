@@ -1,0 +1,708 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="搅碎,暴力,拼接,吞咽" />
+
+
+
+  <meta name="keywords" content="linux,指标,翻译," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="提示，文章中有引用英文原文，如果你使用了浏览器自动翻译，会让文章读起来怪怪的。
+cpu load是cpu比较关键的一个指标，当你的系统cpu load 高问题时，如果你去网上查阅资料一定会查到类似“cpu load 是统计一段时间内正在使用和等待使用CPU的平均任务数”的指标，当说到等待cpu时，更明确的解释是“处于不可中断睡眠的(D状态)的任务”。man的解释是：
+
+The load avera">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpu load中所说的不可中断状态到底是啥？">
+<meta property="og:url" content="http://www.pulpcode.cn/2021/10/04/what-is-uninterrupte-in-cpu-load/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="提示，文章中有引用英文原文，如果你使用了浏览器自动翻译，会让文章读起来怪怪的。
+cpu load是cpu比较关键的一个指标，当你的系统cpu load 高问题时，如果你去网上查阅资料一定会查到类似“cpu load 是统计一段时间内正在使用和等待使用CPU的平均任务数”的指标，当说到等待cpu时，更明确的解释是“处于不可中断睡眠的(D状态)的任务”。man的解释是：
+
+The load avera">
+<meta property="og:updated_time" content="2021-10-04T12:13:40.652Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpu load中所说的不可中断状态到底是啥？">
+<meta name="twitter:description" content="提示，文章中有引用英文原文，如果你使用了浏览器自动翻译，会让文章读起来怪怪的。
+cpu load是cpu比较关键的一个指标，当你的系统cpu load 高问题时，如果你去网上查阅资料一定会查到类似“cpu load 是统计一段时间内正在使用和等待使用CPU的平均任务数”的指标，当说到等待cpu时，更明确的解释是“处于不可中断睡眠的(D状态)的任务”。man的解释是：
+
+The load avera">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> cpu load中所说的不可中断状态到底是啥？ | Pulpcode </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Pulpcode</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              cpu load中所说的不可中断状态到底是啥？
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2021-10-04T00:00:00+08:00" content="2021-10-04">
+            2021-10-04
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/操作系统/" itemprop="url" rel="index">
+                  <span itemprop="name">操作系统</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2021/10/04/what-is-uninterrupte-in-cpu-load/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2021/10/04/what-is-uninterrupte-in-cpu-load/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>提示，文章中有引用英文原文，如果你使用了浏览器自动翻译，会让文章读起来怪怪的。</p>
+<p>cpu load是cpu比较关键的一个指标，当你的系统cpu load 高问题时，如果你去网上查阅资料一定会查到类似“cpu load 是统计一段时间内正在使用和等待使用CPU的平均任务数”的指标，当说到等待cpu时，更明确的解释是“处于不可中断睡眠的(D状态)的任务<br>”。man的解释是：</p>
+<blockquote>
+<p>The load average is calculated as the average number of runnable or running tasks (R state), and the number of tasks in uninterruptible sleep (D state) over the specified interval.</p>
+</blockquote>
+<p>所以看上去当你的系统出现cpu load高，但是cpu使用率却很低的时候，去找到这些不可中断状态就成了唯一线索了。</p>
+<p>但问题是什么是不可中断状态，如何去找它们，我在网上搜了一些中文资料，发现大部分博客是截取的书中内容，或者相互抄袭，还有甚至有明显错误，比如有些博客让你用top命令找D状态，但真实情况是D状态存在的瞬间那么短，你怎么可能用top命令找到D状态呢？还有些博客说不可中断状态就是等待IO，那IO到底是磁盘IO还是网络IO，再说IO还有很多阶段啊，难道我发起个阻塞调用这段时间会一直是不可中断状态？找了半天没有一个让我一下明白到底啥是不可中断状态的。所以我打算在外网找一些答案，经过了长时间的查找，还是有所收获的，在这里分享出来。</p>
+<a id="more"></a>
+<h4 id="为什么要有不可中断状态？"><a href="#为什么要有不可中断状态？" class="headerlink" title="为什么要有不可中断状态？"></a>为什么要有不可中断状态？</h4><p>简单来说是为了让内核的某些处理流程不能被打断。我在stackoverflow的一个<a href="https://stackoverflow.com/questions/223644/what-is-an-uninterruptible-process" target="_blank" rel="external">帖子</a>上找到了一些答案，尝试翻译一下。</p>
+<blockquote>
+<p>When a process is on user mode, it can be interrupted at any time (switching to kernel mode). When the kernel returns to user mode, it checks if there are any signals pending (including the ones which are used to kill the process, such as SIGTERM and SIGKILL). This means a process can be killed only on return to user mode.</p>
+</blockquote>
+<p>处于用户态的进程，可以随时中断（切换到内核态）。当从内核态返回到用户态时，它会检查是否有任何挂起的信号（包括用于终止进程的信号，如SIGTERM和SIGKILL）。这意味着只能在返回到用户态时终止进程。</p>
+<blockquote>
+<p>The reason a process cannot be killed in kernel mode is that it could potentially corrupt the kernel structures used by all the other processes in the same machine (the same way killing a thread can potentially corrupt data structures used by other threads in the same process).<br>无法在内核态下终止进程的原因是，它可能会损坏同一台机器中所有其他进程使用的内核结构（同样终止线程可能会损坏同一进程中其他线程使用的数据结构）。</p>
+<p>When the kernel needs to do something which could take a long time (waiting on a pipe written by another process or waiting for the hardware to do something, for instance), it sleeps by marking itself as sleeping and calling the scheduler to switch to another process (if there is no non-sleeping process, it switches to a “dummy” process which tells the cpu to slow down a bit and sits in a loop — the idle loop).</p>
+</blockquote>
+<p>当内核需要做一些可能需要很长时间的事情时（比如等待另一个进程写管道或等待硬件做一些事情），它将自己标记为sleep状态，这是操作系统的调度程序会切换到另一个进程。</p>
+<blockquote>
+<p>If a signal is sent to a sleeping process, it has to be woken up before it will return to user space and thus process the pending signal. Here we have the difference between the two main types of sleep:</p>
+</blockquote>
+<p>如果一个信号被发送到一个正在sleep的进程， 那么它将被唤醒，然后返回用户空间并处理信号。这里我们有两种主要sleep类型的区别：</p>
+<blockquote>
+<p>TASK_INTERRUPTIBLE, the interruptible sleep. If a task is marked with this flag, it is sleeping, but can be woken by signals. This means the code which marked the task as sleeping is expecting a possible signal, and after it wakes up will check for it and return from the system call. After the signal is handled, the system call can potentially be automatically restarted (and I won’t go into details on how that works).</p>
+</blockquote>
+<p>任务可中断，即可中断的sleep。如果任务有此标志，则表示此任务即使处于sleep状态，也可以通过信号被唤醒。这意味着处于sleep状态的任务，需要一个将它唤醒的信号，在任务醒来后，将检查信号并从系统调用返回。处理完信号后，系统调用可能会自动重新启动（我在这里没有写详细细节）。</p>
+<blockquote>
+<p>TASK_UNINTERRUPTIBLE, the uninterruptible sleep. If a task is marked with this flag, it is not expecting to be woken up by anything other than whatever it is waiting for, either because it cannot easily be restarted, or because programs are expecting the system call to be atomic. This can also be used for sleeps known to be very short.</p>
+</blockquote>
+<p>任务不可中断，即不可中断的sleep。如果一个任务有此标志，那么它就不希望被除了它正在等待之外的任何东西唤醒，这可能是因为它不能容易地重新启动，或者是因为程序希望系统调用是原子的。这也可以用于sleep时间很短的情况。</p>
+<h4 id="那么是如何让这些特殊的代码不可中断的？"><a href="#那么是如何让这些特殊的代码不可中断的？" class="headerlink" title="那么是如何让这些特殊的代码不可中断的？"></a>那么是如何让这些特殊的代码不可中断的？</h4><p>答案是内核中的一些代码被标记为不可中断的，主要是因为代码必须遵守严格的定时（对设备进行应答），或者因为它正在执行不允许干扰的操作。<br>比如像是这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">    /* wait to be given the lock */</div><div class="line">    while (true) &#123;</div><div class="line">        set_task_state(tsk, TASK_UNINTERRUPTIBLE);</div><div class="line">        if (!waiter.task)</div><div class="line">            break;</div><div class="line">        schedule();</div><div class="line">    &#125;</div><div class="line">`</div></pre></td></tr></table></figure>
+<h4 id="那么所谓的等待IO导致不可中断状态的说法是否合理呢？"><a href="#那么所谓的等待IO导致不可中断状态的说法是否合理呢？" class="headerlink" title="那么所谓的等待IO导致不可中断状态的说法是否合理呢？"></a>那么所谓的等待IO导致不可中断状态的说法是否合理呢？</h4><p>明显不合理，我举个例子，我发起一个socket阻塞调用，然后一直在那里等着，你觉得这会是不可中断状态么，这种明显是可以中断的。<br>所以我觉得这个IO的说法，应该和我之前博客讨论的iowait指标类似，是内核调度I/O，它理论上可以运行，但不能运行，因为它需要的一些数据还不存在，要硬扯到网络的话，那应该是NFS。我在其它一些文章中看到，当时这个不可中断状态的D，就是来源于Disk Wait的简写。</p>
+<p>但是也不能说网络io不会引起不可中断状态，理论上你执行到某个底层驱动的时候，还是会进入不可中断状态的，但这也不能简单粗暴的归类到网络io导致不可中断状态里。</p>
+<p>所以如果真的要找D状态，还是多从磁盘读写的角度考虑，比如日志读写或者swap，堆外内存，甚至想到NFS（不过你大概率不会使用这种技术）。</p>
+<h4 id="那么为啥不可中断状态要算在cpu-load里？"><a href="#那么为啥不可中断状态要算在cpu-load里？" class="headerlink" title="那么为啥不可中断状态要算在cpu load里？"></a>那么为啥不可中断状态要算在cpu load里？</h4><p>我在Brendan Gregg大神关于不可中断io的博客中找到了<a href="https://www.brendangregg.com/blog/2017-08-08/linux-load-averages.html" target="_blank" rel="external">答案</a>。这篇博客介绍了cpu load的历史。</p>
+<p>在1993的一封邮件中，Linux的设计者觉得这些看似短暂的uninterruptible sleep也要算在runnable中，他举了个例子，如果你把磁盘从快的换成慢的，然后你的系统负载一定是会下降的，但是你在用cpu load的统计方式就很不直观。所以加入了不可中断io的统计，这个指标其实已经在此时从cpu负载变成系统负载了。</p>
+<p>然而现在的负载统计里也不仅仅是只考虑磁盘IO了，还有其它一些不可中断锁，现在的linux代码已经有很多不可中断的标记了：“in Linux 4.12, there are nearly 400 codepaths that set TASK_UNINTERRUPTIBLE”。</p>
+<p>这篇博客里，作者还用火焰图拆解出了一份“TASK_UNINTERRUPTIBLE“的代码。而且作者也明确指出，在Linux里load averages这个指标，就是指CPU, disk和uninterruptible locks：</p>
+<blockquote>
+<p>On Linux, load averages are (or try to be) “system load averages”, for the system as a whole, measuring the number of threads that are working and waiting to work (CPU, disk, uninterruptible locks). Put differently, it measures the number of threads that aren’t completely idle. Advantage: includes demand for different resources.</p>
+</blockquote>
+<p>作者也建议当你发现cpu load有问题，不好确定具体原因时，用其它一些更精细的指令去排查问题原因。不过作者也总结到load averages依然很好用：</p>
+<blockquote>
+<p>The use of the uninterruptible state has since grown in the Linux kernel, and nowadays includes uninterruptible lock primitives. If the load average is a measure of demand in terms of running and waiting threads (and not strictly threads wanting hardware resources), then they are still working the way we want them to.</p>
+</blockquote>
+<p>在linux内核的发展中，越来越的代码使用了不可中断状态，现在还包括了锁原语，如果要度量系统中正在执行和等待执行的线程（不是严格意义的需要硬件资源），那它依然可以很好的胜任工作。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/指标/" rel="tag">#指标</a>
+          
+            <a href="/tags/翻译/" rel="tag">#翻译</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/01/fix-mac/" rel="next">记一次mac维修</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2021/10/04/what-is-uninterrupte-in-cpu-load/"
+     data-title="cpu load中所说的不可中断状态到底是啥？"
+     data-content=""
+     data-url="http://www.pulpcode.cn/2021/10/04/what-is-uninterrupte-in-cpu-load/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2021/10/04/what-is-uninterrupte-in-cpu-load/"
+                   data-title="cpu load中所说的不可中断状态到底是啥？" data-url="http://www.pulpcode.cn/2021/10/04/what-is-uninterrupte-in-cpu-load/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Aiqier" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Aiqier</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">232</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要有不可中断状态？"><span class="nav-number">1.</span> <span class="nav-text">为什么要有不可中断状态？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#那么是如何让这些特殊的代码不可中断的？"><span class="nav-number">2.</span> <span class="nav-text">那么是如何让这些特殊的代码不可中断的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#那么所谓的等待IO导致不可中断状态的说法是否合理呢？"><span class="nav-number">3.</span> <span class="nav-text">那么所谓的等待IO导致不可中断状态的说法是否合理呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#那么为啥不可中断状态要算在cpu-load里？"><span class="nav-number">4.</span> <span class="nav-text">那么为啥不可中断状态要算在cpu load里？</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"aiqier"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+    
+  
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
