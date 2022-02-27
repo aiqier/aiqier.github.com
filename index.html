@@ -174,6 +174,98 @@
           
           
             
+              <a class="post-title-link" href="/2022/02/27/why-redis-use-skiplist-not-red-black-tree/" itemprop="url">
+                redis的zset为什么使用跳跃表而非红黑树？
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2022-02-27T00:00:00+08:00" content="2022-02-27">
+            2022-02-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2022/02/27/why-redis-use-skiplist-not-red-black-tree/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2022/02/27/why-redis-use-skiplist-not-red-black-tree/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>红黑树和跳跃表都是高效的数据结构，但redis的zset底层实际使用了跳跃表而非红黑树是为什么？</p>
+<p>这篇博客的内容来自于我在公司分享的一部分内容，其目的是探讨如何对比两种数据结构？背后的原理是技术选型的思路？</p>
+<p>当然要说明一点，要说zset是跳表也不完全合适，使用的其实是改进后的跳表，比如允许key重复。</p>
+<p>那么如何对比两种数据结构？首先要看他们支持哪些操作，这些操作的复杂度是多少？</p>
+<p>那对于大部分数据结构而言，它们要支持的操作无非就是增删改查，分的更细一些就是单个查找和范围查找，找最大最小之类的。那么接下来我们就分别对比下这两种数据结构，对应操作的时间复杂度是多少。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2022/02/27/why-redis-use-skiplist-not-red-black-tree/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2021/10/04/what-is-uninterrupte-in-cpu-load/" itemprop="url">
                 cpu load中所说的不可中断状态到底是啥？
               </a>
@@ -711,98 +803,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2021/01/23/30-years-old/" itemprop="url">
-                写在三十岁
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2021-01-23T00:00:00+08:00" content="2021-01-23">
-            2021-01-23
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/生活/" itemprop="url" rel="index">
-                  <span itemprop="name">生活</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2021/01/23/30-years-old/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2021/01/23/30-years-old/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="故事"><a href="#故事" class="headerlink" title="故事"></a>故事</h2><p>在未来的某天，人类经历了第三次世界大战之后，赖以生存的家园被核武器毁的面目全非，只有小部分幸存者在还没有被辐射完全侵蚀的废墟中苟延残喘。靠着战前遗留下来的物资生存。</p>
-<p>这时画面中一辆破旧的皮卡从远处驶来，一个看上去三四十岁的男人开着这辆皮卡，男人看着身体结实，留着胡须，脸上还有一些伤疤，皮卡后面拉着各种物资，像是食物，药品，衣物，汽油，铲子工具之类的。皮卡上有个磁带机，放的是那种你根本不想听的七八十年代的迪斯科。但是在这个末日下，你又能有什么选择呢，有盘能用的磁带已经是万幸了，真正让你头疼的是怎么去寻找食物，怎么从别的废弃车辆中搞点汽油，还有怎样不会被自己的同类当作猎物杀掉。</p>
-<p>车行驶了一段时间，男人看到了远处几个身影在招手，可能是求救，也可能是个陷阱，男人拿起了挂在车窗旁的望远镜，发现是确实是几个人招手求救。</p>
-<p>男人开车过去，看到四个女人站在那里，穿着破旧的衣服。这种场面男人应该见过很多了，所以很冷静的点起一根烟说到，“抱歉我的车拉的东西太多，只能再拉一个人走。”</p>
-<p>第一个女人先开口说话了，那个女的身材高挑，即使衣服破旧，没有化妆，但依然可以看出很有姿色，在这种生活状态下依然留长发。“我曾是一个时装杂志的模特，拿过很多次选美冠军，曾经追我的男人排成队，上学时班上每个男生都表白过我。很明显你应该带我走的。”</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2021/01/23/30-years-old/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -841,7 +841,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">232</span>
+              <span class="site-state-item-count">233</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -889,7 +889,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>

@@ -174,6 +174,94 @@
           
           
             
+              <a class="post-title-link" href="/2017/06/04/strange-demand/" itemprop="url">
+                奇怪的需求
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-04T00:00:00+08:00" content="2017-06-04">
+            2017-06-04
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/思考/" itemprop="url" rel="index">
+                  <span itemprop="name">思考</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/06/04/strange-demand/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/04/strange-demand/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="洗牌"><a href="#洗牌" class="headerlink" title="洗牌"></a>洗牌</h2><p>上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而不是洗牌后让你重新来过，让你的努力最后都付诸东流。虽然早些年，毛爷爷打土豪分田地后，让大家都众生平等了。可惜改革开放后，第一批先富的人，变得越来越富，中国又慢慢的分层了。那么你幻想过一种洗牌么？那要看你现在是顺风局还是逆风局了。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/04/strange-demand/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/05/29/learn-greek-mythology/" itemprop="url">
                 性价比学习希腊神话
               </a>
@@ -709,99 +797,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/04/09/how-to-write-a-wx-robot/" itemprop="url">
-                如何实现一个微信机器人
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-04-09T00:00:00+08:00" content="2017-04-09">
-            2017-04-09
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/04/09/how-to-write-a-wx-robot/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/09/how-to-write-a-wx-robot/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>之前公司有一个需求，需要搭建一个微信机器人，查阅了相关资料，整理了一些Demo之后，我大概实现了一个python的微信机器人聊天程序，这里就把经验拿出来分享下。</p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>首先你要明白，微信并没有给你提供一套接口，一套文档，让你开发聊天机器人。如果你想实现一个机器人，能够被拉到群里，与群里的人聊天，就必须用点hack的办法。</p>
-<p>这个原理就是web版本的微信，想想你登录web版的微信，在浏览器输入地址后，先会给你返回一个二维码。然后你用你的手机扫描了此二维码，接着就登录成功了。</p>
-<p>这个扫二维码登录的过程，其实就是一个授权的过程，即你授权给web界面，使得可以通过web页面，用http的方式与微信服务器建立交互。所以微信机器人的实现方式就是基于此。你创建一个账号，然后这个账号就是微信机器人，你通过扫码的方式登录，使得可以通过http的方式与微信服务器建立交互。就这样，我们的服务托管了你的机器人账户，从而与群里的人进行交流，解析他们的聊天记录，匹配关键字，生成相应的回复信息。</p>
-<h2 id="交互流程"><a href="#交互流程" class="headerlink" title="交互流程"></a>交互流程</h2><p>首先想想和微信服务器建立交互的时序图。</p>
-<p><img src="/img/weixin01.png" alt="weixin01"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/04/09/how-to-write-a-wx-robot/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -840,7 +835,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">232</span>
+              <span class="site-state-item-count">233</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -888,7 +883,7 @@
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
