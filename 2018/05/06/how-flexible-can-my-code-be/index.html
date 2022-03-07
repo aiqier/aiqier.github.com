@@ -50,7 +50,7 @@
 某天，我刚午睡醒来，准备给自己做一杯手冲咖啡，拿着手冲壶走向饮水机的时候，无意中看到两个开发对着屏幕在那里指指点点的，仿佛在说着什么，只见一个说的头头是道，一个听得津津有味，我当时觉得他们肯定在谈论什么有意思的事情，所以凑过去打算听听，结果他们谈论的事情令我醍醐灌顶，可以说让我对编程有了新的思路，所以这里我尝试将他们的对话总结出来，分享给你们。
 哦对了，他俩的名">
 <meta property="og:image" content="http://www.pulpcode.cn/img/lisp.jpg">
-<meta property="og:updated_time" content="2018-05-07T03:27:37.721Z">
+<meta property="og:updated_time" content="2022-03-07T15:15:18.450Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我的代码能有多灵活?">
 <meta name="twitter:description" content="本故事纯属虚构，如有雷同，纯属巧合
@@ -233,129 +233,129 @@
       
         <span itemprop="articleBody"><p>本故事纯属虚构，如有雷同，纯属巧合</p>
 <p>某天，我刚午睡醒来，准备给自己做一杯手冲咖啡，拿着手冲壶走向饮水机的时候，无意中看到两个开发对着屏幕在那里指指点点的，仿佛在说着什么，只见一个说的头头是道，一个听得津津有味，我当时觉得他们肯定在谈论什么有意思的事情，所以凑过去打算听听，结果他们谈论的事情令我醍醐灌顶，可以说让我对编程有了新的思路，所以这里我尝试将他们的对话总结出来，分享给你们。</p>
-<p>哦对了，他俩的名字我不能告诉你们，本来我想用鲍勃(Bob)和爱丽丝(Alice)来代指他俩的，但是又觉得这个梗早已经被编程界给玩烂了。所以我打算给他俩起名叫老铁和小铁。</p>
-<p>小铁：“其实我一直想尝试让自己的代码变得灵活起来，比如把写死的东西给改成配置，但是我并不能满足于此，因为我总觉得自己代码还不够灵活，你能在给我一些思路么？”</p>
-<p>老铁：“哈，说道思路，我确实可以给你提供一些，不过我尽量不会给你讲一些具体的例子，因为授人与鱼不如授人于渔，所以我会给你提供一些编程思想上的东西，帮你开阔视野。”</p>
-<p>小铁：“好的，我洗耳恭听。”</p>
-<p>老铁：“首先我们先来思考下，什么是所谓的灵活性。不说那些课本上比较官方的词汇，你所理解的代码灵活是什么样的？”</p>
-<p>小铁：“最起码不用我每次有个什么新需求，都要让我改来改去的上线。”</p>
-<p>老铁：“但是有的需求你是不得不上线。”</p>
-<p>小铁：“对，这我知道，但是对于有些需求，其实是有些重复的东西，提取出来，然后在调整的时候，修改下配置就行了。”</p>
-<p>老铁：“恩，很好，你提到你可以把某些共性的东西，提取出来，所以我们先来看你在初学代码时候的第一个例子。让你从1打印到10，你最开始会写出这样的代码.”</p>
+<p>哦对了，他俩的名字我不能告诉你们，本来我想用鲍勃(Bob)和爱丽丝(Alice)来代指他俩的，但是又觉得这个梗早已经被编程界给玩烂了。所以我打算给他俩起名叫Foo和Bar。</p>
+<p>Bar：“其实我一直想尝试让自己的代码变得灵活起来，比如把写死的东西给改成配置，但是我并不能满足于此，因为我总觉得自己代码还不够灵活，你能在给我一些思路么？”</p>
+<p>Foo：“哈，说道思路，我确实可以给你提供一些，不过我尽量不会给你讲一些具体的例子，因为授人与鱼不如授人于渔，所以我会给你提供一些编程思想上的东西，帮你开阔视野。”</p>
+<p>Bar：“好的，我洗耳恭听。”</p>
+<p>Foo：“首先我们先来思考下，什么是所谓的灵活性。不说那些课本上比较官方的词汇，你所理解的代码灵活是什么样的？”</p>
+<p>Bar：“最起码不用我每次有个什么新需求，都要让我改来改去的上线。”</p>
+<p>Foo：“但是有的需求你是不得不上线。”</p>
+<p>Bar：“对，这我知道，但是对于有些需求，其实是有些重复的东西，提取出来，然后在调整的时候，修改下配置就行了。”</p>
+<p>Foo：“恩，很好，你提到你可以把某些共性的东西，提取出来，所以我们先来看你在初学代码时候的第一个例子。让你从1打印到10，你最开始会写出这样的代码.”</p>
 <a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">print 1</div><div class="line">print 2</div><div class="line">print 3</div><div class="line">print 4</div><div class="line">print 5</div><div class="line">print 6</div><div class="line">print 7</div><div class="line">print 8</div><div class="line">print 9</div><div class="line">print 10</div></pre></td></tr></table></figure>
-<p>老铁：不过这种代码看上去是有点蠢，自从你学会了for循环之后，你尝试将共性的东西，抽象成为了一个函数，然后用一个for循环来调用这个函数:</p>
+<p>Foo：不过这种代码看上去是有点蠢，自从你学会了for循环之后，你尝试将共性的东西，抽象成为了一个函数，然后用一个for循环来调用这个函数:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def p(i):</div><div class="line">    print i</div><div class="line">for i in range(1, 11):</div><div class="line">    p(i)</div></pre></td></tr></table></figure>
-<p>老铁：“但是为什么能这样做呢？”</p>
-<p>小铁：“因为这些操作有某种共性，然后可以抽象出来。”</p>
-<p>老铁：“但有个问题，你没有将这些可抽象的部分最大化的利用，也就是说还是有重复，有浪费，有优化的空间。”</p>
-<p>小铁：“什么意思？”</p>
-<p>老铁：“我再来问你，一个函数有什么？”</p>
-<p>小铁：“有输入和输出，而且有的函数还会带有副作用，比如修改某个全局变量，或者操作磁盘，操作内存，操作终端什么的。”</p>
-<p>老铁：“对，所以在上面那个例子中，这些函数的输入和输出并没有被利用，所有的自增变量都是从循环产生的。”</p>
+<p>Foo：“但是为什么能这样做呢？”</p>
+<p>Bar：“因为这些操作有某种共性，然后可以抽象出来。”</p>
+<p>Foo：“但有个问题，你没有将这些可抽象的部分最大化的利用，也就是说还是有重复，有浪费，有优化的空间。”</p>
+<p>Bar：“什么意思？”</p>
+<p>Foo：“我再来问你，一个函数有什么？”</p>
+<p>Bar：“有输入和输出，而且有的函数还会带有副作用，比如修改某个全局变量，或者操作磁盘，操作内存，操作终端什么的。”</p>
+<p>Foo：“对，所以在上面那个例子中，这些函数的输入和输出并没有被利用，所有的自增变量都是从循环产生的。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def addOne(i):</div><div class="line">     return i + 1</div><div class="line"></div><div class="line">m = 0</div><div class="line">for i in range(10):</div><div class="line">    m = addOne(m)</div></pre></td></tr></table></figure>
-<p>老铁：“看这次，因为一个函数的输入是另一个函数的输出，所以你用for循环的方式把他们给套起来了。所以这个时候，你其实在这样调用函数：”</p>
+<p>Foo：“看这次，因为一个函数的输入是另一个函数的输出，所以你用for循环的方式把他们给套起来了。所以这个时候，你其实在这样调用函数：”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">addOne(addOne(addOne(addOne(addOne(addOne(addOne(addOne(addOne(addOne(0))))))))))</div></pre></td></tr></table></figure>
-<p>小铁：“嗯嗯，看上去输入和输出像是锁扣，将这一个个函数给扣起来了。”</p>
-<p>老铁：“对，因为在这个时候，我们把一个大问题，分成了n个相同的子问题，然后再想办法逐一解决，但是其实还是可以有重复利用的地方的。”</p>
-<p>小铁：“这还能怎么优化？”</p>
-<p>老铁：“我们在编程语言的课程中，大概学到过，系统是如何保证函数调用的？”</p>
-<p>小铁：“栈？”</p>
-<p>老铁：“对，但实际上上面这段代码，我们利用一个for循环，一次一次的调用函数，然而函数其实完全可以自身调用自身，那么它就可以以自驱动的方式来完成这些调用。”</p>
-<p>小铁：“自己调用自己，这不就是递归么？”</p>
-<p>老铁：“对，但其实‘自己调用自己’是一个很误导人的说法，让人感觉我们做了一个无限制的环，但实际上，我们只在描述一个函数的时候描述成‘自身调用’，但是它在栈中自我驱动的时候，就是不停的压栈然后再弹栈罢了。看这个例子的递归写法：”</p>
+<p>Bar：“嗯嗯，看上去输入和输出像是锁扣，将这一个个函数给扣起来了。”</p>
+<p>Foo：“对，因为在这个时候，我们把一个大问题，分成了n个相同的子问题，然后再想办法逐一解决，但是其实还是可以有重复利用的地方的。”</p>
+<p>Bar：“这还能怎么优化？”</p>
+<p>Foo：“我们在编程语言的课程中，大概学到过，系统是如何保证函数调用的？”</p>
+<p>Bar：“栈？”</p>
+<p>Foo：“对，但实际上上面这段代码，我们利用一个for循环，一次一次的调用函数，然而函数其实完全可以自身调用自身，那么它就可以以自驱动的方式来完成这些调用。”</p>
+<p>Bar：“自己调用自己，这不就是递归么？”</p>
+<p>Foo：“对，但其实‘自己调用自己’是一个很误导人的说法，让人感觉我们做了一个无限制的环，但实际上，我们只在描述一个函数的时候描述成‘自身调用’，但是它在栈中自我驱动的时候，就是不停的压栈然后再弹栈罢了。看这个例子的递归写法：”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def addToN(n):</div><div class="line">     if n == 0:</div><div class="line">         return 0</div><div class="line">     else:</div><div class="line">         return 1 + addToN(n-1)</div></pre></td></tr></table></figure>
-<p>老铁：“这样我们循环本身，都用递归调用给做了。”</p>
-<p>小铁：“看上去这有点绕。”</p>
-<p>老铁：“是有点绕，但是我说这些主要是表达两点，第一，我一直在尝试抽象共性，然后最大程度的利用它，然后让代码看上去越来越紧凑。”</p>
-<p>小铁：“然后呢？”</p>
-<p>老铁：“然后我想用那个循环改成递归的例子，来告诉你，要不断的打开自己的思维去思考问题。”</p>
-<p>小铁：“什么意思？”</p>
-<p>老铁：“那我问你，为啥那个循环可以被我改成递归？”</p>
-<p>小铁：“因为一个调用的输入正好是一个调用的输出，我们可以用for循环驱动起来这些输入输出，也可以用函数自身调用的方式自驱动它们？”</p>
-<p>老铁：“不，你没有说到本质”</p>
-<p>小铁：“什么是本质？”</p>
-<p>老铁：“最开始我们能够把一些类似的功能抽象成函数，是因为具有某种共性，但是当我们能够用输入和输出的方式来穿起这些方法的时候，其实我们在抽象出问题和子问题，也就是问题与问题的关系。”</p>
-<p>小铁：“你的意思是，计算n个1的和可以拆分为1和 n-1个1的和这两个子问题？”</p>
-<p>老铁：“对，而且相比与拆分为n个相同的子问题，然后用循环来设计解决步骤。我们在定义递归函数的时候，是把问题描述成更小的问题，关键这个问题与原问题在结构上等价，所以是在描述问题的时候，就把这个问题给解决了。”</p>
-<p>小铁：“对啊，你这么一说是挺神奇的，抽象出更本质的模型，比折腾各种细节的优化更重要。”</p>
-<p>小铁：“但我之前理解的建模好像都是定一个struct或者定义一个class啥的。”</p>
-<p>老铁：“这个想法有点片面了，但是既然你说到class了，那你说说你是如何提高你class的重用性的。”</p>
-<p>小铁：“我会把公共的那些部分，抽象成为基类，然后让其它类去继承这些基类，这样避免不必要的重复代码。”</p>
-<p>老铁：“嗯嗯，但是事实如你所愿么？”</p>
-<p>小铁：“并不是，你很难抽象出来好用的基类，要么就是那些你并不想要的属性和方法被平白无故的继承获得了，要么就是你各个子类之间还是会有重复的部分。”</p>
-<p>老铁：“所以oop的书会告诉你，‘宁用组合，不用继承’。”</p>
-<p>小铁：“对，我在《设计模式》上看到过这个说法，所以我在设计的时候，也是‘宁用组合，不用继承’，但是我一直不知道原因是什么。”</p>
-<p>老铁：“原因就是静与动的区别。”</p>
-<p>小铁：“怎么感觉你不是在讲编程，而是在讲太极啊!”</p>
-<p>老铁：“哈哈，之所以说静，是因为这些上述的这些可重用都是在我们书写代码，定义程序的时候完成的，或者说编译前，这就是所谓的<strong>静</strong>，但是如果想更灵活，我们常常需要在程序运行的时候，还能对程序做某种可操作性，这就是所谓的<strong>动</strong>”。</p>
-<p>小铁：“那如何进行<strong>动</strong>的灵活性啊？”</p>
-<p>老铁：“之前提到的组合就是动的，因为你在用继承时候，像是把父类的代码直接获得了，减少了代码的书写，提高了重用性。而在组合中，你根本不知道什么样类型会被添加进来，只要是它的子类，任何类型的类，都可以在运行的时候被动态的添加进来，这就非常灵活了。”</p>
-<p>小铁：“这不就是面向对象（oop）的精髓么？”</p>
-<p>老铁：“对啊，oop的书，不是经常说，多态才是oop的精髓么，那既然说到面向对象了，我在跟你扯扯《设计模式》的东西。”</p>
-<p>小铁：“恩，我知道《设计模式》就是为了提高软件设计的灵活性，但是设计模式有好多啊，貌似有23种。”</p>
-<p>老铁：“是的，但是如果按照创建型模式，结构型模式，行为型模式一做归类，那就没多少了，其实就可以按照使用方式归为三大类。”</p>
-<p>小铁：“有点晕，没听懂是啥意思。”</p>
-<p>老铁：“其实，设计模式总共分为三大类，创建型的设计模式，主要探讨如何如果灵活的获得一个对象，不同的模式只不过对场景做了细化，比如抽象工厂用来创建产品簇，单例模式用来维护唯一的一个全局对象。结构型模式主要探讨在系统交互的时候，使用接口，中间层的方式来降低系统耦合。这使得在交互的双方，都依赖于接口编程，不依赖于实现。而行为型模式，主要是可以在运行的时候，动态的替换接口的实现类，使得一个对象的行为，能够在运行的时候被改变，而不需要修改代码。”</p>
-<p>小铁：“你这么一说，我的思路就清晰多了。”</p>
-<p>老铁：“其实面向对象的本质，就是在系统中定义一些模型，然后让这些模型，相互发送消息。你的类定义的公有方法，其实在定义协议。方法的入参就是消息体，方法的返回结果就是通信结果。把系统拆散成一个个对象的消息交互，要比一个功能什么都做，灵活许多。就好比阻塞函数，其实是把io操作和进程本身绑定到一起了，你除了等待阻塞什么都不能干，但是非阻塞函数，就可以让io和进程用消息的方式进行通信，对二者进行解耦，提高灵活性。”</p>
-<p>小铁：“嗯嗯，看来我之前并没有理解面向对象的本质。这么看来运行时的灵活性比编译时的灵活性更灵活。”</p>
-<p>老铁：“并不是这样的，你一开始不是提到配置文件么，那我先给你举一个配置文件的例子来总结下运行时的灵活性。”</p>
-<p>小铁：“我继续洗耳恭听。”</p>
-<p>老铁：“你在一开始写代码的时候，会定义很多的魔数，所谓魔数，就是指你并不知道他是干什么的，而且还可能写的哪里都是。像是这样：”</p>
+<p>Foo：“这样我们循环本身，都用递归调用给做了。”</p>
+<p>Bar：“看上去这有点绕。”</p>
+<p>Foo：“是有点绕，但是我说这些主要是表达两点，第一，我一直在尝试抽象共性，然后最大程度的利用它，然后让代码看上去越来越紧凑。”</p>
+<p>Bar：“然后呢？”</p>
+<p>Foo：“然后我想用那个循环改成递归的例子，来告诉你，要不断的打开自己的思维去思考问题。”</p>
+<p>Bar：“什么意思？”</p>
+<p>Foo：“那我问你，为啥那个循环可以被我改成递归？”</p>
+<p>Bar：“因为一个调用的输入正好是一个调用的输出，我们可以用for循环驱动起来这些输入输出，也可以用函数自身调用的方式自驱动它们？”</p>
+<p>Foo：“不，你没有说到本质”</p>
+<p>Bar：“什么是本质？”</p>
+<p>Foo：“最开始我们能够把一些类似的功能抽象成函数，是因为具有某种共性，但是当我们能够用输入和输出的方式来穿起这些方法的时候，其实我们在抽象出问题和子问题，也就是问题与问题的关系。”</p>
+<p>Bar：“你的意思是，计算n个1的和可以拆分为1和 n-1个1的和这两个子问题？”</p>
+<p>Foo：“对，而且相比与拆分为n个相同的子问题，然后用循环来设计解决步骤。我们在定义递归函数的时候，是把问题描述成更小的问题，关键这个问题与原问题在结构上等价，所以是在描述问题的时候，就把这个问题给解决了。”</p>
+<p>Bar：“对啊，你这么一说是挺神奇的，抽象出更本质的模型，比折腾各种细节的优化更重要。”</p>
+<p>Bar：“但我之前理解的建模好像都是定一个struct或者定义一个class啥的。”</p>
+<p>Foo：“这个想法有点片面了，但是既然你说到class了，那你说说你是如何提高你class的重用性的。”</p>
+<p>Bar：“我会把公共的那些部分，抽象成为基类，然后让其它类去继承这些基类，这样避免不必要的重复代码。”</p>
+<p>Foo：“嗯嗯，但是事实如你所愿么？”</p>
+<p>Bar：“并不是，你很难抽象出来好用的基类，要么就是那些你并不想要的属性和方法被平白无故的继承获得了，要么就是你各个子类之间还是会有重复的部分。”</p>
+<p>Foo：“所以oop的书会告诉你，‘宁用组合，不用继承’。”</p>
+<p>Bar：“对，我在《设计模式》上看到过这个说法，所以我在设计的时候，也是‘宁用组合，不用继承’，但是我一直不知道原因是什么。”</p>
+<p>Foo：“原因就是静与动的区别。”</p>
+<p>Bar：“怎么感觉你不是在讲编程，而是在讲太极啊!”</p>
+<p>Foo：“哈哈，之所以说静，是因为这些上述的这些可重用都是在我们书写代码，定义程序的时候完成的，或者说编译前，这就是所谓的<strong>静</strong>，但是如果想更灵活，我们常常需要在程序运行的时候，还能对程序做某种可操作性，这就是所谓的<strong>动</strong>”。</p>
+<p>Bar：“那如何进行<strong>动</strong>的灵活性啊？”</p>
+<p>Foo：“之前提到的组合就是动的，因为你在用继承时候，像是把父类的代码直接获得了，减少了代码的书写，提高了重用性。而在组合中，你根本不知道什么样类型会被添加进来，只要是它的子类，任何类型的类，都可以在运行的时候被动态的添加进来，这就非常灵活了。”</p>
+<p>Bar：“这不就是面向对象（oop）的精髓么？”</p>
+<p>Foo：“对啊，oop的书，不是经常说，多态才是oop的精髓么，那既然说到面向对象了，我在跟你扯扯《设计模式》的东西。”</p>
+<p>Bar：“恩，我知道《设计模式》就是为了提高软件设计的灵活性，但是设计模式有好多啊，貌似有23种。”</p>
+<p>Foo：“是的，但是如果按照创建型模式，结构型模式，行为型模式一做归类，那就没多少了，其实就可以按照使用方式归为三大类。”</p>
+<p>Bar：“有点晕，没听懂是啥意思。”</p>
+<p>Foo：“其实，设计模式总共分为三大类，创建型的设计模式，主要探讨如何如果灵活的获得一个对象，不同的模式只不过对场景做了细化，比如抽象工厂用来创建产品簇，单例模式用来维护唯一的一个全局对象。结构型模式主要探讨在系统交互的时候，使用接口，中间层的方式来降低系统耦合。这使得在交互的双方，都依赖于接口编程，不依赖于实现。而行为型模式，主要是可以在运行的时候，动态的替换接口的实现类，使得一个对象的行为，能够在运行的时候被改变，而不需要修改代码。”</p>
+<p>Bar：“你这么一说，我的思路就清晰多了。”</p>
+<p>Foo：“其实面向对象的本质，就是在系统中定义一些模型，然后让这些模型，相互发送消息。你的类定义的公有方法，其实在定义协议。方法的入参就是消息体，方法的返回结果就是通信结果。把系统拆散成一个个对象的消息交互，要比一个功能什么都做，灵活许多。就好比阻塞函数，其实是把io操作和进程本身绑定到一起了，你除了等待阻塞什么都不能干，但是非阻塞函数，就可以让io和进程用消息的方式进行通信，对二者进行解耦，提高灵活性。”</p>
+<p>Bar：“嗯嗯，看来我之前并没有理解面向对象的本质。这么看来运行时的灵活性比编译时的灵活性更灵活。”</p>
+<p>Foo：“并不是这样的，你一开始不是提到配置文件么，那我先给你举一个配置文件的例子来总结下运行时的灵活性。”</p>
+<p>Bar：“我继续洗耳恭听。”</p>
+<p>Foo：“你在一开始写代码的时候，会定义很多的魔数，所谓魔数，就是指你并不知道他是干什么的，而且还可能写的哪里都是。像是这样：”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">if  i == 5:</div><div class="line">    xxx</div></pre></td></tr></table></figure>
-<p>老铁：“之后你尝试写一些const变量，来把他们收集到一起。”</p>
+<p>Foo：“之后你尝试写一些const变量，来把他们收集到一起。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">const MAX_SIZE = 10</div><div class="line">if i == MAX_SIZE</div></pre></td></tr></table></figure>
-<p>老铁：“不过看似更灵活的方式是把这些变量提成一个个配置，在程序启动的时候去加载它们，然后让你在修改的时候，不用重新编译。”</p>
+<p>Foo：“不过看似更灵活的方式是把这些变量提成一个个配置，在程序启动的时候去加载它们，然后让你在修改的时候，不用重新编译。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 某config.config</div><div class="line">MAX_SIZE 10</div><div class="line"></div><div class="line"></div><div class="line"># 某处代码</div><div class="line">load(“config.config&quot;)</div><div class="line">define MAX_SIZE</div></pre></td></tr></table></figure>
-<p>老铁：“不过你可能更希望的是连编译都不编译，而是在运行的时候，通过被动消息通知，或者是主动定时更新的方式，更新程序的上下文。”</p>
+<p>Foo：“不过你可能更希望的是连编译都不编译，而是在运行的时候，通过被动消息通知，或者是主动定时更新的方式，更新程序的上下文。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def update():</div><div class="line">    MAX_SIZE = fetch_config()</div></pre></td></tr></table></figure>
-<p>老铁：“但是你不拘泥于灵活的修改配置这么简单，你希望动态的调整逻辑，所以你的配置变成了一个个条件+结论的样子”</p>
+<p>Foo：“但是你不拘泥于灵活的修改配置这么简单，你希望动态的调整逻辑，所以你的配置变成了一个个条件+结论的样子”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conditionA, conditionB, conditionC action1</div><div class="line">conditionD, conditionE, conditionF action2</div><div class="line">conditionG, conditionH, conditionI action3</div></pre></td></tr></table></figure>
-<p>老铁：“然后你的代码就在尝试匹配这些条件，然后做相应的动作。”</p>
-<p>老铁：“不过后来你觉得，不如为你的程序实现一个领域语言啥的，你来解释这些脚本算了，这不是更灵活么？”</p>
+<p>Foo：“然后你的代码就在尝试匹配这些条件，然后做相应的动作。”</p>
+<p>Foo：“不过后来你觉得，不如为你的程序实现一个领域语言啥的，你来解释这些脚本算了，这不是更灵活么？”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">dsl.cc</div><div class="line">if xxx:</div><div class="line">   action1</div><div class="line">else:</div><div class="line">   action 2</div><div class="line"></div><div class="line">load(dsl.cc)</div><div class="line">result = exe()</div></pre></td></tr></table></figure>
-<p>老铁：“最后你发现你的代码越来越像一个解释器了。”</p>
-<p>小铁：“你这么一串我豁然开朗啊，最灵活的，不就是写实现一个解释器，虚拟机么。”</p>
-<p>老铁：“是的，你的编写的java服务器代码，就是在给java解释器添加功能，只不过java这种静态语言的解释器更安全，python这种动态语言的解释器更灵活罢了。”</p>
-<p>小铁：“看来还是动态的灵活啊。”</p>
-<p>老铁：“也不是。”</p>
-<p>小铁：“你又要刷新我的三观了啊。”</p>
-<p>老铁：“我们之前说的思路都是对于解决问题本身，但是我们现在应该思考我们的工具本身。”</p>
-<p>小铁：“什么意思？我们的工具不是虚拟机么？”</p>
-<p>老铁：“我是说代码本身，我们为了更灵活，还可以用代码来生成代码。”</p>
-<p>小铁：“好神奇！”</p>
-<p>老铁：“还记得最开始我给你提到的那个例子吗？”</p>
-<p>小铁：“打印n个数？”</p>
-<p>老铁：“对，直接写n个print，这看上去是有点蠢，但是如果我们的代码是用代码生成的呢？”</p>
+<p>Foo：“最后你发现你的代码越来越像一个解释器了。”</p>
+<p>Bar：“你这么一串我豁然开朗啊，最灵活的，不就是写实现一个解释器，虚拟机么。”</p>
+<p>Foo：“是的，你的编写的java服务器代码，就是在给java解释器添加功能，只不过java这种静态语言的解释器更安全，python这种动态语言的解释器更灵活罢了。”</p>
+<p>Bar：“看来还是动态的灵活啊。”</p>
+<p>Foo：“也不是。”</p>
+<p>Bar：“你又要刷新我的三观了啊。”</p>
+<p>Foo：“我们之前说的思路都是对于解决问题本身，但是我们现在应该思考我们的工具本身。”</p>
+<p>Bar：“什么意思？我们的工具不是虚拟机么？”</p>
+<p>Foo：“我是说代码本身，我们为了更灵活，还可以用代码来生成代码。”</p>
+<p>Bar：“好神奇！”</p>
+<p>Foo：“还记得最开始我给你提到的那个例子吗？”</p>
+<p>Bar：“打印n个数？”</p>
+<p>Foo：“对，直接写n个print，这看上去是有点蠢，但是如果我们的代码是用代码生成的呢？”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for i in range (10):</div><div class="line">    print &quot;print %s\n&quot; % i</div></pre></td></tr></table></figure>
-<p>小铁：“你是说先用代码来生成这些代码，然后在运行生成的这些代码？”</p>
-<p>老铁：“恩，这是个思路，虽然这个例子看上去有点蠢，毕竟你要运行另一份代码，但其实，我们的语言编译器一直在试图支持这样的功能。”</p>
-<p>小铁：“比如说？”</p>
-<p>老铁：“比如像是c语言这样的偏向于硬件的语言，有宏这个东西，宏能够根据在编译前（预处理）的时候，对代码进行替换，这就是一种用代码来生成代码了。”</p>
+<p>Bar：“你是说先用代码来生成这些代码，然后在运行生成的这些代码？”</p>
+<p>Foo：“恩，这是个思路，虽然这个例子看上去有点蠢，毕竟你要运行另一份代码，但其实，我们的语言编译器一直在试图支持这样的功能。”</p>
+<p>Bar：“比如说？”</p>
+<p>Foo：“比如像是c语言这样的偏向于硬件的语言，有宏这个东西，宏能够根据在编译前（预处理）的时候，对代码进行替换，这就是一种用代码来生成代码了。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#define sqrt(x) x*x</div><div class="line"></div><div class="line">int a = sqrt(5);</div></pre></td></tr></table></figure>
-<p>老铁：“还有像是c++模板这样的功能，比宏更安全，也更强大，它能在编译器编译前，先用模板生成想要的代码，比如c++的泛型就是用定义的template来生成多个类。”</p>
+<p>Foo：“还有像是c++模板这样的功能，比宏更安全，也更强大，它能在编译器编译前，先用模板生成想要的代码，比如c++的泛型就是用定义的template来生成多个类。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Printer &#123;</div><div class="line">public:</div><div class="line">    template&lt;typename T&gt;</div><div class="line">    void print(const T&amp; t) &#123;</div><div class="line">        cout &lt;&lt; t &lt;&lt;endl;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>老铁：“用类生成类的思路，不仅仅是想c++这种静态类型语言，像是python，ruby这些语言，因为本身作为动态语言就更灵活，生成代码就更容易，比如元类。”</p>
+<p>Foo：“用类生成类的思路，不仅仅是想c++这种静态类型语言，像是python，ruby这些语言，因为本身作为动态语言就更灵活，生成代码就更容易，比如元类。”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 用元类在代码中动态的创建类。</div><div class="line">Hello = type(&apos;Hello&apos;, (object,), dict(hello=fn)) # 创建Hello class</div></pre></td></tr></table></figure>
-<p>老铁：“而且我认为，这些动态语言的函数可以作为一阶公民（可以被赋值，被当做入参，被当做返回值），所以本身也可以把某些特性理解为用函数来生成函数。比如：”</p>
+<p>Foo：“而且我认为，这些动态语言的函数可以作为一阶公民（可以被赋值，被当做入参，被当做返回值），所以本身也可以把某些特性理解为用函数来生成函数。比如：”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def addn(a):</div><div class="line">    def f(b):</div><div class="line">        return a + b</div><div class="line">    return f</div><div class="line"></div><div class="line">&gt;&gt;&gt; add5 = addn(5)</div><div class="line">&gt;&gt;&gt; add6 = addn(6)</div><div class="line">&gt;&gt;&gt; add5(5)</div><div class="line">10</div><div class="line">&gt;&gt;&gt; add6(5)</div><div class="line">11</div></pre></td></tr></table></figure>
-<p>老铁：“甚至在我眼里，重载函数也是一种代码生成代码，因为重载函数本身其实是语法糖，你相同的函数名，其实在编译的时候，编译器会给它们起不同的名字的。当然这个其实不值一提。”</p>
-<p>小铁：“这么说来用代码生成代码好强大啊。”</p>
-<p>老铁：“这你就觉得强大了啊，还有更强大的，因为上述这些语言都是偏向人类阅读书写的，所以本身看上去就是线性的。但是学过编译原理的你应该知道语言会经过词法分析，语法分析，变成一颗抽象语法树。可以说代码从线性结构变成树形结构。”</p>
-<p>小铁：“嗯嗯，然后呢？”</p>
+<p>Foo：“甚至在我眼里，重载函数也是一种代码生成代码，因为重载函数本身其实是语法糖，你相同的函数名，其实在编译的时候，编译器会给它们起不同的名字的。当然这个其实不值一提。”</p>
+<p>Bar：“这么说来用代码生成代码好强大啊。”</p>
+<p>Foo：“这你就觉得强大了啊，还有更强大的，因为上述这些语言都是偏向人类阅读书写的，所以本身看上去就是线性的。但是学过编译原理的你应该知道语言会经过词法分析，语法分析，变成一颗抽象语法树。可以说代码从线性结构变成树形结构。”</p>
+<p>Bar：“嗯嗯，然后呢？”</p>
 <p><img src="/img/lisp.jpg" alt="lisp"></p>
-<p>老铁：“那么你想象一下，如果你的代码本身就是一棵树呢?看这个lisp代码”</p>
+<p>Foo：“那么你想象一下，如果你的代码本身就是一棵树呢?看这个lisp代码”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(defun area-circle(rad)</div><div class="line">&quot;Calculates area of a circle with given radius&quot;</div><div class="line">  (terpri)</div><div class="line">  (format t &quot;Radius: ~5f&quot; rad)</div><div class="line">  (format t &quot;~%Area: ~10f&quot; (* 3.141592 rad rad)))</div><div class="line">  (area-circle 10)</div></pre></td></tr></table></figure>
-<p>老铁：“那么想象一下，这种语言支持一种宏的东西，但是远比C的宏强大，因为在lisp中，‘代码即数据’，你可以用一个表达式去生成另一个表达式，而表达式本身也是数据。”</p>
-<p>小铁：“卧槽，lisp好强大，你教我lisp吧”</p>
-<p>老铁：“哈哈，我只懂一点点lisp，很多细节都不是很了解，学好这些东西，最后本质就是在学数学。”</p>
-<p>小铁：“嗯嗯，程序的本质就是数学。”</p>
-<p>老铁：“不过说了这么多，我还想告诉你的是，程序灵活性与安全性往往是对立的，比如动态语言要比静态语言灵活，但是因为没有类型检查，所以很容易出现bug。”</p>
-<p>小铁：“嗯嗯”</p>
-<p>老铁：“这个时候类型系统就很重要了，你看上面提到的静态的灵活性，都在通过类型系统来做某些限制，来保证程序的安全。静态语言的多态之所以安全，是因为在编译器做了类型检查，但是动态语言就很容易运行时异常了。而且，那种灵活的可配置项，理论上在加载之前，是要做校验的，否则也可能把服务器的上下文给搞坏了。”</p>
-<p>小铁：“嗯呢，我以后会注意的。”</p>
-<p>老铁：“不过说到这，这位同学，你一直站在这里偷听到现在不好吧？”</p>
+<p>Foo：“那么想象一下，这种语言支持一种宏的东西，但是远比C的宏强大，因为在lisp中，‘代码即数据’，你可以用一个表达式去生成另一个表达式，而表达式本身也是数据。”</p>
+<p>Bar：“卧槽，lisp好强大，你教我lisp吧”</p>
+<p>Foo：“哈哈，我只懂一点点lisp，很多细节都不是很了解，学好这些东西，最后本质就是在学数学。”</p>
+<p>Bar：“嗯嗯，程序的本质就是数学。”</p>
+<p>Foo：“不过说了这么多，我还想告诉你的是，程序灵活性与安全性往往是对立的，比如动态语言要比静态语言灵活，但是因为没有类型检查，所以很容易出现bug。”</p>
+<p>Bar：“嗯嗯”</p>
+<p>Foo：“这个时候类型系统就很重要了，你看上面提到的静态的灵活性，都在通过类型系统来做某些限制，来保证程序的安全。静态语言的多态之所以安全，是因为在编译器做了类型检查，但是动态语言就很容易运行时异常了。而且，那种灵活的可配置项，理论上在加载之前，是要做校验的，否则也可能把服务器的上下文给搞坏了。”</p>
+<p>Bar：“嗯呢，我以后会注意的。”</p>
+<p>Foo：“不过说到这，这位同学，你一直站在这里偷听到现在不好吧？”</p>
 <p>当时吓了我一跳。连忙道歉说：“没有没有，我就是凑个热闹，我就没听懂你们在聊什么，只是不明觉厉。想不到狮吼功还有一招大喇叭。”</p>
 <p>说完我迅速离开去接热水了。但是在冲咖啡的时候，我一直在想，一定要把这次听到的写成博客。</p>
 </span>
