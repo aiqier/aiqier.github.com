@@ -738,8 +738,8 @@
           
           
             
-              <a class="post-title-link" href="/2019/01/27/question-and-answer/" itemprop="url">
-                2018年编程问答
+              <a class="post-title-link" href="/2019/01/27/2018-best-talk/" itemprop="url">
+                2018年aiqier说说精选
               </a>
             
           
@@ -759,8 +759,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
+                <a href="/categories/生活/" itemprop="url" rel="index">
+                  <span itemprop="name">生活</span>
                 </a>
               </span>
 
@@ -775,8 +775,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2019/01/27/question-and-answer/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/27/question-and-answer/" itemprop="commentsCount"></span>
+              <a href="/2019/01/27/2018-best-talk/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/27/2018-best-talk/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -791,13 +791,11 @@
 
       
         
-          <h2 id="操作系统既然有内存分页为什么还要内存分段？"><a href="#操作系统既然有内存分页为什么还要内存分段？" class="headerlink" title="操作系统既然有内存分页为什么还要内存分段？"></a>操作系统既然有内存分页为什么还要内存分段？</h2><p>一句话来说就是为了兼容。</p>
-<p>早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。</p>
-<p>后来32的80386采用了分页内存管理，使用虚拟内存地址映射到物理内存，所以让每个进程看上去自己都有4GB的内存空间（虚拟内存地址）可用。每一个页大概有4K，而且真正被使用的时候才会分配真实的内存，否则可能在硬盘上，或者就没有被分配。但后来的80386还保留了分段模式主要是为了兼容。</p>
-<p>再后来使用了“段页式管理”，结合了分段和分页两种内存管理思路，用户程序的逻辑地址空间首先被划分成若干的逻辑段，每个段都有自己的段号(常量段，堆栈段)，然后再将这些段分页。所以不要把最早的内存分段管理和如今的段页式管理搞混，即使他们都有所谓的“堆栈段”，要分清它们的区别和联系。</p>
-<p>总结一下分段内存管理的优势在于内存共享和安全控制，而分页内存管理的优势在于提高内利用率。</p>
+          <ol>
+<li>每次同事挨个发东西吃，即使他就在你旁边发，你也要假装不知道，然后等到他发到你的时候，你再跳突然起来，假装很开心的说一句：“哎呀，谢谢，谢谢！”<br><img src="/img/2018-talk-fruit.jpg" alt="fruit"></li>
+</ol>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2019/01/27/question-and-answer/#more" rel="contents">
+            <a class="btn" href="/2019/01/27/2018-best-talk/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
