@@ -174,6 +174,95 @@
           
           
             
+              <a class="post-title-link" href="/2014/07/15/local-value-name/" itemprop="url">
+                临时变量应该叫啥?
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2014-07-15T00:00:00+08:00" content="2014-07-15">
+            2014-07-15
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/07/15/local-value-name/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/15/local-value-name/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。<br>同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。</p>
+<p>我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。<br>如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭问题呢？我觉得就是<strong>大多数临时变量就没必要命名</strong>。<br>等你明白我的这句话，就会发现你<strong>命名的好坏，表示你会不会用临时变量，而这临时变量又和你的代码结构，代码的简练程度息息相关</strong>。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/07/15/local-value-name/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2014/07/05/enum-post/" itemprop="url">
                 使用位掩码来表示多个职位
               </a>
@@ -695,103 +784,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2013/10/16/python-skill/" itemprop="url">
-                python技巧
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2013-10-16T00:00:00+08:00" content="2013-10-16">
-            2013-10-16
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2013/10/16/python-skill/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2013/10/16/python-skill/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>如果你的文件中有不是ASCII的字符编码，那么请使用如下命令：</p>
-<pre><code># -*- coding: utf-8 -*-
-</code></pre><p>如果有脚本文件运行，那么在运行行前</p>
-<pre><code>#!/usr/bin/python
-# -*- coding: utf-8 -*-
-</code></pre><p>实际上python只检查#, coding 和编码字符串,其他的字符都是为了美观加上的。</p>
-<hr>
-<p>这样的除法会非常精准</p>
-<pre><code>from __future__ import division
-</code></pre><hr>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2013/10/16/python-skill/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -830,7 +822,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">235</span>
+              <span class="site-state-item-count">236</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
