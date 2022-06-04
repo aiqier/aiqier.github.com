@@ -174,6 +174,91 @@
           
           
             
+              <a class="post-title-link" href="/2017/07/11/poling-and-interrupts/" itemprop="url">
+                轮询和中断
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-07-11T00:00:00+08:00" content="2017-07-11">
+            2017-07-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>有一个经典的交互场景，A让B做一件事情，然后B做完了再告诉A。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BResponse  bResponse = unBlockCallB();</div></pre></td></tr></table></figure>
+<p>这种交互最简单的方式是使用阻塞。也就是说在B做这件事的时候，A什么也不做，干干的等它做完，再继续执行。这种简单又实用，但是我们为了效率，觉得让A这么白白的等着太浪费了。所以决定把A对B的调用做成非阻塞的，也就是说A在调用B的时候，会马上返回。那么一个问题是，B在做完之后，如何通知给A？</p>
+<h2 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h2><p>一种方式是A其实专门就有一部分代码轮询这个返回结果，另一部分专门做别的事情：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">unBlockCallB();</div><div class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</div><div class="line">    <span class="keyword">boolean</span> ok = checkBResponse();</div><div class="line">    <span class="keyword">if</span>(ok) &#123;</div><div class="line">          dosomethingForBResponse();</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">          sleep();</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/07/11/poling-and-interrupts/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/07/02/what-exactly-is-a-full-block-call/" itemprop="url">
                 一次完整的阻塞调用到底是怎样的
               </a>
@@ -341,88 +426,6 @@
           
           
             
-              <a class="post-title-link" href="/2017/06/11/why-did-Japanese-Katana-so-long/" itemprop="url">
-                为啥太刀这么长
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-06-11T00:00:00+08:00" content="2017-06-11">
-            2017-06-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/游戏知识/" itemprop="url" rel="index">
-                  <span itemprop="name">游戏知识</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>如果你看过一些日本的武士片或者是玩过一些类似《怪物猎人》，《仁王》，《荣耀战魂》这样包含日本元素的游戏，那你一定见过那种长长的，被称为太刀的武士刀。这篇博客就来考据一下为啥这种刀这么长。</p>
-<p>首先我查阅了一些资料发现普通的太刀并没有那么长，也就是 2尺（66cm）以上、3尺（约1m）之间。可以说差不多一米左右。所以这种刀经常会和另一种长度相近的打刀搞混。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/11/why-did-Japanese-Katana-so-long/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2017/06/11/locks-in-concurrent-programming/" itemprop="url">
                 并发编程中的锁
               </a>
@@ -473,6 +476,88 @@
 <h2 id="锁的危害"><a href="#锁的危害" class="headerlink" title="锁的危害"></a>锁的危害</h2><p>n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/06/11/locks-in-concurrent-programming/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/06/11/why-did-Japanese-Katana-so-long/" itemprop="url">
+                为啥太刀这么长
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2017-06-11T00:00:00+08:00" content="2017-06-11">
+            2017-06-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/游戏知识/" itemprop="url" rel="index">
+                  <span itemprop="name">游戏知识</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>如果你看过一些日本的武士片或者是玩过一些类似《怪物猎人》，《仁王》，《荣耀战魂》这样包含日本元素的游戏，那你一定见过那种长长的，被称为太刀的武士刀。这篇博客就来考据一下为啥这种刀这么长。</p>
+<p>首先我查阅了一些资料发现普通的太刀并没有那么长，也就是 2尺（66cm）以上、3尺（约1m）之间。可以说差不多一米左右。所以这种刀经常会和另一种长度相近的打刀搞混。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/11/why-did-Japanese-Katana-so-long/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -657,89 +742,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/05/13/talk-about-Dangal/" itemprop="url">
-                聊聊《摔跤吧爸爸》这部电影
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2017-05-13T00:00:00+08:00" content="2017-05-13">
-            2017-05-13
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/电影/" itemprop="url" rel="index">
-                  <span itemprop="name">电影</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>前几天和同事一起看了《摔跤吧爸爸》这部电影，看完感觉自己还是能写一些东西的。再加上上周写了一篇关于游戏的博客，所以这周就来写一篇关于电影的博客。</p>
-<h2 id="敬业的演员"><a href="#敬业的演员" class="headerlink" title="敬业的演员"></a>敬业的演员</h2><p>这位酷似 汤姆汉克斯的印度演员阿米尔·汗，可以说是印度的国宝演员了，他还有一部被广大中国人民熟悉的影片就是《三傻大闹宝莱坞》。<br>片中分别出现了，摔跤手爸爸的，青年时期，中年时期和老年时期。可以看到他的身材也发生了变化。</p>
-<p><img src="/img/amier.png" alt="阿米尔·汗"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/05/13/talk-about-Dangal/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -778,7 +780,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">237</span>
+              <span class="site-state-item-count">238</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

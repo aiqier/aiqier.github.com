@@ -174,6 +174,94 @@
           
           
             
+              <a class="post-title-link" href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/" itemprop="url">
+                2014年终技术总结之从输入和输出的角度理解编程
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-01-18T00:00:00+08:00" content="2015-01-18">
+            2015-01-18
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/编程/" itemprop="url" rel="index">
+                  <span itemprop="name">编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>首先我想引用《Unix编程艺术》中的几段话，我太爱这本书了。</p>
+<p>在输入输出方面，Unix传统极力提倡用简单，文本化，面向流，设备无关的格式。在经典的Unix下，多数程序都尽可能采用简单过滤器的形式，即将一个输入的简单文本流处理为一个简单的文本流输出。</p>
+<p>Unix中，文本流之于工具，就如同在面向对象环境中的消息之于对象。文本流界面的简洁性加强了工具的封装性。</p>
+<p>要想让程序具有组合性，就要使程序彼此独立。在文本流这一端的程序应该尽可能不要考虑文本流另一端的程序。将一端的程序替换为另一个截然不同的程序，而完全不惊扰另一端应该很容易做到。</p>
+<p>下面我从几个不同的方面，来讲述自己对输入输出的理解</p>
+<h2 id="Unix命令"><a href="#Unix命令" class="headerlink" title="Unix命令"></a>Unix命令</h2><p>经常使用linux和unix的同学，已经习惯于在命令中用管道链接输入和输出。</p>
+<pre><code>command1 | command2 paramater1 | command3 parameter1 - parameter2 | command4
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/01/18/annual-technical-summary-think-about-program-use-in-and-out/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/01/15/annual-technical-summary-gtd/" itemprop="url">
                 2014年终技术总结之使用GTD
               </a>
@@ -676,88 +764,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/12/15/calculate-cash/" itemprop="url">
-                关于几个金融计算中会用到的公式
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2014-12-15T00:00:00+08:00" content="2014-12-15">
-            2014-12-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/编程/" itemprop="url" rel="index">
-                  <span itemprop="name">编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>非原创，从网上收集的，但是写花了些功夫，因为网上的大多数例子是错误的。</p>
-<h2 id="如何将一个金额转换为中文的大写形式"><a href="#如何将一个金额转换为中文的大写形式" class="headerlink" title="如何将一个金额转换为中文的大写形式"></a>如何将一个金额转换为中文的大写形式</h2><h4 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">/// &lt;summary&gt;</div><div class="line">/// 此函数用来将一个金额数字转化为大写</div><div class="line">/// &lt;/summary&gt;</div><div class="line">/// &lt;param name=&quot;x&quot;&gt;&lt;/param&gt;</div><div class="line">/// &lt;returns&gt;&lt;/returns&gt;</div><div class="line">public static string ConvertToChinese(decimal x)</div><div class="line">&#123;</div><div class="line">    string s = x.ToString(&quot;#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A&quot;);</div><div class="line">    string d = Regex.Replace(s, @&quot;((?&lt;=-|^)[^1-9]*)|((?&apos;z&apos;0)[0A-E]*((?=[1-9])|(?&apos;-z&apos;(?=[F-L\.]|$))))|((?&apos;b&apos;[F-L])(?&apos;z&apos;0)[0A-L]*((?=[1-9])|(?&apos;-z&apos;(?=[\.]|$))))&quot;, &quot;$&#123;b&#125;$&#123;z&#125;&quot;);</div><div class="line">    return Regex.Replace(d, &quot;.&quot;, m =&gt; &quot;负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟萬億兆京垓秭穰&quot;[m.Value[0] - &apos;-&apos;].ToString());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/15/calculate-cash/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -796,7 +802,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">237</span>
+              <span class="site-state-item-count">238</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
