@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近我在从python的开发转向java，打算在转移技术栈的时候，通过比较python与java，去更深刻的理解动态语言与静态语言的优势与劣势，从而在工作中有效的搭配。所以接下来很长一段时间，我都会坚持写一些关于java和python两者比较的博客，当然刚入门java，自然写的东西就比较“弱智”了，但这一步早晚都要走的，先勇于接受吧。。 我一开始在想，如何入手java，从什么语言基础或者是设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从python到java之并行程序设计中的Future对象">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/10/29/from-python-to-java-future-object/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="最近我在从python的开发转向java，打算在转移技术栈的时候，通过比较python与java，去更深刻的理解动态语言与静态语言的优势与劣势，从而在工作中有效的搭配。所以接下来很长一段时间，我都会坚持写一些关于java和python两者比较的博客，当然刚入门java，自然写的东西就比较“弱智”了，但这一步早晚都要走的，先勇于接受吧。。 我一开始在想，如何入手java，从什么语言基础或者是设计模式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/java-future.png">
+<meta property="article:published_time" content="2016-10-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-10-29T13:13:54.671Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/java-future.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/10/29/from-python-to-java-future-object/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从python到java之并行程序设计中的Future对象 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/10/29/from-python-to-java-future-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从python到java之并行程序设计中的Future对象
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2016-10-29 00:00:00 / 修改时间：21:13:54" itemprop="dateCreated datePublished" datetime="2016-10-29T00:00:00+08:00">2016-10-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/10/29/from-python-to-java-future-object/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/10/29/from-python-to-java-future-object/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近我在从python的开发转向java，打算在转移技术栈的时候，通过比较python与java，去更深刻的理解动态语言与静态语言的优势与劣势，从而在工作中有效的搭配。所以接下来很长一段时间，我都会坚持写一些关于java和python两者比较的博客，当然刚入门java，自然写的东西就比较“弱智”了，但这一步早晚都要走的，先勇于接受吧。。</p>
+<p>我一开始在想，如何入手java，从什么语言基础或者是设计模式，我觉得都不是好的方式，毕竟已经对这些比较熟了。静态语言本来也没有什么奇技淫巧，就算有也百八十年用不到，框架的话也不用急着去看，因为用着用着该会的也就会了。一堆不知道怎么用的规则更没必要记了，再加上自己也想让自己的水平提升一个台阶，所以我想要不就从java并行程序设计开始吧。</p>
+<p>这篇博客我要写一些关于Future对象的东西。</p>
+<h2 id="java中的Future"><a href="#java中的Future" class="headerlink" title="java中的Future"></a>java中的Future</h2><p>你在一开始学习java多线程的时候，书上都会告诉你一个简单的例子，就是先创建一个任务，这个任务对象继承一个Runnable接口，并且实现了其中的run方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Task</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;Hello,World&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后你就可以用线程来执行此任务，比如直接提交给一个Thread的构造函数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Task</span>());</span><br><span class="line">t.start();</span><br></pre></td></tr></table></figure>
+
+<p>或者直接扔给执行器(Executor)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ExecutorService</span> <span class="variable">exec</span> <span class="operator">=</span> Executors.newCachedThreadPool();</span><br><span class="line">exec.submit(<span class="keyword">new</span> <span class="title class_">Task</span>());</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>这看上去没什么问题，Executor负责管理你的线程，你的任务得以“异步执行”，但是好在这仅仅是一个打印，如果你的任务最终要获得某种结果，那Runnable就不能满足你的需求了。这个时候你可以选择让任务实现Callable接口，可以满足这个场景。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Task</span> <span class="keyword">implements</span> <span class="title class_">Callable</span>&lt;String&gt;&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> String <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;Hello, World&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;Hello,World&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ArrayList&lt;Future&lt;String&gt;&gt; results = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Future&lt;String&gt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)&#123;</span><br><span class="line">	results.add(exec.submit(<span class="keyword">new</span> <span class="title class_">Task</span>()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (Future&lt;String&gt; fs: results)&#123;</span><br><span class="line">	System.out.println(fs.get());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到Callables实际上是一个泛型接口,而我们能在线程执行结束后，从Futrue对象中获得最后的结果。</p>
+<p>这个Futrue对象看着好眼熟，在用python的异步web框架-tornado的开发中，你也会看到这个对象，但大多数是抛异常的时候才会看见，因为tornado的使用协程隐藏了对这个对象的使用。这个我会在后面提到，下面先来分析下这个Future对象是个啥。</p>
+<p>首先这个Future类提供这样几个方法。get用来获取结果，isDone用来查询该Future是否已经完成。但要注意的是，如果这个future还没有结果，那get方法就会阻塞在那里。</p>
+<p>之后我查阅了一些资料，我找到了Future的大概实现原理。</p>
+<p><img src="/img/java-future.png" alt="Future"></p>
+<p>其实最终的数据被我们包装在RealData中，Future对象算是RealData的代理类。它和RealData都实现了Data接口,可以通过getResult获取最终的结果。<br>RealData的getResult调用会返回真实的最重结果。FutureData则自己有一个属性是RealData类型的，它一开始是空的，当Executor执行完成，就会调用FutreData的setRealData初始化这个属性，并将它的isReady属性设置为true，并对它的getResult做一次notify，所以如果Future的数据没有准备好，则调用FutureData的getResult则会阻塞直到数据isReady为True，然后它就调用了RealData的getResult。</p>
+<p>现在你应该明白它为啥叫Future了吧，因为你在将任务扔给Executor的时候，它会立即返回，但是里面却还没有线程执行的最后结果，等到线程结束后，里面才会有结果，这就好像你一开始就拿到了“未来”一样。</p>
+<p>或者也可以说并发程序设计中，有一种设计模式，叫Future模式。</p>
+<h2 id="tornado中的Futrue"><a href="#tornado中的Futrue" class="headerlink" title="tornado中的Futrue"></a>tornado中的Futrue</h2><p>那么接下来我们再来看看之前提到的tornado中的future。<br>tornado的future在tornado.concurrent这个库中，如果你使用tornado时，不使用它的“协程”，那只能使用讨厌的回调方式来执行异步结果返回后的代码，如果是回调套回调，那更加的令人头疼。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tornado.web.asynchronous</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self</span>):</span><br><span class="line">    query = self.get_argument(<span class="string">&#x27;q&#x27;</span>)</span><br><span class="line">    client = tornado.httpclient.AsyncHTTPClient()</span><br><span class="line">    client.fetch(<span class="string">&quot;http://search.twitter.com/search.json?&quot;</span> + \</span><br><span class="line">                urllib.urlencode(&#123;<span class="string">&quot;q&quot;</span>: query, <span class="string">&quot;result_type&quot;</span>: <span class="string">&quot;recent&quot;</span>, <span class="string">&quot;rpp&quot;</span>: <span class="number">100</span>&#125;),</span><br><span class="line">                callback=self.on_response)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们在tornado中使用协程的调用方式，其实就返回了一个Future对象，但是与刚才java中的例子不同的是，我们使用了yield，既返回了Future，又让出了程序的执行权。这点非常重要，因为刚才java的例子，我们的程序一直阻塞在future对象的get方法一直到它有返回，但是我们在tornado中不能这样，因为tornado是单线程的epoll，任何一个阻塞都会使整个服务卡死在那。所以我们在yield返回future之后，这个future对象被扔给了ioloop，并且程序的控制权也交给了ioloop，等到这个异步调用处理完之后，ioloop会把结果通过set_result写入Future对象，然后你的handler被send了future对象的get_result,程序的控制权又交给了你的handler，程序就能继续执行下去了。所以实际上程序也是堵塞的，不过那是对你的handler而言，阻塞在那里，等待结果返回。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">client = tornado.httpclient.AsyncHTTPClient()</span><br><span class="line">response = <span class="keyword">yield</span> tornado.gen.Task(client.fetch,</span><br><span class="line">        <span class="string">&quot;http://search.twitter.com/search.json?&quot;</span> + \</span><br><span class="line">        urllib.urlencode(&#123;<span class="string">&quot;q&quot;</span>: query, <span class="string">&quot;result_type&quot;</span>: <span class="string">&quot;recent&quot;</span>, <span class="string">&quot;rpp&quot;</span>: <span class="number">100</span>&#125;))</span><br><span class="line">body = json.loads(response.body)</span><br></pre></td></tr></table></figure>
+
+<p>而且tornado提供一个return_future函数，它实际上是一个装饰器，也就是说它接受的参数是一个函数(回调函数)，它<br>能把你的这个回调函数，封装成一个future对象后返回。</p>
+<h2 id="pyhton中的futrue"><a href="#pyhton中的futrue" class="headerlink" title="pyhton中的futrue"></a>pyhton中的futrue</h2><p>在python3.2及后续版本中，已经加入了Future，就在concurrent.futures模块中。</p>
+<p>官网文档中有一个简单的例子使用futures来做一个简单的并行爬虫。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> concurrent.futures</span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"></span><br><span class="line">URLS = [<span class="string">&#x27;http://www.foxnews.com/&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;http://www.cnn.com/&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;http://europe.wsj.com/&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;http://www.bbc.co.uk/&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;http://some-made-up-domain.com/&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Retrieve a single page and report the URL and contents</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_url</span>(<span class="params">url, timeout</span>):</span><br><span class="line">    <span class="keyword">with</span> urllib.request.urlopen(url, timeout=timeout) <span class="keyword">as</span> conn:</span><br><span class="line">        <span class="keyword">return</span> conn.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># We can use a with statement to ensure threads are cleaned up promptly</span></span><br><span class="line"><span class="keyword">with</span> concurrent.futures.ThreadPoolExecutor(max_workers=<span class="number">5</span>) <span class="keyword">as</span> executor:</span><br><span class="line">    <span class="comment"># Start the load operations and mark each future with its URL</span></span><br><span class="line">    future_to_url = &#123;executor.submit(load_url, url, <span class="number">60</span>): url <span class="keyword">for</span> url <span class="keyword">in</span> URLS&#125;</span><br><span class="line">    <span class="keyword">for</span> future <span class="keyword">in</span> concurrent.futures.as_completed(future_to_url):</span><br><span class="line">        url = future_to_url[future]</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            data = future.result()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;%r generated an exception: %s&#x27;</span> % (url, exc))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;%r page is %d bytes&#x27;</span> % (url, <span class="built_in">len</span>(data)))</span><br></pre></td></tr></table></figure>
+
+<p>可以看到和Java没什么两样。futures.as_completed函数会持续阻塞，直到有futrue完工或者取消。然后，就会把future返回给调用者。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/10/17/why-we-can-use-recursive/" rel="prev" title="递归为什么可以运行下去">
+      <i class="fa fa-chevron-left"></i> 递归为什么可以运行下去
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/11/05/how-to-fix-hexo-dont-show-blog/" rel="next" title="如何解决hexo无法展示博客内容的问题">
+      如何解决hexo无法展示博客内容的问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E4%B8%AD%E7%9A%84Future"><span class="nav-number">1.</span> <span class="nav-text">java中的Future</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tornado%E4%B8%AD%E7%9A%84Futrue"><span class="nav-number">2.</span> <span class="nav-text">tornado中的Futrue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pyhton%E4%B8%AD%E7%9A%84futrue"><span class="nav-number">3.</span> <span class="nav-text">pyhton中的futrue</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

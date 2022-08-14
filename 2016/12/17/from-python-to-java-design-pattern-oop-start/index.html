@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Starting最近要写一个系列的博客，总结设计模式。 首先我想展示我对设计模式的理解，它用来解决一个什么样的问题，同时它有哪些不足，还有我想表达一种思路就是作为支持面向对象的语言，是如何实现设计模式的。最后我想从python和java这两种语言比较设计模式的实现方式来说明这两种语言的特点。 这第一篇博客我要写一个总的概括，写一些我对设计模式的理解,后续的博客会详细讲解每一种设计模式，以及用pyt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从python到java之开始设计模式">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/12/17/from-python-to-java-design-pattern-oop-start/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="Starting最近要写一个系列的博客，总结设计模式。 首先我想展示我对设计模式的理解，它用来解决一个什么样的问题，同时它有哪些不足，还有我想表达一种思路就是作为支持面向对象的语言，是如何实现设计模式的。最后我想从python和java这两种语言比较设计模式的实现方式来说明这两种语言的特点。 这第一篇博客我要写一个总的概括，写一些我对设计模式的理解,后续的博客会详细讲解每一种设计模式，以及用pyt">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-12-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-12-17T15:16:42.313Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/12/17/from-python-to-java-design-pattern-oop-start/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从python到java之开始设计模式 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/12/17/from-python-to-java-design-pattern-oop-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从python到java之开始设计模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2016-12-17 00:00:00 / 修改时间：23:16:42" itemprop="dateCreated datePublished" datetime="2016-12-17T00:00:00+08:00">2016-12-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%84%E6%9E%B6%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">构架设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/12/17/from-python-to-java-design-pattern-oop-start/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/12/17/from-python-to-java-design-pattern-oop-start/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Starting"><a href="#Starting" class="headerlink" title="Starting"></a>Starting</h2><p>最近要写一个系列的博客，总结设计模式。</p>
+<p>首先我想展示我对设计模式的理解，它用来解决一个什么样的问题，同时它有哪些不足，还有我想表达一种思路就是作为支持面向对象的语言，是如何实现设计模式的。最后我想从python和java这两种语言比较设计模式的实现方式来说明这两种语言的特点。</p>
+<p>这第一篇博客我要写一个总的概括，写一些我对设计模式的理解,后续的博客会详细讲解每一种设计模式，以及用python和java两种语言的实现方式。</p>
+<h4 id="设计模式并不是为面向对象服务的"><a href="#设计模式并不是为面向对象服务的" class="headerlink" title="设计模式并不是为面向对象服务的"></a>设计模式并不是为面向对象服务的</h4><p>我们常说的设计模式，其实是说的《Design Patterns: Elements of Reusable Object-Oriented Software》里面提到的23种设计模式，但实际上这些模式的思路在没有面向对象编程的时候，大多就已经有了，很多模式你可以从UNIX的设计思路上找到(参见《unix编程艺术》)。<br>这本书只能说是从面向对象的角度去实现设计模式。还有很多设计模式很常用，但是并没有出现在这23种，比如说我们常使用的表驱动模式（因为表驱动和面向对象无关）。</p>
+<span id="more"></span>
+
+<h4 id="面向对象的局限性"><a href="#面向对象的局限性" class="headerlink" title="面向对象的局限性"></a>面向对象的局限性</h4><p>面向对象比较适合和业务相关和界面相关的编程，这种思路多和对现实世界的理解挂钩，但是对于一些偏于计算，偏于数学的编程，就不适合了（比如数据处理）。我觉得面向对象的优势就是建模，（偏于现实世界的建模），这也就是我认为除了跟界面和游戏有关的编程，大多数我知道的领域使用oop都感觉很别扭。</p>
+<h4 id="封装，继承，多态"><a href="#封装，继承，多态" class="headerlink" title="封装，继承，多态"></a>封装，继承，多态</h4><p>我们常说的面向对象的三大特性是，“封装，继承，多态。”</p>
+<p>实际上封装这个算是基础，主要思想就是不直接暴露一个类的属性，只能通过它暴露的方法使用它，这点要比c的struct搭配一堆函数强，首先你要来回在函数间传递这个对象，还有你可以直接操纵结构体。<br>因此你根本不能建立依赖，就是说数据是单向绑定的，你也许知道这个函数依赖于哪个struct，但你并不知道这个struct被哪些函数所依赖。</p>
+<p>所以这就是封装的好处，它不仅仅限制了访问，更重要的是建立了数据与方法的依赖。从这点也可以看出，面相对象是一种思想，早在c中，就有这样的思路了，只不过在天生支持面向对象的语言中写起来更容易。</p>
+<p>再说说继承，其实这里说的继承，应该包括两部分，抽象类的继承和接口的继承，类的继承主要是提供代码的重用，但是它提供的代码重用不够灵活，是类级别的，或者有些人喜欢称它为静态重用，也就是说你要重用代码必须要继承基类。所以设计模式很大的篇幅都在提到，利用组合的方式来重用代码而不是类继承的方式。</p>
+<p>在说说接口，在《设计模式》这本书中，把接口说成是一个类型。一个类实现了这个接口，就说明它具有此类型。所以实现接口就是为了具有此类型的特性。很多书中也在提到，继承类和继承接口是不同的。在c++中它们是杂糅在一起的，之后的oop语言都对其严格的区分，比如java:extends,implements。我理解接口就是静态语言为了静态类型检查而加入的设计。比如像python，ruby这样的动态语言就不需要去实现一个接口。还有就是接口没有任何重用的地方，不要为了灵活把可以用继承的都用接口，那你的代码什么都没有自然灵活了。</p>
+<p>然后就是面向对象的第三个特性，也就是多态了，可以说oop的强大很大一部分是就是因为多态，很多人的观点甚至是封装和继承都是为多态服务的。我记得学c++的时候，常常把多态比喻成运行时你才知道指针上的对象是什么。所以很多时候，我也在思考，其实继承和多态，虽然常常被一起提出来，但完全不是一条线上的东西，一个是静态的，一个是动态的。</p>
+<h2 id="面向对象的几个设计思路"><a href="#面向对象的几个设计思路" class="headerlink" title="面向对象的几个设计思路"></a>面向对象的几个设计思路</h2><h4 id="对象与对象之间的使用关系"><a href="#对象与对象之间的使用关系" class="headerlink" title="对象与对象之间的使用关系"></a>对象与对象之间的使用关系</h4><p>对象与对象之间的使用思路无非就那么几种。我们用一个“人与餐厅”来举例子。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Restaurant</span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>人要去餐厅吃饭，那么它有如下几种方式和这个餐厅交互。</p>
+<p>// 作为一个属性<br>// 但是人有必要有一个属性叫餐厅么？<br>// 也许是想全局bing一样，一开始就被初始化好了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Restaurant restaurant;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">eat</span><span class="params">()</span>&#123;</span><br><span class="line">		<span class="built_in">this</span>.restaurnt.food();</span><br><span class="line">		......</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 作为方法参数</span></span><br><span class="line"><span class="comment">// 如果经常使用，每次都这么传递是很烦人的。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">eat</span><span class="params">(Restaurant restaurant)</span>&#123;</span><br><span class="line">		restaurnt.food();</span><br><span class="line">		......</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过另一个类获得</span></span><br><span class="line"><span class="comment">// 这是逃避问题，那你的另一个类又是从哪来的呢？</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">eat</span><span class="params">(Map map)</span>&#123;</span><br><span class="line">	    <span class="type">Restaurant</span> <span class="variable">restaurant</span> <span class="operator">=</span> map.getRestaurant();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当场创建</span></span><br><span class="line"><span class="comment">// 要吃饭就当场创建一个，这肯定是土豪。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">eat</span><span class="params">()</span>&#123;</span><br><span class="line">	    <span class="type">Restaurant</span> <span class="variable">restaurant</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Restaurant</span>();</span><br><span class="line">	    restaurant.food();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="烂设计"><a href="#烂设计" class="headerlink" title="烂设计"></a>烂设计</h4><p>很多人即使开始面相对象编程，它们的很多做法依旧是struct配函数，在java这些必须要强制声明类的还好，python中这样的写法简直满天飞,数据结构在这些函数中到处传递，这个做法的坏处就是你没有建立双向绑定，仅仅是单向的依赖。而且某个函数可能偷偷的修改了你对象的状态但你却一无所知，或者说很难发现。</p>
+<p>就拿排序而言，python中提供两种排序功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">li.sort()</span><br><span class="line"><span class="built_in">sorted</span>(li)</span><br></pre></td></tr></table></figure>
+<p>第一种排序就是面相对象的风格，第二种就是我说的面相过程的思路，说道这里我就不得不提，我觉得java的排序功能并不是完全意义上的面向对象,或者这种面向对象很蹩脚，也许是我想多了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Collections.sort(list);</span><br></pre></td></tr></table></figure>
+
+<p>还有我认为的一个最烂的设计就是过度设计，玩面向对象和设计模式的那群人，很喜欢把所有if else和switch都搞成可扩展的接口。实际上你只要把该封装的逻辑封装好。到了抉择的那一步，你用if还是switch，还是做一个表驱动还是完全靠外部的输入，都无所谓了，要改也改不了几行代码，这个我们在下一篇介绍几个简单的模式，你就明白了，你的模式，根本没有解决如何抉择的问题。</p>
+<h2 id="从python到java的oop比较"><a href="#从python到java的oop比较" class="headerlink" title="从python到java的oop比较"></a>从python到java的oop比较</h2><h4 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h4><p>相比于c++，java的继承方式简单一些，没有什么（公有继承，受保护继承，私有继承）。</p>
+<p>java的属性，方法倒是有公有（public），受保护（protected），私有的(private)。对于public表明该数据成员、成员函数是对所有用户开放的，所有用户都可以直接进行调用。<br>对于private，除了class自己，任何方式都不能使用（即使是继承的基类）。而protected，作为对象的使用时，像个私有成员，但是在继承的时候，又可以被子类访问。</p>
+<p>java用abstract来标识抽象类或抽象方法，抽象类表示这个类只能被继承，不能够用来创建实例。抽象方法表示这些方法需要在子类中去实现。</p>
+<p>java使用extends来继承一个类，使用implements来实现一个接口。</p>
+<p>除了上述，java使用final来表明一个值不能被修改，或者方法不能被覆盖（重写），或者类不能被继承。还有java使用static，来标识一个方法是类方法，可以不用创建对象就使用（通过类）。</p>
+<p>一个Java源文件中最多只能有一个public类，当有一个public类时，源文件名必须与之一致，否则无法编译。</p>
+<p>以上这些特性都会影响我们设计模式java版本的实现方式。</p>
+<p>相比于java，python作为动态语言，就更简单了。</p>
+<p>在python中，类的一切属性和方法都是默认公有的，也就是说你可以自用使用。</p>
+<p>有一种技巧是把属性定义成“__双下划线”开头的方式，但是这只不过是python内部把这种命名的变量替换成另外一种了，如果你想访问，还是可以通过某种方式访问。</p>
+<p>python想要某种类型不需要实现接口，因为动态语言的鸭子类型，所以你只需要有那个方法就可以使用了，否则在运行时就会报错，因为python并没有静态类型检查。<br>当然有的人为了让某些问题能够更早的暴露出来，使用如下方式来实现一个接口，或者抽象类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">me</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">raise</span> <span class="keyword">raise</span> NotImplimentedError()</span><br></pre></td></tr></table></figure>
+
+<p>python对象的方法，都是被绑定上去的。所以所有的方法，第一个参数都是self。</p>
+<p>python使用@staticmethod装饰器来表示一个方法是静态方法，用@classmethod装饰器来表示一个方法是类方法，之所以会区分两种，是因为python万物都是对象，类也可以作为对象做一些操作。<br>所以对于一个classmethod，他的第一个参数必须要是cls。</p>
+<p>还有要提到的一点是因为python更加灵活，支持函数式编程，元编程等等，让我们在实现设计模式的时候，可以有更多的思路，而不像java那么麻烦。</p>
+<p>其它的一些特性，我会在后面的特性中一一介绍。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/12/12/how-to-write-chicken-soup-for-the-soul/" rel="prev" title="如何写一篇心灵鸡汤">
+      <i class="fa fa-chevron-left"></i> 如何写一篇心灵鸡汤
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/12/26/from-python-to-java-design-pattern-strategy-pattern/" rel="next" title="从python到java之设计模式策略模式">
+      从python到java之设计模式策略模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Starting"><span class="nav-number">1.</span> <span class="nav-text">Starting</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%B9%B6%E4%B8%8D%E6%98%AF%E4%B8%BA%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%9C%8D%E5%8A%A1%E7%9A%84"><span class="nav-number">1.0.1.</span> <span class="nav-text">设计模式并不是为面向对象服务的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">1.0.2.</span> <span class="nav-text">面向对象的局限性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%EF%BC%8C%E7%BB%A7%E6%89%BF%EF%BC%8C%E5%A4%9A%E6%80%81"><span class="nav-number">1.0.3.</span> <span class="nav-text">封装，继承，多态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%87%A0%E4%B8%AA%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">面向对象的几个设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E4%B8%8E%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BD%BF%E7%94%A8%E5%85%B3%E7%B3%BB"><span class="nav-number">2.0.1.</span> <span class="nav-text">对象与对象之间的使用关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%83%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.0.2.</span> <span class="nav-text">烂设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8Epython%E5%88%B0java%E7%9A%84oop%E6%AF%94%E8%BE%83"><span class="nav-number">3.</span> <span class="nav-text">从python到java的oop比较</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">3.0.1.</span> <span class="nav-text">关键字</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

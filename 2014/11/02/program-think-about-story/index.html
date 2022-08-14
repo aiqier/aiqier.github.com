@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》 它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。 如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。 但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。 我在读此书的时候，读到两个地方，作者的思想和我在程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员对《故事》的两点思考?">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/11/02/program-think-about-story/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》 它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。 如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。 但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。 我在读此书的时候，读到两个地方，作者的思想和我在程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-11-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.763Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="读书笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2014/11/02/program-think-about-story/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>程序员对《故事》的两点思考? | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/11/02/program-think-about-story/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          程序员对《故事》的两点思考?
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-11-02 00:00:00" itemprop="dateCreated datePublished" datetime="2014-11-02T00:00:00+08:00">2014-11-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/11/02/program-think-about-story/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/11/02/program-think-about-story/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近在阅读一本书–《故事：材质、结构、风格和银幕剧作的原理》</p>
+<p>它讲述了许多幕剧作手法。而且非公式，更是从原理出发，可见作者非常有洞察力。</p>
+<p>如果是从事电影行业的人，一定会有很多行内人推荐此书。作为一个电影迷，能够从此书中有类似：“哦，原来我喜欢的xxx电影是这样设计的。”的体验。</p>
+<p>但是我并不是写一篇介绍此书的博客，或者简简单单摘抄下此书的经典句子。</p>
+<p>我在读此书的时候，读到两个地方，作者的思想和我在程序员职业生涯中的感想如出一辙，所以想把它们写下来。</p>
+<h2 id="一-大情节与反情节"><a href="#一-大情节与反情节" class="headerlink" title="一 大情节与反情节"></a>一 大情节与反情节</h2><p>作者提到大多数票房热卖的电影多是经典情节，或者叫大情节。但也有一些另辟蹊径，巧夺天工的电影，它们与经典情节不同，被称为小情节，或者反情节。</p>
+<span id="more"></span>
+
+<p>一下是我摘抄作者的原话：</p>
+<pre><code>如果你也想像罗布特-格里耶一样写作小情节或反情节，并能找到非好莱坞的制作人以低预算投拍，即使赚钱不多也能自得其乐，那好，你可以去干。但是，如果你想给好莱坞写作，一个低预算的本子则不是什么资产。
+老谋深算的专业人员读到你的最小注意作品或反结构作品，也许会为你的影像处理喝彩，但将会婉言拒绝染指，因为经验已经告诉他们，如果故事阳春白雪，那么观众也必定会曲高和寡。
+
+作者在后面提到：**优秀的作家**必须精通经典形式。
+
+若想炮制小情节或反情节作品，作家必须顺应或者反着这一预期来进行操作。只有精心而富有创见地将经典形式揉碎或弯曲，艺术家才能导引观众感知到潜藏在小情节中的内才生活或接受反情节的荒诞冷酷。
+
+伯格曼写作和导演了二十年的爱情故事和社会历史正剧才敢开始进入《沉默》的最小主义和《假面》的反结构。
+
+大师，首先必须精通大情节。我很同情那种想使其银幕处女作读起来就像是《假面》般血气方刚的欲望。但是，跻身先锋派的梦想必须要等到你自己也精通了经典形式之后，一如在你之前的许多艺术家一样。
+只有当你确定能写出像样的作品之后，才敢说自己已经理解。作家需要不断磨练技巧。直到只是从左脑滑向右脑，直到智力感悟变成一种谋生手段。
+</code></pre>
+<p>我在起初学习编程，或者在编写一个软件的时候，也总想来个什么<strong>奇招</strong>。还总孤芳自赏，认为现在的太多东西过于空洞，没有创新。等到时间久了，编程水平提高之后，才发现自己早些年自己以为是创新的作品，其实就是一堆shit，基本没什么含金量，而且考虑问题也过于简单。<strong>奇招</strong>本身也是为了不同而不同，而不是从解决问题的角度出发，打破常规的创新。</p>
+<p>我也常跟朋友调侃说：”<strong>我现在写程序基本就看前辈的代码，多看书，很少自己去设计个什么结构了，因为我知道我们大多数年轻人不是有想法，而是书读的太少，想太多。</strong>“</p>
+<h2 id="二-作家必须相信他所写的东西"><a href="#二-作家必须相信他所写的东西" class="headerlink" title="二 作家必须相信他所写的东西"></a>二 作家必须相信他所写的东西</h2><p>还是关于之前的反结构。作者在这里阐释了，** 为什么这些反结构，最小主义的电影结构如此吸引着年轻的作家。**</p>
+<pre><code>我怀疑，对许多人来说，并不是因为这种形式的内在意义引起了他们的兴趣，而是因为这种形式所代表的外在的东西。
+
+年轻人被教诲说，好莱坞和艺术是相对的。因此，那些初出茅庐者为了被人视为艺术家，便落进了这个圈套，他们写作剧本的目的并不是因为它是什么，而是因为它不是什么。
+他们为了避免商业主义的污染，便回避了闭合结局，主动人物，时空顺序以及因果关系。结果，其作品便被矫揉造作所荼毒。
+
+就像一个生活在强大父亲阴影中的孩子，你打破好莱坞的“规则”，是因为这样能给你一种自由感。但是，对父权的愤怒反抗并不是创造力，而是为了博取关注的忤逆行为。为不同而不同就像对商业法则的盲从一样空洞。
+</code></pre>
+<p>在大学的时候，自学linux也是这个原因。为了和别人不懂，为了使自己成为一个黑客似的人物。从此仇视windows，都尝试过那些蹩脚恶心的linux游戏。</p>
+<p>直到最近在Windows上开发，才觉得vs很好很强大，c#是一款很人性化的语言。</p>
+<p>就开发而言，问题永远不会是，你用vim敲代码，我用vs自动生成，你就比我牛逼。如果背后的编译原理我们都知道，何必浪费那些时间？</p>
+<p>那些使用vim和emacs的人，如果你是为了不同而不同，那么还是放下这些工具吧。最脑残的莫过于用vim开发c#。</p>
+<p>实际上，大多数折腾linux的人，也是为了不同而不同。自称喜欢开源，我就纳闷，linux是开源，但是读过源码的能有几个？不是不读而是读不懂罢了。只是拘泥于表面的叛逆，永远都成不了高手。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/11/01/sql-subquery/" rel="prev" title="sql知识总结之子查询">
+      <i class="fa fa-chevron-left"></i> sql知识总结之子查询
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/11/06/c-sharp-event-delegate/" rel="next" title="c#事件处理之委托">
+      c#事件处理之委托 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E5%A4%A7%E6%83%85%E8%8A%82%E4%B8%8E%E5%8F%8D%E6%83%85%E8%8A%82"><span class="nav-number">1.</span> <span class="nav-text">一 大情节与反情节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-%E4%BD%9C%E5%AE%B6%E5%BF%85%E9%A1%BB%E7%9B%B8%E4%BF%A1%E4%BB%96%E6%89%80%E5%86%99%E7%9A%84%E4%B8%9C%E8%A5%BF"><span class="nav-number">2.</span> <span class="nav-text">二 作家必须相信他所写的东西</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

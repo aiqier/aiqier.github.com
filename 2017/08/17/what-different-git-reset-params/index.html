@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="git 的文档中会介绍到git reset 有几个参数 git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] [] 其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。 首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git reset 中的三个参数到底有啥区别？">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="git 的文档中会介绍到git reset 有几个参数 git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] [] 其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。 首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset1.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset2.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset3.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-reset4.png">
+<meta property="article:published_time" content="2017-08-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-08-17T14:34:49.171Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/git-reset1.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>git reset 中的三个参数到底有啥区别？ | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git reset 中的三个参数到底有啥区别？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-08-17 00:00:00 / 修改时间：22:34:49" itemprop="dateCreated datePublished" datetime="2017-08-17T00:00:00+08:00">2017-08-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/08/17/what-different-git-reset-params/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/08/17/what-different-git-reset-params/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>git 的文档中会介绍到git reset 有几个参数</p>
+<p>git reset [–soft | –mixed [-N] | –hard | –merge | –keep] [-q] [<commit>]</p>
+<p>其中 soft, mixed, hard 比较常用。之所以写这样一篇博客是想借此来总结git的一些底层知识。</p>
+<p>首先你要知道git reset 用来让代码回退到某个commit，而且–mixed 是默认选项。接下来你要知道git reset，无论使用哪个参数，你的那些回退之前的commit都“找不到”了。（用git reflog可以找回来）</p>
+<span id="more"></span>
+
+<p><img src="/img/git-reset1.png" alt="git-reset"></p>
+<p>当你reset 回到2版本的时候，再次新的开发肯定是在2的基础上，如第三幅图所示，所以问题就在于你在回退版本的时候，是否还想要commit3和commit4这部分修改的代码了？</p>
+<p>如果你想要的话，可以使用soft参数，这会让这部分变化的代码（commit3 到commit4）都放在当前工作目录中，也就是说你用 git status 将会发现一堆可以被git add 然后commit的“变化”。<br>或者使用mixed参数，来让这部分变化放在暂存区stage中，你可以选择将这部分变化的代码（commit3到commit4） commit。</p>
+<p>所以如果你再把这些变化“补充”回去，那么将得到的代码会和commit4是一样的，只不过不是当时的commit4了。</p>
+<p>当然如果你使用hard选项就是不打算要commit3到commit4的代码了。</p>
+<p>能够实现将变化放到当前工作目录的方式，类似于 diff和patch的原理。就是a 和 b 比较，总能得到一个 diff c，那么这个c就相当于一个patch，对a打一个c patch，就可以得到b了。</p>
+<p>同样的commit2 和commit4比较，是可以得到一个diff的，然后把当前分支回退到commit2，然后在把当前目录“运行”diff。</p>
+<p>注意我是说commit2和commit4之间的比较，所以如果在commit3中给某个文件加入一行，在commit 4中又把它删了，那实际上我们reset之后是发不现这种变化的。提到这点为了引出git的设计思路，每个commit都是独立的版本快照，而非什么存储变化，所以你用git diff只是看到当前目录与git库的区别，git并非把这些区别存储于git中。（会在后面讲到）</p>
+<p>顺便说一下，因为reset 回到了以前的版本，如果这部分被回退的代码在之前已经提交到服务器上，你是不能把这次commit，push到远程服务器上的，因为git是不容许旧版本覆盖新版本的，这就是所谓的“只做加法，不做减法。”<br>你可能知道<code>git push -f</code>，但这是个很不好的习惯，很可能把别人的代码都影响了。所以你想修改远程分支，最好的方式是使用revert。</p>
+<p>所以要记住如果你的commit已经发布到远程，就不要使用reset的方式了。</p>
+<h2 id="git的一部分底层知识"><a href="#git的一部分底层知识" class="headerlink" title="git的一部分底层知识"></a>git的一部分底层知识</h2><p>我之前一直认为，git commit 之间是存储的是变化，也就是说commit2不会存一份新的代码，而是只存储对于commit1的diff，后来我阅读了一部分git的底层原理知识，发现这个想法基本可以不去考虑了（即使git 为了优化空间，会以“diff”的方式，来压缩，从而减小空间。但是这部分底层优化对于你理解这个模型没什么意义，本质上你还是要认为每个版本都是独立的单元。）</p>
+<p><img src="/img/git-reset2.png" alt="git-reset"></p>
+<p>git基本上是一个数据库，所有的数据都可以用key value的方式去引用到，那个key基本上就是一段哈希序，数据库的数据类型有上图几种。</p>
+<p>红色的是 blob 对象 ，基本上一个代码文件就存储为一个 blob 对象，除非代码文件被修改了，否则新的commit还会引用到之前版本的blob对象。（如上图，commit3 也在引用 test.txt version2）</p>
+<p>紫色的是tree对象，它可以说类似于文件夹目录，所以tree可以指向多个其它的tree或者blob对象。</p>
+<p>绿色的被称为commit (提交) 对象，可以说一个commit对象，指向一个tree对象（项目的根目录），这样一个commit对象就代表一次完整的提交，表示当前项目的状态。同时commit对象也会指向它的父commit。</p>
+<p>灰色的被称为引用对象，也就是分支对象了。 基本上 Git 中的一个分支其实就是一个指向某个工作版本一条 HEAD 记录的指针或引用。<br>而HEAD 是一个指向你当前所在分支的引用标识符。<br>这个数据库可以说就是在你运行git init的时候创建的，init后，你会看到各种各样的文件夹和文件，如下就是git的数据库的样子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">    HEAD</span><br><span class="line">    branches/</span><br><span class="line">    config</span><br><span class="line">    description</span><br><span class="line">    hooks/</span><br><span class="line">    index</span><br><span class="line">    info/</span><br><span class="line">    objects/</span><br><span class="line">    refs/</span><br></pre></td></tr></table></figure>
+
+<p>我们所做的git操作，就是把工作目录修改的内容，存储到这个git数据库，或者选择某个版本的仓库，把它载入到当前工作目录中来。</p>
+<p>所以有了上面的知识，你就不难理解，git是如何比较commit之间的不同，然后进行回退的了，因为它根本没有“存差异”（试想如果是存差异 ，是不是还要合并或者重放这些差异），存的就是每个版本的快照。<br>这个在pro git这本书一开始就提到了：</p>
+<p>其他系统在每个版本中记录着各个文件的具体差异</p>
+<p><img src="/img/git-reset3.png" alt="git-reset"></p>
+<p>Git 保存每次更新时的文件快照</p>
+<p><img src="/img/git-reset4.png" alt="git-reset"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/29/for-200-blogs/" rel="prev" title="写给第200篇博客">
+      <i class="fa fa-chevron-left"></i> 写给第200篇博客
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/08/27/where-the-hell-is-tyrion-Lannister-smart/" rel="next" title="小恶魔提里昂兰尼斯特到底聪明在哪？">
+      小恶魔提里昂兰尼斯特到底聪明在哪？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">git的一部分底层知识</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

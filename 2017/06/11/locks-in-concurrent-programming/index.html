@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="锁的由来并行的程序访问共享变量的时候，如果至少有一个访问是更新操作，就会出现问题。书本上常常拿银行账户取款来举例子。我就不写了，因为我说道银行账户取款，你就知道我在说什么了，无非就是某个执行的上下文在执行的中途被修改了，解决这个问题的方式就是利用锁，来保证一次只允许一个线程执行该段代码。 锁的危害n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并发编程中的锁">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/06/11/locks-in-concurrent-programming/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="锁的由来并行的程序访问共享变量的时候，如果至少有一个访问是更新操作，就会出现问题。书本上常常拿银行账户取款来举例子。我就不写了，因为我说道银行账户取款，你就知道我在说什么了，无非就是某个执行的上下文在执行的中途被修改了，解决这个问题的方式就是利用锁，来保证一次只允许一个线程执行该段代码。 锁的危害n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/lock1.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/lock2.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/lock3.png">
+<meta property="article:published_time" content="2017-06-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-11T09:25:55.905Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="并发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/lock1.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/06/11/locks-in-concurrent-programming/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>并发编程中的锁 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/06/11/locks-in-concurrent-programming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          并发编程中的锁
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-06-11 00:00:00 / 修改时间：17:25:55" itemprop="dateCreated datePublished" datetime="2017-06-11T00:00:00+08:00">2017-06-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/06/11/locks-in-concurrent-programming/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/06/11/locks-in-concurrent-programming/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="锁的由来"><a href="#锁的由来" class="headerlink" title="锁的由来"></a>锁的由来</h2><p>并行的程序访问共享变量的时候，如果至少有一个访问是更新操作，就会出现问题。<br>书本上常常拿银行账户取款来举例子。我就不写了，因为我说道银行账户取款，你就知道我在说什么了，无非就是某个执行的上下文在执行的中途被修改了，解决这个问题的方式就是利用锁，来保证一次只允许一个线程执行该段代码。</p>
+<h2 id="锁的危害"><a href="#锁的危害" class="headerlink" title="锁的危害"></a>锁的危害</h2><p>n个相同的任务，如果每个任务执行的执行时间是t，那如果单线程一个一个的执行，那耗费的时间就是n*t。</p>
+<span id="more"></span>
+
+<p><img src="/img/lock1.png" alt="lock"></p>
+<p>但是如果交给n个线程并行执行，并且假设有足够的cpu核来保证所有的线程都同时执行，那耗费的时间就是t。</p>
+<p><img src="/img/lock2.png" alt="lock"></p>
+<p>可惜事与愿违，n个任务可能要访问同一变量，所以不得不用锁把临界区锁起来，让这片区域的代码串行执行。<br>所以我们分开讨论，对于每个任务，可以独立执行的部分还是会并发的运行，只不过对于被锁住的临界区，不得不退化为串行代码了，这样看来，这部分时间并没有节省下来。</p>
+<p><img src="/img/lock3.png" alt="lock"></p>
+<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁提供最基础的锁，也被称为互斥量，可以用来限制每次只能有一个线程进入临界区。保证了一个线程独享临界区。其它线程只能阻塞直到这个锁资源被释放，获得锁的线程是随机的，也就说那些阻塞等待的执行线程，执行起来是无序的。</p>
+<p>java中可以自己创建一个锁，来把临界区的代码锁起来，不过要记得在finally中释放这把锁，否则如果出了异常，其它线程都会阻塞在那里。：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = new ReentrantLock();  </span><br><span class="line">// 获取锁  </span><br><span class="line">lock.lock();  </span><br><span class="line">try &#123;  </span><br><span class="line">    // access the resource protected by this lock  </span><br><span class="line">&#125; finally &#123;  </span><br><span class="line">    // 释放锁  </span><br><span class="line">lock.unlock();  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>不过java中提供一种synchronized关键字，来修饰方法，使得这个方法，在被多个线程运行的时候，同一时间只能有一个线程进入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synchronized void f()&#123; … &#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，如果这个对象有多个synchronized方法，那么这些方法，共享一把锁。而且你要把这些方法所修改的属性设为私有变量，否则你不能阻止其他非synchronized方法的修改。</p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>上面提到的这种互斥锁，线程在获取不到锁的时候，会进行阻塞，知道获得到锁才开始running，这其中有一个sleep-&gt;running的过程。还有一种写法，并不释放cpu，而是一直占用。类似于在一个死循环中一直监听cpu的状态。</p>
+<p>所以这种自旋锁一定要是锁的获取时间非常快，而且是多核cpu，否则会很降低CPU的效率。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">y = Compute(my_rank);</span><br><span class="line">while (flag != my_rank);</span><br><span class="line">flag++;</span><br></pre></td></tr></table></figure>
+
+<p>而且这种自旋锁的维护成本较高，一般也很少使用。</p>
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p>一些书籍和博客，会把信号量表示为： 互斥锁通常就是信号量值为1的简化版本。但是这个说法很有误导性，尤其是先讲互斥锁再讲信号量。</p>
+<p>互斥锁的锁之后开锁和关锁，0～1的两种状态。仅仅是互斥，也就是说多个人获取一把锁的时候，仅仅有一个人能获得，其它人需要阻塞直到此人释放了这把锁。但问题是，之后谁获得这把锁也是随机不确定的。而且所谓的互斥锁还有一种所有权的概念，也就是你上的这把锁，只能由你自己亲自打开。所以它仅限制在构造临界区上。</p>
+<p>而信号量本身就有通知和同步的作用。所以它能既解决了临界区的问题，又能解决了通知的问题，这个是互斥锁解决不了的。比如说现在有一个需求，需要你阻塞读取磁盘，直到有数据之后再唤醒它。</p>
+<p>那么我们可以用信号量实现，在主线程中使用一个<code>semaphore_decrease()</code>因为此时的信号量0，所以它会阻塞在这。然后在读取数据完成后，<code>semaphore_increase()</code><br>这样主线程才可以运行<code>semaphore_decrease()</code>使代码继续运行下去。这样一个一元信号量，互斥锁都满足不了。还有类似某个线程需要等多个线程执行完才可以继续执行。都有类似生产者消费者的同步问题，这都需要信号量。</p>
+<p>其实信号量还有一个作用，就是限制并发，因为信号量不仅仅可以是1，比如你的信号量现在是5，那就限制只有五个线程能够获取，第六个已经没有信号可以decrease了。</p>
+<p>所以这也就是为什么当信号量为1的时候，它看上去像是一把锁。</p>
+<p>不过既能做临界区又能同步消息，不是一个好的设计，这也就是为什么很多人都建议不要用信号量。所以linux 的很多场景都变为使用互斥锁，需要通知的场景则改为completion variable了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"># 并发</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/11/why-did-Japanese-Katana-so-long/" rel="prev" title="为啥太刀这么长">
+      <i class="fa fa-chevron-left"></i> 为啥太刀这么长
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/" rel="next" title="java排序抛出的Comparison method violates its general contract 异常">
+      java排序抛出的Comparison method violates its general contract 异常 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81%E7%9A%84%E7%94%B1%E6%9D%A5"><span class="nav-number">1.</span> <span class="nav-text">锁的由来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81%E7%9A%84%E5%8D%B1%E5%AE%B3"><span class="nav-number">2.</span> <span class="nav-text">锁的危害</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-number">3.</span> <span class="nav-text">互斥锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E6%97%8B%E9%94%81"><span class="nav-number">4.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">5.</span> <span class="nav-text">信号量</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

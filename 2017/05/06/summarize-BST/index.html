@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="树是一种很实用的数据结构，往往和查找，决策挂钩。提供对数级的时间复杂度。而且树还有一点，因为它是结构递归的，所以它的很多算法，都可以用递归去实现。 这算是对《算法》这本书的总结，真心觉得这本书太好看了，不像算法导论那么难懂。 需要记住的是一颗树的深度，表示了它查找最深需要多深，而可以将所有节点的深度进行相加，再除以节点个数，来求出一个二叉查找树的平均高度。1979年，J.Robson证明了随机键构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="总结一些二叉查找树的知识">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/05/06/summarize-BST/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="树是一种很实用的数据结构，往往和查找，决策挂钩。提供对数级的时间复杂度。而且树还有一点，因为它是结构递归的，所以它的很多算法，都可以用递归去实现。 这算是对《算法》这本书的总结，真心觉得这本书太好看了，不像算法导论那么难懂。 需要记住的是一颗树的深度，表示了它查找最深需要多深，而可以将所有节点的深度进行相加，再除以节点个数，来求出一个二叉查找树的平均高度。1979年，J.Robson证明了随机键构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/bst.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/delete-bst.png">
+<meta property="article:published_time" content="2017-05-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-02T14:23:21.171Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="BST">
+<meta property="article:tag" content="tree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/bst.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/05/06/summarize-BST/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>总结一些二叉查找树的知识 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/05/06/summarize-BST/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          总结一些二叉查找树的知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-06 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-06T00:00:00+08:00">2017-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-12-02 22:23:21" itemprop="dateModified" datetime="2017-12-02T22:23:21+08:00">2017-12-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/05/06/summarize-BST/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/05/06/summarize-BST/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>树是一种很实用的数据结构，往往和查找，决策挂钩。提供对数级的时间复杂度。<br>而且树还有一点，因为它是结构递归的，所以它的很多算法，都可以用递归去实现。</p>
+<p>这算是对《算法》这本书的总结，真心觉得这本书太好看了，不像算法导论那么难懂。</p>
+<p>需要记住的是一颗树的深度，表示了它查找最深需要多深，而可以将所有节点的深度进行相加，再除以节点个数，来求出一个二叉查找树的平均高度。1979年，J.Robson证明了随机键构造的二叉查找树的平均高度为树的结点数的对数级别，随后L.Devroye证明了对于足够大的N，这个值趋近于2.99lgN。</p>
+<p>二叉查找树被称为（BST），首先它是一颗二叉树，而且每个节点的左子树，键都比它小，每个节点的右子树，键都比它大。</p>
+<p><img src="/img/bst.png" alt="bst"></p>
+<p>下面分别讲解其对应的接口：</p>
+<span id="more"></span>
+
+<h2 id="查找：get"><a href="#查找：get" class="headerlink" title="查找：get"></a>查找：get</h2><p>查找用递归实现非常方便:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public value get(Key key)&#123;</span><br><span class="line">    return get(root, key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private Value get(Node x, Key key)&#123;</span><br><span class="line">    if(x == null)</span><br><span class="line">        return null;</span><br><span class="line">    int cmp = key.compareTo(x.key);</span><br><span class="line">    if (cmp &lt; 0) return get(x.left, key);</span><br><span class="line">    else if (cmp &gt; 0) return get(x.right, key);</span><br><span class="line">    else return x.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>试想如果一个二叉查找树，不是很平衡，已经“退化成”一个链表了，那么它查询的时间复杂度就变成了O(N),就像是一个对于链表的顺序查找。但如果对一个很平衡的二叉查找树进行查找。那么时间复杂度就是标准的对数级，lgN，就像是一个标准的二分查找。<br>一些归纳法推理的证明，最后得到二叉查找树的平均复杂度为 ~2lnN，约为1.39lgN，而二叉查找树中查找随机键的成本比二分查找高约39%。</p>
+<h2 id="插入：put"><a href="#插入：put" class="headerlink" title="插入：put"></a>插入：put</h2><p>二叉查找树的另一个特性是插入的实现难度和查找差不多。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public void pub(Key key, Value val)&#123;</span><br><span class="line">    root = put(root, key, vale);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public Node put(Node x, Key key, Value val)&#123;</span><br><span class="line">    if(x == null) return new Node(key, val, 1);</span><br><span class="line">    int cmp = key.compareTo(x.key);</span><br><span class="line">    if (cmp &lt; 0) x.left = put(x.left, key, val);</span><br><span class="line">    else if (cmp &gt; 0) x.right = put(x.right, key, val);</span><br><span class="line">    else x.val = val;</span><br><span class="line">    x.N = size(x.left) + size(x.right) + 1;</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除表中对应的key值：-delete"><a href="#删除表中对应的key值：-delete" class="headerlink" title="删除表中对应的key值： delete"></a>删除表中对应的key值： delete</h2><p><img src="/img/delete-bst.png" alt="delete-bst"></p>
+<p>这个看上去是有点难，如果你删除的是一个叶子节点，还好说，删了就完了，但是如果是一颗非叶子节点呢，关键要保证如何删了此节点之后，剩余的节点要怎么办。</p>
+<p>这种被称为Hibbard的方法，如果选定了要删除X，会先选择X右子树的最小节点（min），记为y，然后将X的左右子树分别挂到y上（X的左子树肯定比y小，因为y来源于X的右子树，X的右子树肯定比y大，因为y是X右子树的最小节点）。然后因为y是最小节点，所以y可能存在右子树，但只要把y的右子树上移到y原来的位置就行了。</p>
+<p>这可能看上去很绕，这里我想到了一个思考方式。和大家分享一下。其实你只要“从失去的节点后，那些分支挂钩应该要挂到哪？”就明白了。</p>
+<p>比如你删除了x，那对于x而言，将有3个位置，不知道要挂到哪里。分别就是指“上左右”。然后你找来了y来代替x的位置，这样“上左右”就被补充了，但是原来y的“上和右”又有了空缺，这样把“上和右”合并就好了。</p>
+<h2 id="最小键：min"><a href="#最小键：min" class="headerlink" title="最小键：min"></a>最小键：min</h2><p>递归的向左边不停的找到底就好了。</p>
+<h2 id="最大键-max"><a href="#最大键-max" class="headerlink" title="最大键: max"></a>最大键: max</h2><p>递归的向右边不停的找到底就好了。</p>
+<h2 id="小于等于key的最大键-floor"><a href="#小于等于key的最大键-floor" class="headerlink" title="小于等于key的最大键: floor"></a>小于等于key的最大键: floor</h2><p>递归的向左找到小于等于key的最大键</p>
+<h2 id="大于等于key的最大键-ceiling"><a href="#大于等于key的最大键-ceiling" class="headerlink" title="大于等于key的最大键: ceiling"></a>大于等于key的最大键: ceiling</h2><p>递归的向右找到大于等于key的最大键</p>
+<h2 id="小于key的键的数量：-rank"><a href="#小于key的键的数量：-rank" class="headerlink" title="小于key的键的数量： rank"></a>小于key的键的数量： rank</h2><p>这个可以用遍历的方式，遍历小于等于此key的左子树，然后计数。</p>
+<h2 id="键的数量：-size"><a href="#键的数量：-size" class="headerlink" title="键的数量： size"></a>键的数量： size</h2><p>这个看上去需要遍历再计数，其实有些实现树的数据结构，会记下左右子树的个数，这样就可以直接看根节点左右子树的个数，然后+1就行了。</p>
+<h2 id="所有键的集合-keys"><a href="#所有键的集合-keys" class="headerlink" title="所有键的集合: keys"></a>所有键的集合: keys</h2><p>遍历一棵树，无论是先序遍历，中序遍历，后序遍历，递归的实现起来都非常简单。</p>
+<h2 id="lo-hi-之间的所有键-keys-key-lo-key-hi"><a href="#lo-hi-之间的所有键-keys-key-lo-key-hi" class="headerlink" title="[lo..hi]之间的所有键: keys(key lo, key hi)"></a>[lo..hi]之间的所有键: keys(key lo, key hi)</h2><p>这个实现方式也是基于遍历的，只不过要造一个队列，来讲符合条件的key扔入此队列中。最后返回此队列就行了。</p>
+<h2 id="树是否为空-isEmpty"><a href="#树是否为空-isEmpty" class="headerlink" title="树是否为空: isEmpty"></a>树是否为空: isEmpty</h2><p>这个没什么可说的，很简单。</p>
+<p>所以二叉树虽然查找起来很快，但是如果不平衡，比如退化的像个链表，那么查找起来依旧不高效了。下一篇博客会介绍一种平衡二叉树的东西，来解决此问题。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BST/" rel="tag"># BST</a>
+              <a href="/tags/tree/" rel="tag"># tree</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/23/from-python-to-java-hashtable/" rel="prev" title="从python到java之哈希表">
+      <i class="fa fa-chevron-left"></i> 从python到java之哈希表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/07/what-about-the-user-stickiness-of-narrative-games/" rel="next" title="叙事性游戏的用户粘性怎么办？">
+      叙事性游戏的用户粘性怎么办？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%EF%BC%9Aget"><span class="nav-number">1.</span> <span class="nav-text">查找：get</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%EF%BC%9Aput"><span class="nav-number">2.</span> <span class="nav-text">插入：put</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8%E4%B8%AD%E5%AF%B9%E5%BA%94%E7%9A%84key%E5%80%BC%EF%BC%9A-delete"><span class="nav-number">3.</span> <span class="nav-text">删除表中对应的key值： delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E9%94%AE%EF%BC%9Amin"><span class="nav-number">4.</span> <span class="nav-text">最小键：min</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E9%94%AE-max"><span class="nav-number">5.</span> <span class="nav-text">最大键: max</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E4%BA%8E%E7%AD%89%E4%BA%8Ekey%E7%9A%84%E6%9C%80%E5%A4%A7%E9%94%AE-floor"><span class="nav-number">6.</span> <span class="nav-text">小于等于key的最大键: floor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E4%BA%8E%E7%AD%89%E4%BA%8Ekey%E7%9A%84%E6%9C%80%E5%A4%A7%E9%94%AE-ceiling"><span class="nav-number">7.</span> <span class="nav-text">大于等于key的最大键: ceiling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E4%BA%8Ekey%E7%9A%84%E9%94%AE%E7%9A%84%E6%95%B0%E9%87%8F%EF%BC%9A-rank"><span class="nav-number">8.</span> <span class="nav-text">小于key的键的数量： rank</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AE%E7%9A%84%E6%95%B0%E9%87%8F%EF%BC%9A-size"><span class="nav-number">9.</span> <span class="nav-text">键的数量： size</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E9%94%AE%E7%9A%84%E9%9B%86%E5%90%88-keys"><span class="nav-number">10.</span> <span class="nav-text">所有键的集合: keys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lo-hi-%E4%B9%8B%E9%97%B4%E7%9A%84%E6%89%80%E6%9C%89%E9%94%AE-keys-key-lo-key-hi"><span class="nav-number">11.</span> <span class="nav-text">[lo..hi]之间的所有键: keys(key lo, key hi)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E6%98%AF%E5%90%A6%E4%B8%BA%E7%A9%BA-isEmpty"><span class="nav-number">12.</span> <span class="nav-text">树是否为空: isEmpty</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

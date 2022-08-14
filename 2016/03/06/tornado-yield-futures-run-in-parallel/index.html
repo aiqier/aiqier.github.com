@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="起因实际上之前一直使用tornado异步，也大概知道tornado Coroutine yield的原理，从来不知道tornado可以支持“同时多个异步并发执行，等它们的结果都获取到再返回”，官网中给出类似的写法： You can also yield a list or dict of Futures, which will be started at the same time and run">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tornado并行执行多个异步的原理">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/03/06/tornado-yield-futures-run-in-parallel/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="起因实际上之前一直使用tornado异步，也大概知道tornado Coroutine yield的原理，从来不知道tornado可以支持“同时多个异步并发执行，等它们的结果都获取到再返回”，官网中给出类似的写法： You can also yield a list or dict of Futures, which will be started at the same time and run">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-03-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.789Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/03/06/tornado-yield-futures-run-in-parallel/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>tornado并行执行多个异步的原理 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/03/06/tornado-yield-futures-run-in-parallel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          tornado并行执行多个异步的原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-03-06 00:00:00" itemprop="dateCreated datePublished" datetime="2016-03-06T00:00:00+08:00">2016-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/03/06/tornado-yield-futures-run-in-parallel/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/03/06/tornado-yield-futures-run-in-parallel/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>实际上之前一直使用tornado异步，也大概知道tornado Coroutine yield的原理，从来不知道tornado可以支持“同时多个异步并发执行，等它们的结果都获取到再返回”，官网中给出类似的写法：</p>
+<p>You can also yield a list or dict of Futures, which will be started at the same time and run in parallel; a list or dict of results will be returned when they are all finished:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self</span>):</span><br><span class="line">    http_client = AsyncHTTPClient()</span><br><span class="line">    response1, response2 = <span class="keyword">yield</span> [http_client.fetch(url1),</span><br><span class="line">                                  http_client.fetch(url2)]</span><br><span class="line">    response_dict = <span class="keyword">yield</span> <span class="built_in">dict</span>(response3=http_client.fetch(url3),</span><br><span class="line">                               response4=http_client.fetch(url4))</span><br><span class="line">    response3 = response_dict[<span class="string">&#x27;response3&#x27;</span>]</span><br><span class="line">    response4 = response_dict[<span class="string">&#x27;response4&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>所以这篇博客就来挖掘一下原因。</p>
+<span id="more"></span>
+
+<h2 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h2><p>如果你想看懂这篇文章，你要知道什么是yield，什么是异步，还有什么是协程，对tornado异步的原理了解，里面用到的Futrue对象,coroutine之类,它们是如何被tornado的ioloop进行上下文切换的。</p>
+<p>当你在一个函数中使用yield的时候，这个函数就被称为一个生成器，这和普通函数不同的是，它可以被中断，什么是中断呢？比如现在有一个函数，你去调用它，这个时候，你就只能在这里等调用结果，什么都不能干，因为控制权已经交给函数了，当然比这高级一点的是将回调函数传入这个函数，使得这个函数能够在某些情况发生时，调用这个回调函数。</p>
+<p>而有了yield则更高级，可以在这个函数执行的途中，将控制权在返还给调用者，这样我们可以在做一些事情之后，继续让这个函数执行下去。这才是yield真正的精髓所在，比xrange要高端多了。</p>
+<h4 id="传递参数"><a href="#传递参数" class="headerlink" title="传递参数"></a>传递参数</h4><p>如果一个函数中有一个这样的一条语句：</p>
+<p><code>m = yield n</code>,那其实意味着，在函数内部与外部的沟通中，n将会被生成器送出，m将会被外部调用者传入（通过send）。</p>
+<p>对应的tornado这条语句：<code>response = yield http_client.fetch(url)</code></p>
+<p>实际上，http_client.fetch(url)返回了一个Future对象，当这个handler函数(比如get)被装饰器包裹之后,它就会通过generator.next()启动yield返回的generator,通过ioloop与generator.send(vaule)驱动generator运行,已达到异步执行的目的。</p>
+<p>而在tornado的coroutine异步处理中,都是通过Future对象封装异步回调函数的。你看见Futrue，一定会想起，python3.2新增的concurrent.futures功能，实际上功能确实类似，或者说思想上是一样的，既“封装callable，以便异步执行。”你可以简单的记为:tornado异步函数将返回一个Future对象，yield这个对象，将得到最终结果。</p>
+<h2 id="Future对象"><a href="#Future对象" class="headerlink" title="Future对象"></a>Future对象</h2><p>这个Future对象有一个叫_set_done的flag，当调用set_result(self,result)来为这个Future对象设置result时会设置_set_done。在设置set_done之后，它所有的add_done_callback才会被执行。之后你就可以通过result方法，来获取最终结果。</p>
+<p>Future的一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HelloHandler</span>(<span class="title class_ inherited__">RequestHandler</span>):</span><br><span class="line"><span class="meta">    @gen.coroutine</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self</span>):</span><br><span class="line">    x = <span class="keyword">yield</span> self.do_test()</span><br><span class="line">    self.render(<span class="string">&quot;xxxx&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">do_test</span>(<span class="params">self</span>):</span><br><span class="line">        fut = Future()</span><br><span class="line">        fut.set_result(<span class="string">&quot;test&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> fut</span><br></pre></td></tr></table></figure>
+
+<h2 id="寻找问题"><a href="#寻找问题" class="headerlink" title="寻找问题"></a>寻找问题</h2><p>讲完上面的基础知识，我们该去找原问题了，既“同时多个异步并发执行，等它们的结果都获取到再返回”的支持代码.</p>
+<p>首先我们找到tornado的源码，找到<code>coroutine</code>其实是这样实现的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_make_coroutine_wrapper</span>(<span class="params">func, replace_callback</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;The inner workings of ``@gen.coroutine`` and ``@gen.engine``.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The two decorators differ in their treatment of the ``callback``</span></span><br><span class="line"><span class="string">    argument, so we cannot simply implement ``@engine`` in terms of</span></span><br><span class="line"><span class="string">    ``@coroutine``.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># On Python 3.5, set the coroutine flag on our generator, to allow it</span></span><br><span class="line">    <span class="comment"># to be used with &#x27;await&#x27;.</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">hasattr</span>(types, <span class="string">&#x27;coroutine&#x27;</span>):</span><br><span class="line">        func = types.coroutine(func)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        future = TracebackFuture()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> replace_callback <span class="keyword">and</span> <span class="string">&#x27;callback&#x27;</span> <span class="keyword">in</span> kwargs:</span><br><span class="line">            callback = kwargs.pop(<span class="string">&#x27;callback&#x27;</span>)</span><br><span class="line">            IOLoop.current().add_future(</span><br><span class="line">                future, <span class="keyword">lambda</span> future: callback(future.result()))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            result = func(*args, **kwargs) <span class="comment"># 如果这个函数是一个普通的函数，将返回一个值，否者会返回一个生成器。</span></span><br><span class="line">        <span class="keyword">except</span> (Return, StopIteration) <span class="keyword">as</span> e:</span><br><span class="line">            result = _value_from_stopiteration(e)</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            future.set_exc_info(sys.exc_info())</span><br><span class="line">            <span class="keyword">return</span> future</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(result, GeneratorType):<span class="comment"># 当它是生成器的时候。</span></span><br><span class="line">                <span class="comment"># Inline the first iteration of Runner.run.  This lets us</span></span><br><span class="line">                <span class="comment"># avoid the cost of creating a Runner when the coroutine</span></span><br><span class="line">                <span class="comment"># never actually yields, which in turn allows us to</span></span><br><span class="line">                <span class="comment"># use &quot;optional&quot; coroutines in critical path code without</span></span><br><span class="line">                <span class="comment"># performance penalty for the synchronous case.</span></span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    orig_stack_contexts = stack_context._state.contexts</span><br><span class="line">                    yielded = <span class="built_in">next</span>(result) <span class="comment"># result作为一个生成器将会执行到yield处，并返回一个Future对象。</span></span><br><span class="line">                    <span class="keyword">if</span> stack_context._state.contexts <span class="keyword">is</span> <span class="keyword">not</span> orig_stack_contexts:</span><br><span class="line">                        yielded = TracebackFuture()</span><br><span class="line">                        yielded.set_exception(</span><br><span class="line">                            stack_context.StackContextInconsistentError(</span><br><span class="line">                                <span class="string">&#x27;stack_context inconsistency (probably caused &#x27;</span></span><br><span class="line">                                <span class="string">&#x27;by yield within a &quot;with StackContext&quot; block)&#x27;</span>))</span><br><span class="line">                <span class="keyword">except</span> (StopIteration, Return) <span class="keyword">as</span> e:</span><br><span class="line">                    future.set_result(_value_from_stopiteration(e))</span><br><span class="line">                <span class="keyword">except</span> Exception:</span><br><span class="line">                    future.set_exc_info(sys.exc_info())</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    Runner(result, future, yielded)</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    <span class="keyword">return</span> future</span><br><span class="line">                <span class="keyword">finally</span>:</span><br><span class="line">                    <span class="comment"># Subtle memory optimization: if next() raised an exception,</span></span><br><span class="line">                    <span class="comment"># the future&#x27;s exc_info contains a traceback which</span></span><br><span class="line">                    <span class="comment"># includes this stack frame.  This creates a cycle,</span></span><br><span class="line">                    <span class="comment"># which will be collected at the next full GC but has</span></span><br><span class="line">                    <span class="comment"># been shown to greatly increase memory usage of</span></span><br><span class="line">                    <span class="comment"># benchmarks (relative to the refcount-based scheme</span></span><br><span class="line">                    <span class="comment"># used in the absence of cycles).  We can avoid the</span></span><br><span class="line">                    <span class="comment"># cycle by clearing the local variable after we return it.</span></span><br><span class="line">                    future = <span class="literal">None</span></span><br><span class="line">        future.set_result(result)</span><br><span class="line">        <span class="keyword">return</span> future</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+
+<p>可以看到关键的这几句:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = func(*args, **kwargs)</span><br><span class="line">yielded = <span class="built_in">next</span>(result)</span><br><span class="line">Runner(result, future, yielded)</span><br></pre></td></tr></table></figure>
+
+<p>简单的说，这个函数，捕获被装饰器函数返回的生成器对象，传递给Runner。</p>
+<p>Runner的代码实际上是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, gen, result_future, first_yielded</span>):</span><br><span class="line">    self.future = first_yield</span><br><span class="line">    self.io_loop.add_future(</span><br><span class="line">        self.future, <span class="keyword">lambda</span> f: self.run()</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> future.done():</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            value = future.result()</span><br><span class="line">            yielded = self.gen.send(value)</span><br><span class="line">        <span class="keyword">except</span> (StopIteration, Return) <span class="keyword">as</span> e:</span><br><span class="line">            self.finished = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.finished = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.handle_yield(yielded):</span><br><span class="line">            <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p>而这个Runner，会将Futrue对象注册到io_loop中，或者就之前的例子，我们可以说将异步函数fetch注册到ioloop，当fetch完成后，它会调用自己的一个回调函数（我们这里讨论的是没有给fetch传递callback的情况，详见AsyncHTTPClient的定义），给future对象设置值。而io_loop又将会调用回调函数<code>lambda f: self.run()</code>,来将future.result的值赋值给value.<br>可以看到这个value被send给了生成器内部，之后生成器又会得到下一个执行点（生成器）</p>
+<p>这个runner使用迭代的方式，一个一个的获取生成器，处理完之后，就使用handle_yield，判断是否要还有下一个Future对象和回调，（之所以用迭代，而不是递归，是因为在python中递归是一件很慢的事儿。）直到所有的future都done了。</p>
+<p>接着我们将注意力放到这个handle_yield函数中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handle_yield</span>(<span class="params">self, yielded</span>):</span><br><span class="line">    <span class="comment"># Lists containing YieldPoints require stack contexts;</span></span><br><span class="line">    <span class="comment"># other lists are handled in convert_yielded.</span></span><br><span class="line">    <span class="keyword">if</span> _contains_yieldpoint(yielded):</span><br><span class="line">        yielded = multi(yielded)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(yielded, YieldPoint):</span><br><span class="line">        <span class="comment"># YieldPoints are too closely coupled to the Runner to go</span></span><br><span class="line">        <span class="comment"># through the generic convert_yielded mechanism.</span></span><br><span class="line">        self.future = TracebackFuture()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">start_yield_point</span>():</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                yielded.start(self)</span><br><span class="line">                <span class="keyword">if</span> yielded.is_ready():</span><br><span class="line">                    self.future.set_result(</span><br><span class="line">                        yielded.get_result())</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    self.yield_point = yielded</span><br><span class="line">            <span class="keyword">except</span> Exception:</span><br><span class="line">                self.future = TracebackFuture()</span><br><span class="line">                self.future.set_exc_info(sys.exc_info())</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.stack_context_deactivate <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># Start a stack context if this is the first</span></span><br><span class="line">            <span class="comment"># YieldPoint we&#x27;ve seen.</span></span><br><span class="line">            <span class="keyword">with</span> stack_context.ExceptionStackContext(</span><br><span class="line">                    self.handle_exception) <span class="keyword">as</span> deactivate:</span><br><span class="line">                self.stack_context_deactivate = deactivate</span><br><span class="line"></span><br><span class="line">                <span class="keyword">def</span> <span class="title function_">cb</span>():</span><br><span class="line">                    start_yield_point()</span><br><span class="line">                    self.run()</span><br><span class="line">                self.io_loop.add_callback(cb)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            start_yield_point()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.future = convert_yielded(yielded)</span><br><span class="line">        <span class="keyword">except</span> BadYieldError:</span><br><span class="line">            self.future = TracebackFuture()</span><br><span class="line">            self.future.set_exc_info(sys.exc_info())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.future.done() <span class="keyword">or</span> self.future <span class="keyword">is</span> moment:</span><br><span class="line">        self.io_loop.add_future(</span><br><span class="line">            self.future, <span class="keyword">lambda</span> f: self.run())</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> self.future.done() <span class="keyword">or</span> self.future <span class="keyword">is</span> moment:</span><br><span class="line">    self.io_loop.add_future(</span><br><span class="line">        self.future, <span class="keyword">lambda</span> f: self.run())</span><br></pre></td></tr></table></figure>
+<p>所以这就是循环的去执行到下一个yield的方式。还要注意的是，代码中提到的YieldPoint已经被放弃，Tornado4.0也推荐使用Future类型。</p>
+<p>再注意convert_yielded函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">convert_yielded</span>(<span class="params">yielded</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Convert a yielded object into a `.Future`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The default implementation accepts lists, dictionaries, and Futures.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If the `~functools.singledispatch` library is available, this function</span></span><br><span class="line"><span class="string">    may be extended to support additional types. For example::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        @convert_yielded.register(asyncio.Future)</span></span><br><span class="line"><span class="string">        def _(asyncio_future):</span></span><br><span class="line"><span class="string">            return tornado.platform.asyncio.to_tornado_future(asyncio_future)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionadded:: 4.1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># Lists and dicts containing YieldPoints were handled earlier.</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(yielded, (<span class="built_in">list</span>, <span class="built_in">dict</span>)):</span><br><span class="line">        <span class="keyword">return</span> multi(yielded)</span><br><span class="line">    <span class="keyword">elif</span> is_future(yielded):</span><br><span class="line">        <span class="keyword">return</span> yielded</span><br><span class="line">    <span class="keyword">elif</span> isawaitable(yielded):</span><br><span class="line">        <span class="keyword">return</span> _wrap_awaitable(yielded)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> BadYieldError(<span class="string">&quot;yielded unknown object %r&quot;</span> % (yielded,))</span><br></pre></td></tr></table></figure>
+
+<p>我们注意到了multi(yielded)这个调用，最后我们找到了这段代码，这就是答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">multi</span>(<span class="params">children, quiet_exceptions=(<span class="params"></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Runs multiple asynchronous operations in parallel.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    ``children`` may either be a list or a dict whose values are</span></span><br><span class="line"><span class="string">    yieldable objects. ``multi()`` returns a new yieldable</span></span><br><span class="line"><span class="string">    object that resolves to a parallel structure containing their</span></span><br><span class="line"><span class="string">    results. If ``children`` is a list, the result is a list of</span></span><br><span class="line"><span class="string">    results in the same order; if it is a dict, the result is a dict</span></span><br><span class="line"><span class="string">    with the same keys.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    That is, ``results = yield multi(list_of_futures)`` is equivalent</span></span><br><span class="line"><span class="string">    to::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        results = []</span></span><br><span class="line"><span class="string">        for future in list_of_futures:</span></span><br><span class="line"><span class="string">            results.append(yield future)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If any children raise exceptions, ``multi()`` will raise the first</span></span><br><span class="line"><span class="string">    one. All others will be logged, unless they are of types</span></span><br><span class="line"><span class="string">    contained in the ``quiet_exceptions`` argument.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If any of the inputs are `YieldPoints &lt;YieldPoint&gt;`, the returned</span></span><br><span class="line"><span class="string">    yieldable object is a `YieldPoint`. Otherwise, returns a `.Future`.</span></span><br><span class="line"><span class="string">    This means that the result of `multi` can be used in a native</span></span><br><span class="line"><span class="string">    coroutine if and only if all of its children can be.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    In a ``yield``-based coroutine, it is not normally necessary to</span></span><br><span class="line"><span class="string">    call this function directly, since the coroutine runner will</span></span><br><span class="line"><span class="string">    do it automatically when a list or dict is yielded. However,</span></span><br><span class="line"><span class="string">    it is necessary in ``await``-based coroutines, or to pass</span></span><br><span class="line"><span class="string">    the ``quiet_exceptions`` argument.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This function is available under the names ``multi()`` and ``Multi()``</span></span><br><span class="line"><span class="string">    for historical reasons.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionchanged:: 4.2</span></span><br><span class="line"><span class="string">       If multiple yieldables fail, any exceptions after the first</span></span><br><span class="line"><span class="string">       (which is raised) will be logged. Added the ``quiet_exceptions``</span></span><br><span class="line"><span class="string">       argument to suppress this logging for selected exception types.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionchanged:: 4.3</span></span><br><span class="line"><span class="string">       Replaced the class ``Multi`` and the function ``multi_future``</span></span><br><span class="line"><span class="string">       with a unified function ``multi``. Added support for yieldables</span></span><br><span class="line"><span class="string">       other than `YieldPoint` and `.Future`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> _contains_yieldpoint(children):</span><br><span class="line">        <span class="keyword">return</span> MultiYieldPoint(children, quiet_exceptions=quiet_exceptions)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> multi_future(children, quiet_exceptions=quiet_exceptions)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>之后是multi_future的定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">multi_future</span>(<span class="params">children, quiet_exceptions=(<span class="params"></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Wait for multiple asynchronous futures in parallel.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This function is similar to `multi`, but does not support</span></span><br><span class="line"><span class="string">    `YieldPoints &lt;YieldPoint&gt;`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionadded:: 4.0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. versionchanged:: 4.2</span></span><br><span class="line"><span class="string">       If multiple ``Futures`` fail, any exceptions after the first (which is</span></span><br><span class="line"><span class="string">       raised) will be logged. Added the ``quiet_exceptions``</span></span><br><span class="line"><span class="string">       argument to suppress this logging for selected exception types.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    .. deprecated:: 4.3</span></span><br><span class="line"><span class="string">       Use `multi` instead.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(children, <span class="built_in">dict</span>):</span><br><span class="line">        keys = <span class="built_in">list</span>(children.keys())</span><br><span class="line">        children = children.values()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        keys = <span class="literal">None</span></span><br><span class="line">    children = <span class="built_in">list</span>(<span class="built_in">map</span>(convert_yielded, children))</span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">all</span>(is_future(i) <span class="keyword">for</span> i <span class="keyword">in</span> children)</span><br><span class="line">    unfinished_children = <span class="built_in">set</span>(children)</span><br><span class="line"></span><br><span class="line">    future = Future()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> children:</span><br><span class="line">        future.set_result(&#123;&#125; <span class="keyword">if</span> keys <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">else</span> [])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">f</span>):</span><br><span class="line">        unfinished_children.remove(f)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> unfinished_children:</span><br><span class="line">            result_list = []</span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> children:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    result_list.append(f.result())</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">if</span> future.done():</span><br><span class="line">                        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(e, quiet_exceptions):</span><br><span class="line">                            app_log.error(<span class="string">&quot;Multiple exceptions in yield list&quot;</span>,</span><br><span class="line">                                          exc_info=<span class="literal">True</span>)</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        future.set_exc_info(sys.exc_info())</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> future.done():</span><br><span class="line">                <span class="keyword">if</span> keys <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    future.set_result(<span class="built_in">dict</span>(<span class="built_in">zip</span>(keys, result_list)))</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    future.set_result(result_list)</span><br><span class="line"></span><br><span class="line">    listening = <span class="built_in">set</span>()</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> children:</span><br><span class="line">        <span class="keyword">if</span> f <span class="keyword">not</span> <span class="keyword">in</span> listening:</span><br><span class="line">            listening.add(f)</span><br><span class="line">            f.add_done_callback(callback)</span><br><span class="line">    <span class="keyword">return</span> future</span><br></pre></td></tr></table></figure>
+
+<p>这是它支持并行异步的关键代码，可以看到这个被包装的Future,它的listening,维护着多个子future，每次有一个子future完成后，就会调用callback，将其从unfinished_children中移除，当所有子Future的callback都执行完后，才会真正调用这个Future的set_result方法。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/03/05/think-something-about-technology/" rel="prev" title="关于技术的几点思考">
+      <i class="fa fa-chevron-left"></i> 关于技术的几点思考
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/03/31/talk-about-python-decorator/" rel="next" title="聊聊python装饰器">
+      聊聊python装饰器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%8F%90%E7%9F%A5%E8%AF%86"><span class="nav-number">2.</span> <span class="nav-text">前提知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="nav-number">2.0.1.</span> <span class="nav-text">传递参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">Future对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BB%E6%89%BE%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">寻找问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

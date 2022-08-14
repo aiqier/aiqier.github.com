@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="初玩dota的时候，并不知道兵线的意义，所以在线上，看到兵就打，这完全是小白的游戏方式。这篇博客会整理moba游戏中兵线的意义，当然主要是dota的兵线，英雄联盟和望着荣耀的兵线类似，不过因为这两个游戏不能tp到塔下，没有中路高低坡，不能拉野，没有反补。所以兵线的操控要简单的多。  控制兵线兵线主要是指双方由基地（电脑）负责控制的兵（常称小兵）的交战处。这里是你获得金钱和经验的主要地（击杀英雄和打">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MOBA游戏中的兵线到底是个啥？">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/07/22/what-is-moba-line-of-soldiers/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="初玩dota的时候，并不知道兵线的意义，所以在线上，看到兵就打，这完全是小白的游戏方式。这篇博客会整理moba游戏中兵线的意义，当然主要是dota的兵线，英雄联盟和望着荣耀的兵线类似，不过因为这两个游戏不能tp到塔下，没有中路高低坡，不能拉野，没有反补。所以兵线的操控要简单的多。  控制兵线兵线主要是指双方由基地（电脑）负责控制的兵（常称小兵）的交战处。这里是你获得金钱和经验的主要地（击杀英雄和打">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/dotaline1.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/dotaline2.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/dotaline3.png">
+<meta property="article:published_time" content="2017-07-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-07-22T14:04:54.084Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="dota">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/dotaline1.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/07/22/what-is-moba-line-of-soldiers/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MOBA游戏中的兵线到底是个啥？ | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/07/22/what-is-moba-line-of-soldiers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MOBA游戏中的兵线到底是个啥？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-07-22 00:00:00 / 修改时间：22:04:54" itemprop="dateCreated datePublished" datetime="2017-07-22T00:00:00+08:00">2017-07-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%B8%E6%88%8F/" itemprop="url" rel="index"><span itemprop="name">游戏</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/07/22/what-is-moba-line-of-soldiers/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/07/22/what-is-moba-line-of-soldiers/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>初玩dota的时候，并不知道兵线的意义，所以在线上，看到兵就打，这完全是小白的游戏方式。这篇博客会整理moba游戏中兵线的意义，当然主要是dota的兵线，英雄联盟和望着荣耀的兵线类似，不过因为这两个游戏不能tp到塔下，没有中路高低坡，不能拉野，没有反补。所以兵线的操控要简单的多。</p>
+<p><img src="/img/dotaline1.png" alt="dotaline"></p>
+<h2 id="控制兵线"><a href="#控制兵线" class="headerlink" title="控制兵线"></a>控制兵线</h2><p>兵线主要是指双方由基地（电脑）负责控制的兵（常称小兵）的交战处。这里是你获得金钱和经验的主要地（击杀英雄和打野同样能够获得经验和金钱。），控制兵线可以简单的理解为，前期要保证拉兵线，让兵线向己方塔靠进，但同时不能让对方的小兵被自己的塔打到，后期要保证推兵线，让兵线直逼对方塔。</p>
+<span id="more"></span>
+
+<p>为什么这么说呢？</p>
+<p>因为游戏一开始，都没什么技能，没什么装备，主要是短暂的发育期，基本上都会在线上补刀发育。随着游戏的进行，会有一些英雄配合去抓对方线上英雄。那么兵线，离你的塔越近，你在发现自己被抓时，逃跑的概率就越大。假如说，兵线是你的发育地带，塔下就是你的安全地带，那么理塔越近，就意味你从发育地带到地带就越容易。但同时兵线进入自家塔下，那么就意味着这波兵线会被塔快速的消耗掉。首先塔下的刀并不好补，而且这会让兵线马上又被推回去。所以兵线最好的位置，就是距离自家塔进，而且又不会被塔攻击到的地方，这里是补刀发育最好的地方。</p>
+<h2 id="如何拉回兵线"><a href="#如何拉回兵线" class="headerlink" title="如何拉回兵线"></a>如何拉回兵线</h2><p>线上拉回兵线的基本要领是反补自家的小兵。这样因为你方小兵消耗的快，所以兵线自然会被推过来。当然小兵的血很少的时候，才可以反补，而且像是《英雄联盟》和《王者荣耀》这样的游戏，根本不能反补，这就需要靠技巧吸引仇恨的技巧来拉兵线，就是你在攻击敌方英雄的时候，会吸引到小兵的仇恨，这样小兵会开始攻击你，这样，你就可以把它们拉到你方便补刀的地方，但是要注意的是，这同时会加速兵线的推进，因为在这段时间，对方小兵打你，而你方小兵在打对方小兵，所以你方小兵的消耗明显慢了。</p>
+<p>还有类似卡兵的机制来控线，你在dota中，经常能看到游戏一开始，对方英雄在兵线前，各种左右移动，来保证兵线的前进变慢，这就是利用单位碰撞机制来控制兵线。这种控制对中路英雄尤为重要。因为dota的中路，在中心因为河道的原因，是个低坡，在dota中有，两个机制，1是低坡没有高坡视野，2是低坡攻击高坡会有一定概率丢失，所以如果能把兵线控制在己方高坡尤为重要。</p>
+<p>还有一种消耗兵的方式，同样可以控制兵线，比如用“谜团”，“巫妖”这些可以消耗己方小兵的英雄，同样可以让兵线拉回来。还有更常用的，就是拉野，直接让野怪来消耗这波兵线。消耗兵线的好处不仅仅是让兵线拉了回来，你想，兵营是按照时间固定刷新小兵的，所以你消耗的越多，那么就意味着，对方的英雄吃到的经验和金钱也就越少。</p>
+<h2 id="如何推兵线"><a href="#如何推兵线" class="headerlink" title="如何推兵线"></a>如何推兵线</h2><p>推兵线看似很简单，只要把对方小兵都清了，兵线自然就过去了，但实际上这里面还有很多学问。</p>
+<p>前面说道的前期兵线应该拉到己方塔下，但是每隔几波小兵，都会出现一波投石车，投石车攻击塔的伤害很高。所以一般都会利用这次机会，把兵线推倒对方塔下，然后消耗对方的塔。</p>
+<p>因为远程兵的攻击高，但是护甲和血少，所以如果对面的远程兵死了，兵线就会推过去。喜欢攒兵线的人，会在推兵线的时候，只清理掉对面的远程兵和投石车，然后这样兵线不但能推过去，还能给自己这条兵线攒一大波，如果这条兵线没人清，那都可能只靠兵线破一路。</p>
+<p>而且一些加攻击力，加回复，加护甲，加吸血的光环，也会很容易把兵线推过去。这也就是为什么游戏前期一定要把这些光环效果关掉，防止兵线在不想推进的时候，默默的因为光环的原因推了过去。</p>
+<p>推兵线其实是发起进攻的号角。一般队伍在一些英雄获得到自己关键性道具的时候（比如跳刀和梅肯），会选择把兵线推到你塔下，然后逼你和他们打一架。我们常说的兵线不好就是指兵线被逼到己方塔下，这样对手很有可能趁着这波兵线拿下自己的塔。这时候你要想守塔，就必须要过来和对手一样多的人才可以。否则有可能被对面越塔强杀。</p>
+<p>所以在面对对方攻击的时候，有aoe的英雄就非常有用了，因为他们的清兵技能，能够减缓对手的进攻。</p>
+<p><img src="/img/dotaline2.png" alt="dotaline"></p>
+<p>这里要说明一点的是，之所以前期才要拉兵线，是因为后期随着装备的成型，收钱的方式会变多，速度会变得越来越快，这个时候，你通过正反补的方式控制兵线明显不现实，所以后期基本上就是双方的来回推线，所谓的收线，就是用aoe，或者类似溅射，高攻击的方式，快速的收钱，之所以要快，是因为这个时候游戏的节奏变得越来越快，你在线上露头的时间越多也意味着你不安全。</p>
+<p>一个常见的战术就是在你发现无法和对面打正面的时候，对面直逼你们高地塔，然后你就可以选择带线来逼他们的高地塔，如果他们有人回家防守，那么你回家他们就要面对以少打多的处境来上高低。如果他们准备撤退那么你们还可以防守反击。所以像水人和幽鬼这样的英雄很适合带线，因为他们可以逼你高低塔，然后再随时大招支援打团战。还有像兽王这种带光环的英雄，你上他高地，他一个人就可以带穿一路，还有像小娜迦这样的英雄，出了辉耀三路逼你。很多比赛都是通过这样的牵制翻盘的。所以兵线到塔下是一个很危险的东西，对面可以随时组织进攻你。你自己的进攻也会受到很大的限制。</p>
+<h2 id="塔的重要性"><a href="#塔的重要性" class="headerlink" title="塔的重要性"></a>塔的重要性</h2><p>那么说到这里，就不得不提塔的重要性了。首先塔为你提供了一个很大的保护视野，你可以安全的待在塔下，在对面发起进攻的时候，也可以随时tp到塔下支援，也就是说你瞬移的范围很广，而如果你的塔没了，首先会给对手金钱，而且更重要的你的安全范围就会变得越来越少，比如你的外塔掉了，那么敌方就可以随意的入侵你的野区抓你。我是这样理解的，兵线越往前推，越是一种压制。我认为你方三路兵线连起来就代表你方的活动范围，比如三路兵线都到你家高地下，那就是把你方的活动区域压制到高地以内，你哪都不能去了，如果你这个时候还偷偷出去打野，那你是连家都不想要了。</p>
+<p>所以拆塔推线，就是一种压制。扩大己方的活动范围。你可以在这些范围下抓对手，或者用他们的野区资源发育。</p>
+<h2 id="为什么一路兵营没了会有超级兵？"><a href="#为什么一路兵营没了会有超级兵？" class="headerlink" title="为什么一路兵营没了会有超级兵？"></a>为什么一路兵营没了会有超级兵？</h2><p>这就是对赢的一方的奖励机制和对输的一方的惩罚机制。超级兵意味着你不自己主动带线，那么这路线随时都会被推倒你家高地下，这是非常危险的。这也就间接的鼓励了双方拆掉对方的高低，扩大优势。</p>
+<h2 id="为什么超级兵的经验和金钱都少了？"><a href="#为什么超级兵的经验和金钱都少了？" class="headerlink" title="为什么超级兵的经验和金钱都少了？"></a>为什么超级兵的经验和金钱都少了？</h2><p>如果超级兵的经验和金钱和普通士兵一样，那么正好可以通过这种方式发育，因为兵线很容易被控制在失去高地方的基地附近，这样反而容易翻盘。不符合“做对一定奖励，做错一定惩罚”的机制。</p>
+<h2 id="反偷塔机制"><a href="#反偷塔机制" class="headerlink" title="反偷塔机制"></a>反偷塔机制</h2><p>dota的塔的机制是这样的：</p>
+<ol>
+<li>外塔没有任何的防偷塔机制，意味着任何时候都能够攻击塔。</li>
+<li>中塔有防偷塔机制，除非兵到了塔下，否则不能攻击塔。</li>
+<li>高地塔有防偷塔机制,只要有一个小兵到达任何一个三塔下，所有三塔的防偷塔机制都会失效。</li>
+</ol>
+<p>其实反偷塔的机制和足球中的越位一样，都是为了增加比赛的观赏性，提高游戏的可玩性，而不是投机取巧。是想没有越位，无论什么时候，都有一个前锋站在你家守门员面前恶心你是什么感觉。没有反偷塔机制，那么很多人就会绕过兵线，然后各种隐藏，等待时机突然偷塔。</p>
+<p>但是并不是说没兵线就不能进攻，只不过塔会回血很快，并且抵抗很多伤害，这类似于告诉你，你可以拆，但是能不能拆掉就看你本事了。之所以这样是因为，如果只能靠兵线才能推塔，那么防守方可以通过清兵的方式，让你永远无法攻击塔，这同样会影响游戏的可玩性和观赏性。</p>
+<p>顺便说一句，dota中的小兵是会随着时间的推移变强的.所以很多aoe后期是没法一次清兵线的。</p>
+<p><img src="/img/dotaline3.png" alt="dotaline"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dota/" rel="tag"># dota</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/18/how-to-humorous-by-sex/" rel="prev" title="这个和性有关的玩笑要怎么开？">
+      <i class="fa fa-chevron-left"></i> 这个和性有关的玩笑要怎么开？
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/28/data-for-song-of-ice-and-fire/" rel="next" title="性价比整理冰与火之歌历史背景[修订版]">
+      性价比整理冰与火之歌历史背景[修订版] <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%85%B5%E7%BA%BF"><span class="nav-number">1.</span> <span class="nav-text">控制兵线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%8B%89%E5%9B%9E%E5%85%B5%E7%BA%BF"><span class="nav-number">2.</span> <span class="nav-text">如何拉回兵线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%8E%A8%E5%85%B5%E7%BA%BF"><span class="nav-number">3.</span> <span class="nav-text">如何推兵线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A1%94%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">塔的重要性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E8%B7%AF%E5%85%B5%E8%90%A5%E6%B2%A1%E4%BA%86%E4%BC%9A%E6%9C%89%E8%B6%85%E7%BA%A7%E5%85%B5%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">为什么一路兵营没了会有超级兵？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B6%85%E7%BA%A7%E5%85%B5%E7%9A%84%E7%BB%8F%E9%AA%8C%E5%92%8C%E9%87%91%E9%92%B1%E9%83%BD%E5%B0%91%E4%BA%86%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">为什么超级兵的经验和金钱都少了？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%81%B7%E5%A1%94%E6%9C%BA%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">反偷塔机制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

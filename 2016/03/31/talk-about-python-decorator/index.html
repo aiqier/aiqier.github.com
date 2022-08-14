@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。 我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。 我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊python装饰器">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/03/31/talk-about-python-decorator/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="前言实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。 我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。 我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.783Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/03/31/talk-about-python-decorator/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>聊聊python装饰器 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/03/31/talk-about-python-decorator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          聊聊python装饰器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-03-31 00:00:00" itemprop="dateCreated datePublished" datetime="2016-03-31T00:00:00+08:00">2016-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/03/31/talk-about-python-decorator/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/03/31/talk-about-python-decorator/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>实际上关于python装饰器，有很多可以写的，我这里仅仅对一些关键的概念进行梳理。</p>
+<p>我喜欢跟人说，装饰器类似于在你执行一件事情(函数调用的时候)的前方做一些事儿，在后方做一些事儿。</p>
+<p>我这个说法也许更应该算是解释，装饰器到底在干什么。实际上装饰器就是一个语法糖。</p>
+<span id="more"></span>
+
+<h2 id="闭包与装饰器"><a href="#闭包与装饰器" class="headerlink" title="闭包与装饰器"></a>闭包与装饰器</h2><p>什么是闭包？能够捕获状态的函数或者方法就叫做闭包。</p>
+<p>得力与python的函数是“一阶公民”，使得函数可以被当成一个对象被赋值，被当做函数参数，在函数中定义一个函数并返回。</p>
+<p>外层函数为内层函数创建了一个上下文，当内层函数返回后，它就有一个属于自己的上下文环境。这就是它能保存的状态。这个功能用来教学的话，经常是验证这个函数被调用了几次的例子。</p>
+<p>你仔细想一下，能够生成函数的函数，将其称之为函数工厂，我们通过传入的参数，让其生成我们想要的函数，这带来了灵活性和可定制型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">addn</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">m</span>):</span><br><span class="line">        <span class="keyword">return</span> n+m</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+
+<p>我们再来说说函数一阶公民，如果一个函数a被当成参数传入，我们在其内部定义另一个函数b，b函数在调用a的同时，做了些别的事情。这样的话a函数就把a函数“包装”了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorator</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">function</span>()</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>其实这等价于:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function = decorator(function)</span><br></pre></td></tr></table></figure>
+
+<p>我觉得装饰器的好处之一是你不用修改源代码。比如你在很多地方都调用了这个函数，现在仅仅在函数的定义部分，给它“装饰”一下，就可以添加新的功能。</p>
+<p>而且装饰器本身的命名，也为代码带来了一定的可读性，这使得装饰器更像是一种注解。不过我觉得做的不好的是tornado的这个装饰器，它的命名就带来很大的误导性，不过还是要怪那些人不看文档。</p>
+<p>不过你纳闷这和闭包这个概念有什么关系？因为装饰器和闭包，就可以实现带有参数的装饰器。</p>
+<h2 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h2><p>之前的段落提到了带有参数的装饰器。你会发现带有参数的装饰器，它实际上有两层，外面的那一层，就是一个闭包，而里面那一层，才定义了一个装饰器函数，这也就是所谓的二级封装。<br>大概的写法是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">aaa</span>(<span class="params">arg1, arg2</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_wrapper</span>(<span class="params">func</span>):</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">__wrapper</span>(<span class="params">*args, **kw</span>):</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kw)</span><br><span class="line">        <span class="keyword">return</span> __wrapper</span><br><span class="line">    <span class="keyword">return</span> _wrapper</span><br></pre></td></tr></table></figure>
+
+<p>就像刚才那个例子。你可以想想，带参数的装饰器，实际上等价于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorator(<span class="params">*args, **kwargs</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">function</span>()</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function = decorator(*args, **kwargs)(function)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="参数带来的一个小细节"><a href="#参数带来的一个小细节" class="headerlink" title="参数带来的一个小细节"></a>参数带来的一个小细节</h4><p>你会发现，作为参数，就可以直接当作闭包，完全不需要：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">a</span>(<span class="params">b</span>):</span><br><span class="line">    c = b</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">func</span>):</span><br><span class="line">        c....</span><br><span class="line">        func()</span><br><span class="line">    <span class="keyword">return</span> wrapper()</span><br></pre></td></tr></table></figure>
+
+<p>你要理解python中的变量就是内存块，变量名只不过是一个标签而已。不过这个b如果要当作一个容器，那就要注意它的默认值一定要设置为b=None,而不是b=[],你可以打印一下这个函数的内建属性：func_defaults，就明白我说的是什么了。</p>
+<h2 id="一些工具"><a href="#一些工具" class="headerlink" title="一些工具"></a>一些工具</h2><p>使用python的functools.wraps可以不让函数的__name__，和__doc__属性被替换。</p>
+<p>因为你“包装”了一个函数之后，它其实已经是另一个函数了，所以函数的一些自省的属性也就丢失了，functools.wraps就可以帮助你解决这个问题。</p>
+<h2 id="装饰器与装饰器模式"><a href="#装饰器与装饰器模式" class="headerlink" title="装饰器与装饰器模式"></a>装饰器与装饰器模式</h2><p>相似的东西，总会拿来做对比，更有趣的是，即使这两个东西仅仅是名字相同，<br>比如java和javascrip，再比如重写和重载这两个其实根本没啥关系的东西，也常拿出来做比较。当然，装饰器和装饰器模式还是很有关系的。</p>
+<p>对于设计模式中的装饰器模式，可以在不用改变原类文件和原用继承的情况下，动态的扩展一个对象的功能，通过一个包装对象，也就是装饰器来包裹一个真实的对象。那么你可以说，你的原函数是独立于装饰函数。装饰函数，仅仅在做扩展而已。这也就是aop面向切面编程。</p>
+<p>实际上python的装饰器，就是使python在语法层面上就支持装饰器模式，也就我刚才所说的，装饰器可以在一个函数调用前做一些事情，在调用后做一些事情。</p>
+<p>我甚至理解，装饰器实际上类似于宏，在做一件用代码生成代码的事情，当然，这本身是不对的，我仅仅是想想而已，它却是仅仅是函数嵌套调用的关系，而非真正的代码级别的替换。</p>
+<h2 id="实用主义"><a href="#实用主义" class="headerlink" title="实用主义"></a>实用主义</h2><p>我喜欢做一个实用主义，所以每次看到一些讲装饰器的原理和能干什么的时候，我就想问一句，那么我能用它来做什么呢？接下来我就带你去看看，装饰器散布在python编程的哪些方面。</p>
+<h4 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Example</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">cls</span>):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;CLASS: %s&quot;</span> % cls</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;static method&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在python中，经常会看到这样的定义，声明这是一个类方法，那是一个静态方法，<br>我起初一直不能理解类方法与静态方法有什么区别，现在我只能说，类方法算是一个绑定在类这个对象上的方法，而静态方法，就是简单的封装到类的命名空间的方法。与类无关系。</p>
+<p>还有property这样的装饰器，使你的函数看起来像是一个属性，你在c#或者java中建模的时候，经常会用到这个方法来建模，写一些被称为是访问器的东西。</p>
+<h4 id="web框架"><a href="#web框架" class="headerlink" title="web框架"></a>web框架</h4><p>flask里面的路由就用到了装饰器,这就是我之前提到的带有参数的装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;home.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>tornado中的异步也用到了装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asynchronous</span></span><br><span class="line"><span class="meta">@gen.coroutine</span></span><br></pre></td></tr></table></figure>
+
+
+<p>第一个装饰器是让连接变成长连接，第二个装饰器能够使得框架和你的yield进行通讯,这实际上算是修改调用时的上下文,这个如果不理解yield将非常苦涩难懂。</p>
+<p>之前我写过一个验证用户登陆才能显示此页面的代码,使得这个handler必须要有xx的权限，才能够登录,装饰器使得,这个验证功能就像是“贴”上去。</p>
+<h4 id="缓存设计"><a href="#缓存设计" class="headerlink" title="缓存设计"></a>缓存设计</h4><p>这里先写一个python的斐波那契数列,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>你知道对于斐波那契数列,这种树形递归的程序，实际上它进行了大量的重复计算。</p>
+<p>那么我可以用一个memory（缓存）来将那些已经计算过的值写入到memory中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">memory = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> memory:</span><br><span class="line">        <span class="keyword">return</span> memory[n]</span><br><span class="line">    r = fib(n-<span class="number">1</span>) + fib(n-<span class="number">2</span>)</span><br><span class="line">    memory[n] = r</span><br><span class="line">    <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+
+<p>当然这个时候，我们可以做一个装饰器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">memorized</span>(<span class="params">func</span>):</span><br><span class="line">    memory = &#123;&#125;</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">n</span>):</span><br><span class="line">        <span class="keyword">if</span> n <span class="keyword">in</span> memory:</span><br><span class="line">            <span class="keyword">return</span> memory[n]</span><br><span class="line">        r = func(n-<span class="number">1</span>) + func(n-<span class="number">2</span>)</span><br><span class="line">        memory[n] = r</span><br><span class="line">        <span class="keyword">return</span> r</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@memorized</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个python的wiki介绍了python装饰器的各种妙用。<a target="_blank" rel="noopener" href="https://wiki.python.org/moin/PythonDecoratorLibrary">https://wiki.python.org/moin/PythonDecoratorLibrary</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/03/06/tornado-yield-futures-run-in-parallel/" rel="prev" title="tornado并行执行多个异步的原理">
+      <i class="fa fa-chevron-left"></i> tornado并行执行多个异步的原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/04/25/my-story-with-game-01/" rel="next" title="我和游戏的故事01">
+      我和游戏的故事01 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AD%E5%8C%85%E4%B8%8E%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">闭包与装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A6%E6%9C%89%E5%8F%82%E6%95%B0%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">带有参数的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%B8%A6%E6%9D%A5%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%BB%86%E8%8A%82"><span class="nav-number">3.0.1.</span> <span class="nav-text">参数带来的一个小细节</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">一些工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E4%B8%8E%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">装饰器与装饰器模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%94%A8%E4%B8%BB%E4%B9%89"><span class="nav-number">6.</span> <span class="nav-text">实用主义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%AE%9A%E4%B9%89"><span class="nav-number">6.0.1.</span> <span class="nav-text">类定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#web%E6%A1%86%E6%9E%B6"><span class="nav-number">6.0.2.</span> <span class="nav-text">web框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1"><span class="nav-number">6.0.3.</span> <span class="nav-text">缓存设计</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

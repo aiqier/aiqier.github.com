@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。可是每每当自己在写 if语句 和看到一些同事写的 很糟糕的if语句 时，我就忍不住去想：怎样写才好？ 目录  if … if  和 if … else if … else if … else if … else 和三元运算符 return 的 if e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于If的几种写法">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/08/04/write-code-if-statement/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。可是每每当自己在写 if语句 和看到一些同事写的 很糟糕的if语句 时，我就忍不住去想：怎样写才好？ 目录  if … if  和 if … else if … else if … else if … else 和三元运算符 return 的 if e">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-08-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.799Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="考古">
+<meta property="article:tag" content="编程心得">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2014/08/04/write-code-if-statement/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于If的几种写法 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/08/04/write-code-if-statement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于If的几种写法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-08-04 00:00:00" itemprop="dateCreated datePublished" datetime="2014-08-04T00:00:00+08:00">2014-08-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/08/04/write-code-if-statement/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/08/04/write-code-if-statement/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>好吧，我其实也不知道自己为什么要写这么一篇Blog。有的时候我都怀疑自己是不是处女座的。虽然我不信星座这种东西，同时我也觉得星座也就能用来骗骗妹子。<br>可是每每当自己在写 <strong>if语句</strong> 和看到一些同事写的 <strong>很糟糕的if语句</strong> 时，我就忍不住去想：怎样写才好？</p>
+<p><strong>目录</strong></p>
+<ul>
+<li><a href="#if-if-and-if-else-if-else-if-else">if … if  和 if … else if … else if … else</a></li>
+<li><a href="#if-else-and-Three-binary-operators">if … else 和三元运算符</a></li>
+<li><a href="#return-and-if">return 的 if</a></li>
+<li><a href="#else">else处女座最后的纠结</a></li>
+</ul>
+<h2 id="if-…-if-和-if-…-else-if-…-else-if-…-else"><a href="#if-…-if-和-if-…-else-if-…-else-if-…-else" class="headerlink" title="if … if  和 if … else if … else if … else"></a><a name="if-if-and-if-else-if-else-if-else">if … if  和 if … else if … else if … else</a></h2><p>这其实并不是写法的问题，其实我发现真的有人会把该用 <code>if ... else if ... else if ... else</code> 的地方写成 <code>if ... if</code>。表面上看起来没问题，其实他们确实是误打误撞，当出错的时候原因是什么都不知道。</p>
+<p>首先请看下面两段代码：</p>
+<span id="more"></span>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// if ... if 形式</span></span><br><span class="line"><span class="keyword">if</span>(a == <span class="number">5</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;FIVE&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a == <span class="number">6</span>)&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;SIX&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a == <span class="number">7</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;SEVEN&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// if ... else if ... else if ... else 形式</span></span><br><span class="line"><span class="keyword">if</span>( a == <span class="number">5</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;FIVE&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>( a == <span class="number">6</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;SIX&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>( a == <span class="number">7</span> )</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;SEVEN&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两断代码执行起来是一样的，为什么？因为它们 <strong>判断的条件自身是互斥的</strong> ，a只能等于这些数中的一个，等于5就不能等于6了，所以也确实没什么问题。</p>
+<p>但是下面两段代码就不同了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// if ... if 形式</span></span><br><span class="line"><span class="keyword">if</span>(a &lt; <span class="number">3</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Three&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a &lt; <span class="number">5</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Five&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a &lt; <span class="number">7</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Seven&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// if ... else if ... else if ... else 形式</span></span><br><span class="line"><span class="keyword">if</span>(a &lt; <span class="number">3</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Three &quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(a &lt; <span class="number">5</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Five and greater than or equal Three&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(a &lt; <span class="number">7</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Seven and greater than or equal Five&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以一些人的if语句会产生bug，就是把本应该 <strong>相互关联的条件分开判断</strong> 了。<br>他们在发现自己的代码不能按照期望执行时往往会用加断点进行调试，然后查看自己的代码是否执行正常，最后常常发现一些不应该执行if语句的被执行了。<br>而且有些人并没有发现 <code>if ... else if ... else if ... else</code> 本身是互斥，还在写这种代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a &lt; <span class="number">3</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Three &quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">3</span>&lt;=a &amp;&amp; a&lt;<span class="number">5</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Five and greater than or equal Three&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">5</span>&lt;=a &amp;&amp; a&lt;<span class="number">7</span>)</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;less than Seven and greater than or equal Five&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它们是关联的if，只会执行其中的一个，所以你多余的判断，根本没必要。</p>
+<p><strong>多余判断还算好，更要命的是如果你在代码中还修改了条件变量的值。</strong></p>
+<p>比如如下代码:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a &gt; <span class="number">3</span>)&#123;</span><br><span class="line">    a = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (a&lt;=<span class="number">3</span>)&#123;</span><br><span class="line">    a++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码本来是判断a是否大于3如果是就归零，否则自增。可惜因为条件并不是互斥的，所以结果在归零后 ，马上又执行了下面的语句。</p>
+<p>下面的这种写法会好很多：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a &gt; <span class="number">3</span>)&#123;</span><br><span class="line">    a = <span class="number">0</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (a&lt;=<span class="number">3</span>)&#123;</span><br><span class="line">    a++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以我的建议就是：如果你在判断一个互斥条件，那么既然这些条件是相互关联的，就应该用  <code>if ... else if ...</code> 连起来。<br>尤其是判断对象是否等于某个值，这种能用switch写的东西，用 <code>if ... else lf ...</code> 写其实挺好的。当然如果是选择的数量比较多时，用switch才会更好些。</p>
+<p>比如我最近写的一段代码要判读拥有某些职位的人是否存在，存在的话就加到队列里发消息。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">messageSeq = <span class="keyword">new</span> <span class="built_in">List</span>&lt;Employee&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(zhuren != null)</span><br><span class="line">&#123;</span><br><span class="line">    seq.<span class="built_in">add</span>(zhuren);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(fuzhuren != null)</span><br><span class="line">&#123;</span><br><span class="line">    seq.<span class="built_in">add</span>(fuzhuren);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(yuanzhang != null)</span><br><span class="line">&#123;</span><br><span class="line">    seq.<span class="built_in">add</span>(fuzhuren);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看！这些if之间本身并没有“任何关系”。</p>
+<h4 id="if-…-if-和-if-…-else-if-…-else-if-…-else-总结"><a href="#if-…-if-和-if-…-else-if-…-else-if-…-else-总结" class="headerlink" title="if … if  和 if … else if … else if … else 总结"></a>if … if  和 if … else if … else if … else 总结</h4><ul>
+<li><code>if ... else if ... else if ... else</code> 这样的写法，if条件之间是存在某种关系的，而且这些关系是互斥的，也就是说它们之中只能有一个执行。</li>
+<li><code>if ... if</code> 是两段“毫无关系”的代码，只不过被你写的近而已。</li>
+</ul>
+<h2 id="if-…-else-和三元运算符"><a href="#if-…-else-和三元运算符" class="headerlink" title=" if … else 和三元运算符"></a><a name="if-else-and-Three-binary-operators"> if … else 和三元运算符</a></h2><p>其实有的时候，它们真的在表达一个东西：</p>
+<p>看下面两段代码，将a和b中较大的赋给max</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a &gt; b)</span><br><span class="line">&#123;</span><br><span class="line">    max = a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    max = b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">max = a&gt;b ? a:b;</span><br></pre></td></tr></table></figure>
+
+<p>你要问我有什么区别，我现在的水平只能告诉你，<code>if...else</code> 是在执行一些语句，而三元运算符却是个能够返回值的表达式。所以只有是在赋值，或者其它一些能够返回值的代码，这两种写法都行，而且三元运算符写起来确实很短小精悍。<br>但是当你要通过if条件判断去执行一些do something的语句时，你确实不得不用 <code>if ... else</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(con)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">dosomething</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">dootherthing</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="return-的-if"><a href="#return-的-if" class="headerlink" title="return 的 if"></a><a name="return-and-if">return 的 if</a></h2><p>我发现不仅仅是我，在读王垠大神的博客时，发现他也想过这个问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(con)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> True;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> False;</span><br></pre></td></tr></table></figure>
+
+<p>有的人（比如王垠大神）就是纠结应该写成这样:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(con)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> True;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> False;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我觉得还是第一种好，为什么？</p>
+<ol>
+<li>第一种短</li>
+<li>大多数程序员都用第一种写法</li>
+<li>其实有的很长的函数在最开始处判断条件不符合直接就return了</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(prject == null)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 很多很复杂的代码</span></span><br><span class="line">xxx;</span><br><span class="line">xxx;</span><br><span class="line">xxx;</span><br><span class="line">xxx;</span><br></pre></td></tr></table></figure>
+
+<p>你觉得你配个else再加缩进会好看么？</p>
+<h2 id="else处女座最后的纠结"><a href="#else处女座最后的纠结" class="headerlink" title="else处女座最后的纠结"></a><a name="else">else处女座最后的纠结</a></h2><p>其实还有一点纠结的事，就是这个else这个东西。<br><code>if ... else</code> 看上去像是“平起平坐”的两种线，只不过else里面不用写条件了。其实我觉得根本不是那样。</p>
+<p>else其实真的就在 <code>if ... else if ... else ...</code> 的最后面，就像是switch的default。<br>而且python的for语句是可以接else的，其作用是在for循环中，如果没有从任何一个break中退出，则会执行for后面的else。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> seq:</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;not has five&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>所以你可以这样理解else：它真的就是来做”收尾”工作的。</p>
+<p>这就是我对if的理解。BTW,我是水瓶座的…</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%80%83%E5%8F%A4/" rel="tag"># 考古</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/" rel="tag"># 编程心得</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/07/15/local-value-name/" rel="prev" title="临时变量应该叫啥?">
+      <i class="fa fa-chevron-left"></i> 临时变量应该叫啥?
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/08/11/why-html-commenting/" rel="next" title="html的代码注释为什么只能是这个样子的？">
+      html的代码注释为什么只能是这个样子的？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#if-%E2%80%A6-if-%E5%92%8C-if-%E2%80%A6-else-if-%E2%80%A6-else-if-%E2%80%A6-else"><span class="nav-number">1.</span> <span class="nav-text">if … if  和 if … else if … else if … else</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#if-%E2%80%A6-if-%E5%92%8C-if-%E2%80%A6-else-if-%E2%80%A6-else-if-%E2%80%A6-else-%E6%80%BB%E7%BB%93"><span class="nav-number">1.0.1.</span> <span class="nav-text">if … if  和 if … else if … else if … else 总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-%E2%80%A6-else-%E5%92%8C%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text"> if … else 和三元运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#return-%E7%9A%84-if"><span class="nav-number">3.</span> <span class="nav-text">return 的 if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#else%E5%A4%84%E5%A5%B3%E5%BA%A7%E6%9C%80%E5%90%8E%E7%9A%84%E7%BA%A0%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">else处女座最后的纠结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

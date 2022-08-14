@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="实际上对于我这种人而言，使用emacs就足够了。 但是特么的不是每一台机器都有emacs。你想，难道你要每次登陆一台服务器，就要安装一次emacs？然后编写各种配置？所以对于那些普通的机器，要是我只在上面“暂时”开发，那我就随便去加个配置足够了，如果说仅仅是看个日志,或者去改个配置文件，或者帮你的vim党同事看代码，那么你必须要会用vim了。还有要注意的一点就是不要把你的vim配置的乱七八糟的，导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="暴力的使用vim">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/05/01/force-use-vim/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="实际上对于我这种人而言，使用emacs就足够了。 但是特么的不是每一台机器都有emacs。你想，难道你要每次登陆一台服务器，就要安装一次emacs？然后编写各种配置？所以对于那些普通的机器，要是我只在上面“暂时”开发，那我就随便去加个配置足够了，如果说仅仅是看个日志,或者去改个配置文件，或者帮你的vim党同事看代码，那么你必须要会用vim了。还有要注意的一点就是不要把你的vim配置的乱七八糟的，导">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-04-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.746Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="vim">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/05/01/force-use-vim/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>暴力的使用vim | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/05/01/force-use-vim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          暴力的使用vim
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-01 00:00:00" itemprop="dateCreated datePublished" datetime="2016-05-01T00:00:00+08:00">2016-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/01/force-use-vim/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/01/force-use-vim/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>实际上对于我这种人而言，使用emacs就足够了。</p>
+<p>但是特么的不是每一台机器都有emacs。你想，难道你要每次登陆一台服务器，就要安装一次emacs？然后编写各种配置？所以对于那些普通的机器，要是我只在上面“暂时”开发，那我就随便去加个配置足够了，如果说仅仅是看个日志,或者去改个配置文件，或者帮你的vim党同事看代码，那么你必须要会用vim了。还有要注意的一点就是不要把你的vim配置的乱七八糟的，导致只有你会用。这样当你出现问题了，需要你同事帮你查问题的时候，他又无从下手，当然如果你吊到不需要同事来帮你查问题，当我没说。</p>
+<p>说白了，本文就是想性价比的使用vim,花最小的代价学习vim，还能获得高收益。</p>
+<span id="more"></span>
+
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><p>这里推荐一个国人的vim配置<a target="_blank" rel="noopener" href="https://github.com/wklken/k-vim">k-vim</a>,我mac的vim配置就是用的这个。不过我建议只在linux服务器上用vim，所以你可以选择只安装他的service版：很简单，就一个配置文件：<a target="_blank" rel="noopener" href="https://github.com/wklken/vim-for-server">k-vim-for-server</a></p>
+<p>##常用的快捷键</p>
+<h4 id="快速移动"><a href="#快速移动" class="headerlink" title="快速移动"></a>快速移动</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">h: 向左移动</span><br><span class="line">j: 向下移动</span><br><span class="line">k: 向上移动</span><br><span class="line">l:向后移动</span><br><span class="line">%： 在匹配的括号间移动</span><br><span class="line">^: 行首</span><br><span class="line">$: 行末</span><br><span class="line">f: 向后跳到第一个匹配的字母</span><br><span class="line">F: 向前跳到第一个匹配的字母</span><br><span class="line">b：单词的开始</span><br><span class="line">e: 单词的结尾</span><br><span class="line">w: 下一个单词</span><br><span class="line"></span><br><span class="line">gg:到buffer首</span><br><span class="line">G: 到buffer尾</span><br></pre></td></tr></table></figure>
+
+<h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">i: 像当前字符的前一个字符插入</span><br><span class="line">I:到行首插入</span><br><span class="line">a: 像当前字符的后一个字符插入</span><br><span class="line">A: 到行尾插入</span><br><span class="line">O:向上一行插入</span><br><span class="line">o:向下一行插入</span><br><span class="line">P:向前粘贴</span><br><span class="line">p:向后粘贴</span><br><span class="line">x: 删除字符</span><br><span class="line"></span><br><span class="line">r:不进入插入模式的替换</span><br></pre></td></tr></table></figure>
+
+<h4 id="查找和替换"><a href="#查找和替换" class="headerlink" title="查找和替换"></a>查找和替换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查找：/xxx</span><br><span class="line">替换：</span><br><span class="line">:s/vivian/sky/ 替换当前行第一个 vivian 为 sky</span><br><span class="line">:s/vivian/sky/g 替换当前行所有 vivian 为 sky</span><br></pre></td></tr></table></figure>
+<p>　</p>
+<h4 id="复制，剪贴，粘贴，删除，撤销和重做"><a href="#复制，剪贴，粘贴，删除，撤销和重做" class="headerlink" title="复制，剪贴，粘贴，删除，撤销和重做"></a>复制，剪贴，粘贴，删除，撤销和重做</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">撤销: u</span><br><span class="line">重做： C-r</span><br></pre></td></tr></table></figure>
+
+<h4 id="buffer和文件，分屏："><a href="#buffer和文件，分屏：" class="headerlink" title="buffer和文件，分屏："></a>buffer和文件，分屏：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">命令 ls 可查看当前已打开的buffer</span><br><span class="line">命令 b num 可切换buffer (num为buffer list中的编号)</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件，buffer和分屏"><a href="#文件，buffer和分屏" class="headerlink" title="文件，buffer和分屏"></a>文件，buffer和分屏</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">e: 打开一个文件</span><br><span class="line">w: 写入一个文件</span><br><span class="line"></span><br><span class="line">:ls -- 列出所有buffer</span><br><span class="line">:bn -- buffer列表中下一个 buffer</span><br><span class="line">:bp -- buffer列表中前一个 buffer</span><br><span class="line">:b# -- 你之前所在的前一个 buffer</span><br><span class="line">:bdelete num -- 删除第num编号buffer</span><br><span class="line">:split 上下分屏</span><br><span class="line">:vsplit 左右分屏</span><br><span class="line">Ctrl+w + 方向 (hjkl)，在屏幕间移动</span><br></pre></td></tr></table></figure>
+
+<h4 id="动作宏"><a href="#动作宏" class="headerlink" title="动作宏"></a>动作宏</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在vim中，每一个动作只要前面加一个数字，就可以执行n次了。</span><br><span class="line">. 重复执行命令</span><br><span class="line">开始录制宏：q+宏的名字(注意，连续的命令在vim中要快按)</span><br><span class="line">结束宏： q</span><br><span class="line">执行宏: @+q</span><br></pre></td></tr></table></figure>
+
+<h4 id="其它键"><a href="#其它键" class="headerlink" title="其它键:"></a>其它键:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bcw: 如果你的光标停留在某个单词的中间，使用这个命令可以删除这个单词</span><br><span class="line">xp: 交换相邻两个字母的位置</span><br><span class="line">%: 在匹配的括号间跳转</span><br><span class="line">: 标识区分空格和制表符</span><br><span class="line">: set list: 这样的话，制表付就被展示成^I</span><br><span class="line">:set paste: 在粘贴python代码的时候很有用</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/vim/" rel="tag"># vim</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/04/30/force-use-emacs/" rel="prev" title="暴力的使用emacs">
+      <i class="fa fa-chevron-left"></i> 暴力的使用emacs
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/02/frankie-and-johnny-love-story/" rel="next" title="Frankie and johnny的爱情故事">
+      Frankie and johnny的爱情故事 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E7%A7%BB%E5%8A%A8"><span class="nav-number">1.0.1.</span> <span class="nav-text">快速移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E5%85%A5"><span class="nav-number">1.0.2.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2"><span class="nav-number">1.0.3.</span> <span class="nav-text">查找和替换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%EF%BC%8C%E5%89%AA%E8%B4%B4%EF%BC%8C%E7%B2%98%E8%B4%B4%EF%BC%8C%E5%88%A0%E9%99%A4%EF%BC%8C%E6%92%A4%E9%94%80%E5%92%8C%E9%87%8D%E5%81%9A"><span class="nav-number">1.0.4.</span> <span class="nav-text">复制，剪贴，粘贴，删除，撤销和重做</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buffer%E5%92%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E5%88%86%E5%B1%8F%EF%BC%9A"><span class="nav-number">1.0.5.</span> <span class="nav-text">buffer和文件，分屏：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%EF%BC%8Cbuffer%E5%92%8C%E5%88%86%E5%B1%8F"><span class="nav-number">1.0.6.</span> <span class="nav-text">文件，buffer和分屏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E4%BD%9C%E5%AE%8F"><span class="nav-number">1.0.7.</span> <span class="nav-text">动作宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E9%94%AE"><span class="nav-number">1.0.8.</span> <span class="nav-text">其它键:</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

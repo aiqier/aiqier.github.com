@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Start在经过上一章云里雾里的commonlisp实例代码之后，接下来的几章，作者打算对common进行系统化的介绍。这一张介绍语法和语义。 4.1 括号里都可以有什么？作者在这里提出lisp的语法使用大量的括号，而没有类似于我们常见编程语言语法是因为这正是lisp的优势。作者在接下来也就对这一观点进行了论述。 4.2 打开黑箱">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实用common lisp 教程 读书笔记4">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/10/16/practical-common-lisp-read-note-4/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="Start在经过上一章云里雾里的commonlisp实例代码之后，接下来的几章，作者打算对common进行系统化的介绍。这一张介绍语法和语义。 4.1 括号里都可以有什么？作者在这里提出lisp的语法使用大量的括号，而没有类似于我们常见编程语言语法是因为这正是lisp的优势。作者在接下来也就对这一观点进行了论述。 4.2 打开黑箱">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-10-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.763Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="lisp">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2014/10/16/practical-common-lisp-read-note-4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实用common lisp 教程 读书笔记4 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/10/16/practical-common-lisp-read-note-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实用common lisp 教程 读书笔记4
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-10-16 00:00:00" itemprop="dateCreated datePublished" datetime="2014-10-16T00:00:00+08:00">2014-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/10/16/practical-common-lisp-read-note-4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/10/16/practical-common-lisp-read-note-4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><p>在经过上一章云里雾里的commonlisp实例代码之后，接下来的几章，作者打算对common进行系统化的介绍。<br>这一张介绍语法和语义。</p>
+<h4 id="4-1-括号里都可以有什么？"><a href="#4-1-括号里都可以有什么？" class="headerlink" title="4.1 括号里都可以有什么？"></a>4.1 括号里都可以有什么？</h4><p>作者在这里提出lisp的语法使用大量的括号，而没有类似于我们常见编程语言语法是因为这正是lisp的优势。<br>作者在接下来也就对这一观点进行了论述。</p>
+<h4 id="4-2-打开黑箱"><a href="#4-2-打开黑箱" class="headerlink" title="4.2 打开黑箱"></a>4.2 打开黑箱</h4><span id="more"></span>
+
+<p>这里作者说典型的任务分为三部分，基本就是编译阶段的<br>词法分析，语法分析，语义分析。<br>作者在这里将“语义分析”称之为，求值器。<br>作者将普通语言中的，编译的这三个部分，称之为一个黑箱。<br>也就是说，词法分析器Scanner，语法分析器GrammarParser和语义分析器,统称为一个黑箱。<br>作者之所以这样说，是因为对于程序员而言（而非语言的设计者），即使你知道中间过程有这些产物，这些步骤，但是你并不能对他们做些什么。</p>
+<p>作者的原话:</p>
+<pre><code>由于语言处理器是一种黑箱，所以处理器所使用的包括语元和抽象语法树在内的数据结构，只对语言的实现者有用。
+</code></pre>
+<p>common的语言处理器分为两部分: 读取器和求值器</p>
+<pre><code>读取器：定义了 字符串 如何被转换成 S-表达式
+求值器：定义了 S-表达式之上的Lisp形式(form)的语法
+</code></pre>
+<p>这里的lisp形式，其实就是指合法的lisp表达式。</p>
+<p>黑箱划分的后果:<br>    1. 可以将S-表达式用作一种可暴露的数据格式来表达源代码之外的数据.<br>    这其实就是在第三章中，作者可以直接从文本文件中读取这些S-表达式。<br>    2. 可以使用语言本身，而非字符串的形式来生成代码。<br>    这是在说，我们非lisp的语言的代码，不像是lisp代码这样，语义本身就是对象树构成的。作者也提到了，这就是Lisp宏的本意。</p>
+<p>作者在这里提出了他将集中去解读两个层面：</p>
+<pre><code>读取器理解 S-表达式
+求值器理解 Lisp形式的S-表达式
+</code></pre>
+<p>那么我们可以这样理解，对于这两个阶段，lisp解释器做了什么？我们可以做什么。</p>
+<p><em>文本</em> –&gt; <strong>读取器</strong> –&gt; <em>S-表达式</em> –&gt; <em>Lisp形式的语法</em> –&gt; <strong>求值器</strong></p>
+<p>S-表达式的基本元素是列表和原子。</p>
+<h4 id="4-3-S-表达式"><a href="#4-3-S-表达式" class="headerlink" title="4.3 S-表达式"></a>4.3 S-表达式</h4><p>读取器将名字转化为符号对象。</p>
+<p>之后作者介绍了读取器的工作原理：</p>
+<p>读取器将名字转化成符号对象:</p>
+<pre><code>特征1:转化成它们等价的大写形式.
+特征2:放入成为包的表中。
+</code></pre>
+<h4 id="4-4-作为Lisp形式的S-表达式（这里讲求值器）"><a href="#4-4-作为Lisp形式的S-表达式（这里讲求值器）" class="headerlink" title="4.4 作为Lisp形式的S-表达式（这里讲求值器）"></a>4.4 作为Lisp形式的S-表达式（这里讲求值器）</h4><p>求值器像一个函数，接受一个句法良好定义的lisp形式作为参数并返回一个值。也就是分别对原子和列表进行求值。</p>
+<p>看作者的这两句话:</p>
+<pre><code>Lisp形式的有趣之处不在于其语法，而在于它们被求值的方式。
+当我们开始考虑列表的求值方式时，事情变得更加有趣了。
+</code></pre>
+<p>我可以感觉到，作者对宏是多么的喜爱。</p>
+<h4 id="4-5-函数调用"><a href="#4-5-函数调用" class="headerlink" title="4.5 函数调用"></a>4.5 函数调用</h4><p>函数调用算是比较常见的求值方式了。</p>
+<p><code>(function-hame argument*)</code>将参数求值后，传递给函数</p>
+<h4 id="4-6-特殊操作符"><a href="#4-6-特殊操作符" class="headerlink" title="4.6 特殊操作符"></a>4.6 特殊操作符</h4><p>通过之前的介绍，函数在被调用之前，所有参数都将被求值。</p>
+<p>所以if语句你就无法写成一个函数，这种逻辑基本都使用到短路求值。if 语句就是lisp为了解决这种问题，而提供的“特殊操作符”。</p>
+<p>作者在这里指出，common-lisp有25个特殊操作符，但是只有很少一部分是直接常用的。比如QUOTE就算是一个常用的操作符，它用来引用一个列表，而不是对它求值。</p>
+<p><code>(quote (+ 1 2))</code>就可以简写成<code>&#39;(+ 1 2)</code></p>
+<p>可以这样理解特殊操作符，我们的lisp求值器对Lisp形式进行求值。默认情况下，lisp求值器会把第一个位置当作函数，然后从左向右来对每一个参数进行求值，等每个值都被求出来之后，将它们传递给参数。</p>
+<p>默认的解析方式，如果不能满足你的需求，那么你就需要一些手段，来控制这棵树的生长：</p>
+<p>比如：<code>&#39;(1 2 3)</code> 这样则引用一个列表，而不是对其进行求值。</p>
+<p>还有就是本节提到的<code>if</code>，可以通过分支选择。来决定对两个表达式的其中之一进行求值。</p>
+<p>最后作者提到，LET修改了其他形式的求值环境，这些将是第6章的重点，不过我并不明白下面例子的含义。<br>我只能理解为一种特殊操作符的扩展了。</p>
+<h4 id="4-7-宏"><a href="#4-7-宏" class="headerlink" title="4.7 宏"></a>4.7 宏</h4><p>作者是这样描述宏的：<br>它以S-表达式为其参数的函数，并返回一个lisp形式，</p>
+<p>特殊操作符，可以扩展lisp的语法。但是确实固定的，而宏却能够让用户自己扩展语法。</p>
+<p>宏是一个以S-表达式为其参数的函数，并返回一个lisp形式。然后对其求值并用该值取代宏形式。</p>
+<p>宏求值包括两部分：</p>
+<pre><code>1.宏形式的元素不经过求值传送到宏函数里。
+2.宏函数的返回形式，按照正常的求值规则进行求值。
+</code></pre>
+<p>之后作者谈到了在编译lisp代码时，宏的编译过程。</p>
+<p>这里作者提到，宏在编译时生成展开式，所以比函数调用付出的代价要小。</p>
+<p>作者将宏比作嵌入编译器的钩子。</p>
+<p>作者在备注中解释了，可以从代码格式，命名约定，区分，代码结构区分宏和函数</p>
+<p>NIL既是一个原子，又是一个列表。所以NIL也就是’()<br>与t类似，它与它的引用完全相同，之后作者引出了等价谓词。</p>
+<p>EQ:只有当两个对象相同时，才是EQ等价的。<br>EQL：EQ不能保证两个对象表示相同的数字或字符值时等价，但是EQL可以。<br>作者提到了使用EQ和EQL的两种阵营，而本书就是第二种阵营的。</p>
+<p>之后简单的介绍了其它两种宽松的EQUAL和EQUALP等价</p>
+<p>这里我总结一下三种求值方式：</p>
+<pre><code>函数: GETF
+特殊操作符: IF, QUOTE, LET
+宏: PUSH, POP, DOLIST, LOOP, SETF
+</code></pre>
+<p>你需要理解，作者指的lisp形式，是什么。</p>
+<p>最后，作者介绍了格式化lisp代码，对于lisp这样的“括号语言”，良好的格式化在必要不过了。<br>因为s-表达式是“一棵树”，所以在同一层的书，在格式化代码的缩进处，也应该是同一缩进。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li>怎么说呢，如果我想写一篇既能自己总结，又能让读者看懂的lisp博客，以现在的水平是做不到的。<br>每次读自己的博客，都会发现能修改的地方太多了。</li>
+<li>作者并不会为了底层而底层，给你讲一大堆细节，一大堆原理，而是从对比和使用的角度，为你分析这背后真正的意义。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/lisp/" rel="tag"># lisp</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/10/14/practical-common-lisp-read-note-3/" rel="prev" title="实用common lisp 教程 读书笔记3">
+      <i class="fa fa-chevron-left"></i> 实用common lisp 教程 读书笔记3
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/10/23/plants-vs-zombies-jinzanhua/" rel="next" title="植物大战僵尸中的金盏花">
+      植物大战僵尸中的金盏花 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Start"><span class="nav-number">1.</span> <span class="nav-text">Start</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E6%8B%AC%E5%8F%B7%E9%87%8C%E9%83%BD%E5%8F%AF%E4%BB%A5%E6%9C%89%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">4.1 括号里都可以有什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-%E6%89%93%E5%BC%80%E9%BB%91%E7%AE%B1"><span class="nav-number">1.0.2.</span> <span class="nav-text">4.2 打开黑箱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-S-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.0.3.</span> <span class="nav-text">4.3 S-表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-%E4%BD%9C%E4%B8%BALisp%E5%BD%A2%E5%BC%8F%E7%9A%84S-%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E8%BF%99%E9%87%8C%E8%AE%B2%E6%B1%82%E5%80%BC%E5%99%A8%EF%BC%89"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.4 作为Lisp形式的S-表达式（这里讲求值器）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-number">1.0.5.</span> <span class="nav-text">4.5 函数调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-6-%E7%89%B9%E6%AE%8A%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">1.0.6.</span> <span class="nav-text">4.6 特殊操作符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-7-%E5%AE%8F"><span class="nav-number">1.0.7.</span> <span class="nav-text">4.7 宏</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

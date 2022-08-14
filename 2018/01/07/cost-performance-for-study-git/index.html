@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="其实我一直想写一篇博客总结git的使用。但是却又没想好怎么写，即使我知道这篇博客的题目应该叫《性价比学习git》，我也没有想好如何性价比的学习git，我不可能把《pro git》上大段的git底层知识贴过来我用自己的话再描述一遍，也不能给你讲一些你这辈子都不会用到的git命令。直到最近我才有了灵感，所以在这篇博客里，我将试图先假设一个场景，并描述清楚你所遇到的问题，然后再告诉你要用git如何解决，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性价比学习git">
+<meta property="og:url" content="http://www.pulpcode.cn/2018/01/07/cost-performance-for-study-git/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="其实我一直想写一篇博客总结git的使用。但是却又没想好怎么写，即使我知道这篇博客的题目应该叫《性价比学习git》，我也没有想好如何性价比的学习git，我不可能把《pro git》上大段的git底层知识贴过来我用自己的话再描述一遍，也不能给你讲一些你这辈子都不会用到的git命令。直到最近我才有了灵感，所以在这篇博客里，我将试图先假设一个场景，并描述清楚你所遇到的问题，然后再告诉你要用git如何解决，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-rebase1.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/git-rebase2.png">
+<meta property="article:published_time" content="2018-01-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-08T15:28:57.523Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/git-rebase1.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2018/01/07/cost-performance-for-study-git/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>性价比学习git | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2018/01/07/cost-performance-for-study-git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          性价比学习git
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-07T00:00:00+08:00">2018-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-08 23:28:57" itemprop="dateModified" datetime="2020-04-08T23:28:57+08:00">2020-04-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/01/07/cost-performance-for-study-git/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/01/07/cost-performance-for-study-git/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>其实我一直想写一篇博客总结git的使用。但是却又没想好怎么写，即使我知道这篇博客的题目应该叫《性价比学习git》，我也没有想好如何性价比的学习git，我不可能把《pro git》上大段的git底层知识贴过来我用自己的话再描述一遍，也不能给你讲一些你这辈子都不会用到的git命令。直到最近我才有了灵感，所以在这篇博客里，我将试图先假设一个场景，并描述清楚你所遇到的问题，然后再告诉你要用git如何解决，最后我才可能会提到这背后的原理是啥，即-“为什么git可以这么玩？”，所以我所指的性价比学习git是说如何通过真实的使用场景学习git。不过我举得例子绝对都是自己开发真正遇到过的问题，同时也有一点点难度，而不是诸如“我想开发一个新功能”这样的简单例子。所以这篇博客也假设你已经学会了git的基本操作，而不会教你一些基础简单的命令，比如什么是分支？如何创建一个分支？BTW,这种写作方式，像极了《xxx cookbook系列丛书》</p>
+<h2 id="开发前忘记checkout一个分支"><a href="#开发前忘记checkout一个分支" class="headerlink" title="开发前忘记checkout一个分支"></a>开发前忘记checkout一个分支</h2><p>你打算为你的项目开发一个新功能，原本你应该在你的master分支上checkout出来一个feature-xxx-xxx，然后在测试完成后合并到你的master分支上。然而当你开发到一半的时候，发现你根本没有checkout一个分支，你的开发都是在master上完成的，这个时候你要怎么办？</p>
+<p>实际上，如果你只是忘记从master分支checkout出来一个新分支feature-xxx-xxx这么简单的话，那么你只需要现在checkout就行了，你会发现你现在已经有了feature-xxx-xxx，并且你所修改的文件都被标记为：“M(odify)”,那现在你就当自己就是在新分支上做的开发就行了。不过还有一些棘手的时候，就是你本来想在feature-1上做开发，但是却错误的在feature-2上做了开发。现在你要如何让这些修改放到feature-1上？其实问题的本质还是feature-2的这些修改直接平移到feature-1会不会产生冲突，如果你修改的某个文件，两个分支已经提交的部分就不同，那你根本不能checkout成功：</p>
+<span id="more"></span>
+
+<p><code>Your local changes to the following files would be overwritten by checkout</code></p>
+<p>这个时候只能你手工的去贴这些修改，然后去修复它们。因为程序并不能智能的知道，你到底想要啥。</p>
+<h2 id="开发途中要你修改一个线上问题"><a href="#开发途中要你修改一个线上问题" class="headerlink" title="开发途中要你修改一个线上问题"></a>开发途中要你修改一个线上问题</h2><p>当你遇到线上问题需要紧急修复的时候，往往你会从master分支上checkout出来一个 hotfix-xxx-xxx,然后测试无误后合并到master上上线，但是你此时已经在某个feature分支上做了一部分开发，而且算不上一个功能还是什么的，这时你怎么切到master？难道你要在你的分支上看到大量的commit，它们的内容都是“提交一次，防止丢失”么？</p>
+<p>你可以先用git stash，将这部分修改储藏起来，然后切到master上去做hot-fix，之后在回到此分支来做git stash pop。看到pop你就明白这是一个栈，但其实也不算，因为你可以指定将某个stash 应用到此分支，pop充其量就表示栈的最上面。</p>
+<h2 id="git-stash-pop-到了错误的分支"><a href="#git-stash-pop-到了错误的分支" class="headerlink" title="git stash pop 到了错误的分支"></a>git stash pop 到了错误的分支</h2><p>你在我之前的描述中学会了git stash 和git stash pop这两个例子，你本来要切回到你的feature-1上git stash pop的，结果没想到，你不小心切到了feature-2，并且你git stash pop了，这下你要怎么办？</p>
+<p>首先你直接使用git stash pop并不是一个好的习惯，正确的方式因该是先git stash apply，然后在git stash drop。不过事已至此，你先要把当前目录那些不该有的stash都剔除掉(checkout 掉它们就好了)，然后你仔细看git的提示信息，在你git stash pop或者git stash drop的时候，<br>会有一个hash值。信息类似于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dropped refs/stash@&#123;0&#125; (xxxxxx)</span><br></pre></td></tr></table></figure>
+
+<p>git的原理中会告诉你，git本质上就是一个k，v数据库，任何东西都可以表示成一个hash值，一个comit，一个branch，一个文件快照，甚至是一次stash。所以虽然你在git stash list上已经看不到那个git stash了，但你依旧可以用hash值引用这次stash，所以只要切回到原来的那个分支，然后git stash apply hash值。</p>
+<p>顺便说一句，只有你成功的git stash pop才会删除掉原来的那个stash，如果你在stash pop的时候产生了冲突，或者因为有未提交文件导致的stash pop失败，都不会在stash栈上去删除你的stash的。这种失败可能是因为你在错误的分支上进行了stash pop，也可能是你已经在上次stash的基础上又开发了一些新功能，从而导致了冲突。反正git本身并不在乎你是否在一个分支A上pop了一个分支B的stash，不产生冲突就算成功。</p>
+<h2 id="如何让远程分支也回到过去"><a href="#如何让远程分支也回到过去" class="headerlink" title="如何让远程分支也回到过去"></a>如何让远程分支也回到过去</h2><p>你开发了一部分代码，并合并到本地的master，然后推送到了服务器，接着你不想要这部分功能了，所以你在本地的master reset了这部分代码，但是你并不能提交它们（软件定律之一：只做加法，不做减法），你要怎么让远程分支上的代码也回到过去？</p>
+<p><code>git push -f</code> ，虽然你可以这么做，但你的同事会杀了你的。其实不要这部分功能最好的方式是git revert，但是git revert只是针对某次提交做一个反向操作，所以不要以为你revert到某个版本就行了，实际上你应该把每个提交的commit都revert才可以。不过有些直男会选择自己手工改回去。</p>
+<p>这里多提一句，revert并不是回到某个版本，而是将某个版本的代码进行撤销。</p>
+<h2 id="你想reset，但是你还想利用这些修改"><a href="#你想reset，但是你还想利用这些修改" class="headerlink" title="你想reset，但是你还想利用这些修改"></a>你想reset，但是你还想利用这些修改</h2><p>你知道git reset可以让代码回归到某个版本，所以你经常使用git reset —hard来放弃这些修改，但是有一天，你想回到某个版本的状态，同时在这些修改的部分上做一些处理，再次提交，而不是直接扔掉它们你要怎么做？<br>你可以选择-mixed 来让这部分修改都放到stage，或者用-soft来让这部分修改都放到工作目录中。实际上我之前写过一篇博客介绍: <a href="http://www.pulpcode.cn/2017/08/17/what-different-git-reset-params/">git reset </a></p>
+<p>不过顺便说一句，<code>git reset</code>的用法并不是回到过去这么简单，比如<code>git reset --mixed</code>，看上去是把变化放到暂存区，但其实算是一个把多次commit合并为一次的操作。</p>
+<p>但是因为这篇博客讨论的是性价比，所以你并不应该过于详细的了解git reset的底层原理，或者是死记硬背他们，只要记用法和规则就行了，比如：</p>
+<p><code>git reset --hard</code>：完全不要这部分修改。<br><code>git reset --mixed</code>：把多次commit 合并为一次的操作。<br><code>git reset --soft</code>：在提交前想在做点修改。</p>
+<h2 id="如何让某几个文件回归到历史版本？"><a href="#如何让某几个文件回归到历史版本？" class="headerlink" title="如何让某几个文件回归到历史版本？"></a>如何让某几个文件回归到历史版本？</h2><p>你并不想要整个commit都回退，你只想让某个文件回退到某个版本。</p>
+<p>git log能看修改记录，git log 后面如果跟上 分支名，就能看到某个分支的修改记录，同理，如果你在git log后面跟上 文件名，是可以看到某个文件的修改记录的，然后你只要git reset hash值 文件名就可以了。文件的提交历史和版本的提交历史，看上去是同构的。</p>
+<h2 id="如何找回已经被你reset的分支？"><a href="#如何找回已经被你reset的分支？" class="headerlink" title="如何找回已经被你reset的分支？"></a>如何找回已经被你reset的分支？</h2><p>你不小心一个 git reset —hard了一些commit，你要如何找回这些commit?</p>
+<p>先用git reflog查看操作记录，然后找到那个hash值，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard xxx</span><br></pre></td></tr></table></figure>
+
+<p>这么说来git reset并不是说做了一个删除的动作，它就是在让当前分支的指针（HEAD）指向某次提交（前提是年代不要太过久远，这些节点还没有被垃圾回收）。所以你在恢复之后，会看到这样的日志：</p>
+<p>HEAD is now at xxxx。</p>
+<p>这也就是为什么回退和恢复都可以用git reset来操作。</p>
+<h2 id="什么时候使用git-rebase？"><a href="#什么时候使用git-rebase？" class="headerlink" title="什么时候使用git rebase？"></a>什么时候使用git rebase？</h2><p>如果一个人对git的某些原理本身并不是很熟悉，他八成推荐你不要用git rebase，就用git merge。但实际上为啥不能用，他也说不出个所以然。现在你就想知道我什么时候应该用git rebase？</p>
+<p>git rebase和merge的区别主要在，merge是一个标准的分支合并，让某个分支流入你的分支, 所以你会看到你的两个分支在共同的父节点开叉，又在你合并的节点聚合。但实际上，开发新功能用分支是好的，但是如果你想让一个主分支看上去很干净，就像你的新功能是在你主分支上开发的，<br>而不是从某一个分支流出再流入，那么rebase是一个不错的选择。在下面这个例子中，C3以rebase的方式变成了C3’。</p>
+<p><img src="/img/git-rebase1.png" alt="git-rebase "></p>
+<p>一般在介绍rebase的时候，都会提到在共同的父节点上，开始选择重放一边，这样C3’看上去就是在C4上开发的，而非C2。还要注意的是C3’不是C3，你可以理解为你的C3不存在了。</p>
+<p>那么为什么很多人不建议你用git rebase？因为GIT rebase在重放的时候，解决冲突要一个版本一个版本的重放，比如你已经开发了C8，C9，C10， 那么衍合的时候会产生三个提交：C8’,C9’，C10’，看上去很麻烦。（实际上冲突就是冲突，都是要解决的，你merge也要解决这些，解决不了大不了reset）</p>
+<p>不过更重要的原因是，” 一旦分支中的提交对象发布到公共仓库，就千万不要对该分支进行衍合操作。“为什么？因为衍合就是变相的在做git reset，那些被衍合的分支，已经算被抛弃了（这也就是为什么你对本地的远程分支衍合需要 push -f），那么如果有人在你被衍和的分支上进行开发，或者merge了你被衍合的代码，那他不得不在把那些被抛弃的分支在引用回来，然后你们的代码commit会变成一层套一层。因为要有现在有两个头需要合并。</p>
+<p>那你再仔细想想，为啥rebase要产生三个提交？因为说了rebase是为了让自己的commit是”好像“在目标分支上开发的一样，所以原来有多少次commit现在就有多少次commit。</p>
+<p>再说一点有趣的，比如下面这个rebase，会重放C8，C9而非C3，C8，C9。</p>
+<p><img src="/img/git-rebase2.png" alt="git-rebase "></p>
+<h2 id="如何查看某个文件的修改记录？"><a href="#如何查看某个文件的修改记录？" class="headerlink" title="如何查看某个文件的修改记录？"></a>如何查看某个文件的修改记录？</h2><p>你们线上出现了bug，原因就是因为某一行愚蠢的代码，你和你的同事们都在为此甩锅，这个时候你想知道到底这行愚蠢的代码是谁写的？</p>
+<p>实际上大多数用IntelliJIDEA的同学，都知道在编辑框的左侧右击选择Annotate是可以看到此文件的修改提交记录的，但这说白了还是包装了git操作。那么用命令行怎么玩呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame file_name</span><br></pre></td></tr></table></figure>
+
+<p>还可以指定行数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame -L m,n file_name</span><br></pre></td></tr></table></figure>
+
+<h2 id="比较文件的差异。"><a href="#比较文件的差异。" class="headerlink" title="比较文件的差异。"></a>比较文件的差异。</h2><p>你平时使用git diff hash1 hash2 来比较两个commit的不同，但是你这时就像看下两次提交中，某个文件有啥不同，</p>
+<p>git diff hash1 hash2 – 文件名</p>
+<p>但你可能会用diff比较其它一些场景，比如git diff默认是比较工作区和暂存区的差别。<br>再比如git diff —cached比较暂存区和HEAD的差别。你还可以用git diff HEAD来比较工作区和HEAD的差别。</p>
+<p>举这个例子是为了说明，git的很多命令都可以在同一级对象上等价使用，比如commit对commit， branch对branch，文件对文件。因为git本质上就是一个kv数据库。</p>
+<h2 id="查看提交记录"><a href="#查看提交记录" class="headerlink" title="查看提交记录"></a>查看提交记录</h2><p>相比于<code>git log</code>，我更常用<code>git log --pretty=oneline</code>,因为看起来更方便，直接排列下来有的时候会找错对应的commithash值。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/30/why-java-generic-use-type-eraser/" rel="prev" title="java为什么要用类型擦除实现泛型？">
+      <i class="fa fa-chevron-left"></i> java为什么要用类型擦除实现泛型？
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/02/10/what-are-we-watching-when-we-are-watching-a-movie01/" rel="next" title="当我们在看电影的时候，我们在看什么？（一）">
+      当我们在看电影的时候，我们在看什么？（一） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%89%8D%E5%BF%98%E8%AE%B0checkout%E4%B8%80%E4%B8%AA%E5%88%86%E6%94%AF"><span class="nav-number">1.</span> <span class="nav-text">开发前忘记checkout一个分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E9%80%94%E4%B8%AD%E8%A6%81%E4%BD%A0%E4%BF%AE%E6%94%B9%E4%B8%80%E4%B8%AA%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">开发途中要你修改一个线上问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-stash-pop-%E5%88%B0%E4%BA%86%E9%94%99%E8%AF%AF%E7%9A%84%E5%88%86%E6%94%AF"><span class="nav-number">3.</span> <span class="nav-text">git stash pop 到了错误的分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%A9%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF%E4%B9%9F%E5%9B%9E%E5%88%B0%E8%BF%87%E5%8E%BB"><span class="nav-number">4.</span> <span class="nav-text">如何让远程分支也回到过去</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E6%83%B3reset%EF%BC%8C%E4%BD%86%E6%98%AF%E4%BD%A0%E8%BF%98%E6%83%B3%E5%88%A9%E7%94%A8%E8%BF%99%E4%BA%9B%E4%BF%AE%E6%94%B9"><span class="nav-number">5.</span> <span class="nav-text">你想reset，但是你还想利用这些修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%A9%E6%9F%90%E5%87%A0%E4%B8%AA%E6%96%87%E4%BB%B6%E5%9B%9E%E5%BD%92%E5%88%B0%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">如何让某几个文件回归到历史版本？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%89%BE%E5%9B%9E%E5%B7%B2%E7%BB%8F%E8%A2%AB%E4%BD%A0reset%E7%9A%84%E5%88%86%E6%94%AF%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">如何找回已经被你reset的分支？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8git-rebase%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">什么时候使用git rebase？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E7%9A%84%E4%BF%AE%E6%94%B9%E8%AE%B0%E5%BD%95%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">如何查看某个文件的修改记录？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E6%96%87%E4%BB%B6%E7%9A%84%E5%B7%AE%E5%BC%82%E3%80%82"><span class="nav-number">10.</span> <span class="nav-text">比较文件的差异。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E8%AE%B0%E5%BD%95"><span class="nav-number">11.</span> <span class="nav-text">查看提交记录</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

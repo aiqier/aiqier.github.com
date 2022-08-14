@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言：之前有朋友跟我讨论过一个问题，他问在java中，i&#x3D;1;i&#x3D;i++;之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。 我先在《c+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当i &#x3D; i++时，究竟发生了什么？">
+<meta property="og:url" content="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="前言：之前有朋友跟我讨论过一个问题，他问在java中，i&#x3D;1;i&#x3D;i++;之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。 我先在《c+">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2012-10-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.798Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="考古">
+<meta property="article:tag" content="c">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>当i = i++时，究竟发生了什么？ | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          当i = i++时，究竟发生了什么？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2012-10-19 00:00:00" itemprop="dateCreated datePublished" datetime="2012-10-19T00:00:00+08:00">2012-10-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2012/10/19/what-happen-when-i-assign-increase/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2012/10/19/what-happen-when-i-assign-increase/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>之前有朋友跟我讨论过一个问题，他问在java中，<code>i=1;i=i++;</code>之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。</p>
+<p>我先在《c++ primer》上看见这样的解释：“++i的效率要比i++的效率高，因为i++必须要有一个临时变量来存放i本身的值“，那么我之前只说对了临时变量，但原因是临时变量先用来存放i的值，然后i本身自增，之后，临时变量赋值给左边，这时，i的值又被 自己之前的值覆盖了，所以又变成1,但这只是个推测，再说c语言中为什么是2？所以不得不反编译了。。。</p>
+<span id="more"></span>
+
+<p>java的jdk自带一个工具，javap，可以反编译，我们用它java编译器生成的“jvm版汇编码”，我会写下两段代码用来做对比，一种是i=i++;一种常见的<code>j=i++;</code>注意，我使用2作为初始值（也就是说它会被自增为3），因为1太特殊了，它在字节码中的变量名随处可见，而且++不是加1么，所以我用2做初值，也方便查找。。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">  i = i++;</span><br><span class="line">  System.out.println(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>javap -c Test</code> 的字节码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> <span class="keyword">extends</span> <span class="title class_">java</span>.lang.Object&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="title function_">Test</span><span class="params">()</span>;</span><br><span class="line">  Code:</span><br><span class="line">   <span class="number">0</span>:	aload_0</span><br><span class="line">   <span class="number">1</span>:	invokespecial	#<span class="number">1</span>; <span class="comment">//Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   <span class="number">4</span>:	<span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">  Code:</span><br><span class="line">   <span class="number">0</span>:	iconst_2</span><br><span class="line">   <span class="number">1</span>:	istore_1</span><br><span class="line">   <span class="number">2</span>:	iload_1</span><br><span class="line">   <span class="number">3</span>:	iinc	<span class="number">1</span>, <span class="number">1</span></span><br><span class="line">   <span class="number">6</span>:	istore_1</span><br><span class="line">   <span class="number">7</span>:	getstatic	#<span class="number">2</span>; <span class="comment">//Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   <span class="number">10</span>:	iload_1</span><br><span class="line">   <span class="number">11</span>:	invokevirtual	#<span class="number">3</span>; <span class="comment">//Method java/io/PrintStream.println:(I)V</span></span><br><span class="line">   <span class="number">14</span>:	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>0:   iconst_2   //将int型的常量2压栈
+1:   istore_1   //将int型值存入变量1中
+</code></pre>
+<p>就是定义并初始化i的值。</p>
+<p>关键是这里:</p>
+<pre><code>2:   iload_1  //保存变量1的值
+3:  iinc   1, 1 //将变量1的值自增（i现在是3了）
+6:  istore //将之前的保存值放入变量i中（i现在又变成2了。。）
+</code></pre>
+<p>其实在2:  iload_1 时，i变量的值被放在了栈中，这就是我们说的临时存储。。之后，又被赋了过来</p>
+<p>看看Test2,你就会明白正常的运作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test2</span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  j = i++;</span><br><span class="line">  System.out.println(j);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>javap -c Test2</code> 的字节码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test2</span> <span class="keyword">extends</span> <span class="title class_">java</span>.lang.Object&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="title function_">Test2</span><span class="params">()</span>;</span><br><span class="line">  Code:</span><br><span class="line">   <span class="number">0</span>:	aload_0</span><br><span class="line">   <span class="number">1</span>:	invokespecial	#<span class="number">1</span>; <span class="comment">//Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   <span class="number">4</span>:	<span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">  Code:</span><br><span class="line">   <span class="number">0</span>:	iconst_2</span><br><span class="line">   <span class="number">1</span>:	istore_1</span><br><span class="line">   <span class="number">2</span>:	iconst_0</span><br><span class="line">   <span class="number">3</span>:	istore_2</span><br><span class="line">   <span class="number">4</span>:	iload_1</span><br><span class="line">   <span class="number">5</span>:	iinc	<span class="number">1</span>, <span class="number">1</span></span><br><span class="line">   <span class="number">8</span>:	istore_2</span><br><span class="line">   <span class="number">9</span>:	getstatic	#<span class="number">2</span>; <span class="comment">//Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   <span class="number">12</span>:	iload_2</span><br><span class="line">   <span class="number">13</span>:	invokevirtual	#<span class="number">3</span>; <span class="comment">//Method java/io/PrintStream.println:(I)V</span></span><br><span class="line">   <span class="number">16</span>:	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>4: iload_1   //变量1的值被保存（入栈）
+5: iinc  1,1  //i自增
+8 istore_2  // 弹栈，赋值给变量2.。。
+</code></pre>
+<p>现在明白了吧，，到底发生了什么。。</p>
+<p>但是还没完，，，，，我们还没解释在c语言中发生了什么。。。</p>
+<p>在gcc中，编译一个c程序要四个阶段，预处理，编译，汇编，链接。我们在编译阶段后停下，这样会得到AT&amp;T的汇编码，</p>
+<p>我们写下两种代码，类似于java版</p>
+<p>先看正常情况:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">    j = i++;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;j = %d\n&quot;</span>,j);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译成汇编码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">  .file	<span class="string">&quot;test.c&quot;</span></span><br><span class="line">  .section	.rodata</span><br><span class="line">.LC0:</span><br><span class="line">  .string	<span class="string">&quot;j = %d\n&quot;</span></span><br><span class="line">  .text</span><br><span class="line">.globl main</span><br><span class="line">  .<span class="built_in">type</span>	main, @<span class="keyword">function</span></span><br><span class="line">main:</span><br><span class="line">  pushl	%ebp</span><br><span class="line">  movl	%esp, %ebp</span><br><span class="line">  andl	$-16, %esp</span><br><span class="line">  subl	<span class="variable">$32</span>, %esp</span><br><span class="line">  movl	<span class="variable">$2</span>, 28(%esp)</span><br><span class="line">  movl	<span class="variable">$0</span>, 24(%esp)</span><br><span class="line">  movl	28(%esp), %eax</span><br><span class="line">  movl	%eax, 24(%esp)</span><br><span class="line">  addl	<span class="variable">$1</span>, 28(%esp)</span><br><span class="line">  movl	$.LC0, %eax</span><br><span class="line">  movl	24(%esp), %edx</span><br><span class="line">  movl	%edx, 4(%esp)</span><br><span class="line">  movl	%eax, (%esp)</span><br><span class="line">  call	<span class="built_in">printf</span></span><br><span class="line">  movl	<span class="variable">$0</span>, %eax</span><br><span class="line">  leave</span><br><span class="line">  ret</span><br><span class="line">  .size	main, .-main</span><br><span class="line">  .ident	<span class="string">&quot;GCC: (Ubuntu 4.4.3-4ubuntu5.1) 4.4.3&quot;</span></span><br><span class="line">  .section	.note.GNU-stack,<span class="string">&quot;&quot;</span>,@progbits</span><br></pre></td></tr></table></figure>
+
+<p>包括 <code>movl    $.LC0, %eax</code> 和之后语句的都和输出有关了。<br>我们再把初始化有关的除去，关键的部分是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">movl    28(%esp), %eax</span><br><span class="line">movl    %eax, 24(%esp)</span><br><span class="line">addl    <span class="variable">$1</span>, 28(%esp)</span><br></pre></td></tr></table></figure>
+
+<p>保存了i的值，（放在eax中），之后又放入j中，i再自增，这就很符合大家心里的答案，那么如果是i=i++时自然就是i被赋值，再自增。。。也就是大家心中的答案了，但是真是这样么？我们继续看。。。。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> i = <span class="number">2</span>;</span><br><span class="line">i = i++;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>,i);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的汇编码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  .file	<span class="string">&quot;test2.c&quot;</span></span><br><span class="line">  .section	.rodata</span><br><span class="line">.LC0:</span><br><span class="line">  .string	<span class="string">&quot;i = %d\n&quot;</span></span><br><span class="line">  .text</span><br><span class="line">.globl main</span><br><span class="line">  .<span class="built_in">type</span>	main, @<span class="keyword">function</span></span><br><span class="line">main:</span><br><span class="line">  pushl	%ebp</span><br><span class="line">  movl	%esp, %ebp</span><br><span class="line">  andl	$-16, %esp</span><br><span class="line">  subl	<span class="variable">$32</span>, %esp</span><br><span class="line">  movl	<span class="variable">$2</span>, 28(%esp)</span><br><span class="line">  addl	<span class="variable">$1</span>, 28(%esp)</span><br><span class="line">  movl	$.LC0, %eax</span><br><span class="line">  movl	28(%esp), %edx</span><br><span class="line">  movl	%edx, 4(%esp)</span><br><span class="line">  movl	%eax, (%esp)</span><br><span class="line">  call	<span class="built_in">printf</span></span><br><span class="line">  movl	<span class="variable">$0</span>, %eax</span><br><span class="line">  leave</span><br><span class="line">  ret</span><br><span class="line">  .size	main, .-main</span><br><span class="line">  .ident	<span class="string">&quot;GCC: (Ubuntu 4.4.3-4ubuntu5.1) 4.4.3&quot;</span></span><br><span class="line">  .section	.note.GNU-stack,<span class="string">&quot;&quot;</span>,@progbits</span><br></pre></td></tr></table></figure>
+
+<p>关键部分就省一句了    addl    $1, 28(%esp)这简直就是。。。。看我的test3.c吧。。。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> i = <span class="number">2</span>;</span><br><span class="line">i++;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>,i);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>产生的汇编码</p>
+<p><code>aiqier@aiqier-laptop:~/c/test3$ cat test3.s</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  .file	<span class="string">&quot;test3.c&quot;</span></span><br><span class="line">  .section	.rodata</span><br><span class="line">.LC0:</span><br><span class="line">  .string	<span class="string">&quot;i = %d\n&quot;</span></span><br><span class="line">  .text</span><br><span class="line">.globl main</span><br><span class="line">  .<span class="built_in">type</span>	main, @<span class="keyword">function</span></span><br><span class="line">main:</span><br><span class="line">  pushl	%ebp</span><br><span class="line">  movl	%esp, %ebp</span><br><span class="line">  andl	$-16, %esp</span><br><span class="line">  subl	<span class="variable">$32</span>, %esp</span><br><span class="line">  movl	<span class="variable">$2</span>, 28(%esp)</span><br><span class="line">  addl	<span class="variable">$1</span>, 28(%esp)</span><br><span class="line">  movl	$.LC0, %eax</span><br><span class="line">  movl	28(%esp), %edx</span><br><span class="line">  movl	%edx, 4(%esp)</span><br><span class="line">  movl	%eax, (%esp)</span><br><span class="line">  call	<span class="built_in">printf</span></span><br><span class="line">  movl	<span class="variable">$0</span>, %eax</span><br><span class="line">  leave</span><br><span class="line">  ret</span><br><span class="line">  .size	main, .-main</span><br><span class="line">  .ident	<span class="string">&quot;GCC: (Ubuntu 4.4.3-4ubuntu5.1) 4.4.3&quot;</span></span><br><span class="line">  .section	.note.GNU-stack,<span class="string">&quot;&quot;</span>,@progbits</span><br></pre></td></tr></table></figure>
+
+<p>恩，在c语言中<code>i=i++</code>;居然跟<code>i++</code>;的汇编代码一样，按正常的逻辑（我们之前的分析），<code>i=2;i=i++;</code>i的值时3,已经没问题了，但是gcc会对编译器做一些优化，所以保存i的值，在赋值给i，这两条语句自然是鸡肋了，就被优化掉了。</p>
+<p>总结，我们发现对于i++保存的临时值，java中是自增在返回临时值，而c语言中是返回临时值后，在自增，所以这就是为什么<code>i=i++</code>在这两种语言中不同的结果了，c#我就不知道了，有兴趣的同学可以试试，python么，没有++啦，呵呵，如果我的分析有什么不对之初，希望能与你一起探讨。。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%80%83%E5%8F%A4/" rel="tag"># 考古</a>
+              <a href="/tags/c/" rel="tag"># c</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2012/09/25/how-we-study-program/" rel="prev" title="我们应该如何学习编程">
+      <i class="fa fa-chevron-left"></i> 我们应该如何学习编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2012/11/13/talk-about-quick-sort/" rel="next" title="聊聊快速排序">
+      聊聊快速排序 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">前言：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

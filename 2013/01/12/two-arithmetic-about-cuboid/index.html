@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="之前的用用2d画个3d图形)，我说到过跟长方体有关的两个算法，(一个通过中心坐标长宽高求八个顶点，一个通过八个顶点求十二条边) ，但是那两个算法实在是太丑陋了，对于向我这种有强迫症的人简直不能忍受，所以我现在先把它们的算法用python描述出来，接着试着把它们变得更精巧，俗话说，代码就像女生的超短裙，越短越好…(虽然不知道是谁说的，但肯定是个男人) 算法1通过一个中心坐标cen,和长方体的长宽高l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="两个与长方体有关的算法">
+<meta property="og:url" content="http://www.pulpcode.cn/2013/01/12/two-arithmetic-about-cuboid/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="之前的用用2d画个3d图形)，我说到过跟长方体有关的两个算法，(一个通过中心坐标长宽高求八个顶点，一个通过八个顶点求十二条边) ，但是那两个算法实在是太丑陋了，对于向我这种有强迫症的人简直不能忍受，所以我现在先把它们的算法用python描述出来，接着试着把它们变得更精巧，俗话说，代码就像女生的超短裙，越短越好…(虽然不知道是谁说的，但肯定是个男人) 算法1通过一个中心坐标cen,和长方体的长宽高l">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2013-01-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.791Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2013/01/12/two-arithmetic-about-cuboid/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>两个与长方体有关的算法 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2013/01/12/two-arithmetic-about-cuboid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          两个与长方体有关的算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2013-01-12 00:00:00" itemprop="dateCreated datePublished" datetime="2013-01-12T00:00:00+08:00">2013-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2013/01/12/two-arithmetic-about-cuboid/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2013/01/12/two-arithmetic-about-cuboid/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>之前的用<a href="http://www.pulpcode.cn/2013/01/06/use-2d-draw-3d/">用2d画个3d图形</a>)，我说到过跟长方体有关的两个算法，(一个通过中心坐标长宽高求八个顶点，一个通过八个顶点求十二条边) ，但是那两个算法实在是太丑陋了，对于向我这种有强迫症的人简直不能忍受，所以我现在先把它们的算法用python描述出来，接着试着把它们变得更精巧，俗话说，代码就像女生的超短裙，越短越好…(虽然不知道是谁说的，但肯定是个男人)</p>
+<h4 id="算法1"><a href="#算法1" class="headerlink" title="算法1"></a>算法1</h4><p>通过一个中心坐标cen,和长方体的长宽高lwh，求出长房体的八个顶点 其实如果(x,y,z) = cen, (l,w,h) = lwh 我们的算法就是要求出x加减l,y加减w,z加减h然后在做一个组合,不过要注意位置不能变，所以一共有八个结果，这就是我们要求的八个顶点, 我的算法就是模仿八皇后，不过不需要回溯,递归到合适的值，把值保存起来。</p>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cubovers</span>(<span class="params">cen,lwh</span>):</span><br><span class="line">    vertex = [<span class="literal">None</span>]*<span class="number">3</span></span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ver</span>(<span class="params">i</span>):</span><br><span class="line">	    <span class="keyword">if</span> i == <span class="number">3</span>:</span><br><span class="line">	        res.append(vertex[:])</span><br><span class="line">	    <span class="keyword">else</span>:</span><br><span class="line">	        <span class="keyword">for</span> x <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">1</span>]:</span><br><span class="line">	 	        vertex[i] = cen[i] + x*lwh[i]/<span class="number">2.0</span></span><br><span class="line">		    ver(i+<span class="number">1</span>)</span><br><span class="line">    ver(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>for x in [-1, 1]</code>: 就是分别求出了加和减,(做个乘法就行了)</p>
+<h4 id="算法2"><a href="#算法2" class="headerlink" title="算法2"></a>算法2</h4><p>第二个算法根据前面求出的顶点，计算出应该有的十二条边，这个算法说起来很简单，找出顶点集合中三个坐标中有两个相等的，那么它们之间就有一条连线。</p>
+<p>所以我们先要写一个函数来判断两个点是否是共线（在长方体）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">same2</span>(<span class="params">ver1, ver2</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    	<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">	        <span class="keyword">if</span> i == j:</span><br><span class="line">		        <span class="keyword">continue</span></span><br><span class="line">	        <span class="keyword">if</span> ver1[i] == ver2[i] <span class="keyword">and</span> ver1[j] == ver2[j]:</span><br><span class="line">		        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>我们要小心三个都相等，那就成同一个点了。<br>之后，求线算法就调用此函数来判断是否符合并把它们保存起来.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cubolines</span>(<span class="params">vers</span>):</span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> vers:</span><br><span class="line">	    <span class="keyword">for</span> j <span class="keyword">in</span> vers:</span><br><span class="line">	        <span class="keyword">if</span> i == j:</span><br><span class="line">		        <span class="keyword">continue</span></span><br><span class="line">	        <span class="keyword">if</span> same2(i, j):</span><br><span class="line">		        res.append([i,j])</span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p>再短一点，再细一点———孙悟空</p>
+<p>我们的代码之所以看上去那么长，是因为没有很好的处理遍历集合，如果你能很好的写出你想要的遍历方式，那么你的代码会变得非常漂亮，而且有的时候，你以为自己写的代码已经很漂亮了，但是很可能另一个人的代码就会让你自叹不如，python就是这样，如果你只是把这些可跌代对象当c语言中的数组使，肯定会让代码变得跟c语言一样长，</p>
+<p>下面我用yield，闭包，和新的遍历方式重写这两个算法，使它们更短，如果哪位大神能写出更短的比如用什么itertools，求指点呀！</p>
+<h4 id="求顶点的算法"><a href="#求顶点的算法" class="headerlink" title="求顶点的算法:"></a>求顶点的算法:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cubovers</span>(<span class="params">cen, lwh</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">vers</span>(<span class="params">i</span>):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">1</span>]:</span><br><span class="line">            p = cen[i] + x*lwh[i]/<span class="number">2.0</span></span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">yield</span> (p,)</span><br><span class="line">            <span class="keyword">else</span> :</span><br><span class="line">                <span class="keyword">for</span> rs <span class="keyword">in</span> vers(i+<span class="number">1</span>):</span><br><span class="line">                    <span class="keyword">yield</span> (p,)+rs</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span>(vers(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<p>因为使用了yield所以不需要一个列表保存结果了，中间变量也不需要用参数传递，而且我还是用了闭包，因为cen和lwh我并不想在参数中传递，这样看上去会很舒服。返回的时候返回list(vers(0))，因为yield返回的算是一种佚代器</p>
+<h4 id="求边线的算法"><a href="#求边线的算法" class="headerlink" title="求边线的算法"></a>求边线的算法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">same2</span>(<span class="params">ver1,ver2</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    	<span class="keyword">if</span> ver1[:i]+ver1[i+<span class="number">1</span>:] == ver2[:i] + ver2[i+<span class="number">1</span>:]:</span><br><span class="line">	        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>same2看上去比以前短了，因为新的方式佚代出我想要的元素，比如用了切片</p>
+<h4 id="cubolines"><a href="#cubolines" class="headerlink" title="cubolines"></a>cubolines</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cubolines</span>(<span class="params">vers</span>):</span><br><span class="line">    <span class="keyword">return</span> [[vers[i],t] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(vers)) <span class="keyword">for</span> t <span class="keyword">in</span> vers[i+<span class="number">1</span>:] <span class="keyword">if</span> same2(vers[i],t)]</span><br></pre></td></tr></table></figure>
+
+<p>cubolines只用了一行，看上去会有点难，我返回了一个列表推导式，其实内部就是对一个列表中的元素作了个组合运算，</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2013/01/06/i-want-rgb/" rel="prev" title="我想要的RGB">
+      <i class="fa fa-chevron-left"></i> 我想要的RGB
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2013/01/13/python-markov-model/" rel="next" title="python实现马尔可夫链算法">
+      python实现马尔可夫链算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%951"><span class="nav-number">1.</span> <span class="nav-text">算法1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%952"><span class="nav-number">2.</span> <span class="nav-text">算法2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B1%82%E9%A1%B6%E7%82%B9%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">求顶点的算法:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B1%82%E8%BE%B9%E7%BA%BF%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">求边线的算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cubolines"><span class="nav-number">5.</span> <span class="nav-text">cubolines</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

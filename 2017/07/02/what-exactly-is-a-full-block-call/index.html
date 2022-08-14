@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="作为一个程序员，你一定知道这个简单的模型，你想从文件中读取数据，你需要调用read函数，然后read函数会阻塞直到有数据返回给你，之后你就可以进行下一步操作了。一个简单的模型，就像是一个远景画，而你是否了解细节，在于当你把镜头拉近的时候，你能看到的是清晰的细节还是一堆马赛克。 所以在这个基础之上，你可能理解的比这更复杂一些，你知道有些资源只能在核心态才能被访问。知道进程缓冲区和内核缓冲区。那么这个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次完整的阻塞调用到底是怎样的">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/07/02/what-exactly-is-a-full-block-call/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="作为一个程序员，你一定知道这个简单的模型，你想从文件中读取数据，你需要调用read函数，然后read函数会阻塞直到有数据返回给你，之后你就可以进行下一步操作了。一个简单的模型，就像是一个远景画，而你是否了解细节，在于当你把镜头拉近的时候，你能看到的是清晰的细节还是一堆马赛克。 所以在这个基础之上，你可能理解的比这更复杂一些，你知道有些资源只能在核心态才能被访问。知道进程缓冲区和内核缓冲区。那么这个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/blocking-io.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/trap.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/zdkzq.png">
+<meta property="article:published_time" content="2017-07-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-07-02T09:35:33.860Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="系统架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/blocking-io.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/07/02/what-exactly-is-a-full-block-call/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>一次完整的阻塞调用到底是怎样的 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/07/02/what-exactly-is-a-full-block-call/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一次完整的阻塞调用到底是怎样的
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-07-02 00:00:00 / 修改时间：17:35:33" itemprop="dateCreated datePublished" datetime="2017-07-02T00:00:00+08:00">2017-07-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/07/02/what-exactly-is-a-full-block-call/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/07/02/what-exactly-is-a-full-block-call/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>作为一个程序员，你一定知道这个简单的模型，你想从文件中读取数据，你需要调用read函数，然后read函数会阻塞直到有数据返回给你，之后你就可以进行下一步操作了。一个简单的模型，就像是一个远景画，而你是否了解细节，在于当你把镜头拉近的时候，你能看到的是清晰的细节还是一堆马赛克。</p>
+<p>所以在这个基础之上，你可能理解的比这更复杂一些，你知道有些资源只能在核心态才能被访问。知道进程缓冲区和内核缓冲区。那么这个模型在你眼里就变成了这个样子：</p>
+<p><img src="/img/blocking-io.png" alt="blocking-io"></p>
+<span id="more"></span>
+
+<p>也就是说在系统调用中，内核先把数据从硬盘读取到了内核缓冲区，然后又从内核缓冲区读到用户进程自己的进程缓冲区，最后才返回给用户程序控制权，整个操作就像是一个耗时的系统调用一样。</p>
+<p>而且《深入理解计算机系统》中，介绍过异常机制是“你可以停下手头的工作去干另一件事情”的基础。并提到了一种叫“陷阱”（trap）的异常。为用户程序和内核之间提供了一个像过程一样的接口，这就是系统调用。用于那些读取文件，创建进程的操作。系统需要切换到内核模式，才能执行这些受限制的操作。</p>
+<p>而关键就在于，这种操作可以让你停下手中的事（保护当前的上下文），将控制权转移，并在调用结束后，再次获得执行点，执行下一条程序。</p>
+<p><img src="/img/trap.png" alt="trap"></p>
+<h2 id="以上那个模型是针对当前进程进行系统调用的，那么操作系统是如何控制磁盘读取文件的，而文件在读取成功之后，又是如何通知操作系统，文件已经准备好了？"><a href="#以上那个模型是针对当前进程进行系统调用的，那么操作系统是如何控制磁盘读取文件的，而文件在读取成功之后，又是如何通知操作系统，文件已经准备好了？" class="headerlink" title="以上那个模型是针对当前进程进行系统调用的，那么操作系统是如何控制磁盘读取文件的，而文件在读取成功之后，又是如何通知操作系统，文件已经准备好了？"></a>以上那个模型是针对当前进程进行系统调用的，那么操作系统是如何控制磁盘读取文件的，而文件在读取成功之后，又是如何通知操作系统，文件已经准备好了？</h2><p>首先对于文件读写这个模型，cpu并不是直接控制读取，而是通过DMA控制读取的。</p>
+<p>以下是从wiki中查到有关DMA的内容。</p>
+<blockquote>
+<p>DMA意为”存储器直接访问“ ，是指外部设备不通过CPU而直接与系统内存交换数据的接口技术。要把外设的数据读入内存或把内存的数据传送到外设，一般都要通过CPU控制完成，如CPU程序查询或中断方式。利用中断进行数据传送，可以大大提高CPU的利用率。 但是采用中断传送有它的缺点，对于一个高速I/O设备，以及批量交换数据的情况，只能采用DMA方式，才能解决效率和速度问题。DMA在外设与内存间直接进行数据交换，而不通过CPU，这样数据传送的速度就取决于存储器和外设的工作速度。<br>整个数据传输操作在一个称为“DMA控制器”的控制下进行的。CPU除了在数据传输开始和结束时作一点处理外，在传输过程中CPU可以进行其它的工作。这样在大部分时间里，CPU和输入输出都处在并行操作。因此，使整个计算机系统的效率大大提高</p>
+</blockquote>
+<p>那么简单的说，其实内存也有一个属于自己的小控制器(cpu)来控制读取，然后在读取完成后，向真正的cpu发起一个中断。</p>
+<p>前面提到系统调用是一种异常控制流（陷阱trap），而cpu中断，也是一种异常控制流，而且是唯一一种异步的异常。之所以异步的异常，是因为你并不知道这个异常是什么时候出发的，或者说，你并没有维护一个上下文，去准备迎接这个异常，其它同步的异常都是你主动发起的中断。所以cpu在收到这个中断的时候，会停止当前进程的执行，当然，其实cpu并没有线程进程的概念，是操作系统负责将当前的上下文保存，也就是说当前运行的进程被冻结了，之后CPU开始执行内核中的中断处理程序。这些处理程序和中断号一一映射，在内核启动的时候，就被加载进来了。</p>
+<h2 id="看上去是没问题，但如果cpu在处理中断的时候，又来了别的中断，那么cpu要怎么办？"><a href="#看上去是没问题，但如果cpu在处理中断的时候，又来了别的中断，那么cpu要怎么办？" class="headerlink" title="看上去是没问题，但如果cpu在处理中断的时候，又来了别的中断，那么cpu要怎么办？"></a>看上去是没问题，但如果cpu在处理中断的时候，又来了别的中断，那么cpu要怎么办？</h2><p>其实中断的模型比我们之前提到的要复杂一点。</p>
+<p><img src="/img/zdkzq.png" alt="trap"></p>
+<p>在设备和cpu之间有一种被称为中断控制器的东西。来对多个设备的中断，进行采样，分发和排队。而且可以对中断控制器进行关中断，来让中断控制器不要给CPU发送中断信号。所以在cpu处理此中断的时候，直到cpu主动对中断控制器发送EOI操作，才会容许下一个中断信号去激发CPU。</p>
+<h2 id="那么cpu在执行中断处理程序的时候很慢怎么办？这样别的中断信号不就不能被CPU及时处理了么？"><a href="#那么cpu在执行中断处理程序的时候很慢怎么办？这样别的中断信号不就不能被CPU及时处理了么？" class="headerlink" title="那么cpu在执行中断处理程序的时候很慢怎么办？这样别的中断信号不就不能被CPU及时处理了么？"></a>那么cpu在执行中断处理程序的时候很慢怎么办？这样别的中断信号不就不能被CPU及时处理了么？</h2><p>实际上设备中断CPU的过程分为两部分，硬中断和软中断，上半部和下半部。硬中断就是执行关键步骤到给中断控制器发送EOI的过程，剩余的中断处理过程就是软中断，而这些软中断的程序和普通程序的执行就没什么两样了。</p>
+<h2 id="然后呢，如何通知进程？它怎么知道是哪个进程的数据准备好了-还有阻塞的进程用什么接受通知？这个通知是指操作系统的什么操作？进程又是如何被唤醒的？"><a href="#然后呢，如何通知进程？它怎么知道是哪个进程的数据准备好了-还有阻塞的进程用什么接受通知？这个通知是指操作系统的什么操作？进程又是如何被唤醒的？" class="headerlink" title="然后呢，如何通知进程？它怎么知道是哪个进程的数据准备好了,还有阻塞的进程用什么接受通知？这个通知是指操作系统的什么操作？进程又是如何被唤醒的？"></a>然后呢，如何通知进程？它怎么知道是哪个进程的数据准备好了,还有阻塞的进程用什么接受通知？这个通知是指操作系统的什么操作？进程又是如何被唤醒的？</h2><p>之前已经说了，CPU并不知道线程，进程，更不知道是哪个进程的数据准备好了。这一切都是操作系统做的。<br>操作系统会在内核维护许多队列，而因中断而被保存挂起的进程，会根据中断类型，加入到对应的队列中，比如等待IO的进程就加入到IO队列。</p>
+<p>同时，在注册中断处理函数的时候，此函数就已经有了进程的信息，所以自然也知道在完事后，向哪个进程发起通知了。还要注意的是，多个进程对同一文件进行读写的时候，不同的设备，处理方式是不同的，比如有的设备，同一时间只允许注册一个中断处理函数。</p>
+<p>所以中断处理函数，会在完成后向进程发送信号，唤醒进程。具体是什么信号我并没有查到，不过我觉得很可能是 SIGCONT。</p>
+<p>当然，仅仅是被唤醒（变为就绪态）而已，被唤醒的进程到底会不会马上执行，那就要看调度算法了，不过一般来说， Linux会把因为IO挂起的进程优先级稍微调高一点让它们立即抢占进来，提高IO效率。</p>
+<p>那这次我就到此为止了，如果再放大，还有更多没想过的问题。不过现在这个模型的理解，对我来说足够了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" rel="tag"># 系统架构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/18/comparison-method-violates-its-general-contractfor-sort/" rel="prev" title="java排序抛出的Comparison method violates its general contract 异常">
+      <i class="fa fa-chevron-left"></i> java排序抛出的Comparison method violates its general contract 异常
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/11/poling-and-interrupts/" rel="next" title="轮询和中断">
+      轮询和中断 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8A%E9%82%A3%E4%B8%AA%E6%A8%A1%E5%9E%8B%E6%98%AF%E9%92%88%E5%AF%B9%E5%BD%93%E5%89%8D%E8%BF%9B%E7%A8%8B%E8%BF%9B%E8%A1%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%9A%84%EF%BC%8C%E9%82%A3%E4%B9%88%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%A6%82%E4%BD%95%E6%8E%A7%E5%88%B6%E7%A3%81%E7%9B%98%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E7%9A%84%EF%BC%8C%E8%80%8C%E6%96%87%E4%BB%B6%E5%9C%A8%E8%AF%BB%E5%8F%96%E6%88%90%E5%8A%9F%E4%B9%8B%E5%90%8E%EF%BC%8C%E5%8F%88%E6%98%AF%E5%A6%82%E4%BD%95%E9%80%9A%E7%9F%A5%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%8C%E6%96%87%E4%BB%B6%E5%B7%B2%E7%BB%8F%E5%87%86%E5%A4%87%E5%A5%BD%E4%BA%86%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">以上那个模型是针对当前进程进行系统调用的，那么操作系统是如何控制磁盘读取文件的，而文件在读取成功之后，又是如何通知操作系统，文件已经准备好了？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%8B%E4%B8%8A%E5%8E%BB%E6%98%AF%E6%B2%A1%E9%97%AE%E9%A2%98%EF%BC%8C%E4%BD%86%E5%A6%82%E6%9E%9Ccpu%E5%9C%A8%E5%A4%84%E7%90%86%E4%B8%AD%E6%96%AD%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%8F%88%E6%9D%A5%E4%BA%86%E5%88%AB%E7%9A%84%E4%B8%AD%E6%96%AD%EF%BC%8C%E9%82%A3%E4%B9%88cpu%E8%A6%81%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">看上去是没问题，但如果cpu在处理中断的时候，又来了别的中断，那么cpu要怎么办？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%A3%E4%B9%88cpu%E5%9C%A8%E6%89%A7%E8%A1%8C%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%97%B6%E5%80%99%E5%BE%88%E6%85%A2%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F%E8%BF%99%E6%A0%B7%E5%88%AB%E7%9A%84%E4%B8%AD%E6%96%AD%E4%BF%A1%E5%8F%B7%E4%B8%8D%E5%B0%B1%E4%B8%8D%E8%83%BD%E8%A2%ABCPU%E5%8F%8A%E6%97%B6%E5%A4%84%E7%90%86%E4%BA%86%E4%B9%88%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">那么cpu在执行中断处理程序的时候很慢怎么办？这样别的中断信号不就不能被CPU及时处理了么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%84%B6%E5%90%8E%E5%91%A2%EF%BC%8C%E5%A6%82%E4%BD%95%E9%80%9A%E7%9F%A5%E8%BF%9B%E7%A8%8B%EF%BC%9F%E5%AE%83%E6%80%8E%E4%B9%88%E7%9F%A5%E9%81%93%E6%98%AF%E5%93%AA%E4%B8%AA%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87%E5%A5%BD%E4%BA%86-%E8%BF%98%E6%9C%89%E9%98%BB%E5%A1%9E%E7%9A%84%E8%BF%9B%E7%A8%8B%E7%94%A8%E4%BB%80%E4%B9%88%E6%8E%A5%E5%8F%97%E9%80%9A%E7%9F%A5%EF%BC%9F%E8%BF%99%E4%B8%AA%E9%80%9A%E7%9F%A5%E6%98%AF%E6%8C%87%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BB%80%E4%B9%88%E6%93%8D%E4%BD%9C%EF%BC%9F%E8%BF%9B%E7%A8%8B%E5%8F%88%E6%98%AF%E5%A6%82%E4%BD%95%E8%A2%AB%E5%94%A4%E9%86%92%E7%9A%84%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">然后呢，如何通知进程？它怎么知道是哪个进程的数据准备好了,还有阻塞的进程用什么接受通知？这个通知是指操作系统的什么操作？进程又是如何被唤醒的？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

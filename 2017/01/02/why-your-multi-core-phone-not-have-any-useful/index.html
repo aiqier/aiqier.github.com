@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Starting不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。 这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。” 类似于网上流传的这张图：  本篇博客将试图讲清楚为什么会这样，顺便解答此篇博">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为啥你的多核手机打游戏没啥提升">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/01/02/why-your-multi-core-phone-not-have-any-useful/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="Starting不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。 这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。” 类似于网上流传的这张图：  本篇博客将试图讲清楚为什么会这样，顺便解答此篇博">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/19core.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/amd64.jpg">
+<meta property="article:published_time" content="2017-01-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-01-02T08:32:24.581Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="多核">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/19core.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/01/02/why-your-multi-core-phone-not-have-any-useful/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>为啥你的多核手机打游戏没啥提升 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/01/02/why-your-multi-core-phone-not-have-any-useful/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          为啥你的多核手机打游戏没啥提升
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-01-02 00:00:00 / 修改时间：16:32:24" itemprop="dateCreated datePublished" datetime="2017-01-02T00:00:00+08:00">2017-01-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">并行程序设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/01/02/why-your-multi-core-phone-not-have-any-useful/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/01/02/why-your-multi-core-phone-not-have-any-useful/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Starting"><a href="#Starting" class="headerlink" title="Starting"></a>Starting</h2><p>不知不觉2017年就这样来了，虽说这句话说了好多年，自己依然这吊样，但还是不得不说“新的一年，新的自己”。</p>
+<p>这篇博客的起因是因为前段时间公司有大神分享了一次《并行程序设计》，里面提到了诸多并行程序的好处和使用方式，虽然我也受益匪浅，但是却令我想起了另一个在编程届流传的笑话，那就是：“一核有难，多核围观。”</p>
+<p>类似于网上流传的这张图：</p>
+<p><img src="/img/19core.png" alt="9core"></p>
+<p>本篇博客将试图讲清楚为什么会这样，顺便解答此篇博客的题目：“为啥你的多核手机打游戏没啥提升。”</p>
+<span id="more"></span>
+
+<h2 id="多核的意义"><a href="#多核的意义" class="headerlink" title="多核的意义"></a>多核的意义</h2><p>你一定有类似概念，即我们的程序都是靠cpu去运行的，你的pc机有自己的cpu，你的手机也有自己的cpu。很多书喜欢把cpu比喻成计算机的心脏，来强调它的重要性。但是这个比喻不是很恰当，相比之下，比喻成“大脑”就会好很多，你的软件（程序）里有如何运行的步骤，而cpu就想大脑一样，控制运行你的程序如何运行。</p>
+<p>早期计算机比较简单，程序也比较简单，这样玩没啥问题，但是随着人们需要在在计算机上运行更多的程序时，单个的cpu就不能满足了，这个时候就出现了多核cpu。</p>
+<p>我记得高中在《大众软件》上读过一篇文章，讲到INTEL和AMD的纷争，其实AMD一开始是给INTEL打工的小弟，负责给INTEL生产芯片，但虽然是小弟，INTEL给AMD的利润可不少。可就是这样，AMD还是不能满足自己做小弟看着大哥吃肉，所以就独立开始自己搞CPU，后来就越做越大，可以和INTEL抗衡了。</p>
+<p>之所以提到这个故事是因为，“小弟”在抢占市场的时候，比“大哥”先做出多核cpu（也就是著名的双核：速龙X2 3600），而且64位的cpu也是AMD先做出来的，顺便说一句，这些所谓的“先”，都是指民企面向市场的。其实这些理论和技术，都是高等学府和军方玩剩下的。</p>
+<p><img src="/img/amd64.jpg" alt="amd64"></p>
+<p>当然在多核cpu之前还有一种被称为超线程的技术，就是常说的虚拟多核，或者说伪多核，INTEL的奔腾4上最先使用了该技术，能够“让单核cpu同时执行两个线程”，但因为是伪多核，只不过cpu多了一个Logical cpu Pointer(逻辑处理单元)，其它的什么ALU（整数运算单元）FPU（浮点运算单元）二级缓存都是被共享的，所以效果不能跟双核相提并论，更坑爹的是，这项技术，要同时有CPU，主板，内存，操作系统和软件多方面支持，也就是说基本没办法使用此技术，所以这件事也被用户骂了很久。</p>
+<p>举例来说，如果你的计算机有一个双核的cpu，那么相当于你的计算机就有两个cpu，这意味着，别人的机器同一时刻只能运行一个计算，但是你的机器同一时刻可以执行2个计算，也就比别人快一倍，那么对于市面上那些6核8核的cpu，也就意味这运算速度要比普通的机器快6倍，或者8倍。</p>
+<p>比如新出的iphone7使用了A10Fusion是四核，小米5s plus使用了骁龙821也是4核，还有国内的很多8核手机就不提了。</p>
+<p>但真的是这样吗？</p>
+<h2 id="游戏编程"><a href="#游戏编程" class="headerlink" title="游戏编程"></a>游戏编程</h2><p>回到我们博客的题目，游戏程序。</p>
+<p>实际上不仅仅是手机游戏，很多pc玩家也经常抱怨，比较大的游戏，跑在自己的多核计算机上，依旧卡的要命。</p>
+<p>那是因为这些游戏基本都是“单线程”的。</p>
+<p>这么说吧，讲道理，如果你的程序逻辑是多线程的，那么如果它在单核cpu上跑，那就是串行的，如果是在多核cpu上跑，那么它就能并行运行，大大的提升效率。但如果你的程序逻辑本身就是单线程的，那么它只能在一个核上跑，你有再多的核也用不了。</p>
+<p>那么为啥写游戏程序的这群程序员不把游戏写成多线程的？</p>
+<p>因为太复杂了。</p>
+<p>首先游戏编程是我所知的编程领域最复杂的技术之一。很多人举例多线程，多核，多cpu的时候，总是再说，多个人同时在做任务的理想状况，但实际上并行程序的设计远比这个复杂，而且复杂的多，比如有些事情是有先后顺序的，不能并行执行，比如排序，再比如一些先后逻辑，类似你先点餐才能吃饭，并不能让点餐和吃饭同时进行。而且就算并行，还要考虑保持上下文，强一致等等更多的问题，比如你和你妈同时用你的账户取钱，不能在一瞬间看到的金额一样，必须控制一个人取完另一个人才能取。这些事情如果出了问题，排查起bug都难得要死。这些成本考虑在里面，工业上设计的妥协就是把程序写成单线程的。</p>
+<p>市面上的游戏引擎，类似cocos，unity等都是单线程的，因为要保证渲染和各种事件的先后顺序复杂度太高，它们不得不设计成单线程的，类似像python，ruby这样的语言，也有类似全局锁GIL存在，来控制复杂度。</p>
+<p>当然这里的单线程并不是严格意义上的单线程，开发游戏的那群人，还是会想一些办法利用多核来使用多线程的，比如网络io操作，一些ai，寻路的逻辑等等，但是最重头的主逻辑渲染，依然是单线程的。</p>
+<p>所以多核常常是指你的机器可以同时跑更多互不相干的程序。</p>
+<p>这下你明白为啥只有跑分软件，能在你的手机上如此畅爽了吧，因为它们就是为充分利用多核而设计的，它们也只能干这个，真实的软件就不能这样用了，这是一种本末倒置，也就说你的多核其实为你的软件提供服务的，但是跑分软件却是专门为你的多核提供服务的。</p>
+<h4 id="服务器编程"><a href="#服务器编程" class="headerlink" title="服务器编程"></a>服务器编程</h4><p>我是做后端服务器编程的，我们经常提到并行程序设计，其实相比于游戏开发，大部分服务器编程的逻辑还是比较简单的，最起码的，每一次请求都是相互独立的，在这点让服务器并行执行多个请求就很简单，web框架都帮你做了。最近还提出的协程，函数式编程的概念，都让某些并行程序在实现上简单的多。当然只是某些领域而已。复杂起来就真没啥好工具可用了。</p>
+<h4 id="瓶颈不在核"><a href="#瓶颈不在核" class="headerlink" title="瓶颈不在核"></a>瓶颈不在核</h4><p>如果你学过一些计算机组成或者是优化算法的概念，你一定知道取数速度，cpu&gt;内存&gt;硬盘，而成本和容量 硬盘&gt; 内存 &gt; cpu.所以很多情况下，你cpu算得在快，数据从硬盘读到内存也是慢的。这也就是为什么数据库优化，建立合适的索引是大头，然后才是减少查询量和使用合适类型之类的。我们的程序其实很大一部分耗时，都是读取数据。所以很多人建议你，与其买个什么牛逼的cpu，不如把你的机械硬盘换成固态硬盘。</p>
+<p>类似为啥你家都x兆的网，看个片还是卡，因为首先流量的那个M，是以bit为单位，而我们常说的硬盘，是以字节为单位的，8bit = 1字节，笑。。。当然更关键的是，网络请求的大部分耗时，其实通过路由建立通信路径，而不是传输数据本身的耗时，你家的x兆的网，只不过能能使理论流量变大，但是如果找不到数据在哪台主机，还是闲的。</p>
+<p>在计算机领域中，常常都是“找到数据在哪最耗时，而非传输数据本身”。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E6%A0%B8/" rel="tag"># 多核</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/12/31/why-do-i-like-tractor-exhaust/" rel="prev" title="为啥小时候爱闻拖拉机尾气">
+      <i class="fa fa-chevron-left"></i> 为啥小时候爱闻拖拉机尾气
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/01/07/from-python-to-java-design-pattern-command-pattern/" rel="next" title="从python到java设计模式之命令模式">
+      从python到java设计模式之命令模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Starting"><span class="nav-number">1.</span> <span class="nav-text">Starting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%A0%B8%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">多核的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">游戏编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B"><span class="nav-number">3.0.1.</span> <span class="nav-text">服务器编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%93%B6%E9%A2%88%E4%B8%8D%E5%9C%A8%E6%A0%B8"><span class="nav-number">3.0.2.</span> <span class="nav-text">瓶颈不在核</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

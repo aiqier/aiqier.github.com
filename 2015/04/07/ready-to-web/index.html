@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="大学的时候想过做c，c++和底层，因为书上说c++很难。还想过实现自己的梦想，做游戏。也研究过些算法，还写过些android程序，打算做手机app。也跟着学校做jsp开发。 不知不觉已经毕业快两年，也明白自己的许多。所以在这里规划自己的学习路线和发展方向。 web方向我的web方向，不是以流程业务为主的web开发，此类开发java和c#，php的开发较多，大多外包企业做管理系统。这方面我最多可能也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="准备web开发">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/04/07/ready-to-web/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="大学的时候想过做c，c++和底层，因为书上说c++很难。还想过实现自己的梦想，做游戏。也研究过些算法，还写过些android程序，打算做手机app。也跟着学校做jsp开发。 不知不觉已经毕业快两年，也明白自己的许多。所以在这里规划自己的学习路线和发展方向。 web方向我的web方向，不是以流程业务为主的web开发，此类开发java和c#，php的开发较多，大多外包企业做管理系统。这方面我最多可能也">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-04-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.771Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="编程心得">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/04/07/ready-to-web/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>准备web开发 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/04/07/ready-to-web/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          准备web开发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-04-07 00:00:00" itemprop="dateCreated datePublished" datetime="2015-04-07T00:00:00+08:00">2015-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/04/07/ready-to-web/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/04/07/ready-to-web/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>大学的时候想过做c，c++和底层，因为书上说c++很难。还想过实现自己的梦想，做游戏。也研究过些算法，还写过些android程序，打算做手机app。也跟着学校做jsp开发。</p>
+<p>不知不觉已经毕业快两年，也明白自己的许多。所以在这里规划自己的学习路线和发展方向。</p>
+<h2 id="web方向"><a href="#web方向" class="headerlink" title="web方向"></a>web方向</h2><p>我的web方向，不是以流程业务为主的web开发，此类开发java和c#，php的开发较多，大多外包企业做管理系统。这方面我最多可能也就用django。</p>
+<p>我主要做的是面向协议接口的web开发。这些用python开发居多，比如tornado，或者flask。这些web主要提供某些专一的服务，比如支付相关的url-api。</p>
+<p>这里的技术要点，还要能够处理大量的连接请求。能够高效的使用数据库。这就需要掌握，python语言本身，保证代码易扩展易维护，关注于web框架，web服务器本身。</p>
+<span id="more"></span>
+
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><p>设计模式，面对面向对象无法解决的问题，也就是说有更大的模型需要去建立，仅仅靠面相对象本身提供的东西是不够的，这个时候就需要设计模式了。比如说一个web框架，这东西就需要设计模式去构架它。做一个可重用的框架，和一个可重用的库，都离不开设计模式的思路。再比如python的WSGI能够将python服务器和python框架解耦。我知道在这方面自己一直有所欠缺，缺少一种大局观，对大模型的理解。</p>
+<h4 id="web框架"><a href="#web框架" class="headerlink" title="web框架"></a>web框架</h4><p>首先flask和tornado的源码是需要阅读的，tornado作为web框架可能没什么特别的，基本是web.py,但是作为服务器部分的代码很值得一读，使用epoll处理千以万计的链接。<br>而flask也是公认的pythonic代码,包括它所实用的werkzeug，也是值得一读的代码。</p>
+<p>最后能达到的效果就是能够根据需求去修改tornado，flask的部分源码，甚至是自己写个服务器。</p>
+<p>django会看文档实用就行了，我知道自己也不会对那种源码感兴趣。</p>
+<p>核心就是WSGI了，相关的pep文档应该是pep333和pep3333。</p>
+<h2 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h2><h4 id="开发库"><a href="#开发库" class="headerlink" title="开发库"></a>开发库</h4><p>urllib2，url和http请求的相关使用库。</p>
+<p>requests，据说python的http库很难用，而requests就方便很多。无论是写爬虫，测试自己的服务器，还是反向代理，都会用到这个库。</p>
+<p>ElementTree,这个用来解析xml，面相协议的web应用，经常传输的就是xml，或者json</p>
+<p>等等…</p>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>mysql，这里一直是我的弱项，sql的基础知识没什么好说的了，什么连接，子查询，都应该能玩的很熟，这些知识本身也是和函数式编程息息相关。其它的我只能想到性能，优化，orm，事务，备份，等关键字了，其它的我也不知道要如何去入手。</p>
+<h4 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h4><p>vim还是emacs，爱选啥选啥啥，无所谓了，懒得吵了，虽然我现在基本使用emacs，但我还是觉得vs最强大。</p>
+<h4 id="版本控制器"><a href="#版本控制器" class="headerlink" title="版本控制器"></a>版本控制器</h4><p>你可以深挖git的每一个细节操作，比如当年没有版本控制器的时候，前辈们是怎么用diff和patch命令玩的，甚至是git的一些实现细节，但是你会发现这简直是事倍功半，所以我也不建议去深度的研究，符合工作流的操作，能在几种常用的工作流中熟练开发，这就足够了。但是你一定要有一个清晰的思路，比如什么情况才会产生冲突，什么branch，fetch，pull，merge到底在干什么。</p>
+<p>还有一点要去领会的是，在使用这些经典的开发工具时，一定要多去想想，它为什么会这么设计。为什么这个操作要这么繁琐，实现的方式是什么，这些实现的方法，在你开发自己的系统总会用得到，比如全备份和增量备份，比如只做加法不做减法，如何去“静态”的设计的项目每个模块，如何去动态的载入它们。我在学emacs的时候，就对一些设计思路叹为观止。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>即使你不做web安全方面的工作，在开发系统中，大大小小的名词，概念，原理也是你需要明白的。</p>
+<p>比如签名，证书，公钥和私钥等等一系列的内容需要学习理解。</p>
+<p>需要注意的是，这些知识在网上都能找到，但是常常比较碎，需要自己慢慢的去整理，有些东西需要花大量时间，才能吃透，否者常常是以为自己明白了，但是遇到新问题又发现自己不明白了。</p>
+<h2 id="部署与运维"><a href="#部署与运维" class="headerlink" title="部署与运维"></a>部署与运维</h2><p>即使不是一个运维，部署web相关的知识也要了解。包括nginx，linux的相关操作。</p>
+<p>其实基本可以概括为理解web开发的方方面面，因为一般做技术要么就是精通某一个方向，要么就是能做全栈工程师的职位，web方向本身并不算是一个细的能够深入精通的方向（我觉得算法才算），大多数本科生也很难说精通某一细的领域，大多数公司也很少有这样的岗位，所以像全栈是一个比较实际的发展方向。当然切记不要做一个什么都会，但是什么都不会的人。</p>
+<h2 id="语言相关"><a href="#语言相关" class="headerlink" title="语言相关"></a>语言相关</h2><h4 id="语言基础"><a href="#语言基础" class="headerlink" title="语言基础"></a>语言基础</h4><p>一些关于语言细节的时候，我们根本就没有想过为什么会这样，比如trycatch，比如assert，很多时候我们也是瞎用，却不知道为什么要这么用。<br>曾经我就听一个大牛讲各种语言的异常处理机制，讲到自己高潮，反正我没听懂。。。。。</p>
+<p>面向对象，虽然面向对象被骂了很久，但是不得不否认面向对象是一种很好的编程工具,它可以写出模块化的代码，因为面向对象符合人的思维方式，软件又是人去书写的，所以面向对象一直是很好的开发方式。</p>
+<p>函数式编程，有人说函数式编程是最近被炒起来的，我并不这么认为。因为我之前说到我主要的方向是面向协议接口的web服务，所以数据的处理也是关键的一部分。而函数式编程就是用来处理数据处理的。</p>
+<h4 id="python"><a href="#python" class="headerlink" title="python"></a>python</h4><p>首先python的面向对象与java，c#并不同，它更灵活，包括<strong>dict</strong>,装饰方法，元类,MOR和多继承等等，这里面能引出很多奇特的用法，从《pythoncookbook》这本书中就包含很多类似的主题。</p>
+<p>而设计模式模式也因为python的许多特性会与c++类语言有所不同。比如很多模式可能在静态语言中很麻烦，但是在python中根本不是事儿。</p>
+<p>而python中函数也是一阶公民，可能与纯函数式语言不能比，但是map，filter，reduce，和functools库的功能如果熟悉，那么大多数的任务是完全胜任的。</p>
+<h4 id="lisp"><a href="#lisp" class="headerlink" title="lisp"></a>lisp</h4><p>如果你总觉得你的设计会有重复，或者你发现了一个什么语言特性，你就要去学学lisp了，那是你对代码的抽象思维，又会到一个高度。能够熟悉lisp，真的是明白编程的本质，我们到底在做什么，我们不应该像个孩子一样，对这个世界大大小小的事情充满兴趣，应该像个智者一样，看穿这一切。</p>
+<h4 id="javascript"><a href="#javascript" class="headerlink" title="javascript"></a>javascript</h4><p>这里的javascript应该主要是负责解析json，向服务器发送ajax之类为主。熟练使用jquery就完全够用了。再别去写一些很怪的js代码或者去玩一些作为纯面向对象语言的特性。工作的第一年写javascript比较多，不知道以后还会不会用上。</p>
+<h4 id="css和html"><a href="#css和html" class="headerlink" title="css和html"></a>css和html</h4><p>每次一提到精通web开发，就有人提到这两个东西也要精通，呵呵了我。我的html和css的水平已经足够了，我的博客页面基本就是自己慢慢折腾的，我觉得真没必要这么折腾。</p>
+<h2 id="核心知识"><a href="#核心知识" class="headerlink" title="核心知识"></a>核心知识</h2><p>人们都说程序员要学的东西太多了，那是因为你再不停的学工具而已，事实上，学好核心知识才能以不变应万变。比如一门语言本身，就是核心知识。比如数据结构和操作系统的相关知识，就是核心知识，这些东西基本不会变的。</p>
+<h4 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h4><p>包括http请求协议的样子，响应协议的样子。</p>
+<p>如何用现成的库去操作request，response，url。</p>
+<p>POST,GET,PUT等方式的不同用法，这里就不得不提到rest和restful。</p>
+<p>还有SOAP，WSDL，RPC这这些东西。</p>
+<p>还有http1.0和1.1的区别。</p>
+<p>再比如https。</p>
+<p>其实很多人，尤其不是面相服务的web开发，面向业务流程开发的那些童鞋，很少去关注url，这里甚至需要了解到底什么是http，它被设计出来到底是什么的。</p>
+<p>服务器推送技术，ajax的相关知识，甚至是类似http隧道这类知识。</p>
+<p>协议这东西要慢慢的去积累记忆，基本没什么要理解的，甚至就算去背一次，也是一件一劳永逸的事情。</p>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>这里的操作系统并不是指熟练各种shell命令，而是了解操作系统原理和系统编程的相关知识。对于web开发而言，能搭建好一个服务器，能用好一个服务器，甚至是去写一个服务器，这离不开操作系统的知识。比如进程，线程，信号，同步异步，阻塞非阻塞，网络IO模型，TCP/IP协议，套接字，缓存。如果你能精通这些原理，那么最近炒起来的协程gevent，还是什么支持并行设计的语言，或是新出来的异步框架就都难不倒你了。</p>
+<p>如果熟悉这些知识，就可以深入python的许多底层知识，比如GIL，解释器是如何创建和回收垃圾的。</p>
+<h4 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h4><p>这里不是指什么龙书鲸书之类的，而是类似领域编程，这在平时解析文件做事情都会用到。</p>
+<p>我们所处理的大多数解析任务，可能就是解析一个CSV，json，xml，读取数据而已。但是想想一个这样的场景，你要把一个类似makefile，ANT的文件读入，解析后执行一系列的动作，这个解析的过程就需要写一个解释器，这就算是语言的设计与实现相关的知识。</p>
+<p>很多软件也在后台实现了一个解释器，比较出名的像是emacs，这样的设计非常易于扩展。想想一下，你将会设计这样一个服务器，接受一些语句，然后解析执行，这是不是一件很酷的事情。</p>
+<p>我还是比较倾向于这种实践性比较强的学习，在本文最后推荐的那本书就是比较偏实践的，因为学习本身就是一种投资，是有亏本和收益这么一说的。如果学习只是为了这个我知道你不知道，我比你牛逼，那还是不要去学的好。</p>
+<h2 id="开发技巧"><a href="#开发技巧" class="headerlink" title="开发技巧"></a>开发技巧</h2><p>我一直不明白应该给这节取一个什么样的名字，或者说我不知道该不该放到开发工具下，因为我一直觉得，一个人开发久了，应该回去不停反思什么样的开发技巧最适合他。</p>
+<p>比如我不喜欢100%的TDD开发方式，但是能从中吸取借鉴精华，肯定对开发效率有所提升，比如坚持写单元测试，甚至是先写单元测试，这就算是一种开发技巧。</p>
+<p>如果你开发久了也会有一些自己的开发技巧，比如先画设计图，或者先做一个能用的，然后再去重构。</p>
+<p>甚至是对一次行动的抉择，比如你能判断没必要在某个技术上浪费时间，或者选择某个框架是最优解。</p>
+<p>甚至是一些看似于编程技术关系不大的书籍，也能够梳理你的思维，给你一些技巧。</p>
+<p>这些都需要不断的反思和总结。也是web开发之路上必不可少的环节。经验和大脑，也是开发工具的一部分，只属于你一个人。</p>
+<h2 id="书籍阅读"><a href="#书籍阅读" class="headerlink" title="书籍阅读"></a>书籍阅读</h2><p>通过以上的介绍，列出如下知道性质的书单。唉，不知拖延症患者的我什么时候才能读完。</p>
+<p>《pythoncookbook》</p>
+<p>《unix环境高级编程》</p>
+<p>《实用commonlisp编程》</p>
+<p>《代码大全》</p>
+<p>《设计模式》</p>
+<p>《禅与摩托车维修艺术》</p>
+<p>《Unix 编程艺术》</p>
+<p>《计算机程序的构造和解释》</p>
+<p>《Restful Web Service》</p>
+<p>《编程语言实现模式》</p>
+<p>《重构：改善既有代码的设计》</p>
+<p>《修改代码的艺术》</p>
+<p>《Python源码剖析》</p>
+<p>《企业应用架构模式》</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/" rel="tag"># 编程心得</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/04/04/beijing-3-weeks/" rel="prev" title="在北京的第三周">
+      <i class="fa fa-chevron-left"></i> 在北京的第三周
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/04/14/pub-key-private-key/" rel="next" title="非对称加密">
+      非对称加密 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#web%E6%96%B9%E5%90%91"><span class="nav-number">1.</span> <span class="nav-text">web方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#web%E6%A1%86%E6%9E%B6"><span class="nav-number">2.0.1.</span> <span class="nav-text">web框架</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">开发工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%BA%93"><span class="nav-number">3.0.1.</span> <span class="nav-text">开发库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">3.0.2.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">3.0.3.</span> <span class="nav-text">编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">3.0.4.</span> <span class="nav-text">版本控制器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">安全性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E7%BB%B4"><span class="nav-number">5.</span> <span class="nav-text">部署与运维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3"><span class="nav-number">6.</span> <span class="nav-text">语言相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80"><span class="nav-number">6.0.1.</span> <span class="nav-text">语言基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python"><span class="nav-number">6.0.2.</span> <span class="nav-text">python</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lisp"><span class="nav-number">6.0.3.</span> <span class="nav-text">lisp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#javascript"><span class="nav-number">6.0.4.</span> <span class="nav-text">javascript</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#css%E5%92%8Chtml"><span class="nav-number">6.0.5.</span> <span class="nav-text">css和html</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86"><span class="nav-number">7.</span> <span class="nav-text">核心知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#http%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.0.1.</span> <span class="nav-text">http协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">7.0.2.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86"><span class="nav-number">7.0.3.</span> <span class="nav-text">编译原理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7"><span class="nav-number">8.</span> <span class="nav-text">开发技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"><span class="nav-number">9.</span> <span class="nav-text">书籍阅读</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

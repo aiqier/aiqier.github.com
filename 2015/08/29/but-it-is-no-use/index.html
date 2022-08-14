@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="我曾以为我“上知天文，下知地理。”,“读书涉猎广”，精通各行各业，直到有一天我才发现，然而这并没有什么卵用。 不是真的厉害曾经我看到过一个帖子，楼主的工作在中国书法家协会，他说每年的书法比赛都会收到来自全国各地的作品，基本获奖的作品都是一线城市的，很多小地方的参赛作品，他也看出来写的很认真，而且有些人也是写了一辈子书法，但是终究来看，根本不入流。 我是学编程的，我给你举个编程的例子吧。你知道有很多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="然而这并没有什么卵用">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/08/29/but-it-is-no-use/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="我曾以为我“上知天文，下知地理。”,“读书涉猎广”，精通各行各业，直到有一天我才发现，然而这并没有什么卵用。 不是真的厉害曾经我看到过一个帖子，楼主的工作在中国书法家协会，他说每年的书法比赛都会收到来自全国各地的作品，基本获奖的作品都是一线城市的，很多小地方的参赛作品，他也看出来写的很认真，而且有些人也是写了一辈子书法，但是终究来看，根本不入流。 我是学编程的，我给你举个编程的例子吧。你知道有很多">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-08-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.733Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/08/29/but-it-is-no-use/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>然而这并没有什么卵用 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/08/29/but-it-is-no-use/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          然而这并没有什么卵用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-08-29 00:00:00" itemprop="dateCreated datePublished" datetime="2015-08-29T00:00:00+08:00">2015-08-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/08/29/but-it-is-no-use/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/08/29/but-it-is-no-use/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我曾以为我“上知天文，下知地理。”,“读书涉猎广”，精通各行各业，直到有一天我才发现，然而这并没有什么卵用。</p>
+<h4 id="不是真的厉害"><a href="#不是真的厉害" class="headerlink" title="不是真的厉害"></a>不是真的厉害</h4><p>曾经我看到过一个帖子，楼主的工作在中国书法家协会，他说每年的书法比赛都会收到来自全国各地的作品，基本获奖的作品都是一线城市的，很多小地方的参赛作品，他也看出来写的很认真，<br>而且有些人也是写了一辈子书法，但是终究来看，根本不入流。</p>
+<p>我是学编程的，我给你举个编程的例子吧。你知道有很多自称geek的人，自学haskell,lisp，erlang等非主流语言么？你知道为啥这些人这么吊么？因为周围的人很少去摸这些语言，大部分人甚至听都没听过，那么好了，如果你在玩一个很多人都没听过的东西，那么肯定会觉得自己很牛逼。因为完全没有对比性，你不知道好的标准是啥，也完全没有竞争性，你想学了就学，不想学了就可以放下。就像我去年在国企，看见过一个在那研究vb的小伙，被周围的人称之为大神，我看了他的代码，写了一大堆的<code>if else</code>，来做一个将金额展示为人民币大写。实际上如果他去网上搜一段正则表达式的实现，估计不到一个小时就搞好了。所以那些称你为大神的人，要么人家什么都不懂，只是看你在那埋头苦干写了很多，要么就是人家也就是那么一说，你不要太当真。</p>
+<span id="more"></span>
+
+<p>类似于传说中某个乡曾经见过的一个武林高手，从来没有出来和真正的世界冠军打几拳,永远活在传说和记忆中，要么出来被打死了。</p>
+<p>实际上那些好的东西，都是要花大量的人力物力的，也就是钱。你还记得《权力的游戏》中的比武么？穷人们这辈子根本没钱去买一套装备，更没钱请一个牛逼的老师教你剑术了。</p>
+<p>我们回到上面提到的那些小地方的书法家，除了你没人在玩那个，所以周围的人看你那么勤奋的画报纸，肯定忍不住会叫几句书法家。类似的还有一些在学校学摄影的老师，偶尔拍几张照片骗骗学生，陶冶情操就行了。</p>
+<h4 id="知识本身不值钱"><a href="#知识本身不值钱" class="headerlink" title="知识本身不值钱"></a>知识本身不值钱</h4><p>这句话看上去就是和“知识就是力量”作对。但实际上，相比于硬性的东西，比如钱，黄金，房子。而书本上的知识，永远都是一个辅助“锦上添花”的东西，那些课外书更是。不管怎么说，<br>你知道的东西，你能看到的东西，告诉别人，别人也就知道了，很难构成门槛儿，而很多硬性的东西，我有，你没有，这才能构成门槛儿,因为这些才是“雪中送炭”的东西。</p>
+<p>当然，如果是类似于工科那种，技术型知识，我会你不会，我告诉你你也不会，只能通过花时间来磨练的，也能被称之为门槛。</p>
+<h4 id="思维限制"><a href="#思维限制" class="headerlink" title="思维限制"></a>思维限制</h4><p>直到有一天，我才知道思维的限制是有多麽可怕。这些东西都是细思恐极的事情，你所有的决策和偏见，都是由你自己发出的。类似于说你的大脑觉得你的大脑是你器官最聪明的部分，这一想法也是由你大脑产生的。</p>
+<p>也就是说，如果你是一个没思想的人，那么你所有认为有思想的东西都是没思想的。你认为所有有创意的事情，都是因为这件事曾经不记录在你的大脑里。如果你是一个普通人，那么你不可能产生不普通的想法，只不过你的大脑让你不承认罢了。甚至你都发现不了哪些是真正聪明的人，你就像一只蚂蚁，从来没感觉到三维世界的存在。</p>
+<p>再细思一下，这个世界是由富人掌握的，他们已经为不同阶级的人设置了不同的门槛儿和坑，你所走的每一步，都被他们计划在内，那么是不是说，他们已经知道你们在想什么，甚至它们知道哪些是你认为有思想的，哪些是你认为没思想的？</p>
+<p>你有没有想过，你走的弯路，其实就是他们给你设置的门槛儿。</p>
+<h4 id="重来就没有"><a href="#重来就没有" class="headerlink" title="重来就没有"></a>重来就没有</h4><p>《时空幻境》这个游戏有这样一则故事，王子发现公主被黑骑士抢走了，然后过关斩将，一关一关的，最后找到公主,后发现公主是自愿跟黑骑士走的。</p>
+<p>也许不是因为你看了这么多的书，却是依然没用。可能真实的原因是，你从来就是一个没什么卵用的人，无论看不看书都是。</p>
+<p>哦，还有可能就是，你从来都没从书中读到真正的知识。比如说我，又因为看了一些没什么卵用的东西后去选择写一些没什么卵用的东西了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag"># 随笔</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/08/21/write-something-about-yield/" rel="prev" title="写一些关于yield的东西">
+      <i class="fa fa-chevron-left"></i> 写一些关于yield的东西
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/09/01/about-type-checking/" rel="next" title="关于类型检查">
+      关于类型检查 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E6%98%AF%E7%9C%9F%E7%9A%84%E5%8E%89%E5%AE%B3"><span class="nav-number">1.</span> <span class="nav-text">不是真的厉害</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E6%9C%AC%E8%BA%AB%E4%B8%8D%E5%80%BC%E9%92%B1"><span class="nav-number">2.</span> <span class="nav-text">知识本身不值钱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E7%BB%B4%E9%99%90%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">思维限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E6%9D%A5%E5%B0%B1%E6%B2%A1%E6%9C%89"><span class="nav-number">4.</span> <span class="nav-text">重来就没有</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

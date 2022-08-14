@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="操作系统既然有内存分页为什么还要内存分段？一句话来说就是为了兼容。 早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。 后来32的80386采用了分页内存管理，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018年编程问答">
+<meta property="og:url" content="http://www.pulpcode.cn/2019/01/27/question-and-answer/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="操作系统既然有内存分页为什么还要内存分段？一句话来说就是为了兼容。 早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。 后来32的80386采用了分页内存管理，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/zusefeizuse.jpg">
+<meta property="og:image" content="http://www.pulpcode.cn/img/cbkou.jpg">
+<meta property="article:published_time" content="2019-01-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-07-05T12:10:23.097Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/zusefeizuse.jpg">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2019/01/27/question-and-answer/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2018年编程问答 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2019/01/27/question-and-answer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2018年编程问答
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-27 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-27T00:00:00+08:00">2019-01-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-05 20:10:23" itemprop="dateModified" datetime="2020-07-05T20:10:23+08:00">2020-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/01/27/question-and-answer/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/27/question-and-answer/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="操作系统既然有内存分页为什么还要内存分段？"><a href="#操作系统既然有内存分页为什么还要内存分段？" class="headerlink" title="操作系统既然有内存分页为什么还要内存分段？"></a>操作系统既然有内存分页为什么还要内存分段？</h2><p>一句话来说就是为了兼容。</p>
+<p>早期的计算机，使用的是分段管理，比如16位的8086机器，最大的内存地址到,但是使用段寄存器+偏移量的方式，可以访问到1MB的内存。（把1M内存分为16个段)。例如8086四个段寄存器（代码段寄存器，数据段寄存器，堆栈段寄存器，附加段寄存器）。并且分段还有一个好处是做到数据隔离，保证安全。</p>
+<p>后来32的80386采用了分页内存管理，使用虚拟内存地址映射到物理内存，所以让每个进程看上去自己都有4GB的内存空间（虚拟内存地址）可用。每一个页大概有4K，而且真正被使用的时候才会分配真实的内存，否则可能在硬盘上，或者就没有被分配。但后来的80386还保留了分段模式主要是为了兼容。</p>
+<p>再后来使用了“段页式管理”，结合了分段和分页两种内存管理思路，用户程序的逻辑地址空间首先被划分成若干的逻辑段，每个段都有自己的段号(常量段，堆栈段)，然后再将这些段分页。所以不要把最早的内存分段管理和如今的段页式管理搞混，即使他们都有所谓的“堆栈段”，要分清它们的区别和联系。</p>
+<p>总结一下分段内存管理的优势在于内存共享和安全控制，而分页内存管理的优势在于提高内利用率。</p>
+<span id="more"></span>
+
+<h2 id="为什么链接数据库不用epoll的方式来提升并发量？"><a href="#为什么链接数据库不用epoll的方式来提升并发量？" class="headerlink" title="为什么链接数据库不用epoll的方式来提升并发量？"></a>为什么链接数据库不用epoll的方式来提升并发量？</h2><p>简单的来说，数据库的瓶颈不在并发量。我们把多线程改为epll的前提是有这么多的线程可以工作。对于数据库而言，你这些线程只能阻塞的，因为没有那么多的连接池给你。</p>
+<h2 id="IO什么时候会发生阻塞？"><a href="#IO什么时候会发生阻塞？" class="headerlink" title="IO什么时候会发生阻塞？"></a>IO什么时候会发生阻塞？</h2><p><img src="/img/zusefeizuse.jpg" alt="zusefeizuse"></p>
+<p>顺便说一句，阻塞非阻塞，主要指等待数据的情况，输出时由于磁盘写入、网络传输等因素，也有可能会发生阻塞，但发生的概率 并不高。而且即便发生了阻塞，等待时间也相对较短，因此不必过于在意。</p>
+<h2 id="所有的中断都是轮询么？"><a href="#所有的中断都是轮询么？" class="headerlink" title="所有的中断都是轮询么？"></a>所有的中断都是轮询么？</h2><p>实际上看上去所有的中断，在底层都有一个轮询机制来看此中断。但是首先让我们从概念上来区分中断和轮询，中断像是处理高优先级和突发事件，而轮询则更像是自发有规律的处理一件事，或者一堆事。<br>但是即使到cpu级别的，中断也是用轮询实现的。CPU在执行完当前程序的每一条指令后，都会去确认在执行刚才的指令过程中中断控制器（如：8259A）是否发送中断请求过来，如果有那么CPU就会在相应的时钟脉冲到来时从总线上读取中断请求对应的中断向量。</p>
+<h2 id="假如我的系统虽然每次只有几个线程是活跃的，那我的线程池大小开到100和开到10000，性能是一样的么，除了线程本身耗费的内存资源？"><a href="#假如我的系统虽然每次只有几个线程是活跃的，那我的线程池大小开到100和开到10000，性能是一样的么，除了线程本身耗费的内存资源？" class="headerlink" title="假如我的系统虽然每次只有几个线程是活跃的，那我的线程池大小开到100和开到10000，性能是一样的么，除了线程本身耗费的内存资源？"></a>假如我的系统虽然每次只有几个线程是活跃的，那我的线程池大小开到100和开到10000，性能是一样的么，除了线程本身耗费的内存资源？</h2><p>如果你的系统只有几个进程是活跃的，那么线程池开100还是10000，是区别不大的。因为只有就绪态的线程才会占调度队列。linux的目前的调度器是CFS，使用红黑树管理就绪队列，所以每当线程试图读写网络，并遇到阻塞时，都会发生O(logm)级别的开销。而且每次收到报文，唤醒阻塞在fd上的上下文时，同样要付出O(logm)级别的开销。因为红黑树的时间复杂度大概是O(logm).</p>
+<h2 id="操作系统中的进程模型，一共有几种形态？"><a href="#操作系统中的进程模型，一共有几种形态？" class="headerlink" title="操作系统中的进程模型，一共有几种形态？"></a>操作系统中的进程模型，一共有几种形态？</h2><p>最简单的可分为三类:</p>
+<ol>
+<li>运行态(running):占有处理器正在运行</li>
+<li>就绪态(ready):具备运行条件，等待系统分配处理器以便运行</li>
+<li>等待态(blocked):不具备运行条件，正在等待某个事件的完成</li>
+</ol>
+<p>复杂一点的分类是五类，引入了新建态和终止态。因为在新建进程和销毁进程的时候，需要创建和清理上下文。<br>更复杂一点的七态模型，因为进程不仅仅存在于内存，可能因为系统资源的不足而挂起置换到磁盘镜像中去。所以又加入了两种形态：“挂起就绪态”和“挂起等待态”，而变为七种形态。</p>
+<h2 id="阻塞IO和非阻塞IO的本质区别到底是什么？"><a href="#阻塞IO和非阻塞IO的本质区别到底是什么？" class="headerlink" title="阻塞IO和非阻塞IO的本质区别到底是什么？"></a>阻塞IO和非阻塞IO的本质区别到底是什么？</h2><p>这件事要想搞清楚，仅仅从软件的角度是不够的，还需要从操作系统，硬件分别来做考虑才行。</p>
+<p>首先阻塞IO是一个很常规的操作，比如你从硬盘读取一个文件或者从网站获取一段数据再解析，那么你除了等这段数据返回再不能干别的什么。之所以引入非阻塞io，主要是为了网络io，相比于文件io的读写，网络io更像是在通信，就有延迟，不确定性，很可能被无限阻塞，因为你不知道数据什么时候会来。它就适合非阻塞模型。而从通信模型上说，有一个非就绪到就绪的过程，而硬盘可以说始终是就绪的，除非本地文件被锁了，否则是不可能被阻塞住的，或者说文件就没有阻塞不阻塞这么一说。当然这不是说非阻塞io对文件读写没有意义，比如对于SSD而言，是支持并行读写的，这个时候就需要非阻塞IO的支持来提供并发了。比如windows的IOCP，linux上的kqueue</p>
+<p>从软件上的复杂性而言，阻塞io将会阻塞你的主控，直到有数据返回。而非阻塞不会。你可以继续获得程序的执行权，不过需要用轮询，或者回调的方式让你知道数据已经准备好了，使用起来更复杂。所以使用非阻塞io最好是在你同时需要发出多个io请求，或者在发出io请求之后还有别的事可以做。如果从执行流来划分程序的话，阻塞io一直在那一个执行流上，而非阻塞IO需要在多个执行流上切换,而切换上下文本身就是开销。</p>
+<p>形象一点说，阻塞io像是IO操作和线程本身绑定了，而非阻塞io分离和io和线程，通过io事件，让其可以进行通信。那既然都是事件，自然也就需要一系列的事件处理模型了。比如epoll这种多路复用，就是让你同时管理多个io事件。</p>
+<h2 id="在进行io操作的时候，cpu会去一直轮询硬件设备看是不是好了吗？"><a href="#在进行io操作的时候，cpu会去一直轮询硬件设备看是不是好了吗？" class="headerlink" title="在进行io操作的时候，cpu会去一直轮询硬件设备看是不是好了吗？"></a>在进行io操作的时候，cpu会去一直轮询硬件设备看是不是好了吗？</h2><p>早期外设到内存的IO操作，都需要cpu介入，不停的轮询状态。控制io操作，这种方式被称为PIO。但是后来硬件外设都引入了DMA，可以说将io操作托管给了DMA，这样只要在开始传输和传输结束的时候让CPU介入就可以了。这样减少了CPU的负担。</p>
+<h2 id="什么是ssh登录？"><a href="#什么是ssh登录？" class="headerlink" title="什么是ssh登录？"></a>什么是ssh登录？</h2><p>SSH登录，既公钥登录，就是将自己的公钥存储在远程主机上，远程登录的时候，请求远程主机，远程主机会向用户发送一段随机字符串，接着用户会用自己的私钥签名，在发给远程主机，如果远程主机能够验签成功，就证明用户是可信的（私钥可以用来证明身份）。这种登录的好处是不用像密码登录一样每次登录都要输入密码，但是SSH有一个风险就是中间人攻击，既冒充远程主机将你本来要发给真正远程主机的信息截获（你的公钥是公开的）。而且SSH也不像HTTPS一样有公证的证书中心（CA），不过好在你在用ssh远程登录时终端会提示你指纹警告，让你自己去核对一下远程主机的公钥指纹。<br>你调用ssh-keygen时，id_rsa.pub是你的公钥，id_rsa是私钥。</p>
+<h2 id="为什么老一辈的程序员喜欢把堆和栈一起说叫“堆栈”，而不是堆是堆，栈是栈？"><a href="#为什么老一辈的程序员喜欢把堆和栈一起说叫“堆栈”，而不是堆是堆，栈是栈？" class="headerlink" title="为什么老一辈的程序员喜欢把堆和栈一起说叫“堆栈”，而不是堆是堆，栈是栈？"></a>为什么老一辈的程序员喜欢把堆和栈一起说叫“堆栈”，而不是堆是堆，栈是栈？</h2><p>因为早期的计算机，比如8086，内存分段，而有一个段就叫堆栈段。</p>
+<h2 id="epoll为啥要用非阻塞IO而不是阻塞IO？"><a href="#epoll为啥要用非阻塞IO而不是阻塞IO？" class="headerlink" title="epoll为啥要用非阻塞IO而不是阻塞IO？"></a>epoll为啥要用非阻塞IO而不是阻塞IO？</h2><p>epoll告诉你可读，但是没告诉你读多少，除非提前用某种协议协商好，但是可读也不代表就一定能读，所以如果你要是在读的时候和在写的时候，不符合预期的话，就会把整个Epoll给阻塞了。而非阻塞可以在读写不符合预期的时候，先返回然后下次再尝试，这里要特别说明一点Epoll有水平触发（LT）【默认模式】和边缘触发（ET）【高速模式】。对于LT模式使用阻塞模式尚可，但如果是ET模式，则必须使用非阻塞，因为ET的读写事件只会通知你一次，如果你不处理完，下次也不通知你了。</p>
+<h2 id="为什么有人说java的Netty，tornado这些是异步库，而这些库都是基于epoll的，但是又有人说，epoll是同步的？"><a href="#为什么有人说java的Netty，tornado这些是异步库，而这些库都是基于epoll的，但是又有人说，epoll是同步的？" class="headerlink" title="为什么有人说java的Netty，tornado这些是异步库，而这些库都是基于epoll的，但是又有人说，epoll是同步的？"></a>为什么有人说java的Netty，tornado这些是异步库，而这些库都是基于epoll的，但是又有人说，epoll是同步的？</h2><p>首先软件是分层的，说netty是异步的，是指在框架层，进行io操作的时候，可以不用阻塞在那里，从业务上是异步的。<br>而对于操作系统级别的io操作，epoll，回调这些都是同步的，因为这个时候数据还没有从内核缓存区拷贝到进程缓存区，只有IOCP才是相对于操作系统级别的真异步。</p>
+<h2 id="水平触发与边缘触发的区别？"><a href="#水平触发与边缘触发的区别？" class="headerlink" title="水平触发与边缘触发的区别？"></a>水平触发与边缘触发的区别？</h2><p>Level_triggered(水平触发)：当被监控的文件描述符上有可读写事件发生时，epoll_wait()会通知处理程序去读写。如果这次没有把数据一次性全部读写完(如读写缓冲区太小)，那么下次调用 epoll_wait()时，它还会通知你在上没读写完的文件描述符上继续读写，当然如果你一直不去读写，它会一直通知你，如果系统中有大量你不需要读写的就绪文件描述符，而它们每次都会返回，这样会大大降低处理程序检索自己关心的就绪文件描述符的效率。<br>Edge_triggered(边缘触发)：当被监控的文件描述符上有可读写事件发生时，epoll_wait()会通知处理程序去读写。如果这次没有把数据全部读写完(如读写缓冲区太小)，那么下次调用epoll_wait()时，它不会通知你，也就是它只会通知你一次，直到该文件描述符上出现第二次可读写事件才会通知你，这种模式比水平触发效率高，系统不会充斥大量你不关心的就绪文件描述符。</p>
+<h2 id="为什么epoll不支持文件而kqueue支持文件？"><a href="#为什么epoll不支持文件而kqueue支持文件？" class="headerlink" title="为什么epoll不支持文件而kqueue支持文件？"></a>为什么epoll不支持文件而kqueue支持文件？</h2><p>select()/poll()/epoll()不能工作在常规的磁盘文件上。这是因为epoll有一个强烈基于准备就绪模型的假设前提(epoll其实是在改进poll，select)。你监视的是准备就绪的套接字，因此套接字上的顺序IO调用不会发生阻塞。但是磁盘文件并不符合这种模型，因为它们总是处于就绪状态。 磁盘I/O只有在数据没有被缓存到内存时会发生阻塞，而不是因为客户端没发送消息。磁盘文件的模型是完成通知模型。在这样的模型里，你只是产生I/O操纵，然后等待完成通知。kqueue支持这种方式，通过设置EVFILT_AIO 过滤器类型来关联到 POSIX AIO功能上，诸如aio_read()。</p>
+<h2 id="为什么5种io模型中，只有第五种io算是异步，其余都是同步？"><a href="#为什么5种io模型中，只有第五种io算是异步，其余都是同步？" class="headerlink" title="为什么5种io模型中，只有第五种io算是异步，其余都是同步？"></a>为什么5种io模型中，只有第五种io算是异步，其余都是同步？</h2><p>因为只有第五种io模型收到通知的时候，数据已经完全准备好了，其余的模型，都是要自己去把数据从内核缓冲区读到进程缓冲区中，而且这个读取的操作是阻塞的。</p>
+<h2 id="一个标准的阻塞调用是什么样的？"><a href="#一个标准的阻塞调用是什么样的？" class="headerlink" title="一个标准的阻塞调用是什么样的？"></a>一个标准的阻塞调用是什么样的？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[10];</span><br><span class="line">    int n = read(STDIN_FILENO, buf, 10);</span><br><span class="line"></span><br><span class="line">    dosomethinforbuf(buf);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个非阻塞调用是什么样的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[10];</span><br><span class="line">    int fd, n;</span><br><span class="line"></span><br><span class="line">    fd = open(&quot;/dev/tty&quot;, O_RDONLY|O_NONBLOCK);</span><br><span class="line">    while (1)</span><br><span class="line">    &#123;</span><br><span class="line">        n = read(fd, buf, 10);</span><br><span class="line">        if (n &gt;= 0)</span><br><span class="line">            break;</span><br><span class="line">        sleep(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dosomethinforbuf(buf);</span><br><span class="line">    close(fd);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程是如何被唤醒的，线程池中的线程又是如何被唤醒的？"><a href="#线程是如何被唤醒的，线程池中的线程又是如何被唤醒的？" class="headerlink" title="线程是如何被唤醒的，线程池中的线程又是如何被唤醒的？"></a>线程是如何被唤醒的，线程池中的线程又是如何被唤醒的？</h2><p>操作系统层面是无法识别你进程中有多少线程池的，因为在操作系统眼里这些都一样，线程池只是你自己方便维护管理线程的一种手段。线程在读数据时，如果未就绪。系统状态会被标记为阻塞，然后上下文会被挂到目标对象的wait_queue队列里。等目标对象就绪了，会解锁合适个数的wait_queue上的上下文。上下文解锁后，状态就转为就绪，然后被扔到系统调度队列里去。随后它们会被系统分配资源并执行。</p>
+<h2 id="什么是内网，什么是公网？"><a href="#什么是内网，什么是公网？" class="headerlink" title="什么是内网，什么是公网？"></a>什么是内网，什么是公网？</h2><p>以下都是内网ip，其余都是公网ip。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10.0.0.0~10.255.255.255</span><br><span class="line">172.16.0.0~172.31.255.255</span><br><span class="line">192.168.0.0~192.168.255.255</span><br></pre></td></tr></table></figure>
+
+<h2 id="ping使用的是哪个端口"><a href="#ping使用的是哪个端口" class="headerlink" title="ping使用的是哪个端口?"></a>ping使用的是哪个端口?</h2><p>ICMP不象TCP或UDP有端口，但它确实含有两个域：类型(type)和代码(code)。而且这些域的作用和端口也完全不同.</p>
+<p>ping没有指定端口这个选项，它是网络层的，端口是传输层的概念。</p>
+<h2 id="多个进程可以占用一个端口么？"><a href="#多个进程可以占用一个端口么？" class="headerlink" title="多个进程可以占用一个端口么？"></a>多个进程可以占用一个端口么？</h2><p>一个进程可以同时LISTENING，ESTABLISHED若干个端口。<br>ESTABLISHED状态，一个端口只能对应一个进程，但是一个端口同时被几个进程LISTENING。就是可以有多个等待。</p>
+<h2 id="硬盘的读写是串行还是并行的？"><a href="#硬盘的读写是串行还是并行的？" class="headerlink" title="硬盘的读写是串行还是并行的？"></a>硬盘的读写是串行还是并行的？</h2><p>先说机械硬盘，机械硬盘的串口比并口快，因为并口要维护同步，而且频率低。串口的频率很高。目前大部分硬盘是串口。<br>这里只是说数据传输，实际上机械硬盘是支持并行读写的，比如磁盘阵列。磁盘阵列是由很多价格较便宜的磁盘，组合成一个容量巨大的磁盘组，利用个别磁盘提供数据所产生加成效果提升整个磁盘系统效能。利用这项技术，将数据切割成许多区段，分别存放在各个硬盘上。但是机械硬盘慢的真正原因是磁盘转速有物理极限。<br>固态硬盘是支持并行读写的，一块SSD有多个NAND颗粒，主控将数据分配到各个颗粒上。大部分SSD也是SATA接口。</p>
+<p><img src="/img/cbkou.jpg" alt="chuankoubingkou"></p>
+<h2 id="网卡的读写是串行还是并行的？"><a href="#网卡的读写是串行还是并行的？" class="headerlink" title="网卡的读写是串行还是并行的？"></a>网卡的读写是串行还是并行的？</h2><p>网卡肯定是并行的，因为只要发送和接受就行了，所以网卡的指标是千兆网卡、万兆网卡是表示每秒转发包数处理能力。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"># 编程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/20/talk-about-2018/" rel="prev" title="记录2018年的几件事">
+      <i class="fa fa-chevron-left"></i> 记录2018年的几件事
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/27/2018-best-talk/" rel="next" title="2018年aiqier说说精选">
+      2018年aiqier说说精选 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%97%A2%E7%84%B6%E6%9C%89%E5%86%85%E5%AD%98%E5%88%86%E9%A1%B5%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81%E5%86%85%E5%AD%98%E5%88%86%E6%AE%B5%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">操作系统既然有内存分页为什么还要内存分段？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%93%BE%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E7%94%A8epoll%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E6%8F%90%E5%8D%87%E5%B9%B6%E5%8F%91%E9%87%8F%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么链接数据库不用epoll的方式来提升并发量？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BC%9A%E5%8F%91%E7%94%9F%E9%98%BB%E5%A1%9E%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">IO什么时候会发生阻塞？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E7%9A%84%E4%B8%AD%E6%96%AD%E9%83%BD%E6%98%AF%E8%BD%AE%E8%AF%A2%E4%B9%88%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">所有的中断都是轮询么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%87%E5%A6%82%E6%88%91%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%99%BD%E7%84%B6%E6%AF%8F%E6%AC%A1%E5%8F%AA%E6%9C%89%E5%87%A0%E4%B8%AA%E7%BA%BF%E7%A8%8B%E6%98%AF%E6%B4%BB%E8%B7%83%E7%9A%84%EF%BC%8C%E9%82%A3%E6%88%91%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%A4%A7%E5%B0%8F%E5%BC%80%E5%88%B0100%E5%92%8C%E5%BC%80%E5%88%B010000%EF%BC%8C%E6%80%A7%E8%83%BD%E6%98%AF%E4%B8%80%E6%A0%B7%E7%9A%84%E4%B9%88%EF%BC%8C%E9%99%A4%E4%BA%86%E7%BA%BF%E7%A8%8B%E6%9C%AC%E8%BA%AB%E8%80%97%E8%B4%B9%E7%9A%84%E5%86%85%E5%AD%98%E8%B5%84%E6%BA%90%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">假如我的系统虽然每次只有几个线程是活跃的，那我的线程池大小开到100和开到10000，性能是一样的么，除了线程本身耗费的内存资源？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%8C%E4%B8%80%E5%85%B1%E6%9C%89%E5%87%A0%E7%A7%8D%E5%BD%A2%E6%80%81%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">操作系统中的进程模型，一共有几种形态？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BB%E5%A1%9EIO%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9EIO%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">阻塞IO和非阻塞IO的本质区别到底是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E8%BF%9B%E8%A1%8Cio%E6%93%8D%E4%BD%9C%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8Ccpu%E4%BC%9A%E5%8E%BB%E4%B8%80%E7%9B%B4%E8%BD%AE%E8%AF%A2%E7%A1%AC%E4%BB%B6%E8%AE%BE%E5%A4%87%E7%9C%8B%E6%98%AF%E4%B8%8D%E6%98%AF%E5%A5%BD%E4%BA%86%E5%90%97%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">在进行io操作的时候，cpu会去一直轮询硬件设备看是不是好了吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFssh%E7%99%BB%E5%BD%95%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">什么是ssh登录？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%80%81%E4%B8%80%E8%BE%88%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98%E5%96%9C%E6%AC%A2%E6%8A%8A%E5%A0%86%E5%92%8C%E6%A0%88%E4%B8%80%E8%B5%B7%E8%AF%B4%E5%8F%AB%E2%80%9C%E5%A0%86%E6%A0%88%E2%80%9D%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%A0%86%E6%98%AF%E5%A0%86%EF%BC%8C%E6%A0%88%E6%98%AF%E6%A0%88%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">为什么老一辈的程序员喜欢把堆和栈一起说叫“堆栈”，而不是堆是堆，栈是栈？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll%E4%B8%BA%E5%95%A5%E8%A6%81%E7%94%A8%E9%9D%9E%E9%98%BB%E5%A1%9EIO%E8%80%8C%E4%B8%8D%E6%98%AF%E9%98%BB%E5%A1%9EIO%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">epoll为啥要用非阻塞IO而不是阻塞IO？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E4%BA%BA%E8%AF%B4java%E7%9A%84Netty%EF%BC%8Ctornado%E8%BF%99%E4%BA%9B%E6%98%AF%E5%BC%82%E6%AD%A5%E5%BA%93%EF%BC%8C%E8%80%8C%E8%BF%99%E4%BA%9B%E5%BA%93%E9%83%BD%E6%98%AF%E5%9F%BA%E4%BA%8Eepoll%E7%9A%84%EF%BC%8C%E4%BD%86%E6%98%AF%E5%8F%88%E6%9C%89%E4%BA%BA%E8%AF%B4%EF%BC%8Cepoll%E6%98%AF%E5%90%8C%E6%AD%A5%E7%9A%84%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">为什么有人说java的Netty，tornado这些是异步库，而这些库都是基于epoll的，但是又有人说，epoll是同步的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E8%A7%A6%E5%8F%91%E4%B8%8E%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">水平触发与边缘触发的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88epoll%E4%B8%8D%E6%94%AF%E6%8C%81%E6%96%87%E4%BB%B6%E8%80%8Ckqueue%E6%94%AF%E6%8C%81%E6%96%87%E4%BB%B6%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">为什么epoll不支持文件而kqueue支持文件？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%885%E7%A7%8Dio%E6%A8%A1%E5%9E%8B%E4%B8%AD%EF%BC%8C%E5%8F%AA%E6%9C%89%E7%AC%AC%E4%BA%94%E7%A7%8Dio%E7%AE%97%E6%98%AF%E5%BC%82%E6%AD%A5%EF%BC%8C%E5%85%B6%E4%BD%99%E9%83%BD%E6%98%AF%E5%90%8C%E6%AD%A5%EF%BC%9F"><span class="nav-number">15.</span> <span class="nav-text">为什么5种io模型中，只有第五种io算是异步，其余都是同步？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%A0%87%E5%87%86%E7%9A%84%E9%98%BB%E5%A1%9E%E8%B0%83%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">一个标准的阻塞调用是什么样的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%A6%82%E4%BD%95%E8%A2%AB%E5%94%A4%E9%86%92%E7%9A%84%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%8F%88%E6%98%AF%E5%A6%82%E4%BD%95%E8%A2%AB%E5%94%A4%E9%86%92%E7%9A%84%EF%BC%9F"><span class="nav-number">17.</span> <span class="nav-text">线程是如何被唤醒的，线程池中的线程又是如何被唤醒的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E7%BD%91%EF%BC%8C%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%AC%E7%BD%91%EF%BC%9F"><span class="nav-number">18.</span> <span class="nav-text">什么是内网，什么是公网？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ping%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AF%E5%93%AA%E4%B8%AA%E7%AB%AF%E5%8F%A3"><span class="nav-number">19.</span> <span class="nav-text">ping使用的是哪个端口?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E8%BF%9B%E7%A8%8B%E5%8F%AF%E4%BB%A5%E5%8D%A0%E7%94%A8%E4%B8%80%E4%B8%AA%E7%AB%AF%E5%8F%A3%E4%B9%88%EF%BC%9F"><span class="nav-number">20.</span> <span class="nav-text">多个进程可以占用一个端口么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E7%9B%98%E7%9A%84%E8%AF%BB%E5%86%99%E6%98%AF%E4%B8%B2%E8%A1%8C%E8%BF%98%E6%98%AF%E5%B9%B6%E8%A1%8C%E7%9A%84%EF%BC%9F"><span class="nav-number">21.</span> <span class="nav-text">硬盘的读写是串行还是并行的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E5%8D%A1%E7%9A%84%E8%AF%BB%E5%86%99%E6%98%AF%E4%B8%B2%E8%A1%8C%E8%BF%98%E6%98%AF%E5%B9%B6%E8%A1%8C%E7%9A%84%EF%BC%9F"><span class="nav-number">22.</span> <span class="nav-text">网卡的读写是串行还是并行的？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

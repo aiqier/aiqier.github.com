@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="自己曾经被别人面试过，也当过面试官面了很多人，在出面试题这件事上，渐渐了“堆积”了一些自己的想法，在这篇博客里总结分享出来。 那么我眼中好的面试题应该是怎样的？我会尝试抛出自己的一个个观点，然后再去用例子论证它们。 好的面试题应该是有目的的你可能觉得我上面这句话像个废话，但有些面试题我真的觉得没想过要考察啥，没想过自己到底要招聘一个什么样的人。 试想这样一个场景，一个面试者从网上找了一些面试题，然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何设计好一道面试题">
+<meta property="og:url" content="http://www.pulpcode.cn/2021/03/21/how-to-design-a-good-question/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="自己曾经被别人面试过，也当过面试官面了很多人，在出面试题这件事上，渐渐了“堆积”了一些自己的想法，在这篇博客里总结分享出来。 那么我眼中好的面试题应该是怎样的？我会尝试抛出自己的一个个观点，然后再去用例子论证它们。 好的面试题应该是有目的的你可能觉得我上面这句话像个废话，但有些面试题我真的觉得没想过要考察啥，没想过自己到底要招聘一个什么样的人。 试想这样一个场景，一个面试者从网上找了一些面试题，然">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/question.jpg">
+<meta property="article:published_time" content="2021-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-28T04:13:07.192Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/question.jpg">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2021/03/21/how-to-design-a-good-question/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何设计好一道面试题 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2021/03/21/how-to-design-a-good-question/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何设计好一道面试题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-21T00:00:00+08:00">2021-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-28 12:13:07" itemprop="dateModified" datetime="2021-03-28T12:13:07+08:00">2021-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/21/how-to-design-a-good-question/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/21/how-to-design-a-good-question/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自己曾经被别人面试过，也当过面试官面了很多人，在出面试题这件事上，渐渐了“堆积”了一些自己的想法，在这篇博客里总结分享出来。</p>
+<p>那么我眼中好的面试题应该是怎样的？我会尝试抛出自己的一个个观点，然后再去用例子论证它们。</p>
+<h2 id="好的面试题应该是有目的的"><a href="#好的面试题应该是有目的的" class="headerlink" title="好的面试题应该是有目的的"></a>好的面试题应该是有目的的</h2><p>你可能觉得我上面这句话像个废话，但有些面试题我真的觉得没想过要考察啥，没想过自己到底要招聘一个什么样的人。</p>
+<p>试想这样一个场景，一个面试者从网上找了一些面试题，然后都做了一遍记住了，而刚好作为面试官的你也从网上找了一些面试题，和面试者找的题刚好重合了，这样两边在面试的时候都很流畅，你问的问题面试者都能回答上，但是这最后的结果是你想要的么？很明显不是。你需要的应该是一个懂得解决问题的人来解出你的题目，而不是一个善于背题的人。</p>
+<span id="more"></span>
+
+<p>尤其像是烧绳子，称乒乓球这种智力题，到底想考什么？是要考察面试者是否在网上刷过这道题么？我本人对“脑筋急转弯”类的题目嗤之以鼻，我不知道是什么时候，开始兴起这种东西，有传言这是微软面试的题目，不知道微软这几年题库更新了没有。因为“井盖为什么是圆的？”的这种题，我可是上小学的时候就在央视的一档节目《开心辞典》看到过，所以建议这些希望通过此题考察面试者智商的人，偶尔也更新下题库，还是说微软这几年没有新题流入市场了。这些题其实网上已经流传很久了，但凡有心要参加面试的人，都会去刷这些题，那这些题就没啥意义，因为你很难从这个人能答出这道题，就了解到了这个人的思维模式。他到底是凭借他的聪明才智推理出来的，还是自己之前就看过这道题或者类似的题。</p>
+<p>当然这时有人会反驳我说，能做完所有题的人，他的基本功一定很好，招进来做事也没问题。所以如果你要的只是记忆力，主动性，自律这些基本能力，那这样我们还考什么编程，考什么不是考，为什么不直接考申论呢。</p>
+<h2 id="好的面试题应该是高效的"><a href="#好的面试题应该是高效的" class="headerlink" title="好的面试题应该是高效的"></a>好的面试题应该是高效的</h2><p>在一个多小时内，面出一个人的真实水平不容易。所以面试本身应该是高效的。</p>
+<p>面试题目应该经过“精心优化”。即题目本身应该既考到核心部分又能考到多个环节，一个题一个知识点很是浪费时间，最好一个题就能问出很多知识点。比如说像是笔试题这种，属于浪费时间但又是不得不考的那种。而我一般会出一道笔试题涵盖<code>if else for break continue</code>这五个逻辑。如果这道题能写出来那基本的编程逻辑肯定没什么问题，而且我会简化其中的步骤，突出我要考的内容，这其实也是在节约宝贵的面试时间。举个例子，我自己设计了一道判断飞机航班里舱位是否可售的题，真实情况飞机的舱位状态代码是0~9或者是A时都是可售状态，其它状态都为不可售。为了面试者不把时间花在这些判断上，我将此逻辑简化成了1为可售，0为不可售，这样突出了我想考察的内容，节省了我和面试者的时间，提升了我俩的效率。</p>
+<h2 id="好的面试题应该是阶梯，不是开关"><a href="#好的面试题应该是阶梯，不是开关" class="headerlink" title="好的面试题应该是阶梯，不是开关"></a>好的面试题应该是阶梯，不是开关</h2><p>为啥科目二要把最难的一项“倒车入库”放到第一个考，我理解是科目二的目的就是四项都过，哪项不过都不行。而倒库挂了可以很快的就把考试终止，提升效率。但是面试不是这样，你一开始就上难的，只会让面试人过于紧张。科目二的考试像个开关，会就过，不会就不过。但是面试不是，面试应该是给出了一堆阶梯，看看面试者在哪一层。</p>
+<p>首先我的题目本身会设计成递增似的，问的问题越来越难，越来越深，看面试者能掌握到什么程度。比如对于多路复用我可能会像如下一样递增。<br>tomcat使用多线程模型处理多个链接么？-&gt; 多路复用相比多线程有什么好处？-&gt;多路复用就一个线程么？-&gt; Nio Netty epoll有什么关系？ -&gt; epoll能使用文件IO么 -&gt; epoll 能使用阻塞IO么？</p>
+<p>而且有的时候如果题目比较难，我会在中间衔接一些比较简单的题，来防止面试者过于紧张，但是这些简单的题也不是什么浪费时间的题，是一些基础知识的题，可以快速的检验一些知识点的了解情况。</p>
+<h2 id="好的面试题应该是实用的"><a href="#好的面试题应该是实用的" class="headerlink" title="好的面试题应该是实用的"></a>好的面试题应该是实用的</h2><p>像是<code>++i+i++</code>等于多少，这种题就不算是一个好题目。因为没人会在工作中这样写代码，同时像是把“重载与重写的区别”这两个没啥关系的概念绑到一起的，也不是实用的好题。我认为面试题这种事，你要问面试者一个心服口服，因为有些题目，面试者虽然回答不上，但是他内心也是不服气的，他心里在想“你问的这个东西和我工作有什么关系”。这并不是毫无道理，毕竟网上流传的段子说编程就是“面试造核弹，工作拧螺丝。”</p>
+<p>当然并不是说基本功不重要，相反看一个程序员能走多远，基本功很重要。但是如果你问的基本功知识是那种基本几年都用不到的，那你还是在找一个会背题的人，但其实你内心明明是想找一个能解决工作问题的人。</p>
+<p>比如你想考察一个面试者操作系统或者计算机原理的知识。你与其问他“cpu有哪几常见的中断？”，不如问他“CPU load高了，但是你的CPU的使用率却很低，你要怎么排查？”这个场景其实就和操作系统以及计算机组成原理相关，而且很能考察他真实解决问题的能力。</p>
+<h2 id="好的面试题应该是一个好问题"><a href="#好的面试题应该是一个好问题" class="headerlink" title="好的面试题应该是一个好问题"></a>好的面试题应该是一个好问题</h2><p><img src="/img/question.jpg" alt="question"></p>
+<p>我发现网上很多面试题其实就不是一个好问题。像是“进程有哪些状态？”这个问题就在希望面试者背出进程有哪些状态一样。除了字面本身，没有任何意义，为了找意义你又要继续问WAIT和BLOCK有啥区别。然而这个答案还是字面上的答案，关键是这些答案还很容易背诵。</p>
+<p>面试的问题，最好是一个能让人解释WHY的，或者是HOW，问人家面对一个问题，是怎么解决，思路方案是啥。WHAT的问题很难考察出一个人到底会还是不会，因为这些WHAT更像是在复述一个概念本身，并没有上升一个层次。</p>
+<p>所以你不应该只是考察这个事本身是什么，你应该去问这件事背后的原理是什么，如果他的推理逻辑很强，能列举出一套方法论出来，就说明他是一个很爱思考总结的人。</p>
+<p>比如我发现很多人，我问他们“二分查找是什么？”，“二分查找的时间复杂度是多少？”这些他们都能回答上。<br>但是如果我问：“我能在有序链表进行二分查找么？”，我发现有些人就答错了，所以他们就没理解什么是二分查找。</p>
+<h2 id="好的面试题应该是精准投放的"><a href="#好的面试题应该是精准投放的" class="headerlink" title="好的面试题应该是精准投放的"></a>好的面试题应该是精准投放的</h2><p>简单来说就是“你不可能面一个校招和一个社招用同一个问题”。<br>如果是工作年限很少或干脆是校招的同学，那偏向基本功的内容就应该多点，如果是多年开发经验的，那项目经验就应该多考察点。因为你不能对一个工作几年的人考他递归写法。</p>
+<p>所以为了能让你在面试的时候，问的问题覆盖够广泛，针对不同人能问不同的问题。你需要一个足够充分的题库和一个技能树或者是能力模型。这些题并不是单独存在而是挂在技能树上的。你要针对你要面试的人设计一个技能树。你面试的最终目的其实就是想考察面试人在这棵树上哪些地方是亮的，哪些地方是暗的。</p>
+<p>我会自己建立一个题库，将那些认为不错的题收藏起来，而且时不时的改编衍生出更多的题，来防止某些题因为被面试过而泄露到网上失去意义，所以每个知识点我都会准备好几个不同类型的题目。网上的面试题我也会采集一些，这需要精挑细选，因为大部分题其实挺粗制滥造的。我还会看其他人的面试记录，看看他们在考什么，我猜想每个人多多少少都是有一些自己设计的题的，我会有所筛选的将那些我觉得设计的不错的题放到我的面试题库里。</p>
+<p>而且作为一个面试官应该去多了解不同类型的系统是怎样设计的，此系统的设计难点在哪，否则你很难真实的了解被面试者的水平，因为外行很容易被忽悠。</p>
+<p>当你有了一个自己的题库之后，你就可以在阅读完某个人的简历之后，根据这个人做过的事和擅长的东西去组合出相应的题，看看这个人是不是真的擅长或者精通。这对校招生也同样重要，因为java，c++，python，php，go会啥的都有。</p>
+<p>而对于一个面试官而言，我理解所担心的就是两点，“面试的内容刚好那个人都会，但是其实能力不行”和“刚好面试到一个人不擅长的地方，错过一个优秀的人”，所以我会在面试中特意问他觉得自己的擅长和亮点是啥，然后去“特殊针对”一下。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/23/30-years-old/" rel="prev" title="写在三十岁">
+      <i class="fa fa-chevron-left"></i> 写在三十岁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/03/regular-files-with-epoll/" rel="next" title="为什么epoll不支持磁盘IO">
+      为什么epoll不支持磁盘IO <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%94%E8%AF%A5%E6%98%AF%E6%9C%89%E7%9B%AE%E7%9A%84%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">好的面试题应该是有目的的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%94%E8%AF%A5%E6%98%AF%E9%AB%98%E6%95%88%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">好的面试题应该是高效的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%94%E8%AF%A5%E6%98%AF%E9%98%B6%E6%A2%AF%EF%BC%8C%E4%B8%8D%E6%98%AF%E5%BC%80%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">好的面试题应该是阶梯，不是开关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%94%E8%AF%A5%E6%98%AF%E5%AE%9E%E7%94%A8%E7%9A%84"><span class="nav-number">4.</span> <span class="nav-text">好的面试题应该是实用的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%94%E8%AF%A5%E6%98%AF%E4%B8%80%E4%B8%AA%E5%A5%BD%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">好的面试题应该是一个好问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%9A%84%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%94%E8%AF%A5%E6%98%AF%E7%B2%BE%E5%87%86%E6%8A%95%E6%94%BE%E7%9A%84"><span class="nav-number">6.</span> <span class="nav-text">好的面试题应该是精准投放的</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

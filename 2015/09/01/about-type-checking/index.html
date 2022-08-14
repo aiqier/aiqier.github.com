@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Introductionpython虽然是强类型语言（对此说法有异议，自行google），但同时又是动态语言。其灵活性带来的缺点就是不能像静态语言那样在编译期间通过静态类型检查”过滤”掉一部分错误。我们目前的项目中，有两个地方需要进行类型检查。1是作为提供接口的server，要对请求json的字段缺失，参数类型和值范围进行校验。2是对某个函数的参数和返回值进行校验。这里把自己在项目中的一些处理经验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于类型检查">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/09/01/about-type-checking/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="Introductionpython虽然是强类型语言（对此说法有异议，自行google），但同时又是动态语言。其灵活性带来的缺点就是不能像静态语言那样在编译期间通过静态类型检查”过滤”掉一部分错误。我们目前的项目中，有两个地方需要进行类型检查。1是作为提供接口的server，要对请求json的字段缺失，参数类型和值范围进行校验。2是对某个函数的参数和返回值进行校验。这里把自己在项目中的一些处理经验">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.724Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="装饰器">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/09/01/about-type-checking/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于类型检查 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/09/01/about-type-checking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于类型检查
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-09-01 00:00:00" itemprop="dateCreated datePublished" datetime="2015-09-01T00:00:00+08:00">2015-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/09/01/about-type-checking/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/09/01/about-type-checking/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>python虽然是强类型语言（对此说法有异议，自行google），但同时又是动态语言。其灵活性带来的缺点就是不能像静态语言那样在编译期间通过静态类型检查”过滤”掉一部分错误。<br>我们目前的项目中，有两个地方需要进行类型检查。1是作为提供接口的server，要对请求json的字段缺失，参数类型和值范围进行校验。2是对某个函数的参数和返回值进行校验。这里把自己在项目中的一些处理经验拿出来分享，如有错误和不足，还望指正。</p>
+<h2 id="请求参数校验"><a href="#请求参数校验" class="headerlink" title="请求参数校验"></a>请求参数校验</h2><p>请求参数校验会遇到这样几个问题:<br>为了重用和方便修改，你需要将它们“格式化”<br>你需要将错误原因返回给调用者或打印到日志，还不能写太多麻烦的代码<br>我的解决办法是使用“表驱动”的方法，将检查过程制作成可配置的。<br>比如下面是一段请求服务器的json字符串：</p>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">request = &#123;</span><br><span class="line">    <span class="string">&quot;app_key&quot;</span>: <span class="string">&quot;fkerafi&quot;</span>,</span><br><span class="line">    <span class="string">&quot;access_token&quot;</span>: <span class="string">&quot;aeraeriaufjaisjfdaisdfaasdf&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_id&quot;</span>: <span class="string">&quot;03928172&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_time&quot;</span>: <span class="number">532312344</span>,</span><br><span class="line">    <span class="string">&quot;payload&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;merSeqId&quot;</span>: <span class="string">&quot;u637323283&quot;</span>,</span><br><span class="line">        <span class="string">&quot;product_id&quot;</span>: <span class="string">&quot;00001&quot;</span>,</span><br><span class="line">        <span class="string">&quot;channel&quot;</span>: <span class="string">&quot;001&quot;</span>,</span><br><span class="line">        <span class="string">&quot;account_id&quot;</span>: <span class="string">&quot;3982738273&quot;</span>,</span><br><span class="line">        <span class="string">&quot;amt&quot;</span>: <span class="number">550</span>,</span><br><span class="line">        <span class="string">&quot;account_realname&quot;</span>: <span class="string">&quot;王思聪&quot;</span>,</span><br><span class="line">        <span class="string">&quot;account_bank_num&quot;</span>: <span class="string">&quot;637&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="字段缺失校验"><a href="#字段缺失校验" class="headerlink" title="字段缺失校验:"></a>字段缺失校验:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fbk</span>(<span class="params">d, keys</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    fetch by keys</span></span><br><span class="line"><span class="string">    对于一个深层字典，通过多个key进行获取</span></span><br><span class="line"><span class="string">    :param d:</span></span><br><span class="line"><span class="string">    :param keys:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    m = d</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> keys:</span><br><span class="line">        m = m[k]</span><br><span class="line">    <span class="keyword">return</span> m</span><br><span class="line"> </span><br><span class="line">tables = [</span><br><span class="line">    <span class="string">&quot;app_key&quot;</span>,</span><br><span class="line">    <span class="string">&quot;access_token&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_id&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client_time&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,merSeqId&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,product_id&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,channel&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,account_id&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,amt&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,account_realname&quot;</span>,</span><br><span class="line">    <span class="string">&quot;payload,account_bank_num&quot;</span>]</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">field_lack_check</span>(<span class="params">request, table</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> table:</span><br><span class="line">        path = i.split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            fbk(request, path)</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span>, <span class="string">&quot;lack of field: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(i)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>, <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="字段类型校验"><a href="#字段类型校验" class="headerlink" title="字段类型校验:"></a>字段类型校验:</h4> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> table = &#123;</span><br><span class="line">    <span class="string">&quot;app_key&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;access_token&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;client_id&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;client_time&quot;</span>: <span class="built_in">int</span>,</span><br><span class="line">    <span class="string">&quot;payload,merSeqId&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;payload,product_id&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;payload,channel&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;payload,account_id&quot;</span>: <span class="built_in">int</span>,</span><br><span class="line">    <span class="string">&quot;payload,amt&quot;</span>: <span class="built_in">int</span>,</span><br><span class="line">    <span class="string">&quot;payload,account_realname&quot;</span>: (<span class="built_in">str</span>, unicode),</span><br><span class="line">    <span class="string">&quot;payload,account_bank_num&quot;</span>: (<span class="built_in">str</span>, unicode)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">field_type_check</span>(<span class="params">request, table</span>):</span><br><span class="line">    <span class="keyword">for</span> k, t <span class="keyword">in</span> table.items():</span><br><span class="line">        path = k.split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">        v = fbk(request, path)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(v, t):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span>, <span class="string">&quot;Type Error: &#123;&#125; expect:&#123;&#125; but:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(k, table[k], <span class="built_in">type</span>(v))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>, <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="字段范围校验"><a href="#字段范围校验" class="headerlink" title="字段范围校验:"></a>字段范围校验:</h4><p>字段范围校验的代码与上面类似，实现一些具体的校验规则，将它们配置成表就行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="comment"># o: open interval [</span></span><br><span class="line"><span class="comment"># c: close interval (</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_range_cc</span>(<span class="params">s, b, e</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    []</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(s) &lt; b:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="string">&quot;must be longer or equal &#123;&#125;&quot;</span>.<span class="built_in">format</span>(b)</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(s) &gt; e:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="string">&quot;must be shorter or equal &#123;&#125;&quot;</span>.<span class="built_in">format</span>(e)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>, <span class="literal">None</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_range_oo</span>(<span class="params">s, b, e</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    ()</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(s) &lt;= b:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="string">&quot;must be longer than &#123;&#125;&quot;</span>.<span class="built_in">format</span>(b)</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(s) &gt;= e:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="string">&quot;must be shorter than &#123;&#125;&quot;</span>.<span class="built_in">format</span>(e)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span>, <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：<br>你会发现，上面的例子中，校验错误时，会将错误原因返回，方便传递给请求者或用于日志打印。<br>而且函数部分是可以重用的，你只需要根据不同的请求接口，配置那张表就行了。</p>
+<h2 id="函数类型检查"><a href="#函数类型检查" class="headerlink" title="函数类型检查"></a>函数类型检查</h2><p>你可以在自己的每个函数中进行类型检查，然后在失败的时候抛出异常，只要你不觉得麻烦就行了。<br>或者你可以试着使用装饰器这种神奇的东西,直接上代码了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">One of three degrees of enforcement may be specified by passing</span></span><br><span class="line"><span class="string">the &#x27;debug&#x27; keyword argument to the decorator:</span></span><br><span class="line"><span class="string">    0 -- NONE:   No type-checking. Decorators disabled.</span></span><br><span class="line"><span class="string"> #!python</span></span><br><span class="line"><span class="string">-- MEDIUM: Print warning message to stderr. (Default)</span></span><br><span class="line"><span class="string">    2 -- STRONG: Raise TypeError with message.</span></span><br><span class="line"><span class="string">If &#x27;debug&#x27; is not passed to the decorator, the default level is used.</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">Example usage:</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; NONE, MEDIUM, STRONG = 0, 1, 2</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt;</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; @accepts(int, int, int)</span></span><br><span class="line"><span class="string">    ... @returns(float)</span></span><br><span class="line"><span class="string">    ... def average(x, y, z):</span></span><br><span class="line"><span class="string">    ...     return (x + y + z) / 2</span></span><br><span class="line"><span class="string">    ...</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; average(5.5, 10, 15.0)</span></span><br><span class="line"><span class="string">    TypeWarning:  &#x27;average&#x27; method accepts (int, int, int), but was given</span></span><br><span class="line"><span class="string">    (float, int, float)</span></span><br><span class="line"><span class="string">    15.25</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; average(5, 10, 15)</span></span><br><span class="line"><span class="string">    TypeWarning:  &#x27;average&#x27; method returns (float), but result is (int)</span></span><br><span class="line"><span class="string">    15</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">Needed to cast params as floats in function def (or simply divide by 2.0).</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; TYPE_CHECK = STRONG</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; @accepts(int, debug=TYPE_CHECK)</span></span><br><span class="line"><span class="string">    ... @returns(int, debug=TYPE_CHECK)</span></span><br><span class="line"><span class="string">    ... def fib(n):</span></span><br><span class="line"><span class="string">    ...     if n in (0, 1): return n</span></span><br><span class="line"><span class="string">    ...     return fib(n-1) + fib(n-2)</span></span><br><span class="line"><span class="string">    ...</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; fib(5.3)</span></span><br><span class="line"><span class="string">    Traceback (most recent call last):</span></span><br><span class="line"><span class="string">      ...</span></span><br><span class="line"><span class="string">    TypeError: &#x27;fib&#x27; method accepts (int), but was given (float)</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">accepts</span>(<span class="params">*types, **kw</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Function decorator. Checks decorated function&#x27;s arguments are</span></span><br><span class="line"><span class="string">    of the expected types.</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    types -- The expected types of the inputs to the decorated function.</span></span><br><span class="line"><span class="string">             Must specify type for each parameter.</span></span><br><span class="line"><span class="string">    kw    -- Optional specification of &#x27;debug&#x27; level (this is the only valid</span></span><br><span class="line"><span class="string">             keyword argument, no other should be given).</span></span><br><span class="line"><span class="string">             debug = ( 0 | 1 | 2 )</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> kw:</span><br><span class="line">        <span class="comment"># default level: MEDIUM</span></span><br><span class="line">        debug = <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        debug = kw[<span class="string">&#x27;debug&#x27;</span>]</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">f</span>):</span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">newf</span>(<span class="params">*args</span>):</span><br><span class="line">                <span class="keyword">if</span> debug <span class="keyword">is</span> <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">return</span> f(*args)</span><br><span class="line">                <span class="keyword">assert</span> <span class="built_in">len</span>(args) == <span class="built_in">len</span>(types)</span><br><span class="line">                argtypes = <span class="built_in">tuple</span>(<span class="built_in">map</span>(<span class="built_in">type</span>, args))</span><br><span class="line">                <span class="keyword">if</span> argtypes != types:</span><br><span class="line">                    msg = info(f.__name__, types, argtypes, <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">if</span> debug <span class="keyword">is</span> <span class="number">1</span>:</span><br><span class="line">                        <span class="built_in">print</span> &gt;&gt; sys.stderr, <span class="string">&#x27;TypeWarning: &#x27;</span>, msg</span><br><span class="line">                    <span class="keyword">elif</span> debug <span class="keyword">is</span> <span class="number">2</span>:</span><br><span class="line">                        <span class="keyword">raise</span> TypeError, msg</span><br><span class="line">                <span class="keyword">return</span> f(*args)</span><br><span class="line">            newf.__name__ = f.__name__</span><br><span class="line">            <span class="keyword">return</span> newf</span><br><span class="line">        <span class="keyword">return</span> decorator</span><br><span class="line">    <span class="keyword">except</span> KeyError, key:</span><br><span class="line">        <span class="keyword">raise</span> KeyError, key + <span class="string">&quot;is not a valid keyword argument&quot;</span></span><br><span class="line">    <span class="keyword">except</span> TypeError, msg:</span><br><span class="line">        <span class="keyword">raise</span> TypeError, msg</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">returns</span>(<span class="params">ret_type, **kw</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Function decorator. Checks decorated function&#x27;s return value</span></span><br><span class="line"><span class="string">    is of the expected type.</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    ret_type -- The expected type of the decorated function&#x27;s return value.</span></span><br><span class="line"><span class="string">                Must specify type for each parameter.</span></span><br><span class="line"><span class="string">    kw       -- Optional specification of &#x27;debug&#x27; level (this is the only valid</span></span><br><span class="line"><span class="string">                keyword argument, no other should be given).</span></span><br><span class="line"><span class="string">                debug=(0 | 1 | 2)</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> kw:</span><br><span class="line">            <span class="comment"># default level: MEDIUM</span></span><br><span class="line">            debug = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            debug = kw[<span class="string">&#x27;debug&#x27;</span>]</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">f</span>):</span><br><span class="line">            <span class="keyword">def</span> <span class="title function_">newf</span>(<span class="params">*args</span>):</span><br><span class="line">                result = f(*args)</span><br><span class="line">                <span class="keyword">if</span> debug <span class="keyword">is</span> <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">return</span> result</span><br><span class="line">                res_type = <span class="built_in">type</span>(result)</span><br><span class="line">                <span class="keyword">if</span> res_type != ret_type:</span><br><span class="line">                    msg = info(f.__name__, (ret_type,), (res_type,), <span class="number">1</span>)</span><br><span class="line">                    <span class="keyword">if</span> debug <span class="keyword">is</span> <span class="number">1</span>:</span><br><span class="line">                        <span class="built_in">print</span> &gt;&gt; sys.stderr, <span class="string">&#x27;TypeWarning: &#x27;</span>, msg</span><br><span class="line">                    <span class="keyword">elif</span> debug <span class="keyword">is</span> <span class="number">2</span>:</span><br><span class="line">                        <span class="keyword">raise</span> TypeError, msg</span><br><span class="line">                <span class="keyword">return</span> result</span><br><span class="line">            newf.__name__ = f.__name__</span><br><span class="line">            <span class="keyword">return</span> newf</span><br><span class="line">        <span class="keyword">return</span> decorator</span><br><span class="line">    <span class="keyword">except</span> KeyError, key:</span><br><span class="line">        <span class="keyword">raise</span> KeyError, key + <span class="string">&quot;is not a valid keyword argument&quot;</span></span><br><span class="line">    <span class="keyword">except</span> TypeError, msg:</span><br><span class="line">        <span class="keyword">raise</span> TypeError, msg</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">info</span>(<span class="params">fname, expected, actual, flag</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Convenience function returns nicely formatted error/warning msg.&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">format</span> = <span class="keyword">lambda</span> types: <span class="string">&#x27;, &#x27;</span>.join([<span class="built_in">str</span>(t).split(<span class="string">&quot;&#x27;&quot;</span>)[<span class="number">1</span>] <span class="keyword">for</span> t <span class="keyword">in</span> types])</span><br><span class="line">    expected, actual = <span class="built_in">format</span>(expected), <span class="built_in">format</span>(actual)</span><br><span class="line">    msg = <span class="string">&quot;&#x27;&#123;&#125;&#x27; method &quot;</span>.<span class="built_in">format</span>( fname )\</span><br><span class="line">          + (<span class="string">&quot;accepts&quot;</span>, <span class="string">&quot;returns&quot;</span>)[flag] + <span class="string">&quot; (&#123;&#125;), but &quot;</span>.<span class="built_in">format</span>(expected)\</span><br><span class="line">          + (<span class="string">&quot;was given&quot;</span>, <span class="string">&quot;result is&quot;</span>)[flag] + <span class="string">&quot; (&#123;&#125;)&quot;</span>.<span class="built_in">format</span>(actual)</span><br><span class="line">    <span class="keyword">return</span> msg</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag"># 装饰器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/08/29/but-it-is-no-use/" rel="prev" title="然而这并没有什么卵用">
+      <i class="fa fa-chevron-left"></i> 然而这并没有什么卵用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/09/03/study-python-list/" rel="next" title="python学习列表">
+      python学习列表 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.</span> <span class="nav-text">请求参数校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E7%BC%BA%E5%A4%B1%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.0.1.</span> <span class="nav-text">字段缺失校验:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.0.2.</span> <span class="nav-text">字段类型校验:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E8%8C%83%E5%9B%B4%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.0.3.</span> <span class="nav-text">字段范围校验:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5"><span class="nav-number">3.</span> <span class="nav-text">函数类型检查</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

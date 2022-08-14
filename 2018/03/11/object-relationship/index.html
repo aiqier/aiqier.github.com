@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="回顾在我上学的时候，一聊到设计模式都是很有格调的话题，仿佛设计模式就是解决软件开发的精髓，但是很长一段时间，我从骨子里是排斥设计模式的，因为我觉得自己连面向对象的知识都没有领悟，谈论设计模式还为时尚早，我尤其排斥那本被吹到爆炸的《大话设计模式》，那本设计模式看上去给你用形象的比喻讲明白了一个东西，但实际上你真正开始写代码的时候，发现自己什么都写不出来。 这篇博客是想退一步思考，总结一些面向对象的知">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对象与对象的关系">
+<meta property="og:url" content="http://www.pulpcode.cn/2018/03/11/object-relationship/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="回顾在我上学的时候，一聊到设计模式都是很有格调的话题，仿佛设计模式就是解决软件开发的精髓，但是很长一段时间，我从骨子里是排斥设计模式的，因为我觉得自己连面向对象的知识都没有领悟，谈论设计模式还为时尚早，我尤其排斥那本被吹到爆炸的《大话设计模式》，那本设计模式看上去给你用形象的比喻讲明白了一个东西，但实际上你真正开始写代码的时候，发现自己什么都写不出来。 这篇博客是想退一步思考，总结一些面向对象的知">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-03-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2018-04-04T14:43:21.711Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="oop">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2018/03/11/object-relationship/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>对象与对象的关系 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2018/03/11/object-relationship/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对象与对象的关系
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-11 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-11T00:00:00+08:00">2018-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-04-04 22:43:21" itemprop="dateModified" datetime="2018-04-04T22:43:21+08:00">2018-04-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/03/11/object-relationship/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/03/11/object-relationship/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>在我上学的时候，一聊到设计模式都是很有格调的话题，仿佛设计模式就是解决软件开发的精髓，但是很长一段时间，我从骨子里是排斥设计模式的，因为我觉得自己连面向对象的知识都没有领悟，谈论设计模式还为时尚早，我尤其排斥那本被吹到爆炸的《大话设计模式》，那本设计模式看上去给你用形象的比喻讲明白了一个东西，但实际上你真正开始写代码的时候，发现自己什么都写不出来。</p>
+<p>这篇博客是想退一步思考，总结一些面向对象的知识，比如思考“对象与对象的关系”到底是怎样的。</p>
+<p>和大部分人一样，初学面向对象的时候，都会铺天盖地的听到一些词汇，比如“面向对象的三大特性是继承，封装，多态。”，再比如一切都是对象。但如果你仅仅记住这几句话，真的很难领悟面向对象这件事。我记得自己真正对面向对象有过一次深入体会是在读完《c++编程思想》，这本书的第一章是关于介绍oop的，作者通过一个面向过程的c代码到c++的oop书写方式，引出了面向对象的一些精髓，比如面向对象其实是一种思想，早期在用c的时候，也可以用面向对象的思路去写(struct+函数)，但这种代码是单向绑定的，支持面向对象的代码的好处是完成方法与数据的双向绑定。而不像struct那样，不知道谁使用了此数据结构。</p>
+<p>这些关于封装的知识理论上被称为基于对象，但说句实在的，对于很多人而言，能在系统中用封装的思想将系统建模就已经很不容易了，这可能听上去有点夸张，但仔细想想，对于一个人，一个苹果，一张订单让你去建模，你可能很容易就建了，但如果是类似Controller,Action,Execute这些看上去像是动作的对象呢？</p>
+<p>再比如一些复杂的系统，如何抽象出领域模型,让系统能够清晰的交互，这些都不是那么容易的。再说继承与多态，其实继承本身和多态不像是处于同一平行线的概念。这个继承，在java中其实分继承接口和继承类，而继承类则主要是为了代码复用，只不过这种复用是静态的，而多态更像是动态的复用。</p>
+<p>在c++中没有这么分类，c++提供的oop看上去更像是为数学公式准备的，所有只有继承类这么一说，只不过你定义一个只有虚函数的类，这个类就成接口了。而且c++的继承还包括公有继承，保护继承，私有继承等等继承权限，还有友元和多重继承。这些东西不是没用，而是一般人用不来，所以在java中都选择了精简。</p>
+<span id="more"></span>
+
+<p>在说回面向对象本身，这种编程思想说来说去都可以总结为以下几点。</p>
+<ol>
+<li>所有数据都应该隐藏在它所有的类内部。</li>
+<li>类的使用者必须依赖类的公有接口，但类不能依赖它的使用者。</li>
+<li>不要把实现细节放到类的公有接口中。</li>
+<li>面向对象的方法签名，其实算是消息协议，面向对象的本质其实是对象与对象之间发送消息。</li>
+</ol>
+<p>完成了上面关于oop的回顾介绍之后，我就要引入这篇博客的主要内容了，对象与对象之间的关系。</p>
+<h2 id="使用关系"><a href="#使用关系" class="headerlink" title="使用关系"></a>使用关系</h2><p>简单的来说，我这样理解面向对象，每个对象封装了自己的状态和协议，而一个对象总想使用另一个对象。总结出一个对象如何使用另一个对象的方式，就基本归纳了面向对象建模的所有场景。</p>
+<p>我很喜欢拿汽车和加油站的关系来举这个例子，这个例子是我从《OOD启示录》这本书上读到的。</p>
+<p>汽车要如何使用加油站呢?</p>
+<p>首先它可以作为参数传递给加油站：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Class Car&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> <span class="title function_">get_gasoline</span><span class="params">(GasStation gasStation)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者它作为Car的一个属性,虽然啊这看上去有点怪,好像这个车只能去指定地点加油。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Class Car&#123;</span><br><span class="line">	private GasStation gasStation;</span><br><span class="line"></span><br><span class="line">	void get_gasoline()&#123;</span><br><span class="line">		gasStation...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过更怪的是土豪模式，直接new一个加油站出来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Class Car&#123;</span><br><span class="line">	void get_gasoline()&#123;</span><br><span class="line">		GasStation gasStation = new GasStation();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有一种退一步的方式，是从另一个地图对象来获得加油站对象，不过这又引出了另一个问题，这个地图对象是从哪来的？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class Car&#123;</span><br><span class="line">	void get_gasoline()&#123;</span><br><span class="line">		GasStation gasStation = map.getGasStation();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>以上的这些都是一个对象想使用另一个对象的方式，我要特别提醒一下那个作为一个属性的方式，同样是定义一个类的属性，比如一个person有一个name属性，那就是它拥有一个属性，算包含关系，而如果是一个person有一个country属性，这个时候就是关联关系了，就像是数据库里面的关联字段一样。不过更官方的叫法,其实将对象与对象的关系分为四种:依赖关系（Dependency）,关联关系（Association）,聚合关系（Aggregation）,组合关系（Compostion）。其中把作为局部变量，方法参数，或者调用一个类的静态方法称为依赖关系。而关联关系，聚合关系，组合关系，都用成员变量的方式表现，但是它们所表达的对象声明周期和耦合度是不一样的。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>除了使用一个对象，还可以通过继承的方式来获得这份“代码”，不过汽车继承一个加油站看上去太奇怪了。前面提到了，多态是动态的获得，而继承更像是静态的获得，就好像编译器把这份代码给你拷贝过去了一样。设计模式的书常常把继承说的一文不值，说“用组合不用继承”，但如果两个类真有某种父子关系，使用组合而不是继承看上去是很怪的，而且维护性也很差，比如你子类继承了你的父类，那只要给父类添加一个方法，那子类是默认就获得了，但是如果你使用了组合，你就不能方便的拥有这些方法，要一个个的子类去引用这个新的实现。</p>
+<h2 id="多重继承"><a href="#多重继承" class="headerlink" title="多重继承"></a>多重继承</h2><p>提到继承就不得不提到多重继承，这个东西在java这种语言中被禁用了，很多人说java可以实现多个接口，但是接口和继承类完全不是一个概念，继承类是重用，那接口有能啥重用的地方？充其量是定义协议而已。多重继承这个思想本身没有问题，比如一个木头门继承于门和木头两个父类。这样任何一个父类添加一个新的属性或方法，都会默认被木头门继承，这是很自然的建模。而一个木头门有两个属性分别是门和木头，这个就很诡异。多重继承比较被人抨击的主要是那种钻石继承，父类之间签名相同之类的问题，不过有些语言会提供“限制版”的多重继承，来既让你使用多重继承，又不会提升代码的复杂度。比如Mixin(混入类)。</p>
+<h2 id="元类"><a href="#元类" class="headerlink" title="元类"></a>元类</h2><p>最后在说说元类，这个概念来源于元编程，什么是元编程，就是编写生成代码的代码。比如DSL，比如c++中的模板，元类呢就算是用来创建类的类。这个我在python中偶尔会使用一下。一个简单的入门是你可以用type来创建一个类对象（type就是元类）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo = type(&quot;Foo&quot;, (object,), &#123;&quot;hello&quot;: hello&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>不过大多数的使用场景是设置类的<code>__metaclass__</code>属性,而在创建这个类的时候，扩展这个类。在python的orm中会遇到这种设计。</p>
+<p>比如你定义了这样一个model</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Person(Base):</span><br><span class="line">    # 表的名字:</span><br><span class="line">    __tablename__ = &#x27;person&#x27;</span><br><span class="line"></span><br><span class="line">    # 表的结构:</span><br><span class="line">    id = Column(String(20), primary_key=True)</span><br><span class="line">    name = Column(String(20))</span><br></pre></td></tr></table></figure>
+
+<p>但是你却像想使用正常属性一样使用它们。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">person = session.query(Person).filter(User.id==&#x27;5&#x27;).one()</span><br><span class="line"># 打印类型和对象的name属性:</span><br><span class="line">print &#x27;type:&#x27;, type(person)</span><br><span class="line">print &#x27;name:&#x27;, person.name</span><br></pre></td></tr></table></figure>
+
+<p>其原因就在于Model的Metaclass中定义了在创建这个类的时候，如何载入这些类属性，并“生成”你想要的那种请求方式。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/oop/" rel="tag"># oop</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/02/25/talk-about-editor/" rel="prev" title="闲扯编辑器">
+      <i class="fa fa-chevron-left"></i> 闲扯编辑器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/01/seven-women/" rel="next" title="七个女人">
+      七个女人 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE"><span class="nav-number">1.</span> <span class="nav-text">回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B3%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">使用关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-number">3.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF"><span class="nav-number">4.</span> <span class="nav-text">多重继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">元类</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

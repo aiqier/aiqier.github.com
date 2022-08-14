@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="洗牌上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奇怪的需求">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/06/04/strange-demand/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="洗牌上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-06-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-07-02T09:06:32.917Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/06/04/strange-demand/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>奇怪的需求 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/06/04/strange-demand/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          奇怪的需求
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-06-04 00:00:00" itemprop="dateCreated datePublished" datetime="2017-06-04T00:00:00+08:00">2017-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-07-02 17:06:32" itemprop="dateModified" datetime="2017-07-02T17:06:32+08:00">2017-07-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">思考</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/06/04/strange-demand/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/06/04/strange-demand/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="洗牌"><a href="#洗牌" class="headerlink" title="洗牌"></a>洗牌</h2><p>上学的时候，每次考试考砸了，我都在想这样一个场景，老师下节课抱着卷子进来说，这次的卷子我没时间批，就不批了，下次再重新考一次。我甚至还幻想过，那堆卷子被某个粗心的老师一个不小心烧掉还是什么的。类似的想法再比如打了一局dota，可能是对面太强了，可能是你的队友太不给力了，你就想，这局快点结束，重新开一局吧。当自己处于劣势的时候，都想希望洗牌。相反的，如果你在优势，你自然希望有人来稳固你的优势，而不是洗牌后让你重新来过，让你的努力最后都付诸东流。虽然早些年，毛爷爷打土豪分田地后，让大家都众生平等了。可惜改革开放后，第一批先富的人，变得越来越富，中国又慢慢的分层了。那么你幻想过一种洗牌么？那要看你现在是顺风局还是逆风局了。</p>
+<span id="more"></span>
+
+<h2 id="蠢人"><a href="#蠢人" class="headerlink" title="蠢人"></a>蠢人</h2><p>小的时候，有个同学特别招人烦，总欺负别的同学。但是你又害怕他，不敢直面他。这时候，你多么希望出现一个人去消灭他，这个人不应该是你的好友，因为你不想让你的好友受到伤害。也不应该是你的老师，毕竟给老师打小报告是很low的行为，还有可能有些蠢老师把你们两个叫到办公室做思想工作，所以最好是你另一个讨厌的人，这样搞不好两个你讨厌的人都消失了，当然这个另一个你讨厌的人最好要蠢，这样他才会容易上当。在《权力的游戏》中。小指头想杀奈德史塔克，但是又不能自己亲手杀，自然找到了乔弗里这种蠢人。很多聪明人留着身边的蠢人，因为觉得这些人日后自然有用。《沙家浜》中阿庆嫂有这样一句台词：“这草包倒是一堵挡风的墙”，就是说的胡司令这种蠢人。我每天出门前都会照镜子，我不希望镜子里面的那个人是那种聪明人，当然更不愿意他是一个蠢人。</p>
+<h2 id="把自己藏起来"><a href="#把自己藏起来" class="headerlink" title="把自己藏起来"></a>把自己藏起来</h2><p>我已经不止听一个朋友跟我描述这样一个场景，“他希望现在打仗，然后他去找个地方把自己藏起来，过着世外桃源的生活。” 我觉得很多人在看不到希望的时候，都会这样幻想，即使那个人曾经奋斗过，这算是一种对现实的逃避。但这种想法不是为了世外桃源的舒适感，而是为了把自己藏起来的那种安全感。类似在夜里，你听到外面在下大雨，而你关着灯躺在床上获得的安全感。我觉得我们的祖先在穿树叶，住山洞的时候，听到外面的雨声，在山洞里睡觉也会有类似的安全感，因为肉食动物不在雨天捕猎。有一部日本电影叫《感官世界》，讲的一个日本老板和情妇的故事。有一段剧情是，日本老板和情妇搬到旅店住，天天过着纵欲的生活。有一次他出去买东西，看到一群军人嬉笑着路过，而他却选择了低头逃避，视而不见，小步快走，投入情妇的怀抱。我大概查了一些历史资料，了解到当时日本男人从军是一种荣誉和自豪，国民都被洗脑了。而这个日本老板，却只想把自己藏起来，不要社会给他的荣誉感，只想要自己的安全感，仔细想想，有的时候，自己比这个日本老板还可怜。</p>
+<h2 id="洗钱"><a href="#洗钱" class="headerlink" title="洗钱"></a>洗钱</h2><p>把非法收入转化为合法收入的方式，叫做洗钱。但实际上，就算是合法收入，也需要洗。比如你是一个逆袭的屌丝，靠着某次机遇变成了一个土大款，但是你不能一辈子做一个土大款。毕竟，你和其他的有钱人坐在一起，你发现人家都是富豪世家，谈吐文雅，爱好广泛，吃喝讲究。所以你也要把自己洗白，给自己洗一个国外名校的学历，洗一些听歌剧，打高尔夫之类的爱好，洗一个正经体面的公司，甚至连父母的身世都洗了。让你从一个new money变成一个old money。最起码你要变得低调有内涵，而不是逢人就说，“我当年如何如何，现在如何的”暴露自己是屌丝出身的话。虽然新中国才成立几十年，但已经有人把自己身上的泥洗干净了。</p>
+<h2 id="优越感"><a href="#优越感" class="headerlink" title="优越感"></a>优越感</h2><p>我是个很容易找到优越感的人，有时我不发朋友圈，那我打开朋友圈，看那些发朋友圈的人，自然觉得他们沉不住气，什么都要说出来，不成熟，肤浅，不像我这样低调，闷声发大财，一看就是成大事的料。但是我就算是一个爱发朋友圈的人，我也能找到优越感。比如那些发鸡汤的人，简直弱智。发星座分析的人，连最简单的心理学都不懂。发分析经济局势文章的人，都是通过别人的文章秀自己逼格的人。发自己博客的人，真是的，谁会看啊。天天发说说的人，你是有多闲多寂寞。天天发自拍的人，你用美颜相机装什么，明明自己长那么丑。天天发旅游的人，你去过几个鸟地方有什么可显摆的，你看你这个摄影水平就这么菜。说来说去还是我自己的朋友圈最有内涵。</p>
+<h2 id="游侠"><a href="#游侠" class="headerlink" title="游侠"></a>游侠</h2><p>很多人都希望自己是令狐冲这样的游侠，一把剑浪迹天涯，不追逐名利，但是名利都来找他。很多武侠电影和小说都塑造了这样一个男主角。其实不仅仅是国内，我看过日本著名导演黑泽明的《用心棒》和《椿三十郎》，主角也是这样一个游侠。这说出了一代文人骚客的内心世界吧，既想要名利，有不想说出来。说白了还是因为得不到，而表现的自己与世无争。就像小的时候，每次获个什么竞赛奖，我都不会自己主动说出了，而是希望某个朋友替我说出来。所以你可以成为那个替他说出来的朋友，让他过一回当游侠的瘾。</p>
+<h2 id="劝妓从良"><a href="#劝妓从良" class="headerlink" title="劝妓从良"></a>劝妓从良</h2><p>知乎上有一句经典的话，“男人喜欢做两件事，诱良女下海，劝妓女从良。”据说这是一个男人为了抵消事后的罪恶感，而产生的莫名其妙的正义感。他们会说：“你这样是不对的，回老家去吧，找个正经工作，找个好男人嫁了。”据说妓女们都已经学会了满足这类男人做好人的需求。所以她们会倒在男人怀里，对他说，“你是第一个这么对我说的男人，我就知道，你和那群嫖客不一样。”，嗯嗯，都成了嫖客了，还想跟别的嫖客不一样，满足奇怪的需求，很点题。</p>
+<h2 id="吃不到羊肉反惹一身骚"><a href="#吃不到羊肉反惹一身骚" class="headerlink" title="吃不到羊肉反惹一身骚"></a>吃不到羊肉反惹一身骚</h2><p>我鼓起勇气向一个喜欢的妹子表白了，然后被妹子发好人卡了。然后呢？如果别人问起这件事我应该怎么回复？</p>
+<p>我当然会说，我觉得这个妹子不适合我，而不是告诉别人，我追过她，然后被她拒绝了，这明显不是在承认我这个人很菜，妹子看不上我么？<br>话说在李安为电影：《色戒》选角的过程中，有很多女明星都去试镜了，甚至包括章子怡，毕竟能出演李安这种级别导演的电影，肯定会大火一把，搞不好获得个奥斯卡奖，然后最后只有汤唯被选中了。再之后其他那些去试镜的女明星，都分分发微博表示，觉得这个尺度太大，接受不了。毕竟你说出真相，会让别人觉得，“你主动脱，人家导演都不要的感觉。”</p>
+<p>这下你明白，为啥很多男人都不主动追求妹子了吧，很大程度上是，这个妹子还没有有魅力到让他能接收“吃不到羊肉反惹一身骚”的风险。还有一种可能就是，他追过，然后失败了，然后他不承认自己追过人家。</p>
+<p>所以说，如果能有一种办法，“让男人追妹子失败后，这件事变的什么都没发生过。”那肯定能大幅度提升，汉子追妹子的频率。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag"># 随笔</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/29/learn-greek-mythology/" rel="prev" title="性价比学习希腊神话">
+      <i class="fa fa-chevron-left"></i> 性价比学习希腊神话
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/11/why-did-Japanese-Katana-so-long/" rel="next" title="为啥太刀这么长">
+      为啥太刀这么长 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%97%E7%89%8C"><span class="nav-number">1.</span> <span class="nav-text">洗牌</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A0%A2%E4%BA%BA"><span class="nav-number">2.</span> <span class="nav-text">蠢人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E8%87%AA%E5%B7%B1%E8%97%8F%E8%B5%B7%E6%9D%A5"><span class="nav-number">3.</span> <span class="nav-text">把自己藏起来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%97%E9%92%B1"><span class="nav-number">4.</span> <span class="nav-text">洗钱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E8%B6%8A%E6%84%9F"><span class="nav-number">5.</span> <span class="nav-text">优越感</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E4%BE%A0"><span class="nav-number">6.</span> <span class="nav-text">游侠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9D%E5%A6%93%E4%BB%8E%E8%89%AF"><span class="nav-number">7.</span> <span class="nav-text">劝妓从良</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%83%E4%B8%8D%E5%88%B0%E7%BE%8A%E8%82%89%E5%8F%8D%E6%83%B9%E4%B8%80%E8%BA%AB%E9%AA%9A"><span class="nav-number">8.</span> <span class="nav-text">吃不到羊肉反惹一身骚</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

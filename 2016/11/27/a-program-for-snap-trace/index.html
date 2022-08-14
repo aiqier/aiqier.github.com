@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近有一个需求，要跟踪一个计算机票报价系统的动作，这个系统会根据不同的策略做一些筛选，过滤，加减价之类的操作。最后再将这些报价打包成一个个的产品。因为不同的情况，计算出来的报价结果可能不一样，所以缺少某些报价的问题经常会让大家很头疼。也无法明确的排查为什么没有报价，也无法定位没有报价的原因。所以这个需求的目的，就是要能够明确的知道，我成功的计算出来了哪些报价，哪些报价被我过滤了，而且为什么被过滤了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次跟踪系统的设计改进">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/11/27/a-program-for-snap-trace/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="最近有一个需求，要跟踪一个计算机票报价系统的动作，这个系统会根据不同的策略做一些筛选，过滤，加减价之类的操作。最后再将这些报价打包成一个个的产品。因为不同的情况，计算出来的报价结果可能不一样，所以缺少某些报价的问题经常会让大家很头疼。也无法明确的排查为什么没有报价，也无法定位没有报价的原因。所以这个需求的目的，就是要能够明确的知道，我成功的计算出来了哪些报价，哪些报价被我过滤了，而且为什么被过滤了">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-11-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-11-27T10:23:29.960Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="oop">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/11/27/a-program-for-snap-trace/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>记一次跟踪系统的设计改进 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/11/27/a-program-for-snap-trace/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记一次跟踪系统的设计改进
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2016-11-27 00:00:00 / 修改时间：18:23:29" itemprop="dateCreated datePublished" datetime="2016-11-27T00:00:00+08:00">2016-11-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">设计</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/27/a-program-for-snap-trace/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/27/a-program-for-snap-trace/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近有一个需求，要跟踪一个计算机票报价系统的动作，这个系统会根据不同的策略做一些筛选，过滤，加减价之类的操作。最后再将这些报价打包成一个个的产品。因为不同的情况，计算出来的报价结果可能不一样，所以缺少某些报价的问题经常会让大家很头疼。也无法明确的排查为什么没有报价，也无法定位没有报价的原因。所以这个需求的目的，就是要能够明确的知道，我成功的计算出来了哪些报价，哪些报价被我过滤了，而且为什么被过滤了。</p>
+<h2 id="第一个想法"><a href="#第一个想法" class="headerlink" title="第一个想法"></a>第一个想法</h2><p>一开始我的思路是对每一个动作和操作打日志，然后收集这些日志。最后在展现它们，那么最终用户看到的效果就是这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2016 12 09 15:34:35 MU2323 U仓报价被过滤，原因非最低</span><br><span class="line">2016 12 09 15:34:36 MU2424 V仓报价被过滤，原因此渠道仅售</span><br></pre></td></tr></table></figure>
+
+<p>这看上去像是一个标准的日志记录，在游戏中常见</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2016 12 09 15:34:35 你打开了宝箱</span><br><span class="line">2016 12 09 15:34:36 你获得了守护者的传说之杖</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>但问题是这样散落到各处的日志并不好收集，而且也不容易对这些日志进行统计分析（自动化分析），还有这个设计并没有从用户的角度出发（从产品设计的角度出发），使用者并不想知道你系统的每一步执行步骤，你直接告诉他为什么没报价就好了，让不是让他自己找，让他自己分析，所以这个设计完全是一个技术实现。</p>
+<p>还有一个更重要的问题是展示率的计算，展示率的公式是：实际展示的报价/应该展示的报价，那问题是我们在之前过滤掉了一些报价，但是这些过滤，有些原因是要算展示率的，有些则不算，如果你维护一个全局变量计数器，来根据不同的原因选择是否给分子加一，那你的程序一定非常容易出bug。</p>
+<span id="more"></span>
+
+<h2 id="修改设计"><a href="#修改设计" class="headerlink" title="修改设计"></a>修改设计</h2><h4 id="想要的结果"><a href="#想要的结果" class="headerlink" title="想要的结果"></a>想要的结果</h4><p>首先我想要的是这样一个产品，它能以表格的方式，告诉我每一笔报价的最终结果，而它的表头则类似于如下的方式展示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">| 航班 | 价格 | 状态 | 原因 | 展示率 |.......|</span><br></pre></td></tr></table></figure>
+
+<p>这样我以表格的方式明确告诉你每笔报价的结果，而且还便于统计分析。</p>
+<h4 id="实现思路1"><a href="#实现思路1" class="headerlink" title="实现思路1"></a>实现思路1</h4><p>首先我会都拿到的所有报价做一个快照，这个快照对象PriceDataSnap相当于是报价对象PriceData的代理类，它有报价对象的所有get方法（间接调用）,而且还有一个status的字段，用来标识报价的状态，<br>这个设计的关键是我不会因为要过滤而直接把这条报价删除了，而是给这个报价打一个标记，或者说是一个状态，比如有的报价状态是“OK”，而有的报价的状态是“禁售”。这样到最后我就可以用这个快照对象来生成一个表格，告诉你每一笔报价的状态和结果。然后我只渲染状态是OK的报价返回给用户。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PriceData</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">getType</span><span class="params">()</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">getPrice</span><span class="params">()</span>;</span><br><span class="line">	......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PriceDataSnap</span>&#123;</span><br><span class="line">    PriceData priceData;</span><br><span class="line">    Status status;	</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">getType</span><span class="params">()</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">getPrice</span><span class="params">()</span>;</span><br><span class="line">	......</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但是这样的设计也会带来一些问题，首先我需要替换所有的代码，让它们不直接操作PriceData，而是操作PriceDataSnap,但是我没有单元测试来保证我这种“重构方式”，不会修改到我代码的原始逻辑。而且我们要小心每一次跟踪报价的状态，这比直接过滤的逻辑要复杂的多，而且我们貌似只考虑到了报价因为过滤而变少了，如果我们因为一个“要从一个报价打包出两个产品”的需求，而多出了些报价，那跟踪系统仅仅靠打标记设置状态是不好使的。</p>
+<p>实际上，报价跟踪和报价应该是解耦的，他们分别要去做不同的事，不应该把它们写在一起，相互影响，这种影响应该是单向的。</p>
+<h4 id="实现思路2"><a href="#实现思路2" class="headerlink" title="实现思路2"></a>实现思路2</h4><p>最后我想到了这种实现思路，就是把每一个我需要关注的动作，定义成一个类，然后根据程序的逻辑，去创建对象并收集它们，然后把这些动作依次执行在报价快照上。最后报价快照上就有了报价的最终结果了。</p>
+<p>其中每一个动作定义了自己会对快照对象，产生哪些影响。</p>
+<p>我之所有把动作都定义成类，是想方便的利用类型检查，而且我的动作都很简单，还不至于用字符串表示，然后去写个解释器去解释它。</p>
+<p>而我这样做分开了逻辑处理和报价跟踪，使这两者互不干扰，就算我不小心漏掉了某个动作没有跟踪，主要逻辑依然没事，最多就是监控不准而已。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PriceData</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">getType</span><span class="params">()</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">getPrice</span><span class="params">()</span>;</span><br><span class="line">	......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PriceDataSnap</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> PriceData priceData;</span><br><span class="line">    <span class="keyword">private</span> Status status;	</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">getType</span><span class="params">()</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">getPrice</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 写入一个动作</span></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">pushAction</span><span class="params">(Action action)</span>;</span><br><span class="line">	<span class="comment">// 执行所有动作</span></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">execute</span><span class="params">()</span>;</span><br><span class="line">	......</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Action</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">execute</span><span class="params">(PriceDataSnap priceDataSnap)</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> MarkPriceType <span class="keyword">implements</span> <span class="title class_">Action</span>&#123;</span><br><span class="line">    ........	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> FilterPriceType <span class="keyword">implements</span> <span class="title class_">Action</span>&#123;</span><br><span class="line">	........</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>之所以是最后执行动作，而不是每次都执行是因为这样更灵活，这样我可以选择把每个动作都打印出来，或者根据上下文合并，过滤掉某些动作。甚至是一次把这些动作都打到某个地方，这样我可以用表格展示工具，也可以就提供一个步骤分析的工具。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+              <a href="/tags/oop/" rel="tag"># oop</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/11/05/gossip-of-youth/" rel="prev" title="少年时期曾盛行的几个流言">
+      <i class="fa fa-chevron-left"></i> 少年时期曾盛行的几个流言
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/12/03/what-is-strong-weak-language/" rel="next" title="强弱类型到底是个啥？">
+      强弱类型到底是个啥？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%83%B3%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">第一个想法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">修改设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%B3%E8%A6%81%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="nav-number">2.0.1.</span> <span class="nav-text">想要的结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF1"><span class="nav-number">2.0.2.</span> <span class="nav-text">实现思路1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF2"><span class="nav-number">2.0.3.</span> <span class="nav-text">实现思路2</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

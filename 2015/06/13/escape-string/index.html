@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ASCII字符转义每次说到转义字符，首先想到的就是ASCII码。 转义字符就是一种代表，我们要区分展示和其本身在内存，在硬盘中的存储的区别。 比如这两个： \a 响铃(BEL) 007 \b 退格(BS)  008 也就是说我们在字符串中输入的’\a’就是代表了一个字符，那么假如说我就是想要’\a’这两个字符呢？ 这时候就要用到反转义了：’\a’ 就代表 ‘\a’(两个字符)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串的转义和反转义">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/06/13/escape-string/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="ASCII字符转义每次说到转义字符，首先想到的就是ASCII码。 转义字符就是一种代表，我们要区分展示和其本身在内存，在硬盘中的存储的区别。 比如这两个： \a 响铃(BEL) 007 \b 退格(BS)  008 也就是说我们在字符串中输入的’\a’就是代表了一个字符，那么假如说我就是想要’\a’这两个字符呢？ 这时候就要用到反转义了：’\a’ 就代表 ‘\a’(两个字符)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.743Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="考古">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/06/13/escape-string/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>字符串的转义和反转义 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/06/13/escape-string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字符串的转义和反转义
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2015-06-13T00:00:00+08:00">2015-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/06/13/escape-string/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/06/13/escape-string/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="ASCII字符转义"><a href="#ASCII字符转义" class="headerlink" title="ASCII字符转义"></a>ASCII字符转义</h4><p>每次说到转义字符，首先想到的就是ASCII码。</p>
+<p>转义字符就是一种代表，我们要区分<strong>展示</strong>和其本身<strong>在内存，在硬盘中的存储</strong>的区别。</p>
+<p>比如这两个：</p>
+<p>\a 响铃(BEL) 007</p>
+<p>\b 退格(BS)  008</p>
+<p>也就是说我们在字符串中输入的’\a’就是代表了一个字符，那么假如说我就是想要’\a’这两个字符呢？</p>
+<p>这时候就要用到反转义了：’\a’ 就代表 ‘\a’(两个字符)</p>
+<span id="more"></span>
+
+<p>或者在python中有元字符这个概念，在字符的前面加上<em>r</em>，这样你就不用挨个反转义了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s = r<span class="string">&#x27;\a&#x27;</span></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> s</span><br><span class="line">\a</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="html中得转义字符"><a href="#html中得转义字符" class="headerlink" title="html中得转义字符"></a>html中得转义字符</h4><p>html里面有类似如下的转义字符：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt; 小于 &amp;lt</span><br><span class="line">&gt; 大于 &amp;gt</span><br></pre></td></tr></table></figure>
+
+<p>因为html和xml这样的“语言”，就是由<code>&lt;xx&gt;&lt;\xxx&gt;</code>这样的标签构成的。</p>
+<p>那么<code>&lt;</code>自然会被游览器解释，如果不想这样，就需要用转义字符串来代表它们，表示它们确实只是普通的字符串。</p>
+<p>这一点在防止用户在评论，留言板中插入自定义表单尤其重要。</p>
+<p>python的 xml.sax.saxutils 库可以容易方便的处理此问题。</p>
+<p>你可以选择对于这样一个字符串，到底是转义，还是不转义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; x = <span class="string">&quot;&lt;a&gt;hehe&lt;/a&gt;&quot;</span></span><br><span class="line">x = <span class="string">&quot;&lt;a&gt;hehe&lt;/a&gt;&quot;</span></span><br><span class="line">&gt;&gt;&gt; saxutils.escape(x)</span><br><span class="line">saxutils.escape(x)</span><br><span class="line"><span class="string">&#x27;&amp;lt;a&amp;gt;hehe&amp;lt;/a&amp;gt;&#x27;</span></span><br><span class="line">&gt;&gt;&gt; saxutils.unescape(x)</span><br><span class="line">saxutils.unescape(x)</span><br><span class="line"><span class="string">&#x27;&lt;a&gt;hehe&lt;/a&gt;&#x27;</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="斜杠与反斜杠"><a href="#斜杠与反斜杠" class="headerlink" title="斜杠与反斜杠"></a>斜杠与反斜杠</h4><p>以下内容从“知乎”，“果壳”等网站获得。</p>
+<p>反斜线“\”是电脑出现了之后为了表示程序设计里的特殊含义才发明的专用标点。就是说，除了程序设计领域外，任何地方都不应该有使用反斜杠的时候，请永远使用正斜线“/”。</p>
+<p>在英语中，它们被这么称呼：</p>
+<p>Slash 正斜杠/</p>
+<p>Backslash 反斜杠\</p>
+<p>还要注意的是，unix，linux使用斜杠做目录，网址也是使用斜杠，只有windows的目录使用反斜杠。</p>
+<h4 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h4><p>上面提到了斜杠与反斜杠，类似于html中的<code>&lt;&gt;</code>有其特殊意义，正则表达式中的：<code>\.*^&amp;[]&#123;&#125;?</code>等，也有其特殊意义。所以，为了让这些元字符失去其特殊意义，就需要用<strong>反斜杠</strong>。</p>
+<p>比如下段sed命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">&#x27;s/&lt;i&gt;\(.*\)&lt;\/i&gt;/[\1]/g&#x27;</span> f.txt</span><br><span class="line">将每一行的：&lt;i&gt;xxx&lt;/i&gt;</span><br><span class="line">替换为[xxx]</span><br></pre></td></tr></table></figure>
+
+<p>因为斜杠在多数命令中本来就作为分隔，所以就需要<code>\</code>反斜杠转义。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%80%83%E5%8F%A4/" rel="tag"># 考古</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/05/30/talk-about-encryption/" rel="prev" title="加密基础知识总结">
+      <i class="fa fa-chevron-left"></i> 加密基础知识总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/06/16/install-software-in-linux/" rel="next" title="在linux上安装软件的一些总结">
+      在linux上安装软件的一些总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">ASCII字符转义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#html%E4%B8%AD%E5%BE%97%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">html中得转义字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%9C%E6%9D%A0%E4%B8%8E%E5%8F%8D%E6%96%9C%E6%9D%A0"><span class="nav-number">3.</span> <span class="nav-text">斜杠与反斜杠</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">正则表达式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

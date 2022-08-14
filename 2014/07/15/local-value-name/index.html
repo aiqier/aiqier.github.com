@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。 我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭">
+<meta property="og:type" content="article">
+<meta property="og:title" content="临时变量应该叫啥?">
+<meta property="og:url" content="http://www.pulpcode.cn/2014/07/15/local-value-name/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。 我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.756Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="c#">
+<meta property="article:tag" content="编程心得">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2014/07/15/local-value-name/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>临时变量应该叫啥? | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/07/15/local-value-name/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          临时变量应该叫啥?
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-07-15 00:00:00" itemprop="dateCreated datePublished" datetime="2014-07-15T00:00:00+08:00">2014-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/07/15/local-value-name/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/07/15/local-value-name/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。<br>同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。</p>
+<p>我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。<br>如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭问题呢？我觉得就是<strong>大多数临时变量就没必要命名</strong>。<br>等你明白我的这句话，就会发现你<strong>命名的好坏，表示你会不会用临时变量，而这临时变量又和你的代码结构，代码的简练程度息息相关</strong>。</p>
+<span id="more"></span>
+
+<p>首先你要明白为什么要为一个变量命名。</p>
+<ul>
+<li>你要使用这个变量不止一次。</li>
+<li>名称本身是自解释的。</li>
+</ul>
+<p>所以我们可以根据这些，定义如下几条规则：</p>
+<ul>
+<li>如果一个变量只使用一次，那么不要为它命名，除非为它赋值很长。（如果只是用一次，完全可以不要它）</li>
+<li>不要乱缩写。result不要写成 res，department 不要写成 depart（降低可读性）</li>
+<li>打死不用 aa，bb，a1，a2。（完全没有自解释，降低可读性）</li>
+</ul>
+<p>下面是几个实际的例子:</p>
+<h4 id="只使用一次的没有必要为其命名。"><a href="#只使用一次的没有必要为其命名。" class="headerlink" title="只使用一次的没有必要为其命名。"></a>只使用一次的没有必要为其命名。</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line">result = dosomething();</span><br><span class="line"><span class="keyword">return</span> result;</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">return</span> dosomething();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="能用三目运算符不用逻辑判断语句-if-else"><a href="#能用三目运算符不用逻辑判断语句-if-else" class="headerlink" title="能用三目运算符不用逻辑判断语句(if else)"></a>能用三目运算符不用逻辑判断语句(if else)</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">oddeven</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span> result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">value</span> % <span class="number">2</span>==<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result = <span class="string">&quot;even&quot;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        result = <span class="string">&quot;odd&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">oddeven</span>(<span class="params"><span class="built_in">int</span> <span class="keyword">value</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">value</span> % <span class="number">2</span> == <span class="number">0</span> ? <span class="string">&quot;even&quot;</span>: <span class="string">&quot;odd&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？"><a href="#如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？" class="headerlink" title="如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？"></a>如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line">amount1 = os.query&lt;Porjectstaff&gt;.<span class="keyword">where</span>(<span class="number">1</span>).count();</span><br><span class="line">amount2 = os.query&lt;Projectstaff&gt;.<span class="keyword">where</span>(<span class="number">2</span>).count();</span><br><span class="line">amount3 = os.query&lt;Porjectstaff&gt;.<span class="keyword">where</span>(<span class="number">3</span>).count();</span><br><span class="line">projectAmount = amount1 + amount2 + amount3;</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line">projectAmount  = os.query&lt;Porjectstaff&gt;.<span class="keyword">where</span>(<span class="number">1</span>).count();</span><br><span class="line">projectAmount += os.query&lt;Projectstaff&gt;.<span class="keyword">where</span>(<span class="number">2</span>).count();</span><br><span class="line">projectAmount += os.query&lt;Projectstaff&gt;.<span class="keyword">where</span>(<span class="number">3</span>).count();</span><br></pre></td></tr></table></figure>
+
+<p>amount1，amount2，amount3这样为每个临时变量命名，其实根本就没必要。</p>
+<hr>
+<p><strong>有个性与没个性，（有个性的单独命名，没个性的放在容器）</strong></p>
+<p>你可能会问我，什么叫有个性，什么叫没个性？</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> []a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">a[<span class="number">0</span>] ...</span><br><span class="line">a[<span class="number">1</span>] ...</span><br><span class="line">a[<span class="number">2</span>] ...</span><br><span class="line">a[<span class="number">3</span>] ...</span><br><span class="line"><span class="comment">// 这四个变量是通过数组访问的，它们并没有名字，所以叫&quot;没个性&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">int</span> one   = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">int</span> two   = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">int</span> three = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">int</span> four  = <span class="number">4</span>;</span><br><span class="line"><span class="comment">// 这四个变量每一个有自己的名字，所以它们&quot;有个性&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>比如前段时间，我写过一个代码，提取四段字符串来生成一个项目编号。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> department   =  Department.Abbr;                         <span class="comment">// 部门缩写</span></span><br><span class="line"><span class="built_in">string</span> projecttype  =  ProjectType.Name;                        <span class="comment">// 项目类型缩写</span></span><br><span class="line"><span class="built_in">string</span> serialnumber =  <span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0000&#125;&quot;</span>, SerialNumber);   <span class="comment">// 流水号</span></span><br><span class="line"><span class="built_in">string</span> year         =  StartDate.year;                          <span class="comment">// 项目年份</span></span><br><span class="line"></span><br><span class="line">ProjectNumber       =  <span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125;-&#123;1&#125;-&#123;2&#125;-&#123;3&#125;&quot;</span>,</span><br><span class="line">                       department, projecttype, serialnumber, year);</span><br></pre></td></tr></table></figure>
+
+<p>就像我之前说的那样，这种”个性”命名根本就没有必要，后面已经能够读的出来了。<br>所以这是我的新的写法:</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> []symbol = <span class="built_in">string</span>&#123;</span><br><span class="line">	Department.Abbr,</span><br><span class="line">	ProjectType.Name,</span><br><span class="line">	<span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0000&#125;&quot;</span>, SerialNumber),</span><br><span class="line">	StartDate.year</span><br><span class="line">&#125;</span><br><span class="line">ProjectNumber = <span class="built_in">string</span>.Format(<span class="string">&quot;&#123;0&#125;-&#123;1&#125;-&#123;2&#125;-&#123;3&#125;&quot;</span>, symbol);</span><br></pre></td></tr></table></figure>
+
+<p><strong>好的命名它本身的可读性。连注释都省了</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c#</a>
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/" rel="tag"># 编程心得</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2014/07/05/enum-post/" rel="prev" title="使用位掩码来表示多个职位">
+      <i class="fa fa-chevron-left"></i> 使用位掩码来表示多个职位
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2014/08/04/write-code-if-statement/" rel="next" title="关于If的几种写法">
+      关于If的几种写法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E6%AC%A1%E7%9A%84%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E4%B8%BA%E5%85%B6%E5%91%BD%E5%90%8D%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">只使用一次的没有必要为其命名。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%BD%E7%94%A8%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6%E4%B8%8D%E7%94%A8%E9%80%BB%E8%BE%91%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5-if-else"><span class="nav-number">2.</span> <span class="nav-text">能用三目运算符不用逻辑判断语句(if else)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E4%BD%A0%E5%86%99%E4%BA%86%E5%87%A0%E4%B8%AA%E7%9B%B8%E4%BC%BC%E7%9A%84%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F%E5%90%8D%EF%BC%8C%E9%82%A3%E4%B9%88%E8%AF%B7%E5%85%88%E6%83%B3%E4%B8%80%E6%83%B3%E6%9C%89%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E5%8F%96%E8%BF%99%E4%B9%88%E5%A4%9A%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">如果你写了几个相似的临时变量名，那么请先想一想有没有必要取这么多？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

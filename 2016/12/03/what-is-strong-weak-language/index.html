@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="程序员们喜欢撕逼，他们会争论vim和emacs那个才是最牛逼的编辑器，会比较linux和Windows哪个更牛逼些，还会比较java和c#哪个更强大一些，因为他们总喜欢追寻自己的教条和信仰，跟别的队伍吵个不停。最近总听见有人在讨论关于编程语言的强弱类型，他们常常为某种语言是不是弱类型吵得不可开交。jser，PHPer们可能是因为被黑惯了,他们一般表现出”你说啥都行,弱类型就弱类型,无所谓，你们开心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强弱类型到底是个啥？">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/12/03/what-is-strong-weak-language/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="程序员们喜欢撕逼，他们会争论vim和emacs那个才是最牛逼的编辑器，会比较linux和Windows哪个更牛逼些，还会比较java和c#哪个更强大一些，因为他们总喜欢追寻自己的教条和信仰，跟别的队伍吵个不停。最近总听见有人在讨论关于编程语言的强弱类型，他们常常为某种语言是不是弱类型吵得不可开交。jser，PHPer们可能是因为被黑惯了,他们一般表现出”你说啥都行,弱类型就弱类型,无所谓，你们开心">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-12-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-12-03T05:37:05.760Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="考古">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/12/03/what-is-strong-weak-language/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>强弱类型到底是个啥？ | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/12/03/what-is-strong-weak-language/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强弱类型到底是个啥？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2016-12-03 00:00:00 / 修改时间：13:37:05" itemprop="dateCreated datePublished" datetime="2016-12-03T00:00:00+08:00">2016-12-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">语言</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/12/03/what-is-strong-weak-language/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/12/03/what-is-strong-weak-language/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>程序员们喜欢撕逼，他们会争论vim和emacs那个才是最牛逼的编辑器，会比较linux和Windows哪个更牛逼些，还会比较java和c#哪个更强大一些，因为他们总喜欢追寻自己的教条和信仰，跟别的队伍吵个不停。最近总听见有人在讨论关于编程语言的强弱类型，他们常常为某种语言是不是弱类型吵得不可开交。jser，PHPer们可能是因为被黑惯了,他们一般表现出”你说啥都行,弱类型就弱类型,无所谓，你们开心就好的心态。”但是pythoner不这么想，作为一个向往逼格的pythoner，如果有一个javaer跟他说：“python是弱类型，java是强类型”，那他一定会跟他争论个面红耳赤，再跟他讲“强类型，弱类型，静态语言，动态语言之间的区别与联系”。我原来就是这样的一个pythoner。但是最近我突然想起来大四的一节软件工程课上，老师谈到从第一代编程语言到第五代编程语言的区别，我发现分类方式和我在图书馆读到的不一样，所以我下课之后还去找他讨论了一番，但老师只是很平静的对我说，其实这个定义只是一个简单的分类说法，没什么严格标准的定义说某种语言就是第三代语言。这个经历让我突然想问自己，“我们在天天撕的强弱类型，它到底是个啥？”</p>
+<h2 id="大众的现状"><a href="#大众的现状" class="headerlink" title="大众的现状"></a>大众的现状</h2><p>目前而言，大部分人眼中c，java,C#这样的语言就被称为强类型语言，而php，js，python就被称为弱类型，因为他们认为像java这样的语言，任何一个变量在声明的时候，都要明确指定其类型，比如像这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(<span class="string">&quot;SB!&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>而python并不用在声明的时候，给它定义一个类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;123&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>而且python的变量貌似看上去还可以随便赋值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">1</span></span><br><span class="line">i = <span class="string">&quot;123&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>所以他们就认为python是弱类型。</p>
+<span id="more"></span>
+
+<p>这是普遍的观点，但是这个没什么说服力。我举个例子，按照这个说法，java和c#都是强类型语言，但是c#有一个“自动类型推倒”的功能，（不知道java现在有没有这个功能，就算现在没有，将来也会有的，因为java最爱抄c#）。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = “abcd”;</span><br></pre></td></tr></table></figure>
+
+<p>var是C#的语法糖，它让编译器自动推倒类型，这是在C# 3.0开始新增的特性，需要说明的是这个变量必须是局部变量，而且必须在一开始就初始化，而且这个变量就是字符串类型，并不能被赋值成其它类型。看这就没有声明类型，那么你能因为一个语法糖就把c#从强类型变成弱类型？</p>
+<h4 id="稍高一点"><a href="#稍高一点" class="headerlink" title="稍高一点"></a>稍高一点</h4><p>比前面这种看法认知高一点的，会说上面那个不同，不是强弱类型的区别，而是动态语言和静态语言的区别，因为静态语言需要在编译期间做静态类型检查，所以必须要声明类型，而python是动态语言，类型在运行时才确定（python也会编译成一种机器码，为了在虚拟机上运行，但是没有类型检查的阶段），所以不需要声明。</p>
+<p>然后他们会说，所谓强弱类型其实是类型之间的操作有无明确规范，比如在php和javascript中，你可以这样写：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$b</span>= <span class="number">2</span> + <span class="string">&quot;3.14&quot;</span>;  </span><br></pre></td></tr></table></figure>
+
+<p>看，你把一个整数和字符串相加了，但是在python中和java中不能，所以php是弱类型，而java和python是强类型。</p>
+<p>实际上pythoner完全可以先自黑一把：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span> &gt; <span class="string">&quot;1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这条语句在python中不会报错，而且还会返回<code>False</code>，实际上更有趣的是，python中任何两个对象都可以比较大小，这里有具体的大小比较规则:<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/stdtypes.html#comparisons">5. Built-in Types</a></p>
+<p>那么pythoner们如何定义，<strong>类型之间的操作明确规范</strong>？（以上是python2.x的特性，在python3.x中，整型和字符串比较会抛异常）</p>
+<p>javaer们也别走，你们的<strong>类型之间的操作明确规范</strong>呢？：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.print(<span class="number">123</span> +<span class="string">&quot;456&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="类型转化"><a href="#类型转化" class="headerlink" title="类型转化"></a>类型转化</h4><p>有部分人讨论强弱类型是根据类型转换的，就因为这点，会把c和c++归为弱类型语言，因为c++要兼容C，所以我们直接讨论C语言。因为c语言是一个比较老的语言，而且偏于底层（可以直接操作内存），所以类型转换和指针满天飞，而且人家的强制类型转换简直万能，比如你可以这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> <span class="title">a</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span> <span class="title">b</span>;</span></span><br><span class="line">b = *(<span class="keyword">struct</span> A*)&amp;a;</span><br></pre></td></tr></table></figure>
+
+<p>类型转换配上万能指针-void指针，“简直完美”（任何指针都可以转换为void指针，void指针也可以转化为任何指针）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span>* a = &amp;b;</span><br><span class="line"><span class="type">double</span> c = *(<span class="type">double</span>*)((<span class="type">void</span>*)a);</span><br></pre></td></tr></table></figure>
+
+<p>c语言当然有类型检查了，但是它可以绕过类型系统，这真是因为C语言本身所带有的工业属性，C语言一开始设计是为了写UNIX的好么，写操作系统的语言没有指针和类型转换的C语言还怎么玩，你去看看linux标准C库的list，居然是个多态链表，面向过程的语言怎么实现的？还不是靠void指针和强制类型转换还有宏。所以不能因为这个就说人家是弱类型。</p>
+<h2 id="定义源头"><a href="#定义源头" class="headerlink" title="定义源头"></a>定义源头</h2><p>之后我去找了到底这些强弱类型的定义出自哪里，国内的网站已经满足不了我了，是时候去stackoverflow和wiki上看看了。</p>
+<p>实际上，国外有很多人对于弱类型的定义都是：</p>
+<blockquote>
+<p>Strong/Weak typing is about how strictly types are distinguished (e.g. whether the language tries to do implicit conversion from strings to numbers).</p>
+</blockquote>
+<p>你会发现这个定义很模糊，就像我们之前讨论的，每种语言都有弱的方式和弱的理由。</p>
+<p>stackoverflow还是有人提出了这个观点：“关于语言的强弱类型过于模糊，讨论起来没有意义。”</p>
+<blockquote>
+<p>Probably the most common way type systems are classified is “strong” or “weak.” This is unfortunate, since these words have nearly no meaning at all. It is, to a limited extent, possible to compare two languages with very similar type systems, and designate one as having the stronger of those two systems. Beyond that, the words mean nothing at all.”</p>
+</blockquote>
+<blockquote>
+<p>You have discovered a soft spot in the terminology that amateurs use to talk about programming languages. Don’t use the terms “strong” and “weak” typing, because they don’t have a universally agreed on technical meaning. By contrast, static typing means that programs are checked before being executed, and a program might be rejected before it starts. Dynamic typing means that the types of values are checked during execution, and a poorly typed operation might cause the program to halt or otherwise signal an error at run time. A primary reason for static typing is to rule out programs that might have such “dynamic type errors”.</p>
+</blockquote>
+<p>在wiki百科上，也有类似的说法：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Type_system">Type_system</a></p>
+<blockquote>
+<p>red to as “strongly typed” or “weakly typed”. In fact, there is no universally accepted definition of what these terms mean. In general, there are more precise terms to represent the differences between type systems that lead people to call them “strong” or “weak”.</p>
+</blockquote>
+<p>而且还引出另一个概念：Explicit/Implicit（显/隐类型），这个我们提到过，也容易被当成强弱类型的区别，一般像C,JAVA这样的语言，是需要声明自己类型的，但是Haskell这样的却不用声明，因为它有自动类型推倒，而且我敢说要真比较类型强弱，haskell要比很多静态语言强类型的多，我只学过一点点haskell，但我知道haskell的一个变量定义成什么就是什么了，连再赋值都不行。毕竟函数式编程语言,或者说这都不能被称为变量了。</p>
+<p>所以以后再有人讨论关于“java，python强弱类型”的时候，我都会保持沉默，无视他们，心里默默的想，“java，python， ruby哪个才能被算作是纯面向对象的语言”。。。。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%80%83%E5%8F%A4/" rel="tag"># 考古</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/11/27/a-program-for-snap-trace/" rel="prev" title="记一次跟踪系统的设计改进">
+      <i class="fa fa-chevron-left"></i> 记一次跟踪系统的设计改进
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/12/10/from-python-java-integer-object-pool/" rel="next" title="从python到java之整型常量池">
+      从python到java之整型常量池 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E4%BC%97%E7%9A%84%E7%8E%B0%E7%8A%B6"><span class="nav-number">1.</span> <span class="nav-text">大众的现状</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8D%E9%AB%98%E4%B8%80%E7%82%B9"><span class="nav-number">1.0.1.</span> <span class="nav-text">稍高一点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E5%8C%96"><span class="nav-number">1.0.2.</span> <span class="nav-text">类型转化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%BA%90%E5%A4%B4"><span class="nav-number">2.</span> <span class="nav-text">定义源头</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

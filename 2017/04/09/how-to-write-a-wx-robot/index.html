@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="之前公司有一个需求，需要搭建一个微信机器人，查阅了相关资料，整理了一些Demo之后，我大概实现了一个python的微信机器人聊天程序，这里就把经验拿出来分享下。 基本原理首先你要明白，微信并没有给你提供一套接口，一套文档，让你开发聊天机器人。如果你想实现一个机器人，能够被拉到群里，与群里的人聊天，就必须用点hack的办法。 这个原理就是web版本的微信，想想你登录web版的微信，在浏览器输入地址后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何实现一个微信机器人">
+<meta property="og:url" content="http://www.pulpcode.cn/2017/04/09/how-to-write-a-wx-robot/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="之前公司有一个需求，需要搭建一个微信机器人，查阅了相关资料，整理了一些Demo之后，我大概实现了一个python的微信机器人聊天程序，这里就把经验拿出来分享下。 基本原理首先你要明白，微信并没有给你提供一套接口，一套文档，让你开发聊天机器人。如果你想实现一个机器人，能够被拉到群里，与群里的人聊天，就必须用点hack的办法。 这个原理就是web版本的微信，想想你登录web版的微信，在浏览器输入地址后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/weixin01.png">
+<meta property="og:image" content="http://www.pulpcode.cn/img/weixin02.png">
+<meta property="article:published_time" content="2017-04-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-04-09T12:27:05.993Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="tornado">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/weixin01.png">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2017/04/09/how-to-write-a-wx-robot/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何实现一个微信机器人 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/04/09/how-to-write-a-wx-robot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何实现一个微信机器人
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-04-09 00:00:00 / 修改时间：20:27:05" itemprop="dateCreated datePublished" datetime="2017-04-09T00:00:00+08:00">2017-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/04/09/how-to-write-a-wx-robot/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/04/09/how-to-write-a-wx-robot/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>之前公司有一个需求，需要搭建一个微信机器人，查阅了相关资料，整理了一些Demo之后，我大概实现了一个python的微信机器人聊天程序，这里就把经验拿出来分享下。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>首先你要明白，微信并没有给你提供一套接口，一套文档，让你开发聊天机器人。如果你想实现一个机器人，能够被拉到群里，与群里的人聊天，就必须用点hack的办法。</p>
+<p>这个原理就是web版本的微信，想想你登录web版的微信，在浏览器输入地址后，先会给你返回一个二维码。然后你用你的手机扫描了此二维码，接着就登录成功了。</p>
+<p>这个扫二维码登录的过程，其实就是一个授权的过程，即你授权给web界面，使得可以通过web页面，用http的方式与微信服务器建立交互。所以微信机器人的实现方式就是基于此。你创建一个账号，然后这个账号就是微信机器人，你通过扫码的方式登录，使得可以通过http的方式与微信服务器建立交互。就这样，我们的服务托管了你的机器人账户，从而与群里的人进行交流，解析他们的聊天记录，匹配关键字，生成相应的回复信息。</p>
+<h2 id="交互流程"><a href="#交互流程" class="headerlink" title="交互流程"></a>交互流程</h2><p>首先想想和微信服务器建立交互的时序图。</p>
+<p><img src="/img/weixin01.png" alt="weixin01"></p>
+<span id="more"></span>
+
+<p>所以当我们要用一个服务来托管你的微信机器人，就需要维护一个与微信服务器通信的HTTP Session。</p>
+<p><img src="/img/weixin02.png" alt="weixin02"></p>
+<p>这里要注意的是，http是上下文无关的，所以你与微信服务器的交互必须要通过cookie建立上下文，还有http协议是一问一答的形式，所以服务器并不能主动推送数据给客户端，所以你只能使用轮训的方式，从微信服务器获取消息信息。</p>
+<h2 id="基于python-tornado服务的实现思路"><a href="#基于python-tornado服务的实现思路" class="headerlink" title="基于python tornado服务的实现思路"></a>基于python tornado服务的实现思路</h2><p>网上有一个现成的库，提供tornado异步客户端的Session方式，其实就是使用RequestsCookieJar,这个库来保存Cookie。<br>我通过这个库来包装了一个Session，方便我调用get和post。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> httpclient_session <span class="keyword">import</span> Session</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RequestSession</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    一个能维护异步请求的session,传递cookie.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self._session = Session()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @tornado.gen.coroutine</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">retry_request_get</span>(<span class="params">self, url, timeout=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        此请求如果失败,将会重试,直到成功为止(最多三次)</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            headers = HTTPHeaders(&#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (X11; Linux i686; U;) Gecko/20070322 Kazehakase/0.4.5&#x27;</span>&#125;)</span><br><span class="line">            request = HTTPRequest(</span><br><span class="line">                url=url,</span><br><span class="line">                headers=headers,</span><br><span class="line">                connect_timeout=timeout,</span><br><span class="line">                request_timeout=timeout</span><br><span class="line">            )</span><br><span class="line">            response = <span class="keyword">yield</span> self._session.fetch(request)</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            logger.error(<span class="string">&#x27;request error: %s&#x27;</span> % url, exc_info=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">raise</span> tornado.gen.Return((<span class="literal">False</span>, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> tornado.gen.Return((<span class="literal">True</span>, response.body))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @tornado.gen.coroutine</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">retry_request_post</span>(<span class="params">self, url, body, timeout=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        此请求如果失败,将会重试,直到成功为止(最多三次)</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            headers = HTTPHeaders(&#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (X11; Linux i686; U;) Gecko/20070322 Kazehakase/0.4.5&#x27;</span>&#125;)</span><br><span class="line">            request = HTTPRequest(</span><br><span class="line">                url=url,</span><br><span class="line">                body=body,</span><br><span class="line">                method=<span class="string">&quot;POST&quot;</span>,</span><br><span class="line">                headers=headers,</span><br><span class="line">                connect_timeout=timeout,</span><br><span class="line">                request_timeout=timeout</span><br><span class="line">            )</span><br><span class="line">            response = <span class="keyword">yield</span> self._session.fetch(request)</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            logger.error(<span class="string">&#x27;request error: %s&#x27;</span> % url, exc_info=<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">raise</span> tornado.gen.Return((<span class="literal">False</span>, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> tornado.gen.Return((<span class="literal">True</span>, response.body))</span><br></pre></td></tr></table></figure>
+
+<p>请求加入的头部参数，是为了伪装成浏览器，那么对于这个例子，我创建的每一个机器人类，都会维护一个自己的RequestSession。</p>
+<h2 id="交互过程"><a href="#交互过程" class="headerlink" title="交互过程"></a>交互过程</h2><p>先需要从一个get请求获取uuid。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_uuid</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    获取微信web登录验证所需的uuuid</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    url = https://login.weixin.qq.com/jslogin</span><br><span class="line">    params = &#123;</span><br><span class="line">            <span class="string">&#x27;appid&#x27;</span>: <span class="string">&#x27;wx782c26e4c19acffb&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;fun&#x27;</span>: <span class="string">&#x27;new&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;lang&#x27;</span>: <span class="string">&#x27;zh_CN&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;_&#x27;</span>: <span class="built_in">int</span>(time.time()) * <span class="number">1000</span> + random.randint(<span class="number">1</span>, <span class="number">999</span>),</span><br><span class="line">    &#125;</span><br><span class="line">    url = <span class="string">&quot;%s?%s&quot;</span> % (url, urllib.urlencode(params))</span><br><span class="line">    logger.debug(<span class="string">&quot;fetch uuid: %s&quot;</span> % url)</span><br><span class="line">    ok, body = <span class="keyword">yield</span> self._session.retry_request_get(url)</span><br><span class="line">    regx = <span class="string">r&#x27;window.QRLogin.code = (\d+); window.QRLogin.uuid = &quot;(\S+?)&quot;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ok:</span><br><span class="line">        pm = re.search(regx, body)</span><br><span class="line">        <span class="keyword">if</span> pm:</span><br><span class="line">            code = pm.group(<span class="number">1</span>)</span><br><span class="line">            uuid = pm.group(<span class="number">2</span>)</span><br><span class="line">            <span class="keyword">if</span> code == <span class="string">&quot;200&quot;</span>:</span><br><span class="line">                self._uuid = uuid</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后通过这个uuid，配上一个url，来生成一个用于登录的微信二维码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gen_login_qrcode_png</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成二维码登录图片,返回一个io流对象</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    url = <span class="string">&#x27;https://login.weixin.qq.com/l/&#x27;</span></span><br><span class="line">    logger.debug(<span class="string">&quot;login url: %s&quot;</span> % url)</span><br><span class="line">    qr = qrcode.QRCode(</span><br><span class="line">        version=<span class="number">1</span>,</span><br><span class="line">        error_correction=qrcode.constants.ERROR_CORRECT_L,</span><br><span class="line">        box_size=<span class="number">10</span>,</span><br><span class="line">        border=<span class="number">4</span>,</span><br><span class="line">    )</span><br><span class="line">    qr.add_data(url)</span><br><span class="line">    qr.make(fit=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    out = BytesIO()</span><br><span class="line">    qr_img = qr.make_image()</span><br><span class="line">    qr_img.save(out, <span class="string">&#x27;PNG&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+
+<p>之后你的服务就需要一直不停的轮训微信服务器，来知道客户登录的状态：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">wait_for_login</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    等待用户登录</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    TIP_WAIT_FOR_SCAN_QR_CODE = <span class="number">1</span></span><br><span class="line">    <span class="comment"># 等待用户扫描二维码</span></span><br><span class="line">    TIP_WAIT_CONFIRM_LOGIN = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 等待用户确认登录</span></span><br><span class="line">    MAX_RETRY_TIMES = <span class="number">10</span></span><br><span class="line">    <span class="comment"># 最大尝试次数</span></span><br><span class="line">    TRY_LATER_SECS = <span class="number">1</span></span><br><span class="line">    <span class="comment"># sleep时间(秒)</span></span><br><span class="line">    UNKONWN = <span class="string">&#x27;unkonwn&#x27;</span></span><br><span class="line">    <span class="comment"># 未知</span></span><br><span class="line">    SUCCESS = <span class="string">&#x27;200&#x27;</span></span><br><span class="line">    <span class="comment"># 200: confirmed</span></span><br><span class="line">    SCANED = <span class="string">&#x27;201&#x27;</span></span><br><span class="line">    <span class="comment"># 201: scaned</span></span><br><span class="line">    TIMEOUT = <span class="string">&#x27;408&#x27;</span></span><br><span class="line">    <span class="comment"># 408: timeout</span></span><br><span class="line"></span><br><span class="line">    tip = TIP_WAIT_FOR_SCAN_QR_CODE</span><br><span class="line">    retry_time = MAX_RETRY_TIMES</span><br><span class="line">    code = UNKONWN</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> retry_time &gt; <span class="number">0</span>:</span><br><span class="line">        url = <span class="string">&quot;%s?tip=%s&amp;uuid=%s&amp;_=%s&quot;</span> % (https://login.weixin.qq.com/cgi-<span class="built_in">bin</span>/mmwebwx-<span class="built_in">bin</span>/login, tip, self._uuid, <span class="built_in">int</span>(time.time()))</span><br><span class="line">        logger.debug(<span class="string">&quot;get login status url: %s&quot;</span> % url)</span><br><span class="line">        ok, body = <span class="keyword">yield</span> self._session.retry_request_get(url)</span><br><span class="line">        logger.debug(<span class="string">&quot;get login status response: %s&quot;</span> % body)</span><br><span class="line">        <span class="keyword">if</span> ok:</span><br><span class="line">            param = re.search(<span class="string">r&#x27;window.code=(\d+);&#x27;</span>, body)</span><br><span class="line">            code = param.group(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> code == SCANED:</span><br><span class="line">                tip = TIP_WAIT_CONFIRM_LOGIN</span><br><span class="line">            <span class="keyword">elif</span> code == SUCCESS:</span><br><span class="line">                param = re.search(<span class="string">r&#x27;window.redirect_uri=&quot;(\S+?)&quot;;&#x27;</span>, body)</span><br><span class="line">                self._redirect_uri = param.group(<span class="number">1</span>) + <span class="string">&#x27;&amp;fun=new&#x27;</span></span><br><span class="line">                self._base_uri = self._redirect_uri[:self._redirect_uri.rfind(<span class="string">&#x27;/&#x27;</span>)]</span><br><span class="line">                temp_host = self._base_uri[<span class="number">8</span>:]</span><br><span class="line">                self._base_host = temp_host[:temp_host.find(<span class="string">&quot;/&quot;</span>)]</span><br><span class="line">                logger.info(<span class="string">u&quot;微信登录成功&quot;</span>)</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">elif</span> code == TIMEOUT:</span><br><span class="line">                tip = TIP_WAIT_FOR_SCAN_QR_CODE</span><br><span class="line">                retry_time -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">yield</span> tornado.gen.sleep(TRY_LATER_SECS)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tip = TIP_WAIT_FOR_SCAN_QR_CODE</span><br><span class="line">                retry_time -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">yield</span> tornado.gen.sleep(TRY_LATER_SECS)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">raise</span> tornado.gen.Return(code == SUCCESS)</span><br></pre></td></tr></table></figure>
+
+<p>之后就要根据之前获取到的redirect_uri，来获取一些，skey，sid，in，pass_ticket等字段，这些参数每次与微信服务器交互都要用到。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    登录并获取相关信息</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(self._redirect_uri) &lt; <span class="number">4</span>:</span><br><span class="line">        logger.error(<span class="string">&quot;Login failed due to network problem, please try again.&quot;</span>)</span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    ok, body = <span class="keyword">yield</span> self._session.retry_request_get(self._redirect_uri)</span><br><span class="line">    logger.debug(<span class="string">&quot;login info: %s&quot;</span> % body)</span><br><span class="line">    <span class="keyword">if</span> ok:</span><br><span class="line">        doc = xml.dom.minidom.parseString(body)</span><br><span class="line">        root = doc.documentElement</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> root.childNodes:</span><br><span class="line">            <span class="keyword">if</span> node.nodeName == <span class="string">&#x27;skey&#x27;</span>:</span><br><span class="line">                self._skey = node.childNodes[<span class="number">0</span>].data</span><br><span class="line">            <span class="keyword">elif</span> node.nodeName == <span class="string">&#x27;wxsid&#x27;</span>:</span><br><span class="line">                self._sid = node.childNodes[<span class="number">0</span>].data</span><br><span class="line">            <span class="keyword">elif</span> node.nodeName == <span class="string">&#x27;wxuin&#x27;</span>:</span><br><span class="line">                self._uin = node.childNodes[<span class="number">0</span>].data</span><br><span class="line">            <span class="keyword">elif</span> node.nodeName == <span class="string">&#x27;pass_ticket&#x27;</span>:</span><br><span class="line">                self._pass_ticket = node.childNodes[<span class="number">0</span>].data</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">in</span> (self._skey, self._sid, self._uin, self._pass_ticket):</span><br><span class="line">            <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">        self._base_request[<span class="string">&quot;Uin&quot;</span>] = self._uin</span><br><span class="line">        self._base_request[<span class="string">&quot;Sid&quot;</span>] = self._sid</span><br><span class="line">        self._base_request[<span class="string">&quot;Skey&quot;</span>] = self._skey</span><br><span class="line">        self._base_request[<span class="string">&quot;DeviceID&quot;</span>] = self._device_id</span><br><span class="line"></span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    机器人的运行主逻辑</span></span><br><span class="line"><span class="string">    TODO: 这里的主逻辑可能不对</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> self._main_lock == <span class="literal">False</span>:</span><br><span class="line">        self._main_lock = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span> self.status == BaseRobot.STATUS_LIVE:</span><br><span class="line">            code, msg = <span class="keyword">yield</span> self._wxClient.dispatch_msg()</span><br><span class="line">            <span class="keyword">if</span> code == WxClient.WX_RETURN_CODE_LOGINOUT <span class="keyword">or</span> code == WxClient.WX_RETURN_CODE_RELOGINOTHER:</span><br><span class="line">                self.status = BaseRobot.STATUS_DEAD</span><br><span class="line">                logger.info(<span class="string">&quot;robot stop...&quot;</span>)</span><br><span class="line"></span><br><span class="line">            self.send_message()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logger.info(<span class="string">&quot;robot dead.&quot;</span>)</span><br><span class="line">        self._main_lock = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dispatch_msg</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    处理消息(根据不同消息类型,分类处理)</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    retcode, selector = <span class="keyword">yield</span> self.sync_check()</span><br><span class="line">    <span class="keyword">if</span> retcode == WxClient.WX_RETURN_CODE_LOGINOUT:</span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_LOGINOUT, <span class="literal">None</span>))</span><br><span class="line">    <span class="keyword">elif</span> retcode == WxClient.WX_RETURN_CODE_RELOGINOTHER:</span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_RELOGINOTHER, <span class="literal">None</span>))</span><br><span class="line">    <span class="keyword">elif</span> retcode == WxClient.WX_RETURN_CODE_MESSAGE:</span><br><span class="line">        <span class="keyword">if</span> selector == WxClient.SELECTOR_NEW_MESSAGE:</span><br><span class="line">            r = <span class="keyword">yield</span> self.sync()</span><br><span class="line">            <span class="keyword">if</span> r <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.handle_msg(r)</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_MESSAGE, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">elif</span> selector == WxClient.SELECTOR_UNKNOWN:</span><br><span class="line">            r = <span class="keyword">yield</span> self.sync()</span><br><span class="line">            <span class="keyword">if</span> r <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.handle_msg(r)</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_MESSAGE, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">elif</span> selector == WxClient.SELECTOR_ADDRESS_LIST_UPDATE:</span><br><span class="line">            r = <span class="keyword">yield</span> self.sync()</span><br><span class="line">            <span class="keyword">if</span> r <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_MESSAGE, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">elif</span> selector == WxClient.SELECTOR_MAYBE_RED_PACKET:</span><br><span class="line">            r = <span class="keyword">yield</span> self.sync()</span><br><span class="line">            <span class="keyword">if</span> r <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_MESSAGE, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">elif</span> selector == WxClient.SELECTOR_USE_PHONE_OPERATE:</span><br><span class="line">            r = <span class="keyword">yield</span> self.sync()</span><br><span class="line">            <span class="keyword">if</span> r <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.handle_msg(r)</span><br><span class="line">                <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_MESSAGE, <span class="literal">None</span>))</span><br><span class="line">        <span class="keyword">elif</span> selector == WxClient.SELECTOR_ZERO:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logger.warning(<span class="string">&quot;unknown retcode, selector: %s, %s&quot;</span> % (retcode, selector))</span><br><span class="line">            <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_UNKNOWN, <span class="literal">None</span>))</span><br><span class="line"></span><br><span class="line">    logger.warning(<span class="string">&quot;unknown sync check: %s, %s&quot;</span> % (retcode, selector))</span><br><span class="line">    <span class="keyword">raise</span> tornado.gen.Return((WxClient.WX_RETURN_CODE_UNKNOWN, <span class="literal">None</span>))</span><br></pre></td></tr></table></figure>
+
+<p>之后的代码只需要从服务器不停的轮训，获取数据，在根据消息类型，做不同的处理就行了。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>首先这个服务其实写起来比我想象的要复杂，因为在服务器维护每个机器人的session，然后不停的轮训这件事，一个服务器还好说，如果部署到多台服务器，那就会麻烦很多，比如你的session一定要入库的，否则一重启什么都没了，那么如果入库，那由哪个服务器的哪个线程用来与服务器建立通信呢，所以这里我只是做了单机部署，因为这篇博客的意图，其实通过微信机器人程序，总结HTTP的一些知识。</p>
+<p>还有就是这个服务可能会很不稳定，因为我并没有做过测试来验证，web版的微信到底能登录多长时间。所以它有可能在登录一段时间后就掉线了，而且这种“破解”类的程序，微信随时都有可能封你，尤其你使用了类似“加好友”这样的接口。</p>
+<p>不仅仅是每次登录获取的uuid和之后的各种token不一样，实际上你每次重新登录，用户的id，和组的id，甚至你自己的id，都是重新生成的。</p>
+<p>微信web是单点登录的，所以你在另一个web页面登录微信的话，这个session就会被微信服务器关闭的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/tornado/" rel="tag"># tornado</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/03/how-to-use-git-back-to-the-past/" rel="prev" title="如何用git回到过去">
+      <i class="fa fa-chevron-left"></i> 如何用git回到过去
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/22/from-hdd-to-ssd-how-b-tree/" rel="next" title="从机械硬盘到固态硬盘后，b树怎么办？">
+      从机械硬盘到固态硬盘后，b树怎么办？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">交互流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8Epython-tornado%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">3.</span> <span class="nav-text">基于python tornado服务的实现思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E8%BF%87%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">交互过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

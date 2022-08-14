@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="此篇文章总结python一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中… 解释一下python的 and-or 语法python的and-or常常被用来实现类C语言中的三元运算符:?,更骚包的写法是 xxx and xxx or xxx and xxx or xxx，连接多个表达式，一行就够了。 12345678if a &gt; 10:    return &quot;big&amp;q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python基础技术问题总结">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/02/26/python-technical-summary/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="此篇文章总结python一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中… 解释一下python的 and-or 语法python的and-or常常被用来实现类C语言中的三元运算符:?,更骚包的写法是 xxx and xxx or xxx and xxx or xxx，连接多个表达式，一行就够了。 12345678if a &gt; 10:    return &quot;big&amp;q">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-02-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.768Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/02/26/python-technical-summary/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python基础技术问题总结 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/02/26/python-technical-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python基础技术问题总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2015-02-26T00:00:00+08:00">2015-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/02/26/python-technical-summary/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/02/26/python-technical-summary/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>此篇文章总结python一些常见的技术问题,每一个都是简短的解释,篇幅不大，不断更新中…</p>
+<h2 id="解释一下python的-and-or-语法"><a href="#解释一下python的-and-or-语法" class="headerlink" title="解释一下python的 and-or 语法"></a>解释一下python的 and-or 语法</h2><p>python的<code>and-or</code>常常被用来实现类C语言中的三元运算符<code>:?</code>,更骚包的写法是 <code>xxx and xxx or xxx and xxx or xxx</code>，连接多个表达式，一行就够了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a &gt; <span class="number">10</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;big&quot;</span></span><br><span class="line"><span class="keyword">elif</span> a &gt; <span class="number">5</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;middle&quot;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;small&quot;</span></span><br><span class="line"></span><br><span class="line">a &gt; <span class="number">5</span> <span class="keyword">and</span> <span class="string">&quot;big&quot;</span> <span class="keyword">or</span> a &gt; <span class="number">3</span> <span class="keyword">and</span> <span class="string">&quot;middle&quot;</span> <span class="keyword">or</span> <span class="string">&quot;small&quot;</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>但是要注意<code>and-or</code>并不完全等价于三元运算符，因为 <code>a and b or c</code> ,如果b是个假值，那么将返回c。</p>
+<p>不过有技巧能够实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">choose</span>(<span class="params"><span class="built_in">bool</span>, a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> (<span class="built_in">bool</span> <span class="keyword">and</span> [a] <span class="keyword">or</span> [b])[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Python里面如何拷贝一个对象？"><a href="#Python里面如何拷贝一个对象？" class="headerlink" title="Python里面如何拷贝一个对象？"></a>Python里面如何拷贝一个对象？</h2><p>这个问题在 <strong>python cookbook</strong>中有很好的解释。</p>
+<p>标准库中的copy模块提供了两个方法来实现拷贝.一个方法是copy,它返回和参数包含内容一样的对象.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">new_list = copy.copy(existing_list)</span><br></pre></td></tr></table></figure>
+
+<p>有些时候,你希望对象中的属性也被复制,可以使用deepcopy方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">new_list_of_dicts = copy.deepcopy(existing_list_of_dicts)</span><br></pre></td></tr></table></figure>
+
+<pre><code>copy(x)
+    Shallow copy operation on arbitrary Python objects.
+
+deepcopy(x, memo=None, _nil=[])
+    Deep copy operation on arbitrary Python objects.
+</code></pre>
+<h2 id="python中如何判断对象相等"><a href="#python中如何判断对象相等" class="headerlink" title="python中如何判断对象相等"></a>python中如何判断对象相等</h2><p>也有一个类似的问题会被面试官问爆，我们不能将这个问题弄混了。</p>
+<p>首先是C#中字符串的==和equal方法。</p>
+<h4 id="“-”"><a href="#“-”" class="headerlink" title="“==” :"></a>“==” :</h4><p>对于内置值类型而言， == 判断两个内存值是否相等。</p>
+<p>对于用户自定义的值类型而言(Struct)， == 需要重载，否则不能使用。</p>
+<p>对于引用类型而言，默认是同一引用才返回true，但是系统重载了很多引用类型的 == （比如下文提到的string），所以c#中引用类型的比较并不建议使用 ==。</p>
+<h4 id="“equals”"><a href="#“equals”" class="headerlink" title="“equals” :"></a>“equals” :</h4><p>对于值类型而言， 内存相等才返回true。</p>
+<p>对于引用类型而言，指向同一个对象才算相等。</p>
+<p>但是比较特殊的是字符串<code>String</code>,是一个特殊的引用型类型，在C#语言中，重载了string的equals()方法，使string对象用起来就像是值类型一样。</p>
+<h4 id="python中的"><a href="#python中的" class="headerlink" title="python中的 =="></a>python中的 ==</h4><p>python中的对象包含三要素:id, type, value</p>
+<p>id 用来标识唯一一个对象，type标识对象的类型，value用来设置对象的值。</p>
+<p>is 判断是否是一个对象，使用id来判断的。</p>
+<p>== 是判断a对象的值是否是b对象的值，默认调用它的<code>__eq__</code>方法。</p>
+<h4 id="python-字符串"><a href="#python-字符串" class="headerlink" title="python 字符串"></a>python 字符串</h4><p>这里比较有趣的还是字符串，请看下面两段代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&quot;aiqier&quot;</span></span><br><span class="line">b = <span class="string">&quot;aiqier&quot;</span></span><br><span class="line"><span class="built_in">print</span> a == b</span><br><span class="line"><span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span> a <span class="keyword">is</span> b</span><br><span class="line"><span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">c = <span class="string">&quot;The quick brown fox jumps over a lazy dog&quot;</span></span><br><span class="line">d = <span class="string">&quot;The quick brown fox jumps over a lazy dog&quot;</span></span><br><span class="line"><span class="built_in">print</span> c == d</span><br><span class="line"><span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span> c <span class="keyword">is</span> d</span><br><span class="line"><span class="comment"># False</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么会这样？这是因为python的**string interning(字符串驻留)**机制所决定的。</p>
+<p>对于较小的字符串，为了提高系统性能会保留其值的一个副本，当创建新的字符串的时候直接指向该部分即可。</p>
+<p>长字符串不会驻留。</p>
+<h2 id="什么是lambda函数？它有什么好处"><a href="#什么是lambda函数？它有什么好处" class="headerlink" title="什么是lambda函数？它有什么好处?"></a>什么是lambda函数？它有什么好处?</h2><p>早期自认为看了许多东西，总想把lambda表达式和lambda演算之间的关系研究明白，但是后来发现，文献中除了说lambda这个名字的由来是借鉴了lambda演算之外，再没有谈及其它。</p>
+<p>那么lambda表达式有什么好处？匿名函数，一般用来给filter，map这样的函数式编程服务，<code>map(lambda x: x*2,[1,2,3,4,5])</code></p>
+<p>或者就是一次性产品。类似于这种即用即扔的产品：<code>(lambda x: x*2)(3)</code></p>
+<p>或者作为回调函数，传递给某些应用，比如消息处理。</p>
+<h2 id="请写出一段Python代码实现删除一个list里面的重复元素"><a href="#请写出一段Python代码实现删除一个list里面的重复元素" class="headerlink" title="请写出一段Python代码实现删除一个list里面的重复元素"></a>请写出一段Python代码实现删除一个list里面的重复元素</h2><p>可能有人用循环对比删除的办法去实现，不过有一个更<strong>优雅</strong>的办法，<code>list(set(li))</code>。</p>
+<h2 id="命名技巧"><a href="#命名技巧" class="headerlink" title="命名技巧"></a>命名技巧</h2><p>今天阅读代码，发现一个不错的函数命名方式:</p>
+<pre><code>def request(_argv):
+</code></pre>
+<p>就是把所有的参数前面都加上<code>_</code>下划线，这样你在函数体中，一眼就可以看出那些是局部变量，那些是作为参数传入的，类似把全局变量前面加上g。</p>
+<h2 id="str-和-repr"><a href="#str-和-repr" class="headerlink" title="str__和__repr"></a><strong>str__和__repr</strong></h2><p>人们喜欢说：“str是给人看的，repr是给python解释器看的。”</p>
+<p>先来看看 repr(object)函数：</p>
+<pre><code>返回一个可以用来表示对象的可打印字符串。首先尝试生成这样一个字符串，将其传给 eval()可重新生成同样的对象。
+</code></pre>
+<p>一般而言，你对着解释器输入print xxx，那就是调用xxx的__str__方法。而直接向解释器输入xxx,就是调用它的__repr__方法。</p>
+<p>容易混淆是因为str一直介于值类型和引用类型的特殊位置。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/02/16/how-to-humorous/" rel="prev" title="如何做一个幽默的人">
+      <i class="fa fa-chevron-left"></i> 如何做一个幽默的人
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/02/27/c-sharp-technical-summary/" rel="next" title="c#基础技术问题总结">
+      c#基础技术问题总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A%E4%B8%80%E4%B8%8Bpython%E7%9A%84-and-or-%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">解释一下python的 and-or 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E9%87%8C%E9%9D%A2%E5%A6%82%E4%BD%95%E6%8B%B7%E8%B4%9D%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">Python里面如何拷贝一个对象？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E7%9B%B8%E7%AD%89"><span class="nav-number">3.</span> <span class="nav-text">python中如何判断对象相等</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%9C-%E2%80%9D"><span class="nav-number">3.0.1.</span> <span class="nav-text">“&#x3D;&#x3D;” :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%9Cequals%E2%80%9D"><span class="nav-number">3.0.2.</span> <span class="nav-text">“equals” :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python%E4%B8%AD%E7%9A%84"><span class="nav-number">3.0.3.</span> <span class="nav-text">python中的 &#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.0.4.</span> <span class="nav-text">python 字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFlambda%E5%87%BD%E6%95%B0%EF%BC%9F%E5%AE%83%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%A4%84"><span class="nav-number">4.</span> <span class="nav-text">什么是lambda函数？它有什么好处?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E5%86%99%E5%87%BA%E4%B8%80%E6%AE%B5Python%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AAlist%E9%87%8C%E9%9D%A2%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0"><span class="nav-number">5.</span> <span class="nav-text">请写出一段Python代码实现删除一个list里面的重复元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E6%8A%80%E5%B7%A7"><span class="nav-number">6.</span> <span class="nav-text">命名技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#str-%E5%92%8C-repr"><span class="nav-number">7.</span> <span class="nav-text">str__和__repr</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

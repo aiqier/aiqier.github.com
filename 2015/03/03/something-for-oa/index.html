@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这一年的工作没干别的了，就做这个oa系统。这篇博客也算是自己对过去一年工作的回顾了。 公司使用的开发语言是c#，虽然上学的我很鄙视那些只会拖控件，用IDE的菜笔，这一年我才发现c#这个语言如此“优雅”。 使用的框架式XAF，数据库Postgresql，开发环境是VS2012+resharp插件，版本管理器是SVN。 一开始设计的模型是这样的：项目与项目阶段一对多的关系，当项目完成后，在与合同多对多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="这一年OA的那点事">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/03/03/something-for-oa/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="这一年的工作没干别的了，就做这个oa系统。这篇博客也算是自己对过去一年工作的回顾了。 公司使用的开发语言是c#，虽然上学的我很鄙视那些只会拖控件，用IDE的菜笔，这一年我才发现c#这个语言如此“优雅”。 使用的框架式XAF，数据库Postgresql，开发环境是VS2012+resharp插件，版本管理器是SVN。 一开始设计的模型是这样的：项目与项目阶段一对多的关系，当项目完成后，在与合同多对多">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.779Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="编程心得">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/03/03/something-for-oa/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>这一年OA的那点事 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/03/03/something-for-oa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          这一年OA的那点事
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-03-03 00:00:00" itemprop="dateCreated datePublished" datetime="2015-03-03T00:00:00+08:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/03/03/something-for-oa/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/03/03/something-for-oa/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这一年的工作没干别的了，就做这个oa系统。这篇博客也算是自己对过去一年工作的回顾了。</p>
+<p>公司使用的开发语言是c#，虽然上学的我很鄙视那些只会拖控件，用IDE的菜笔，这一年我才发现c#这个语言如此“优雅”。</p>
+<p>使用的框架式XAF，数据库Postgresql，开发环境是VS2012+resharp插件，版本管理器是SVN。</p>
+<p>一开始设计的模型是这样的：项目与项目阶段一对多的关系，当项目完成后，在与合同多对多的处理，最后合同再与财务信息多对多。这看上去是个三角循环，事实上后面的二次调研才发现，这么做根本不合理。</p>
+<p>这里有一个有趣的设计，我们之前的职位字段是一个Enum，也就是说一个人只能有一个职位。在之后的需求中，需要一个人有多个职位，我使用了位掩码来实现多个职位，<a href="http://www.pulpcode.cn/2014/07/05/enum-post/">使用位掩码实现多个职位</a></p>
+<p>之后的一段时间，我一直纠结与各种细节问题，和各种琐事，比如svn的底层原理到底是怎样的，我到底是应该用vim，还是emacs，还是sublime，我的变量这样命名是否合理？这个函数的接口设计的是否合理。我的代码写大了如何重构。我是不是又在走弯路，很长一段时间，我感到非常的恐慌，不知如何是好。</p>
+<p>之后的阶段，我开始和实际使用的业务人员沟通，发现我们的需求之前确实是错的，而且讨论的需求也基本是和数据中心的人闭门造车，真实情况是他们也是对业务流程知道个一知半解。</p>
+<span id="more"></span>
+
+<p>我开始询问使用合同管理的业务人员，加入了项目登记，并且取消了财务管理模块。</p>
+<p>这个时候，另一个人负责的项目审核的流程状态切换的部分也完成了。 大概的流程是，组员做完的项目阶段由组长审核，等到这些阶段全部审核完成后，再由主任审核，如果是大的项目，则需要分管院长审核。</p>
+<p>这个时候公司打算对这个项目进行结项了。可是这边的业主打算加入几个模块，公文管理，综合办公。</p>
+<p>实际上在我来这个公司之前，就有两个模块已经完成了，就是打印管理和车辆管理。</p>
+<p>后来由一个人负责公文管理，我开始负责综合办公模块。综合办公模块的内容很多的，资料借阅，假期申请，人事管理，会议室申请，办公用品申领，设备采购申请。</p>
+<p>除了人事管理，比较简单，就是对一个人员表的增删改查，建好模型后，把一个旧的数据，导入到新的数据中就可以了，其它模块的功能核心就是走流程，其基本就是xx申请，xx待审，xx已审。</p>
+<p>实际上从接下来的很长一段时间，我就一直在思考一个问题，这个框架确实不适合做这个项目，尤其是我们在切状态机的时候，按道理应该是内部维护状态切换，而按钮则是按钮，暴露给用户去看去点击，而这个框架提供给我们的则只能是直接切换状态机，这样会让人的思维混乱，人们不认为那是状态机的名字，而是按钮的名字。</p>
+<p>我在先做了资料借阅之后，总结了在编写过程中的基本步骤和思路是怎样的，在编写的过程中遇到了哪些问题，之后的代码编写的速度就非常快了，实际上我还编写了一些脚本，用来生成那些重复的代码（不知道这算不算是生产式编程）。这样一来，大概两个星期，第一个能用的版本就上线了，这件事算是给其它同事眼前一亮，因为他们也没想到我能做这么快。</p>
+<p>之后我又将人事管理上线，我从之前的业务人员那里拿到原始数据，然后用python分析这些数据，构建数据结构，然后去生成SQL代码，这里我用到了一些编译原理的知识，但是水平不够，所以会存在很多问题。</p>
+<p>人事管理的数据和OA中人员账号，如何一一对应，这是一个麻烦的事情。比如这边变化那边如何改变。那边变化这边如何应对。维护一致性一直是个考虑</p>
+<p>之后的日子中，基本就是在测试修改项目管理和人事管理的部分。</p>
+<p>这时候我接到另一个项目去做，是甘肃地调院的一个用来记录，计算采矿探矿权价款的软件。</p>
+<p>这个软件本来是打算用wpf做的，为这个我还看了一段时间的wpf，但是项目经理说要做的东西太多来不及，最后只能用xaf做了，其实用xaf做出来的界面还挺好看的。</p>
+<p>第一版的采矿权价款软件做出之后拿去给他们用，发现根本不是他们想象的那个样子。其实之前也是总想如何去设计数据库，而不是如何如何让用户用起来舒服。</p>
+<p>这段时间一直比较繁忙，一方面我要我要做采矿权价款协议，另一方面，我还要修改OA系统中遇到的问题，有些问题直接暴露出我们的底层代码写的有问题，这些问题常常让我无法入睡。</p>
+<p>比如待办已办这个模块。之前我们的代码基本上就是大家共用一个界面。没有提醒那些事件是你要办理的，比如你要审核这个项目，或者说你要归档这个申请。</p>
+<p>之后的很长一段时间，我先试着将工作和生活分开，所以我只在工作的时候才去解决这些令我头痛的问题，在生活中我根本不会想这些，这样一来，最起码思维清晰了。</p>
+<p>我们引入和待办和已办，xaf的界面都是通过UT来生成的，所以通过url来做待办和已办并不好用，这里我使用了一个比较另类的方式，就是向用户发送消息。</p>
+<p>可以想象，这里有大量的工作需要做，在切换不同的状态时，需要处理人删除的待办消息，向自己发送一个已办消息，向下一个流程的办理人发送待办消息，总之是实现这一个功能，再加上我们的消息又调用了腾讯通的接口，所以在提示的时候会与腾讯通同步，类似于qq似的提醒。</p>
+<p>而且消息和业务类完全是两个对象，所以我在这里做了一点hack的东西，也就是在点击一个消息对象中存贮这个业务类的Oid,这样在点击消息的时候，我会截获这个事件，然后连接到相应的业务对象上。</p>
+<p>但是你大概也能听出来这样的设计方式其实并不合理，因为生成消息部分的代码过于耦合，所以在修改阶段的时候，会有许多其它的地方也跟着改动，随着这个项目越写越大，这些代码页变得越来越难以维护，我也深深的感受到自己的代码很是问题，没有一种构架思维。</p>
+<p>这个实现也带来的许多bug，比如一个人办理了一件事，但是它的待办消息并没有删除，或者点击消息后，它并没有链接到相应的对象上去。</p>
+<p>虽然这个待办已办又一次赢得了同事们的夸奖，但是我知道那只不过是自欺欺人罢了，问题早晚有一天又会暴露出来的。</p>
+<p>之后的遇到了一个更痛苦的事情，我的一个同事因为家里有事所以长期离职，他的所有任务都交到了我手上。再加上之前我做的采矿权价款缴纳协议要赶着结项目，我又一次感受到深深的压力。</p>
+<p>一开始要同时做这么多工作，我感到了深深的压力，而且写软件并不是说一直不停的写就行了，说白了如果你不花时间去大量的思考和规划，那么你做出来的东西，过段时间又是要崩的，完全是事倍功半，费力不讨好。</p>
+<p>之后只能把采矿权价款移交给别人去做，这边我就把主要精力放在公文管理上了，这个公文管理就是那个离职的人做的，暴露出来的问题就是不好用，或者干脆说是不能用了。</p>
+<p>这么说吧，这个公文是要领导这个批完那个再去批的，所以暴露出来的问题就是大家看到的都是一个界面，这样的话领导根本无法批阅，因为它不知道哪些是他待办的哪些是他已办的。</p>
+<p>这个时候我做了一个新的设计，那就是扔掉之前的状态机切换按钮，就像我之前说的那样，应该用按钮来封装状态机的切换，因为动作是动作，状态时状态。而且更关键的，我们让不同的领导有不同的界面，也就是每一个领导会有一个操作类，这个操作类一般会有三个状态，也就是待办，通过，失败。</p>
+<p>这样主对象和操作对象之间就是一对多的关系，而且后来我又对这个设计进行了进一步的精简，就是说没必要对每一个操作做一个类，比如分管院长审核，院长审核，直接做一个审核类就可以了，只要他们的名字不同就行了。</p>
+<p>还有一点就是改进了流水号的设计，之前的流水号设计我考虑了太多的问题，比如各种同步问题，最后我做了一个很简单的设计，也就是只在第一次初始化的时候，计算出一个流水号，之后就在不管了，我发现这也是好多设计的借鉴。</p>
+<p>可以说这个公文部分，把之前的错误设计都改进了，而且还加入了其它一些新的思想，可以说这是这一年弯路智慧的结晶。</p>
+<p>公文又一次赢得了大家的掌声，但是我知道好景不长，没办法我从小就多愁善感。</p>
+<p>果然他们还想把公文这块做的更好用，更人性化，还有上线的OA又暴露出其他大量的问题，各种问题接踵而至。</p>
+<p>公司一直暴露了一个很严重的问题，就是没有一个好的运作方式，就是干的越快，干的越多。这样的话，即使是我这样的年轻人，时间长了也会受不了。</p>
+<p>马上要过年了，OA也慢慢停了下来，大家都在忙碌一些事情，反正我早在6月份就开始规划下一步怎么走，现在技术也是磨练了一些， 博客也是写了一些，代码也是编了不少。</p>
+<p>我准备过完年就去北漂，去追寻一种更美好的东西。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/" rel="tag"># 编程心得</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/02/27/c-sharp-technical-summary/" rel="prev" title="c#基础技术问题总结">
+      <i class="fa fa-chevron-left"></i> c#基础技术问题总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/03/08/data-struct-tree/" rel="next" title="数据结构总结之tree">
+      数据结构总结之tree <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

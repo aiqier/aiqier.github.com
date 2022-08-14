@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="对于一个要解决的问题，总会提供一种解决思路。这种思路如果是成熟的，不一定处处都是部分最优，但是能够保证全局最优。 所以我在这里总结这种编程中常用的成熟的设计思路，避免自己再走弯路，提高自己在开发和设计时的效率。 只做加法，不做减法数据库与orm同步这一年主要使用c#开发系统，我们使用的orm是XAF下的XPO，XPO是一种强大的ORM工具，能够通过数据库表生成业务模型，也可以通过写好的业务模型直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2014年终技术总结之常见的编程模型">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/02/03/annual-technical-common-models/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="对于一个要解决的问题，总会提供一种解决思路。这种思路如果是成熟的，不一定处处都是部分最优，但是能够保证全局最优。 所以我在这里总结这种编程中常用的成熟的设计思路，避免自己再走弯路，提高自己在开发和设计时的效率。 只做加法，不做减法数据库与orm同步这一年主要使用c#开发系统，我们使用的orm是XAF下的XPO，XPO是一种强大的ORM工具，能够通过数据库表生成业务模型，也可以通过写好的业务模型直接">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-02-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.727Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="c#">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/02/03/annual-technical-common-models/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2014年终技术总结之常见的编程模型 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/02/03/annual-technical-common-models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2014年终技术总结之常见的编程模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2015-02-03T00:00:00+08:00">2015-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/02/03/annual-technical-common-models/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/02/03/annual-technical-common-models/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>对于一个要解决的问题，总会提供一种解决思路。这种思路如果是成熟的，不一定处处都是部分最优，但是能够保证全局最优。</p>
+<p>所以我在这里总结这种编程中常用的成熟的设计思路，避免自己再走弯路，提高自己在开发和设计时的效率。</p>
+<h2 id="只做加法，不做减法"><a href="#只做加法，不做减法" class="headerlink" title="只做加法，不做减法"></a>只做加法，不做减法</h2><h4 id="数据库与orm同步"><a href="#数据库与orm同步" class="headerlink" title="数据库与orm同步"></a>数据库与orm同步</h4><p>这一年主要使用c#开发系统，我们使用的orm是XAF下的XPO，XPO是一种强大的ORM工具，能够通过数据库表生成业务模型，也可以通过写好的业务模型直接去生成数据库表。</p>
+<p>而且你在使用XPO的时候，使用什么类型的数据库对于orm而言是完全透明的，根本不用关心，只要配置一下连接字符串就行了。</p>
+<p>但问题是如果我们通过业务类来直接生成表结构，而在开发的过程中，我们又修改了业务类，那么orm会如何处理？保证业务类和表结构同步？</p>
+<span id="more"></span>
+
+<p>比如我们现在的业务类是这样写的：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Student</span> : <span class="title">XPObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> _name;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> _name; &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; SetPropertyValue(<span class="string">&quot;Name&quot;</span>, <span class="keyword">ref</span> _name, <span class="keyword">value</span>); &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _age;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Age</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> _age; &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; SetPropertyValue(<span class="string">&quot;Age&quot;</span>, <span class="keyword">ref</span> _age, <span class="keyword">value</span>); &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么数据库的表结构是和这个模型一样没错啦。</p>
+<p>但是如果我们添加了一个新字段呢？</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">string</span> _class;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Class</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span> &#123; <span class="keyword">return</span> _class; &#125;</span><br><span class="line">    <span class="keyword">set</span> &#123; SetPropertyValue(<span class="string">&quot;Class&quot;</span>, <span class="keyword">ref</span> _age, <span class="keyword">value</span>); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行系统后，表结构也会添加一个新的字段。</p>
+<p>那么如果我们将这个class字段删除呢？运行系统后，数据库的表结构中并不会删除这个字段。</p>
+<p>那么如果我们在业务模型中将这个Age重新命名为AgeNew呢？运行系统后，数据库的表结构并不会修改这个字段名，而是新建了一个AgeNew。</p>
+<p>那么如果我们在这个业务模型中将class的类型变为int型的呢？运行系统后，数据库并没有发生任何变化，而且程序也会进行下去，只有在写入的那一瞬间，会报错。</p>
+<p>之所以这么设计，就是因为，<code>只做加法，不做减法</code>，如果你要”牵强的“维护一致性，会让数据库的数据发生丢失，而这带来的后果很严重，因为用户程序员可能在无意识的情况下丢失了数据。</p>
+<p>还有你会发现业务模型和数据库表之间的关系是很”清淡的“，也就在运行的那一瞬间，检查，生成，修改一下而已。写过类似维护两个模型同步关系程序的童鞋，如果设计出那种”必须一致“的程序，会对复杂性深有体会。</p>
+<h4 id="版本管理器的退回到某个版本"><a href="#版本管理器的退回到某个版本" class="headerlink" title="版本管理器的退回到某个版本"></a>版本管理器的退回到某个版本</h4><p>之前在使用版本管理器的时候，我一直好奇，版本管理器是如何退回到某一个版本的。</p>
+<p>比如说有这样一个版本树:</p>
+<pre><code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5
+</code></pre>
+<p>现在的最新版本是5，那么如果我想使代码退回到版本3，那么如果我在版本3上进行开发，那么新的版本又算什么呢？版本4和版本5又到哪里去了呢？</p>
+<p>其实版本管理器的真实情况是，<code>没有真正的回到过去</code></p>
+<p>如果说你想回到版本3，真实的情况是：</p>
+<p>版本控制器将版本3的代码拿出来放到你的当前目录下，将来作为版本6</p>
+<pre><code>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; 6
+</code></pre>
+<p>其实理解这个问题的关键是，我们的当前的<strong>工作代码环境</strong>，和<strong>版本控制器</strong>，<strong>版本库</strong>是三个概念，不要搞混。</p>
+<p>我们在<strong>当前工作目录</strong>，编写，修改代码，然后通过<strong>版本控制器</strong>，存储，查询，取出，<strong>管理版本库</strong>中存储的代码。这才是理解版本控制器的关键。</p>
+<p>而且这个版本控制器的例子也是为了说明，<code>只做加法，不做减法</code>这种思路，回退版本并不是真正的回退。</p>
+<h2 id="线性关系"><a href="#线性关系" class="headerlink" title="线性关系"></a>线性关系</h2><p>维护模型之间关系，我一直觉得是个很麻烦的事情，比如你要保证它们之间的一致性，比如A变化，B是不是也要跟着变化，如何变化？</p>
+<p>再比如它们之间的关系图应该是一条线，是一棵树，还是一张图。</p>
+<p>这里我先提出这一节的思路：</p>
+<ol>
+<li>我们做线性关系，不做图。</li>
+<li>我们做生成操作，不做同步操作。</li>
+</ol>
+<p>比如在第一节<strong>只做加法，不做减法</strong>中我们提到的，xaf的orm就是会设计成A变化，影响到B,但是不会说B变化影响到A（A指ORM模型，B指表结构），因为维护这样的环形关系代价太高了。</p>
+<p>还有我之前工作中我写过这样一个程序，将数据库中的整型取出，然后通过位掩码解析成多个enum值，再将这些值转换为英文，最后转化为中文显示。作为一个编辑器的数据。</p>
+<p>之后我又对这个程序写了一个逆向操作，将用户选中的中文，一步步的转化回去。项目经理对这个设计很不满意，他说如果是一个图像，你还去解析图像在转换回去吗？正确的操作是中文直接映射数字，加完之后直接写入数据库就行了。</p>
+<p>再回到同步问题上，之前写过一个程序，OA中创建的项目会产生一个项目编号，是由项目类型缩写，科室缩写，年份，流水号四部分组成的。</p>
+<p>关键是流水号是跟年份和项目类型科室相关的，所以在项目填写的那个界面，我们做了许多实时判断，改变项目类型，重新生成，改变年份，重新生成。最后为了这些同步，又带来许多新问题，比如如果这个项目删除了怎么办？如何回收流水号？有的项目并没有录入怎么办？如何跳开这些流水号？自动生成，同步流水号带来太多麻烦的问题。</p>
+<p>最后的解决办法很简单，就在初始化的时候生成一个流水号，用户可以直接用，也可以自己改，再就不管了，没有任何同步关系需要维护，这样就简约多了。</p>
+<h2 id="不做多余操作"><a href="#不做多余操作" class="headerlink" title="不做多余操作"></a>不做多余操作</h2><p>最近总会听到<strong>禅</strong>这个词，就是纯粹的做好一件事。但是我们在做事的时候总会想“打草搂兔子，顺便做某事。”</p>
+<p>程序中好的设计，往往都会只做好一件事。类似于真正锻炼身体的人就会去健身房，而不是去扛大米跳水，既挣钱又锻炼身体。</p>
+<p>我们在大学时写c++程序的时候，总会带这么一句<code>using namespace std</code>。</p>
+<p>这就是一种不好的习惯，因为它暴露了命名空间，那么那些使用你的库的用户程序员根本没有选择的余地，他们逼不得已，也获得了这些命名空间。</p>
+<p>而正确的写法是不要暴露命名空间，直接从命名空间引用那些变量，函数，类：<code>std::cout&lt;&lt;&quot;Hello,World!&quot;</code>:</p>
+<p>记得前段时间，我在vs上开发程序，vs会把xml文件转化成一个点击可以展开关闭节点的视图，我在关闭父节点再打开的时候，它的子节点并没有发生任何变化。</p>
+<p>但我的主观意识总是认为，子节点会跟随父节点变化，这就是我思维混乱的地方。想象出这些多余的操作。</p>
+<p>这其实也算程序设计里面的”正交性“，就是指功能和功能之间尽可能的不互相干扰，同时也强调我们不要做一些自作聪明的事情。</p>
+<p>好的设计就是这样，只做好一件事，不要顺便做了其他事。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+              <a href="/tags/c/" rel="tag"># c#</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/02/02/annual-technical-how-to-do-technical/" rel="prev" title="2014年终技术总结之做技术的心得">
+      <i class="fa fa-chevron-left"></i> 2014年终技术总结之做技术的心得
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/02/15/how-to-use-branch-for-git/" rel="next" title="版本控制系统学习笔记(2)使用git分支开发新功能">
+      版本控制系统学习笔记(2)使用git分支开发新功能 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AA%E5%81%9A%E5%8A%A0%E6%B3%95%EF%BC%8C%E4%B8%8D%E5%81%9A%E5%87%8F%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">只做加法，不做减法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8Eorm%E5%90%8C%E6%AD%A5"><span class="nav-number">1.0.1.</span> <span class="nav-text">数据库与orm同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E9%80%80%E5%9B%9E%E5%88%B0%E6%9F%90%E4%B8%AA%E7%89%88%E6%9C%AC"><span class="nav-number">1.0.2.</span> <span class="nav-text">版本管理器的退回到某个版本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%85%B3%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">线性关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%81%9A%E5%A4%9A%E4%BD%99%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">不做多余操作</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Introduction本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。 实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。 多考虑前期需求分析和设计之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何写出有质量的python代码">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/11/07/how-to-write-well-python-code/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="Introduction本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。 实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。 多考虑前期需求分析和设计之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-11-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.753Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/11/07/how-to-write-well-python-code/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何写出有质量的python代码 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/11/07/how-to-write-well-python-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何写出有质量的python代码
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2015-11-07T00:00:00+08:00">2015-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/11/07/how-to-write-well-python-code/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/11/07/how-to-write-well-python-code/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>本来标题是“如何写出一个高质量的python代码”，后面想想，还是别夸自己了，没有那本事，标题就改为 “如何写出有质量的python代码”，我觉得更应该叫，写有一定质量的python代码。</p>
+<p>实际上有质量的python代码是一个很大的话题，一本书估计都写不完，我仅仅自我总结而已。</p>
+<h2 id="多考虑前期需求分析和设计"><a href="#多考虑前期需求分析和设计" class="headerlink" title="多考虑前期需求分析和设计"></a>多考虑前期需求分析和设计</h2><p>之前的我花1天的时间设计，花一个多星期去实现，现在我花一个星期去做设计（uml和文档），花一两天去实现。这件事，编码的年龄越大，领悟越透彻。</p>
+<h2 id="写好异常"><a href="#写好异常" class="headerlink" title="写好异常"></a>写好异常</h2><p>异常本身不算是python特有的，这本身算是编程的基本功了，那我就从异常本身和python特性两方面，来谈谈异常。</p>
+<span id="more"></span>
+
+<h4 id="不要乱打"><a href="#不要乱打" class="headerlink" title="不要乱打"></a>不要乱打</h4><p>不要所有错误都打异常，如果你现在连，if else，异常，和断言的区别都不清楚，那就要好好恶补了。实际上异常是用来抓住那些未知错误的，也就是那些不确定的错误，你的代码里如果有逻辑错误，那是不能用异常去抓的。类似：“文件读写，网络操作，数据库操作等”，这些需要跟硬件打交道的，才需要异常处理。这也就是说，你的代码中如果有上述的处理，那么一定要写好每一个<code>try catch</code>， 但是实际情况是大多人的代码都是“裸操作”。</p>
+<p>常见的使用异常错误是：</p>
+<ol>
+<li>把异常写到最外面，然后catch一个异常基类。如果这样，那你就把所有异常都抓了！我建议每个异常处理，只抓一个操作。</li>
+<li>抓住一个A异常，要么不做任何处理，要么抛出一个B异常，这些都是思路不清晰的做法。既没有处理好异常，也没有暴露问题，既没有在运行时发现问题，还增加了调试的难度。</li>
+<li>把异常直接返回给客户端，这一来不友好，二来，让人知道你的系统内部怎样设计的。实际上在我的server里，请求我，如果出现异常，我都是：打异常日志，报警，然后返回给客户端的结果为：“服务器处理中”或者“服务器内部错误”。</li>
+</ol>
+<p>在实践中，你就会发现，如果你想做好这几点非常难，而且做好这几点，又能把代码写漂亮的，就更难了。当然要优先考虑业务实现，再考虑代码封装。</p>
+<h4 id="几个例子"><a href="#几个例子" class="headerlink" title="几个例子"></a>几个例子</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 使用Python的requests库做http请求</span><br><span class="line">try:</span><br><span class="line">    r = requests.post(url, headers=headers, data=data, timeout=timeout)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">except requests.RequestException:</span><br><span class="line">    logging.error(&#x27;网络访问异常&#x27;, exc_info=True)</span><br><span class="line">    ......</span><br><span class="line">else:</span><br><span class="line">    logger.info(&quot;签名请求返回成功:&#123;&#125;&quot;.format(r.content))</span><br><span class="line">    ......</span><br></pre></td></tr></table></figure>
+<p>还有需要注意的是，我很鄙视那些写<code>print e</code>的人，知不知道什么叫异常栈啊,你这样打出来的东西，能分析个卵啊？如果是我，我会这样处理。<br>如果是日志：<code>logging.error(&#39;xxxxxxx&#39;, exc_info=True)</code><br>如果是直接打印到屏幕，那就：<code>traceback.print_exc()</code></p>
+<h4 id="明白异常不算主流程"><a href="#明白异常不算主流程" class="headerlink" title="明白异常不算主流程"></a>明白异常不算主流程</h4><p>实际上异常是要考虑，但是你要明白真正的异常状况所发成的频率到底是多少，你自己想想，一年自己去过几次医院？</p>
+<h2 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h2><p>数据库的异常部分，我上面已经描述了，这里提一下：<strong>update</strong></p>
+<p>对于一个<code>update</code>操作，除了之前提到的<code>try和catch</code>,一定要在update之后，检查一下<code>row change</code>的个数，很多bug，最后才发现数据库状态并没有改变，就是因为没有检查<code>row change</code>,还有一个在业务级别需要考虑的是，修改类似，状态status这样的字段时，一定要先判断当前状态再去改变，以符合状态机流程。</p>
+<p>还有些细节问题，就是不要拼sql。保证自己代码安全。</p>
+<h2 id="挡住输入"><a href="#挡住输入" class="headerlink" title="挡住输入"></a>挡住输入</h2><p>如果你得到的输入，不是你程序内部产生的，而是从文件，从客户端的请求中获取到的，那么你一定要对输入进行筛选和校验。类似字段校验，类型校验，长度范围校验。动态语言，更要考虑这些。</p>
+<h2 id="不要把QA当单测"><a href="#不要把QA当单测" class="headerlink" title="不要把QA当单测"></a>不要把QA当单测</h2><p>很多人根本没想过自己的代码为什么写的这么烂，原因就是把QA当单测，实际上你的代码质量，只能靠你自己来保证。</p>
+<h2 id="动态语言"><a href="#动态语言" class="headerlink" title="动态语言"></a>动态语言</h2><p>“不是语言的问题，是人的问题”，这是很多高估自己的软件工程师，爱说的一句话。实际上，java和c#不适合互联网行业，但是传统软件行业，是离不开这种静态语言的。天生的静态类型检查和诸多限制，是维持行业稳定的标志。而python缺这个，所以它开发快，但是代码要差很多。实际上会python的人，编码差距也大很多（牛人很贵的好么？），比如某个牛人走了之后，后来的那个人，根本不知道如何维护，大多数情况就是重写。如果项目上了一个几十万行的数量级，那个时候只能通过工具分析的错误时，python就傻了。</p>
+<p>你的类属性和方法不用像java那样通过继承得来，也就说没有编译期的类型检查。你那些乱扔进去的属性，IDE都智能补全不了。你的接口也只能通过扔NotImplement的方式让其强制继承。很多java需要实现的设计模式，在python中实现，也变得随意很多。</p>
+<p>写业务快，带来的后果就是项目做大，这个“空中楼阁”就难以维护了。当然，你可以继续说：“是人的问题”，那么你为啥不用lisp去写呢？</p>
+<p>我觉得先要明白python是什么，适合做什么。</p>
+<h2 id="多做业务级别的封装，而非代码级别的封装"><a href="#多做业务级别的封装，而非代码级别的封装" class="headerlink" title="多做业务级别的封装，而非代码级别的封装"></a>多做业务级别的封装，而非代码级别的封装</h2><p>这个问题也是我最近在编写代码是思考和改进的地方，我们在封装代码的时候，大部分人的封装都是代码级别的，而非业务级别的，你从你函数，或者类的命名就可以发现，如果总是写parsedata，gendata，dataformat的函数。说明你的框架在做的也是代码级别的重用和封装，那么什么才是业务级别的封装呢？我觉得大概是这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通知上层系统</span></span><br><span class="line">notify_upper_system</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取一条待处理收款记录</span></span><br><span class="line">fetch_collect_record_processing</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="符合python的特性"><a href="#符合python的特性" class="headerlink" title="符合python的特性"></a>符合python的特性</h2><p>举个栗子吧，对于一个这样的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> c <span class="keyword">not</span> <span class="keyword">in</span> d:</span><br><span class="line">    <span class="keyword">return</span> n</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> d[c]</span><br></pre></td></tr></table></figure>
+
+<p>这样写就可以了</p>
+<pre><code class="python">d.get(c, n)
+</code></pre>
+<p>如果你不知道python的这些特性，自然“用python写c代码”。</p>
+<h2 id="写好python注释"><a href="#写好python注释" class="headerlink" title="写好python注释"></a>写好python注释</h2><h2 id="不要玩代码"><a href="#不要玩代码" class="headerlink" title="不要玩代码"></a>不要玩代码</h2><p>我们大多数的代码是业务代码，不是github上的开源项目，或者教学代码，或者博客上的实例代码。所以，不要有递归，不要有装饰器，不要有猴子补丁，不要有元类，不要用这些证明自己很屌，除非你会用那就直接用，如果你仅仅知道这个东西，仅仅想用在你的项目中时，你还是不要用了。</p>
+<p>其它的如何打好日志，如何设计好项目结构，如何用好第三方库的，我的博客都有写，不在叙述。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/10/24/b-tree-and-b+-tree/" rel="prev" title="b树和b+树">
+      <i class="fa fa-chevron-left"></i> b树和b+树
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/11/12/single-core-cpu-multithreading/" rel="next" title="对于单核 cpu 而言, 开多线程的目的难倒只能是为了防止阻塞么? ">
+      对于单核 cpu 而言, 开多线程的目的难倒只能是为了防止阻塞么?  <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%80%83%E8%99%91%E5%89%8D%E6%9C%9F%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%92%8C%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">多考虑前期需求分析和设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%A5%BD%E5%BC%82%E5%B8%B8"><span class="nav-number">3.</span> <span class="nav-text">写好异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E4%B9%B1%E6%89%93"><span class="nav-number">3.0.1.</span> <span class="nav-text">不要乱打</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">3.0.2.</span> <span class="nav-text">几个例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%8E%E7%99%BD%E5%BC%82%E5%B8%B8%E4%B8%8D%E7%AE%97%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="nav-number">3.0.3.</span> <span class="nav-text">明白异常不算主流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">数据库操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%A1%E4%BD%8F%E8%BE%93%E5%85%A5"><span class="nav-number">5.</span> <span class="nav-text">挡住输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E6%8A%8AQA%E5%BD%93%E5%8D%95%E6%B5%8B"><span class="nav-number">6.</span> <span class="nav-text">不要把QA当单测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%AF%AD%E8%A8%80"><span class="nav-number">7.</span> <span class="nav-text">动态语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%81%9A%E4%B8%9A%E5%8A%A1%E7%BA%A7%E5%88%AB%E7%9A%84%E5%B0%81%E8%A3%85%EF%BC%8C%E8%80%8C%E9%9D%9E%E4%BB%A3%E7%A0%81%E7%BA%A7%E5%88%AB%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-number">8.</span> <span class="nav-text">多做业务级别的封装，而非代码级别的封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%90%88python%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">9.</span> <span class="nav-text">符合python的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%A5%BDpython%E6%B3%A8%E9%87%8A"><span class="nav-number">10.</span> <span class="nav-text">写好python注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E7%8E%A9%E4%BB%A3%E7%A0%81"><span class="nav-number">11.</span> <span class="nav-text">不要玩代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

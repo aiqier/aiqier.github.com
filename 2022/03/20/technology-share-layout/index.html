@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="分享的层次在《如何阅读一本书》中，作者介绍了阅读的几个层次，分别是“基础阅读”，“检视阅读”，“分析阅读”和“主题阅读”。其中“基础阅读”是指能够读懂书中内容的初步阅读。“检视阅读”是指系统化略读，在阅读初期就对书籍有一个大致的了解判断。“分析阅读”是指追求理解的全面性阅读。最后的“主题阅读”是指带着主题在多本书中主动研究的阅读方式。作者在书中特意提到，这四类阅读是层次渐进的，既第一层阅读并没有在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对技术分享的一些思考">
+<meta property="og:url" content="http://www.pulpcode.cn/2022/03/20/technology-share-layout/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="分享的层次在《如何阅读一本书》中，作者介绍了阅读的几个层次，分别是“基础阅读”，“检视阅读”，“分析阅读”和“主题阅读”。其中“基础阅读”是指能够读懂书中内容的初步阅读。“检视阅读”是指系统化略读，在阅读初期就对书籍有一个大致的了解判断。“分析阅读”是指追求理解的全面性阅读。最后的“主题阅读”是指带着主题在多本书中主动研究的阅读方式。作者在书中特意提到，这四类阅读是层次渐进的，既第一层阅读并没有在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.pulpcode.cn/img/Steve-Jobs.jpg">
+<meta property="article:published_time" content="2022-03-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-20T05:10:20.796Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="分享">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.pulpcode.cn/img/Steve-Jobs.jpg">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2022/03/20/technology-share-layout/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>对技术分享的一些思考 | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2022/03/20/technology-share-layout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对技术分享的一些思考
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-20 00:00:00 / 修改时间：13:10:20" itemprop="dateCreated datePublished" datetime="2022-03-20T00:00:00+08:00">2022-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/03/20/technology-share-layout/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/20/technology-share-layout/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="分享的层次"><a href="#分享的层次" class="headerlink" title="分享的层次"></a>分享的层次</h2><p>在《如何阅读一本书》中，作者介绍了阅读的几个层次，分别是“基础阅读”，“检视阅读”，“分析阅读”和“主题阅读”。<br>其中“基础阅读”是指能够读懂书中内容的初步阅读。“检视阅读”是指系统化略读，在阅读初期就对书籍有一个大致的了解判断。“分析阅读”是指追求理解的全面性阅读。最后的“主题阅读”是指带着主题在多本书中主动研究的阅读方式。<br>作者在书中特意提到，这四类阅读是层次渐进的，既第一层阅读并没有在第二层阅读消失。之所以要提起这本书是因为平时在做技术分享的时候，积累了一些感悟，我认为在技术分享这个事儿，同样也分为几个层级的。</p>
+<h2 id="基础分享"><a href="#基础分享" class="headerlink" title="基础分享"></a>基础分享</h2><p>第一个层级我叫它“基础分享”。在这个层级中，要做好两件重要的事，第一个是主动分享。第二个是清晰表达。</p>
+<h4 id="主动分享"><a href="#主动分享" class="headerlink" title="主动分享"></a>主动分享</h4><p>我发现有很多程序员不愿意做技术分享，主要还是心态没有转变过来。原因我整理了这几种：</p>
+<p>觉得自己当前做的不够好不配分享。认为自己学过的别人都会，等以后全都学好了再去分享。</p>
+<p>这种有点完美主义有点自卑的情绪就好比在想等自己足够优秀的再去追喜欢的女生一样。你要觉得准备好了再去，那是没有准备好的一天的，有些时候就是要先硬着头皮上，所谓完成比完美更重要。这次大胆尝试，下次做的更好就行了。</p>
+<span id="more"></span>
+
+<p>担心自己分享的时会出丑。</p>
+<p>其实会有一部分人在分享的过程中，有些技术问题理解的不到位。或者下面的听众刚好有一个大牛，然后被当场打脸。这种情况不是没可能发生，我之前分享就被打过脸，但实际上除了那个被打脸的技术点之外，那次分享还是总结了很多有意义的知识，后续有些同学还是私信感谢我做的分享，不过是有些人只记得打脸的场面了，还私下笑话我。但这应该是一个成年人能够承受的打击。那次被打脸之后，我不但没有气馁，反而分享的频率比以前更多了。这就是“变相”的摆烂，你随便怎么说，我继续分享我的。无论如何，主动分享肯定是要比什么都不做只会嘲笑挖苦的人强的。一定要莫忘初心。不要被无关紧要的事坏了自己的阵脚。</p>
+<p>觉得分享是在卖弄学识，这和中国文化里追求的那种谦逊的精神不符。</p>
+<p>我不知道有一部分人是从哪里得出了牛逼又低调才是最终奥义，然后试图效仿。但牛逼才是关键。低调只是一个锦上添花的事儿。我们老是对如何走向成功这个事不去操心，却对成功之后如何表现显得格外关注。对于像我这样的普通人而言，多去“卖弄”，在讨论中发现自己的错误整改，才是当下应该做的。</p>
+<p>担心自己好不容易学到的东西分享给别人了，有点舍不得。</p>
+<p>如果有这种想法还是格局没有打开，优秀的人早晚会变得优秀，不在于你的一次分享，而且大部分做的技术分享，只要花一些精力是可以在网上找到自学的，没有什么藏着掖着的必要，技术编程正是因为它强调开源分享精神才能成今天这般壮大的。而且分享也能提高个人的影响力，也算是“交个朋友”。</p>
+<h4 id="清晰表达"><a href="#清晰表达" class="headerlink" title="清晰表达"></a>清晰表达</h4><p>清晰表达主要是围绕这样一种观点，“你觉得你懂了，并不是真懂，你能给别人讲懂，才是真懂”。我们在学习工作中经常有这样的感受，就是你看了一本技术书或者某个博客的技术知识点，你觉得自己已经懂了，但是真正遇到问题，或者别人请教你的时候，你发现很多逻辑你根本没有自己琢磨过，前后逻辑根本不连贯，说不通。原因就是没有真懂。</p>
+<p>不要小看“讲清楚一件事”这个事。其实一点也不简单，首先你要对这个问题有清晰的认识。然后你还能让别人听懂，让人能理解你脑海中的模型。工作中也会发现有些事儿，别人几句就讲清楚了，但是有的人说了半天也不知道在说啥。这些都需要在平时工作生活中多加练习。提升自己的表达能力。</p>
+<p>完成以上两点，就达到了技术分享的第一层。</p>
+<h2 id="理解听众"><a href="#理解听众" class="headerlink" title="理解听众"></a>理解听众</h2><p>你仔细想想，我们上面讨论的第一层的分享，其实不是为了听众，而是为了自己。我们在围绕“教是最好的学”上去提升自我。</p>
+<p>第二层分享我们把注意力集中在了听众上。思考如何让听众更好理解我们的分享上。对此我总结了如下几点。</p>
+<h4 id="幻灯片制作"><a href="#幻灯片制作" class="headerlink" title="幻灯片制作"></a>幻灯片制作</h4><p>幻灯片制作主要讨论分享制作“术”上的事儿，比如演讲幻灯片格式工整，配色让人看着舒服，图片令人印象深刻，没有过多文字，结构清晰不枯燥之类的。这些细写能写好几篇博客，但因为这些术不是本篇博客的重点，所以不过多讨论。这里我只推荐两本书。一本是《写给大家看的设计书》，这本书从“对比”，“重复”，“对齐”，“亲密性”四个方面，让你入门平面设计。不光是PPT，像是网站，博客，简历，活动，海报等也能从此书中获益。另一本书是《演说之禅》，这本书讲了很多幻灯片演说的术，甚至从术上升到道，很值得一读。</p>
+<h4 id="控制总量"><a href="#控制总量" class="headerlink" title="控制总量"></a>控制总量</h4><p>简单来说如果你没有控制好自己要分享的内容，而是不停的把自己知道的东西，尽可能多的“抖露”出来，那你还是停留在分享的第一层上。<br>在制作分享这件事上，一定要明确主题，要懂得取舍，删去无关紧要的内容，你的分享内容要围绕你的主题，让你的听众能接收，而不是自己疯狂输出。只有控制了内容，才能控制分享时间。<br>对于控制分享时长这件事儿上。你有没有思考过为啥我们的课堂是40~45分钟？我查阅了资料之后，得到了如下信息：</p>
+<p>教育心理学有个重要观点是“一般青少年的注意力持续集中只有10<del>30分钟左右，成人注意力持续集中只有30</del>50分钟”这就是为什么一堂课只有45分钟，中间包括作业时间，成人课堂不超出1小时的缘故。</p>
+<p>所以我一般都会控制自己的分享，算上最后的Q&amp;A环节一共在一个小时内。所以每次在分享终稿里都会删减一些东西，即使一些我觉得特别好的内容，若是和分享主题关系不大的我也会“忍痛割爱”，或者最多在分享的末尾给大家提几句，让大家自己下去看。很早以前我是有“做个几十页ppt疯狂输出”的阶段，显得我什么都懂。后来在几次分享后，我逐渐转变了这种观点，学会控制分享的总量。</p>
+<h4 id="人群针对"><a href="#人群针对" class="headerlink" title="人群针对"></a>人群针对</h4><p>简单来说，分享要思考你的听众类型是什么，他们现阶段需要什么，比如你要分享一个业务，面向一个内行，你应该分享一些底层实现，面向一个外行，你应该更多的介绍基本概念，多用业界通用的模型来让他们理解你的模型。而不是所有听众共用一套分享。</p>
+<p>之前工作中是会有类似的经历，就是某天需要你组织一次分享，然后发现自己之前做过类似的分享，然后你就拿来用了。这种重复利用是没有问题，但是你应该针对这部分听众做有必要的增减。</p>
+<p>所以这层分享主要在证明，分享不是你想要说什么，你要明白别人的诉求是啥，他们想要学什么知识，如何让他们听的满意，而不要陶醉在自我表达中。但同时在对听众想听什么这件事上也不要“矫枉过正”，一味的迎合，要学会引导你的听众去听你的主题。</p>
+<p><img src="/img/Steve-Jobs.jpg" alt="乔布斯"></p>
+<h2 id="分享经验"><a href="#分享经验" class="headerlink" title="分享经验"></a>分享经验</h2><p>要想达到第三层“分享经验”，首先要问自己一个问题。“如果我自己能从书上找到答案，那我为什么要听你的分享？”</p>
+<p>你可能会说你做了很多总结，翻了许多书，设计了分享的PPT，你有独特的演说技巧，风趣幽默，中途还准备了几个带技术梗的段子等等。</p>
+<p>试想你会听一个大胖子教你如何减肥健身么？即使他很擅长做分享。</p>
+<p>所以分享这东西最好是和自己的真实经验强相关的，否则更像是在空谈，很难给人吸引力。人们更想听他们没有的那部分经验，没有人会喜欢听一个什么都没经历过，仅就是看了几本书就跑来指指点点讲大道理的人。不是你自己亲身研究过的东西，你很难讲的生动，让人信服。</p>
+<p>但如果你想要做一个这样的经验分享，那就要在平时下功夫，用心去搜集问题，对问题充满好奇心，记录每天别人和自己解决问题的工作日志。培养一个书写排查记录的好习惯，定期的收集整理它。这样你才能有干货，这种分享可比“现学现卖”含金量高多了，但同时它的门槛也更高。需要你更多的亲力亲为。</p>
+<h2 id="分享体系"><a href="#分享体系" class="headerlink" title="分享体系"></a>分享体系</h2><p>什么是分享体系？首先你要构建自己的技能树，形成一个技术体系。打个比方，别人需要一个他自定义的水果拼盘，你首先要找各种水果，如果你没有一个果园，你就只能去市场现找现买。但是如果你有一个足够完善的果园，你直接去摘果子就行了。</p>
+<p>所谓技术上的果园是指什么？就是整个的技术体系。只有你对整个技术体系，各个分支脉络了如指掌，才能做好主题分享。注意我并不是说你要分享整个技术体系，而是说你的分享主题需要在你的技术体系上根据需要随意摘果子搭配，这样做出来的分享，才能涉及到多个面，做到举一反三。</p>
+<p>除了摘果子，你在制作果盘的手艺上也需要技高一筹，建设独特的个人分享风格，这样就形成独特的分享体系。为到这一阶段，你需要把每个分享当成是作品不断打磨优化，每次分享之后，你都可以针对此次分享发现的问题进行迭代优化，这样你此类型的分享只会越做越好，你对技术的理解也会越来越深刻。排练自己的演讲风格，这种分享最终看上去不是在分享，也不是在讲课，而是在表演一样。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后总结以下我思考的四层分享，第一层“基础分享”主要是自我能力提升。第二层“理解听众”是思考听众想要什么，帮他们解决实际问题。第三层“分享经验”像是奉献，把自己的经验教授给新人，给他们引导，从授人与鱼变成授人与渔。到了第四层“分享体系”，对技术有了体系的理解，分享只不过是在技术体系上摘果子，就像冰山理论一样，更大一冰山的内在世界却藏在更深层次。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E4%BA%AB/" rel="tag"># 分享</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/27/why-redis-use-skiplist-not-red-black-tree/" rel="prev" title="redis的zset为什么使用跳跃表而非红黑树？">
+      <i class="fa fa-chevron-left"></i> redis的zset为什么使用跳跃表而非红黑树？
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/03/what-are-we-playing-when-we-are-playing-games/" rel="next" title="当我们在玩游戏的时候我们在玩什么？">
+      当我们在玩游戏的时候我们在玩什么？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E4%BA%AB%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="nav-number">1.</span> <span class="nav-text">分享的层次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E5%88%86%E4%BA%AB"><span class="nav-number">2.</span> <span class="nav-text">基础分享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E5%8A%A8%E5%88%86%E4%BA%AB"><span class="nav-number">2.0.1.</span> <span class="nav-text">主动分享</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%85%E6%99%B0%E8%A1%A8%E8%BE%BE"><span class="nav-number">2.0.2.</span> <span class="nav-text">清晰表达</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E5%90%AC%E4%BC%97"><span class="nav-number">3.</span> <span class="nav-text">理解听众</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%BB%E7%81%AF%E7%89%87%E5%88%B6%E4%BD%9C"><span class="nav-number">3.0.1.</span> <span class="nav-text">幻灯片制作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%80%BB%E9%87%8F"><span class="nav-number">3.0.2.</span> <span class="nav-text">控制总量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%BA%E7%BE%A4%E9%92%88%E5%AF%B9"><span class="nav-number">3.0.3.</span> <span class="nav-text">人群针对</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E4%BA%AB%E7%BB%8F%E9%AA%8C"><span class="nav-number">4.</span> <span class="nav-text">分享经验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E4%BA%AB%E4%BD%93%E7%B3%BB"><span class="nav-number">5.</span> <span class="nav-text">分享体系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

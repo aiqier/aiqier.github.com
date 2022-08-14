@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近要准备面试，复习和准备一下数据结构的相关知识，这里总结树的相关知识。 大二学数据结构的时候，我就很不喜欢某些书中对一些数据结构的描述，比如说栈的特点是先进后出，这听上去很对，其实一点用没有。 我就比较喜欢这样的描述，栈的作用是保存状态，队列的作用是做缓存，而树呢，其展开的特性，就是为了查找。 不仅仅是结构在c中我们可能用结构体来定义一棵树，而在c++，java这样的面向对象语言中，我们可能用类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构总结之tree">
+<meta property="og:url" content="http://www.pulpcode.cn/2015/03/08/data-struct-tree/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="最近要准备面试，复习和准备一下数据结构的相关知识，这里总结树的相关知识。 大二学数据结构的时候，我就很不喜欢某些书中对一些数据结构的描述，比如说栈的特点是先进后出，这听上去很对，其实一点用没有。 我就比较喜欢这样的描述，栈的作用是保存状态，队列的作用是做缓存，而树呢，其展开的特性，就是为了查找。 不仅仅是结构在c中我们可能用结构体来定义一棵树，而在c++，java这样的面向对象语言中，我们可能用类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-03-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.738Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="c">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2015/03/08/data-struct-tree/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据结构总结之tree | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/03/08/data-struct-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构总结之tree
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-03-08 00:00:00" itemprop="dateCreated datePublished" datetime="2015-03-08T00:00:00+08:00">2015-03-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/03/08/data-struct-tree/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/03/08/data-struct-tree/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近要准备面试，复习和准备一下数据结构的相关知识，这里总结树的相关知识。</p>
+<p>大二学数据结构的时候，我就很不喜欢某些书中对一些数据结构的描述，比如说栈的特点是先进后出，这听上去很对，其实一点用没有。</p>
+<p>我就比较喜欢这样的描述，栈的作用是保存状态，队列的作用是做缓存，而树呢，其展开的特性，就是为了查找。</p>
+<h2 id="不仅仅是结构"><a href="#不仅仅是结构" class="headerlink" title="不仅仅是结构"></a>不仅仅是结构</h2><p>在c中我们可能用结构体来定义一棵树，而在c++，java这样的面向对象语言中，我们可能用类来表示一棵树，但是我在这一节来解释一下，我们的思维一定要开阔，我的意思是说，<strong>不仅仅是我们定义了一棵树，才会有一棵树。</strong></p>
+<span id="more"></span>
+
+<p>比如看下面的二分查找的递归实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">BSearch</span><span class="params">(elemtype a[],elemtype x,<span class="type">int</span> low,<span class="type">int</span> high)</span></span><br><span class="line"><span class="comment">/*在下届为low，上界为high的数组a中折半查找数据元素x*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> mid;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(low&gt;high) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    mid=(low+high)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(x==a[mid]) <span class="keyword">return</span> mid;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(x&lt;a[mid]) <span class="keyword">return</span>(BSearch(a,x,low,mid<span class="number">-1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span>(BSearch(a,x,mid+<span class="number">1</span>,high));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们没有定义一棵树吧？但是<strong>这个递归调用，在栈中自己生长出来一棵树，然后把它释放了</strong>。</p>
+<h2 id="常见的树的种类"><a href="#常见的树的种类" class="headerlink" title="常见的树的种类"></a>常见的树的种类</h2><p>这里总结常见的树形结构，以下是一些定义。</p>
+<p>二叉树：每个节点最多含有两个子树的树称为二叉树。</p>
+<p>完全二叉树：除最后一层外，每一层上的节点数均达到最大值；在最后一层上只缺少右边的若干结点。</p>
+<p>满二叉树：对于上述的完全二叉树，如果去掉其第d层的所有节点，那么剩下的部分就构成一个满二叉树（此时该满二叉树的深度为d-1）。</p>
+<p>树的三种表示法：双亲表示法，孩子表示法，孩子兄弟表示法。</p>
+<p>这里主要总结讨论下二叉树的表示法，因为二叉树是比较常用的。</p>
+<p>二叉树的存储一般分两种：顺序存储和二叉链表。</p>
+<p>对于完全二叉树，用顺序存储是非常方便的。非完全二叉树可能会浪费大量空间。</p>
+<p>而二叉链表，又是前序遍历，中序遍历，后序遍历，和其它二叉树算法常用的数据结构表示，因为它是一种递归表示法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	ElemType data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125; BiTNode, *BiTree;</span><br></pre></td></tr></table></figure>
+
+<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>堆（也叫优先队列），是一棵完全二叉树，它的特点是父节点的值大于（小于）两个子节点的值（分别称为大顶堆和小顶堆）。它常用于管理算法执行过程中的信息，应用场景包括堆排序，优先队列等。</p>
+<p>可以看出堆在取最值时，复杂度是O(1)。还需要注意的是堆只需要满足父节点大于两个子节点，而子节点之间没有要求。</p>
+<p><strong>建堆</strong>(由无序序列构建一个堆)：</p>
+<p>首先要注意，建堆的过程，主要操作对从第一个元素开始的length/2个元素，而且是反向操作，比如一个序列有7个元素，那么建堆的过程，就是这样的顺序:3，2，1。</p>
+<p>检查这个元素是否符合堆的定义，比如大顶堆，要比左右两个孩子大，如果不符合，那就把他与比他大的孩子进行交换。需要注意的是交换之后，下面的平衡也可能被破坏，这就需要再次调整平衡。</p>
+<p><strong>堆排序</strong>:</p>
+<p>如果我们在之前在线性表上建立好的堆上进行堆排序，那么就是将未排序部分的首尾元素互换，首先我们将最值放到了排序部分，其次需要调整使剩余元素变成一个新堆。</p>
+<p><strong>分析总结</strong></p>
+<p>堆排序运行时间主要是消耗在初始构建堆和在重建堆时的反复筛选上。</p>
+<p>建堆过程中的比较次数：O(n)。</p>
+<p>堆排序的时间复杂度为O(nlogn)。</p>
+<h4 id="霍夫曼树"><a href="#霍夫曼树" class="headerlink" title="霍夫曼树"></a>霍夫曼树</h4><p>给定n个权值作为n的叶子结点，构造一棵二叉树，若带权路径长度达到最小，称这样的二叉树为最优二叉树，也称为哈夫曼树(Huffman tree)。</p>
+<p>哈夫曼树是带权路径长度最短的树，权值较大的结点离根较近。</p>
+<p><strong>构造霍夫曼树</strong>：</p>
+<p>这里有一篇文章讲解如何构造霍夫曼树:</p>
+<p><a target="_blank" rel="noopener" href="http://jingyan.baidu.com/article/380abd0a717c061d90192ca2.html">怎么画出哈夫曼树</a></p>
+<p>一定要留心这句话:<code>如果两个数的和正好是下一步的两个最小数的其中的一个那么这个树直接往上生长就可以了。如果这两个数的和比较大不是下一步的两个最小数的其中一个那么，就并列生长。</code></p>
+<p><strong>霍夫曼编码</strong>:</p>
+<p>霍夫曼编码的构造步骤:</p>
+<ol>
+<li>检查字符在数据中的出现频率。</li>
+<li>构建哈夫曼树。</li>
+<li>创建哈夫曼编码表。</li>
+<li>生成编码后结果</li>
+</ol>
+<p>霍夫曼编码的优点，首先你可以想到，因为霍夫曼树的特性，所以使用越频繁的，编码长度越短，再者因为所有字符都是哈夫曼树中的叶子节点，所以每个字符所在的叶子节点的路径都不会有重叠部分，这个特征能够保证解码的唯一性，不会产生歧义（在解码时只需要找到叶子节点即可完成当前字符的解码）。</p>
+<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>其实从折半查找，就能理解，为什么树这个数据结构很适合查找。</p>
+<p>首先最基础的是二叉查找树(二叉搜索树，二叉排序树):</p>
+<p>它或者是一棵空树，或者是具有下列性质的二叉树： 若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值； 若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值； 它的左、右子树也分别为二叉排序树。</p>
+<p><strong>构造方法</strong>:</p>
+<p><strong>调整方法</strong>:</p>
+<p>从结构特性上可以看出，要查找某个元素是一件非常快的事，类似于折半查找的游走选择。</p>
+<p>但是实际情况并不如此，比如说如果如果构造出来的二叉树并不是很“匀称”，二叉搜索树将退化成近似链或链，此时，其操作的时间复杂度将退化成线性的，即O(n),那么在查找某些元素的时候效率不会很高，这个时候就需要平衡二叉树了。</p>
+<h4 id="平衡二叉树（AVL树）"><a href="#平衡二叉树（AVL树）" class="headerlink" title="平衡二叉树（AVL树）"></a>平衡二叉树（AVL树）</h4><p>平衡二叉树是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。</p>
+<p>下面是平衡二叉树的几种实现</p>
+<h4 id="AVL"><a href="#AVL" class="headerlink" title="AVL"></a>AVL</h4><h4 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h4><h4 id="SBT"><a href="#SBT" class="headerlink" title="SBT"></a>SBT</h4><h2 id="B树们"><a href="#B树们" class="headerlink" title="B树们"></a>B树们</h2><p>B树作为查找树的一种和之前的查找树不同的是，它与硬件是相关的。在大规模数据存储方面，大量数据存储在外存磁盘中，而在外存磁盘中读取/写入块(block)中某数据时，首先需要定位到磁盘中的某块，如何有效地查找磁盘中的数据，需要一种合理高效的外存数据结构。这种结构可以使得在查找过程中，IO次数尽量的少。</p>
+<h4 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h4><p>B树又叫平衡多路查找树,这里的多路可以理解为平衡多叉树。</p>
+<p>首先这里有一篇很不错的文章：<a target="_blank" rel="noopener" href="http://blog.csdn.net/v_JULY_v/article/details/6530142/">从B 树、B+ 树、B* 树谈到R 树</a></p>
+<h4 id="B"><a href="#B" class="headerlink" title="B+"></a>B+</h4><p>B+-Tree是应文件系统所需而产生的一种B-tree的变形树。</p>
+<p>一棵m阶的B+树和m阶的B树的差异在于：</p>
+<ol>
+<li>有n棵子树的结点中含有n个关键字； (而B 树是n棵子树有n-1个关键字)</li>
+<li>所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接。 (而B 树的叶子节点并没有包括全部需要查找的信息)</li>
+<li>所有的非终端结点可以看成是索引部分 ，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B 树的非终节点也包含需要查找的有效信息)</li>
+</ol>
+<p><code>B+树比B树更适合实际应用中操作系统的文件索引和数据库索引</code></p>
+<p>B树在提高了磁盘IO性能的同时并没有解决元素遍历的效率低下的问题。正是为了解决这个问题，B+树应运而生。B+树只要遍历叶子节点就可以实现整棵树的遍历。而且在数据库中基于范围的查询是非常频繁的，而B树不支持这样的操作（或者说效率太低）。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/c/" rel="tag"># c</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/03/03/something-for-oa/" rel="prev" title="这一年OA的那点事">
+      <i class="fa fa-chevron-left"></i> 这一年OA的那点事
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/03/26/unix-shell-command-study-note/" rel="next" title="unix shell 命令行总结">
+      unix shell 命令行总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">不仅仅是结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%A0%91%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">常见的树的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">2.0.1.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9C%8D%E5%A4%AB%E6%9B%BC%E6%A0%91"><span class="nav-number">2.0.2.</span> <span class="nav-text">霍夫曼树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-number">2.0.3.</span> <span class="nav-text">二叉查找树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%88AVL%E6%A0%91%EF%BC%89"><span class="nav-number">2.0.4.</span> <span class="nav-text">平衡二叉树（AVL树）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AVL"><span class="nav-number">2.0.5.</span> <span class="nav-text">AVL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">2.0.6.</span> <span class="nav-text">红黑树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SBT"><span class="nav-number">2.0.7.</span> <span class="nav-text">SBT</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B%E6%A0%91%E4%BB%AC"><span class="nav-number">3.</span> <span class="nav-text">B树们</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#B%E6%A0%91"><span class="nav-number">3.0.1.</span> <span class="nav-text">B树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B"><span class="nav-number">3.0.2.</span> <span class="nav-text">B+</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

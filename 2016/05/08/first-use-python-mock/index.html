@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.pulpcode.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Starting假设你现在在写一个单元测试，你要测试的这个函数，调用了别的什么第三方接口，或者它要向某个数据库插入一条数据，或者是一个麻烦的资源，这个时候，你就需要用一个mock，来把这个“资源操作”替换。所以我们的mock实际上是为单元测试服务的。 存根还是模拟对象？实际上如果你看过《单元测试的艺术》这本书，一定知道这样两个概念:模拟对象和存根。存根是指真实对象被替换之后，我更关心的是返回正确的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初探python mock">
+<meta property="og:url" content="http://www.pulpcode.cn/2016/05/08/first-use-python-mock/index.html">
+<meta property="og:site_name" content="Pulpcode">
+<meta property="og:description" content="Starting假设你现在在写一个单元测试，你要测试的这个函数，调用了别的什么第三方接口，或者它要向某个数据库插入一条数据，或者是一个麻烦的资源，这个时候，你就需要用一个mock，来把这个“资源操作”替换。所以我们的mock实际上是为单元测试服务的。 存根还是模拟对象？实际上如果你看过《单元测试的艺术》这本书，一定知道这样两个概念:模拟对象和存根。存根是指真实对象被替换之后，我更关心的是返回正确的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-05-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-09-24T09:56:35.745Z">
+<meta property="article:author" content="Aiqier">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="mock">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.pulpcode.cn/2016/05/08/first-use-python-mock/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>初探python mock | Pulpcode</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Pulpcode</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">搅碎,暴力,拼接,吞咽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/05/08/first-use-python-mock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,暴力,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初探python mock
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-08 00:00:00" itemprop="dateCreated datePublished" datetime="2016-05-08T00:00:00+08:00">2016-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/08/first-use-python-mock/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/08/first-use-python-mock/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Starting"><a href="#Starting" class="headerlink" title="Starting"></a>Starting</h2><p>假设你现在在写一个单元测试，你要测试的这个函数，调用了别的什么第三方接口，或者它要向某个数据库插入一条数据，或者是一个麻烦的资源，这个时候，你就需要用一个mock，来把这个“资源操作”替换。所以我们的mock实际上是为单元测试服务的。</p>
+<h2 id="存根还是模拟对象？"><a href="#存根还是模拟对象？" class="headerlink" title="存根还是模拟对象？"></a>存根还是模拟对象？</h2><p>实际上如果你看过《单元测试的艺术》这本书，一定知道这样两个概念:模拟对象和存根。存根是指真实对象被替换之后，我更关心的是返回正确的值给我，比如模拟一个三方接口调用，而模拟对象更关心的是被调用对象本身的状态，比如向数据库插入一条数据，看数据库是否发生改变。实际上我们的mock对象，基本就是在做一个存根。当然后面的内容会让它在某些情况下看上去像一个模拟对象。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在python2.x中，你只需要<code>pip install mock</code>就可以了，而3就不用了，因为3已经把mock当作标准库了,<code>unittest.mock</code>。</p>
+<span id="more"></span>
+
+<h2 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h2><p>在这个例子中，我想展示一下，如何来创建一个简单的mock，替换掉真实的函数调用。我们假设有一个接口，能通过传入的城市名和日期，返回当天的最低温度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_low_weather</span>(<span class="params">city, date</span>):</span><br><span class="line">    url = <span class="string">&quot;http://www.pulpcodeweather.com/%s/%s&quot;</span></span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    <span class="keyword">if</span> response.code == <span class="number">200</span>:</span><br><span class="line">        <span class="keyword">return</span> response.content</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_fetch_low_weather_4</span>():</span><br><span class="line">    low_weather_mock = mock.Mock(return_value=<span class="number">4</span>)</span><br><span class="line">    fetch_low_weather = low_weather_mock</span><br><span class="line">    <span class="keyword">assert</span> fetch_low_weather(<span class="string">&quot;PEK&quot;</span>, <span class="string">&quot;2016-05-06&quot;</span>) == <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>对于这个return_value而言，你可以在创建的时候对其进行设置&gt;，或者是等它创建好了，在赋值，所以下面两种做法都是可以的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mock.return_value = <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第二个例子"><a href="#第二个例子" class="headerlink" title="第二个例子"></a>第二个例子</h2><p>在第二个例子中，我们可以通过传入不同的参数返回不同的结果，当你的return_value没有被设置，也就是None的时候，就会调用这个回调函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_low_weather_side_effect</span>(<span class="params">city, date</span>):</span><br><span class="line">    <span class="keyword">if</span> city == <span class="string">&quot;PEK&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">    <span class="keyword">elif</span> city == <span class="string">&quot;SHA&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_fetch_low_weather_side_effect_ok</span>():</span><br><span class="line">    low_weather_mock = mock.Mock()</span><br><span class="line">    low_weather_mock.side_effect = fetch_low_weather_side_effect</span><br><span class="line">    fetch_low_weather = low_weather_mock</span><br><span class="line">    <span class="keyword">assert</span> fetch_low_weather(<span class="string">&quot;PEK&quot;</span>, <span class="string">&quot;2016-04-05&quot;</span>) == <span class="number">4</span></span><br><span class="line">    <span class="keyword">assert</span> fetch_low_weather(<span class="string">&quot;SHA&quot;</span>, <span class="string">&quot;2016-04-05&quot;</span>) == <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>而且使用side_effect不仅可以传入参数并返回,还可以根据需要抛出异常，像这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mock.Mock(side_effect=KeyError(<span class="string">&quot;fuck&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h2 id="第三个例子"><a href="#第三个例子" class="headerlink" title="第三个例子"></a>第三个例子</h2><p>第三个例子中，我想讲一下，如何用patch功能进行深层次的替换，和查看状态,比如说你这里你要在数据库中插入一条数据，或者是删除一个文件，那么你要确定这个东西确实是被调用了，而且它真的不能有什么损伤，而且它能够被方便的替换。什么是指方便的替换?比如前面的例子，你可以直接“赋值”，让这个函数指针，引用到另一处。那么对于一些其它模块的系统调用呢？或者层级更深呢？</p>
+<p>这个时候就要用路径引用法，实际上这也是一种编程的思路，我把这种东西成为“把动态变为静态”，你可以看看我之前的博客，有讲到logger对象的正确使用方式，也是想表达这种思路。</p>
+<p>不仅仅是装饰器，mock还能够和with一起使用，实际上这个很好理解，patch确实是一种基于上下文的替换。</p>
+<p>假设我们有一个python文件tools.py，里面的代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> os.path</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rm</span>(<span class="params">file</span>):</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(file):</span><br><span class="line">        os.remove(file)</span><br></pre></td></tr></table></figure>
+<p>那么我们在自己的代码中使用的它的时候，就可以这样替换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@mock.patch(<span class="params"><span class="string">&quot;tools.os.path&quot;</span></span>)</span></span><br><span class="line"><span class="meta">@mock.patch(<span class="params"><span class="string">&quot;tools.os&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">mock_os, mock_path</span>):</span><br><span class="line">    mock_path.isfile.return_value = <span class="literal">True</span></span><br><span class="line">    rm(<span class="string">&quot;fuck&quot;</span>)</span><br><span class="line">    <span class="keyword">assert</span> mock_os.remove.called == <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>看，我们将os.path.isfile的返回值替换为了True，并且检验了os.remove函数是否被调用，而且你可以自己试一试，在目录中放一个文件，它并没有删除这个文件。所以即使是不检测这么复杂，仅仅想要不删除目录，那你只要patch就好了,需要注意的是patch装饰器的顺序和函数参数的属性是相反的，我想这是因为“参数压栈”的原因把。</p>
+<h2 id="第四个例子"><a href="#第四个例子" class="headerlink" title="第四个例子"></a>第四个例子</h2><p>最后一个例子，其实是我想在程序中使用mock的初衷，那就是我想要在tornado的异步调用中替换掉异步请求。首先你一定要使用tornado自带的测试框架，所以这个例子就是告诉你，在tornado中使用mock的方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tornado.gen.coroutine</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">put_get_request_into_ioloop</span>(<span class="params">context, url, origin=<span class="literal">False</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    把一个异步get请求扔到tornado ioloop中</span></span><br><span class="line"><span class="string">    :param url: 请求url</span></span><br><span class="line"><span class="string">    :param handler_id: 处理id</span></span><br><span class="line"><span class="string">    :param origin: 是否日志请求和响应原串</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    True, 返回结果</span></span><br><span class="line"><span class="string">    False, None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> origin:</span><br><span class="line">        http://logger.info(<span class="string">&quot;Request:%s\t%s&quot;</span> % (context[<span class="string">&quot;handler_id&quot;</span>], url))</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        client = tornado.httpclient.AsyncHTTPClient()</span><br><span class="line">        response = <span class="keyword">yield</span> client.fetch(url)</span><br><span class="line">        <span class="keyword">if</span> origin:</span><br><span class="line">        http://logger.info(<span class="string">&quot;Response:%s\t%s&quot;</span> % (context[<span class="string">&quot;handler_id&quot;</span>], response.body))</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        logger.error(<span class="string">&quot;ErrorRequest:%s\t%s&quot;</span> % (context[<span class="string">&quot;handler_id&quot;</span>], url), exc_info=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return((<span class="literal">False</span>, <span class="literal">None</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> tornado.gen.Return((<span class="literal">True</span>, response.body))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TestMock</span>(tornado.testing.AsyncTestCase):</span><br><span class="line"><span class="meta">    @mock.patch(<span class="params"><span class="string">&quot;tornado.httpclient.AsyncHTTPClient&quot;</span></span>)</span></span><br><span class="line"><span class="meta">    @tornado.testing.gen_test</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_mock</span>(<span class="params">self, AsyncHTTPClient</span>):</span><br><span class="line">        AsyncHTTPClient.return_value = mock_http_client = mock.MagicMock()</span><br><span class="line">        fetch_future = tornado.concurrent.Future()</span><br><span class="line">        mock_http_client.fetch.return_value = fetch_future</span><br><span class="line">        fetch_future.set_result(mock.MagicMock(body=<span class="string">&quot;test&quot;</span>))</span><br><span class="line">        response = <span class="keyword">yield</span> put_get_request_into_ioloop(<span class="string">&quot;the url&quot;</span>)</span><br><span class="line">        self.assertEqual(response.body, <span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="更多的例子："><a href="#更多的例子：" class="headerlink" title="更多的例子："></a>更多的例子：</h2><p>三篇不错的博客</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000002965620">https://segmentfault.com/a/1190000002965620</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.oschina.net/translate/unit-testing-with-the-python-mock-class">http://www.oschina.net/translate/unit-testing-with-the-python-mock-class</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.oschina.net/translate/an-introduction-to-mocking-in-python">http://www.oschina.net/translate/an-introduction-to-mocking-in-python</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/mock/" rel="tag"># mock</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/02/frankie-and-johnny-love-story/" rel="prev" title="Frankie and johnny的爱情故事">
+      <i class="fa fa-chevron-left"></i> Frankie and johnny的爱情故事
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/25/python-video-summarize/" rel="next" title="记录一次python视频总结">
+      记录一次python视频总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Starting"><span class="nav-number">1.</span> <span class="nav-text">Starting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E6%A0%B9%E8%BF%98%E6%98%AF%E6%A8%A1%E6%8B%9F%E5%AF%B9%E8%B1%A1%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">存根还是模拟对象？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">第一个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">5.</span> <span class="nav-text">第二个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">6.</span> <span class="nav-text">第三个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">7.</span> <span class="nav-text">第四个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">更多的例子：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aiqier</p>
+  <div class="site-description" itemprop="description">搅碎,暴力,拼接,吞咽</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">238</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aiqier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdnjs.cloudflare.com/ajax/libs/valine/1.3.10/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : false,
+      appId      : 'GKEC0bXufNnW1YceCYRUxYls-gzGzoHsz',
+      appKey     : 'AQzyy4BWmVA56zLPt3hTOPq8',
+      placeholder: "写点什么呢...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
