@@ -163,6 +163,101 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/01/14/from-python-to-java-design-pattern-abstract-factory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/" class="post-title-link" itemprop="url">从python到java设计模式之抽象工厂模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-01-14 00:00:00 / 修改时间：18:46:22" itemprop="dateCreated datePublished" datetime="2017-01-14T00:00:00+08:00">2017-01-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前的博客提到过设计模式的主要思路就是直接通过接口（实现接口），或者间接通过接口（中间对象）来进行解耦的，并介绍了两种行为型设计模式，命令模式和策略模式，这次介绍一个来自创建型模式的抽象工厂模式。</p>
+<h2 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h2><p>其实在创建型模式中，有一种常常被用来举例，却没有归类到真正的设计模式中，就是简单工厂模式。</p>
+<p>比如如下创建对象的方式，让创建对象的方式变得耦合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Pencil</span> <span class="variable">pencil</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Pencil</span>();</span><br></pre></td></tr></table></figure>
+
+<p>我们想通过某种方式，让获得创建对象的方式，变得更灵活。</p>
+<p>这时候只需要让所有文具都继承文具基类，然后从工厂简介创建对象。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/01/07/from-python-to-java-design-pattern-command-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -738,110 +833,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/12/10/from-python-java-integer-object-pool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="搅碎,拼接,吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/12/10/from-python-java-integer-object-pool/" class="post-title-link" itemprop="url">从python到java之整型常量池</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2016-12-10T00:00:00+08:00">2016-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2016-12-17 15:02:42" itemprop="dateModified" datetime="2016-12-17T15:02:42+08:00">2016-12-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/12/10/from-python-java-integer-object-pool/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/12/10/from-python-java-integer-object-pool/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近有同事分享了一次java基础，里面提到了java基础类型的包装类型（比如Integer）和String都有自己的常量池,我突然想到在python中也有类似的东西，所以本来想写一篇关于分析python和java常量池的博客，但是后来我发现这里面的内容还挺多的，所以我决定先从整型常量池入手，下次再分析字符串的。</p>
-<p>需要提到的是，我只是因为找到的有关python小整型池和大整型池的资料，才特意介绍python的。我并没有找到关于java大整型对象存储技术的文献，但是我猜都能猜到，如果java真有这方面的优化需求，是一定会有类似的东西，如果之后我了解到了，我会在自己的博客中再去介绍的。</p>
-<h2 id="java常量池"><a href="#java常量池" class="headerlink" title="java常量池"></a>java常量池</h2><p>首先是java的常量池，我搜索了java的常量池，大部分提到了，“java中基本类型的包装类的大部分都实现了常量池技术”这句话，它们都提到了对于Interger这样的对象（Byte，Short，Long，Character类似）在值小于127的时候，会默认使用内存池中已经创建好的数据。</p>
-<p>这也就是为什么：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">i1</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
-
-<p>的时候， <code>i1 == i2</code>会返回true，而在</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">200</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">200</span>;</span><br></pre></td></tr></table></figure>
-
-<p>的时候， <code>i1 == i2</code>会返回False。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/12/10/from-python-java-integer-object-pool/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -911,7 +902,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">240</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -924,7 +915,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-count">115</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

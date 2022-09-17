@@ -163,6 +163,101 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/02/21/from-python-to-java-design-pattern-factory-method/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="搅碎,拼接,吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/02/21/from-python-to-java-design-pattern-factory-method/" class="post-title-link" itemprop="url">从python到java设计模式-工厂方法模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2017-02-21 00:00:00 / 修改时间：23:08:16" itemprop="dateCreated datePublished" datetime="2017-02-21T00:00:00+08:00">2017-02-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/02/21/from-python-to-java-design-pattern-factory-method/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/02/21/from-python-to-java-design-pattern-factory-method/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>工厂方法模式也是一种创建型模式，之前提到过创建型模式用来解耦 ”被创建的对象“和”创建对象的对象“，两者之间的关系。</p>
+<p>既A与B的关系是使用关系，但是A并没有把B当成一个属性，因为它并不应该是A的一个属性，类似人使用苹果，但是苹果不能被作为人的一个属性。</p>
+<p>比如对于苹果而言，是一种水果，还有很多水果，比如Banana， Orange, Peach.</p>
+<p>人有一个方法叫eatFruit();</p>
+<p>但是你并不能在这个方法中直接new一个fruit</p>
+<p>因为这样太耦合，你可以把一个fruit对象作为参数传入到eatFruit方法中去，但你只不过把问题给拖延了，那这个Fruit又是从哪来的的呢？</p>
+<p>所以最好你自带一个工厂方法FruitFactory，可以getFruit(),而这个FruitFactory就可以作为你人类的属性被注入进来。这样，我们就把创建水果和人吃水果的动作进行解耦。将水果的实例化拖延到FruitFactory工厂中去。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/02/21/from-python-to-java-design-pattern-factory-method/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/02/19/talk-about-vampires-fear-silver/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -733,101 +828,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2017/01/14/from-python-to-java-design-pattern-abstract-factory/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="搅碎,拼接,吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/" class="post-title-link" itemprop="url">从python到java设计模式之抽象工厂模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2017-01-14 00:00:00 / 修改时间：18:46:22" itemprop="dateCreated datePublished" datetime="2017-01-14T00:00:00+08:00">2017-01-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>之前的博客提到过设计模式的主要思路就是直接通过接口（实现接口），或者间接通过接口（中间对象）来进行解耦的，并介绍了两种行为型设计模式，命令模式和策略模式，这次介绍一个来自创建型模式的抽象工厂模式。</p>
-<h2 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h2><p>其实在创建型模式中，有一种常常被用来举例，却没有归类到真正的设计模式中，就是简单工厂模式。</p>
-<p>比如如下创建对象的方式，让创建对象的方式变得耦合。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Pencil</span> <span class="variable">pencil</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Pencil</span>();</span><br></pre></td></tr></table></figure>
-
-<p>我们想通过某种方式，让获得创建对象的方式，变得更灵活。</p>
-<p>这时候只需要让所有文具都继承文具基类，然后从工厂简介创建对象。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/01/14/from-python-to-java-design-pattern-abstract-factory/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -897,7 +897,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">240</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -910,7 +910,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-count">115</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
