@@ -163,6 +163,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/05/01/mysql-study-base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/05/01/mysql-study-base/" class="post-title-link" itemprop="url">mysql基础知识总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-05-01 00:00:00" itemprop="dateCreated datePublished" datetime="2015-05-01T00:00:00+08:00">2015-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/05/01/mysql-study-base/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/05/01/mysql-study-base/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="cookbook"><a href="#cookbook" class="headerlink" title="cookbook"></a>cookbook</h2><h4 id="如何添加一个用户，并将数据库中所有表的权限赐予此用户："><a href="#如何添加一个用户，并将数据库中所有表的权限赐予此用户：" class="headerlink" title="如何添加一个用户，并将数据库中所有表的权限赐予此用户："></a>如何添加一个用户，并将数据库中所有表的权限赐予此用户：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;testuser&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;test623&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">ON</span> testdb.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;testuser&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="关于一些修改表结构的语法"><a href="#关于一些修改表结构的语法" class="headerlink" title="关于一些修改表结构的语法"></a>关于一些修改表结构的语法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改一个字段属性</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name modify <span class="keyword">column</span> column_name attribute;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表名</span></span><br><span class="line">rename <span class="keyword">table</span> table_name1 <span class="keyword">to</span> table_name2;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 重命名字段</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name change column_old_name column_new_name attribute;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 在某个字段的后面添加一个新的字段</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> new_column_name attribute after old_column_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建一个联合唯一索引</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">unique</span> index index_name <span class="keyword">on</span> table_name(column1, column2);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/05/01/mysql-study-base/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/04/26/when-do-we-use-tornado/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -763,104 +860,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2015/03/08/data-struct-tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/03/08/data-struct-tree/" class="post-title-link" itemprop="url">数据结构总结之tree</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-03-08 00:00:00" itemprop="dateCreated datePublished" datetime="2015-03-08T00:00:00+08:00">2015-03-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2015/03/08/data-struct-tree/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2015/03/08/data-struct-tree/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近要准备面试，复习和准备一下数据结构的相关知识，这里总结树的相关知识。</p>
-<p>大二学数据结构的时候，我就很不喜欢某些书中对一些数据结构的描述，比如说栈的特点是先进后出，这听上去很对，其实一点用没有。</p>
-<p>我就比较喜欢这样的描述，栈的作用是保存状态，队列的作用是做缓存，而树呢，其展开的特性，就是为了查找。</p>
-<h2 id="不仅仅是结构"><a href="#不仅仅是结构" class="headerlink" title="不仅仅是结构"></a>不仅仅是结构</h2><p>在c中我们可能用结构体来定义一棵树，而在c++，java这样的面向对象语言中，我们可能用类来表示一棵树，但是我在这一节来解释一下，我们的思维一定要开阔，我的意思是说，<strong>不仅仅是我们定义了一棵树，才会有一棵树。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2015/03/08/data-struct-tree/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -930,7 +929,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">240</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -943,7 +942,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-count">73</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
