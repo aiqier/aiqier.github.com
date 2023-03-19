@@ -163,6 +163,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2012/10/19/what-happen-when-i-assign-increase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2012/10/19/what-happen-when-i-assign-increase/" class="post-title-link" itemprop="url">当i = i++时，究竟发生了什么？</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2012-10-19 00:00:00" itemprop="dateCreated datePublished" datetime="2012-10-19T00:00:00+08:00">2012-10-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2012/10/19/what-happen-when-i-assign-increase/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2012/10/19/what-happen-when-i-assign-increase/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>之前有朋友跟我讨论过一个问题，他问在java中，<code>i=1;i=i++;</code>之后的结果时什么,我一开始认为是2,但当他说答案是1的时候，我不得不想一个合理的解释，我想，可能是因为临时变量，当i赋值给i后，自增更改了临时变量,所以i值并没有改变。当我在为我的解释表示满意时，他们说在c语言下的答案是2,好吧，我只能说是编译器的实现不同，当然这个答案太没说服力了，所以寻找答案的任务就开始了。</p>
+<p>我先在《c++ primer》上看见这样的解释：“++i的效率要比i++的效率高，因为i++必须要有一个临时变量来存放i本身的值“，那么我之前只说对了临时变量，但原因是临时变量先用来存放i的值，然后i本身自增，之后，临时变量赋值给左边，这时，i的值又被 自己之前的值覆盖了，所以又变成1,但这只是个推测，再说c语言中为什么是2？所以不得不反编译了。。。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2012/10/19/what-happen-when-i-assign-increase/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2012/09/25/how-we-study-program/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -521,7 +617,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">241</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -561,7 +657,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

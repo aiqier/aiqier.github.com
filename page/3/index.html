@@ -163,6 +163,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2021/04/03/regular-files-with-epoll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/03/regular-files-with-epoll/" class="post-title-link" itemprop="url">为什么epoll不支持磁盘IO</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-03 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-03T00:00:00+08:00">2021-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-05 12:50:46" itemprop="dateModified" datetime="2021-04-05T12:50:46+08:00">2021-04-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/03/regular-files-with-epoll/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/03/regular-files-with-epoll/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>对epoll不支持磁盘IO这件事，很长一段时间都是只知道结论，但是从来没搞清楚原因，网上找了一些中文的解释都让人看的云里雾里。最近在查找资料的时候，无意中发现如果自己按照“DISK Io”这样的方式去搜索英文资料，那可能不会找到想要的答案，因为在linux官方的叫法中，磁盘文件准确的称呼应该是“regular files”。然后我按照“epoll regular files”的方式得到的内容一下多了许多。最后也是得到了比较满意的答案，这里写出来分享一下。</p>
+<h2 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h2><p>首先在谈论epoll不支持磁盘IO文件之前，先理清阻塞和非阻塞指的阶段是什么，我们在讨论IO操作阻塞非阻塞时，是指当你发起一个IO操作后，如果IO没有准备好，你的线程是否要停留在那里等待IO准备好。这里特别说明了只是说等待io准备好，系统真正开始io操作的时候，虽然也有耗时，但是那并不算讨论阻塞非阻塞的范畴。</p>
+<p>接着在说回到磁盘IO这件事上，虽然linux的哲学是一切都是文件，磁盘和网络的读写都可以理解为文件的读写，但是文件和文件还是有不同的。比如说你并不能对一个磁盘文件描述符设置非阻塞，但是可以对一个网络io设置非阻塞。理解这事的核心点是理解阻塞发生的原因， 既你向操作系统发起io操作的时候，IO还没有准备好，比如在读请求的时候，缓冲区里的数据不够，或者在执行写操作的时候，缓冲区满了，这对网络来说是常态，因为你根本不确定网络连接的另一头到底什么时候会和你收发数据，所以默认阻塞是常态，然后才为了可以让你的程序不用傻等在这里，才设计了非阻塞。但是对于磁盘来说，根本就没有等待可读或可写一说，因为它一直是就绪的，始终可读可写，POSIX规范中明确指出了这一点。我猜测是设计者当时也觉得给磁盘文件io设置非阻塞没什么意义。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/03/regular-files-with-epoll/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2021/03/21/how-to-design-a-good-question/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -765,103 +862,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2019/01/27/2018-best-talk/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/27/2018-best-talk/" class="post-title-link" itemprop="url">2018年aiqier说说精选</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-27 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-27T00:00:00+08:00">2019-01-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-25 17:33:38" itemprop="dateModified" datetime="2022-09-25T17:33:38+08:00">2022-09-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/01/27/2018-best-talk/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/27/2018-best-talk/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>每次同事挨个发东西吃，即使他就在你旁边发，你也要假装不知道，然后等到他发到你的时候，你再跳突然起来，假装很开心的说一句：“哎呀，谢谢，谢谢！”<br><img src="/img/2018-talk-fruit.jpg" alt="fruit"></li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/27/2018-best-talk/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -931,7 +931,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">241</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -971,7 +971,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -163,6 +163,114 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/11/06/c-sharp-event-delegate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/11/06/c-sharp-event-delegate/" class="post-title-link" itemprop="url">c#事件处理之委托</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-11-06 00:00:00" itemprop="dateCreated datePublished" datetime="2014-11-06T00:00:00+08:00">2014-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/11/06/c-sharp-event-delegate/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/11/06/c-sharp-event-delegate/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近打算写一个系列博客，总结c#中的事件处理，第一部分写委托。</p>
+<h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><p>委托(delegate)是一种可以把引用存储为函数的类型，这类似于c++中的函数指针。</p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p>c++中的回调函数，就是用函数指针来实现的。类似的，c#中用委托，来实现回调函数的功能。</p>
+<p>回调函数为什么被称为回调函数？比如你调用了一个函数，那么就叫调用，但是如果你在调用一个函数的时候，还需要把一个函数提供给该函数，让这个函数来调用你的函数，那么你提供的这个函数就被称为回调函数（callback）。</p>
+<p>对于python这样的动态语言而言，就没有c#，c++提供特殊的语法实现回调函数，因为在python中，函数也是一个对象，无论是当参数传，还是当函数的返回值，都不会有问题。</p>
+<p>回调函数还被用来当作一个“插件”：</p>
+<p>在C++的STL库中，排序函数的具体算法已经被实现，但是两个元素的具体比较办法，通过回调函数提供（比较函数），保证该算法可用于int，string等不同类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">sort</span><span class="params">( iterator start, iterator end )</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sort</span><span class="params">( iterator start, iterator end, StrictWeakOrdering cmp )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="c-委托"><a href="#c-委托" class="headerlink" title="c#委托"></a>c#委托</h2><p>委托常常被使用在事件处理中。因为可以将事件触发后的具体操作（该做哪些事情）委托给实现类。这个就是好莱坞法则，“Don’t call me, I will call you”。</p>
+<p>这个例子来源于c#经典入门：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">delegate</span> <span class="built_in">double</span> <span class="title">ProcessDelegate</span>(<span class="params"><span class="built_in">double</span> param1, <span class="built_in">double</span> param2</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="built_in">double</span> <span class="title">Multiply</span>(<span class="params"><span class="built_in">double</span> param1, <span class="built_in">double</span> param2</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> param1 * param2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">staitc <span class="built_in">double</span> <span class="title">Divide</span>(<span class="params"><span class="built_in">double</span> param1, <span class="built_in">double</span> param2</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> param1 / param2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (input == <span class="string">&quot;M&quot;</span>)</span><br><span class="line">    process = <span class="keyword">new</span> ProcessDelegate(Multiply);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    process = <span class="keyword">new</span> ProcessDelegate(Divide);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但真实情况我们并不通过逻辑判断初始化回调函数，下面的这个函数插件的例子更常见。</p>
+<pre><code class="c#">static void ExecuteFunction(ProcessDelegate process)
+&#123;
+    process(2.2, 3.3);
+&#125;
+
+还有一个更常用的就是用于事件处理了，将在第三篇博客介绍。
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/11/02/program-think-about-story/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -752,103 +860,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/10/05/think-about-windows-refresh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/10/05/think-about-windows-refresh/" class="post-title-link" itemprop="url">我们经常在做一些没有用的操作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-10-05 00:00:00" itemprop="dateCreated datePublished" datetime="2014-10-05T00:00:00+08:00">2014-10-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2014/10/05/think-about-windows-refresh/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2014/10/05/think-about-windows-refresh/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近使用<code>vs2012</code>开发程序，在vs中有”清理”，”生成”和”重新生成”这几个选项。</p>
-<h2 id="生成和重新生成"><a href="#生成和重新生成" class="headerlink" title="生成和重新生成"></a>生成和重新生成</h2><p>我回想到当年学的<code>make</code>，这些用来构建代码的工具，大多都是类似的操作，vs的清理就和make中的clean一样。类似的，重新生成就像是先清理再生成。<br>而生成的规则也是类似的：看源文件是否修改，如果修改那么就需要生成目标文件。</p>
-<p>问题就是，有多少错误的原因来源于没有生成？很多人不管何时，清理生成的挨个点过来。不爽的还会清理+重新生成。要知道，大多数情况，我们是没有必要重新生成的，因为系统会给据源文件是否修改，自行判断。<br>而且，重新生成就是清理+生成。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/10/05/think-about-windows-refresh/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -918,7 +929,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">241</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -958,7 +969,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

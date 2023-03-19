@@ -163,6 +163,104 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/09/05/how-to-use-tab-key/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/09/05/how-to-use-tab-key/" class="post-title-link" itemprop="url">Tab键，制表符如何使用?</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-09-05 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-05T00:00:00+08:00">2014-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/09/05/how-to-use-tab-key/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/09/05/how-to-use-tab-key/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/img/tab.jpg" alt="Tab"></p>
+<p>上大学的时候，我就一直疑惑这个制表符有什么用？<br>但是我当时怕被人鄙视，所有一直没敢问别人。<br>后来我发现，不仅仅是我，我的一些同学也在不知道。(因为确实不是那个年代的人)</p>
+<p>这是早期人们在“绘制”无边框表格的时候必备的东西，<br>那时候只有纯字符文本，所以表格只能使用文本列对齐的方式实现。</p>
+<p>一般的编辑器都可以设置tab键的长度(默认是8个空格长)。<br>当你输入一个单词后(比如apple 5个字符)，按下制表符，那么光标会自动跳到第8个光标位置(相对于行首)，和单词长度加起来刚好能被8整除，然后你就可以输入第二个单词了。<br>这样一行一行下去，每一行都已8个字符长度为单位进行列对齐。</p>
+<pre><code>apple    pear    banana    orange
+dogdog    catcat    rabbit    monkey
+</code></pre>
+<p>而且，即使你在apple的后面输入一个字符s,也不会影响到这一行的其它字符的位置。<br>这就是制表符本来的作用。</p>
+<p>之后渐渐这个键有了别的作用，比如用它来控制缩进，或者作为补全文本的快捷键。</p>
+<p>当然作为缩进，使用空白符还是制表符，这就是一场漫无边际的争吵。</p>
+<p>作为python这门语言来说，官方建议是使用空格，因为不同的人设置不同的tab键长度，这样看上去很难看。<br>所以有的人会将自己的编辑器配置为 “当按下制表符时，自动输入4个空格“。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/09/04/use-python-alignment-rows-like-c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -751,102 +849,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/07/05/enum-post/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/07/05/enum-post/" class="post-title-link" itemprop="url">使用位掩码来表示多个职位</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2014-07-05T00:00:00+08:00">2014-07-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2014/07/05/enum-post/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2014/07/05/enum-post/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今天OA系统需要修改需求，之前的一个人员只能有一个职位的实现不能满足需求，要改为一个人可以同时具有多个职位。<br>之前职员的post的职位是使用enum实现的：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Enum Post&#123;</span><br><span class="line">    Keyuan,<span class="comment">/*科员*/</span></span><br><span class="line">    Fuzhuren,<span class="comment">/*副主任*/</span></span><br><span class="line">    Zhuren,<span class="comment">/*主任*/</span></span><br><span class="line">    Fuyuanzhang,<span class="comment">/*副院长*/</span></span><br><span class="line">    Yuanzhang<span class="comment">/*院长*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/07/05/enum-post/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -916,7 +918,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">241</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -956,7 +958,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

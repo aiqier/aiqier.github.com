@@ -163,6 +163,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/10/29/from-python-to-java-future-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/29/from-python-to-java-future-object/" class="post-title-link" itemprop="url">从python到java之并行程序设计中的Future对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2016-10-29 00:00:00 / 修改时间：21:13:54" itemprop="dateCreated datePublished" datetime="2016-10-29T00:00:00+08:00">2016-10-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/10/29/from-python-to-java-future-object/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/10/29/from-python-to-java-future-object/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近我在从python的开发转向java，打算在转移技术栈的时候，通过比较python与java，去更深刻的理解动态语言与静态语言的优势与劣势，从而在工作中有效的搭配。所以接下来很长一段时间，我都会坚持写一些关于java和python两者比较的博客，当然刚入门java，自然写的东西就比较“弱智”了，但这一步早晚都要走的，先勇于接受吧。。</p>
+<p>我一开始在想，如何入手java，从什么语言基础或者是设计模式，我觉得都不是好的方式，毕竟已经对这些比较熟了。静态语言本来也没有什么奇技淫巧，就算有也百八十年用不到，框架的话也不用急着去看，因为用着用着该会的也就会了。一堆不知道怎么用的规则更没必要记了，再加上自己也想让自己的水平提升一个台阶，所以我想要不就从java并行程序设计开始吧。</p>
+<p>这篇博客我要写一些关于Future对象的东西。</p>
+<h2 id="java中的Future"><a href="#java中的Future" class="headerlink" title="java中的Future"></a>java中的Future</h2><p>你在一开始学习java多线程的时候，书上都会告诉你一个简单的例子，就是先创建一个任务，这个任务对象继承一个Runnable接口，并且实现了其中的run方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Task</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;Hello,World&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后你就可以用线程来执行此任务，比如直接提交给一个Thread的构造函数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Task</span>());</span><br><span class="line">t.start();</span><br></pre></td></tr></table></figure>
+
+<p>或者直接扔给执行器(Executor)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ExecutorService</span> <span class="variable">exec</span> <span class="operator">=</span> Executors.newCachedThreadPool();</span><br><span class="line">exec.submit(<span class="keyword">new</span> <span class="title class_">Task</span>());</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/10/29/from-python-to-java-future-object/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/10/17/why-we-can-use-recursive/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -735,104 +834,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/07/20/because-and-so/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/07/20/because-and-so/" class="post-title-link" itemprop="url">因果关系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-07-20 00:00:00" itemprop="dateCreated datePublished" datetime="2016-07-20T00:00:00+08:00">2016-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-13 14:48:49" itemprop="dateModified" datetime="2022-03-13T14:48:49+08:00">2022-03-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%80%9D%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">思考</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/07/20/because-and-so/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/20/because-and-so/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>很早以前，我曾幼稚的认为，“只有聪明人，才会探究事物的因果。而大部分人仅仅停留在事物的表面”。后来我发现自己错了，或者说仅仅对了很小的一部分，实际上，每个人都会沉迷于因果关系，因为这是人们的天性。</p>
-<p>之前和某个人聊天，他说自己现在挣得比以前多多了，因为自己祖上原来就是土豪，所以现在有钱是因为自己骨子里就有富人的基因。将来会更有钱，反正跟互联网泡沫无关。</p>
-<p>我们总会把成功和失败都归于因果关系，只不过成功都归于内因，而失败都归于外因。</p>
-<p>而这种自圆其说的方式，不仅仅是为了让自己相信，也是为了让别人相信。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/07/20/because-and-so/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -902,7 +903,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">241</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -942,7 +943,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
