@@ -163,6 +163,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/10/06/multi-line-strings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/10/06/multi-line-strings/" class="post-title-link" itemprop="url">python中的跨行字符串</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-10-06 00:00:00" itemprop="dateCreated datePublished" datetime="2014-10-06T00:00:00+08:00">2014-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/10/06/multi-line-strings/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/10/06/multi-line-strings/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前编程写到跨行字符串的时候，在c#中，总是使用<code>+</code>字符拼接。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;The path of the righteous man is beset on all sides by the inequities of the tyranny of evil man.&quot;</span></span><br><span class="line">+ <span class="string">&quot;blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness,&quot;</span></span><br><span class="line">+ <span class="string">&quot;for he is truly his brother&#x27;s keeper and the finder of lost children.&quot;</span></span><br><span class="line">+ <span class="string">&quot;And i will strike down upon thee with great vengeance and furious anger those who attempt to poison and destroy my brothers.&quot;</span></span><br><span class="line">+ <span class="string">&quot;And you will know my name is the lord when i lay my vengeance upon thee.&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>后来我使用@符号编写跨行字符串，这样就可以直接编写字符串了。</p>
+<p>需要注意的是，在这段由@””包围的字符串中，你的所有<strong>格式</strong>，都被保留下来了。比如换行符，换行符后面的空格，还是文字前面用于缩进的空白符，都保存在这个字符串中。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/10/06/multi-line-strings/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/10/05/think-about-windows-refresh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -742,97 +841,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/09/06/untangle-list-use-recursive-yield/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/09/06/untangle-list-use-recursive-yield/" class="post-title-link" itemprop="url">一个递归列表解引用为单列表</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-09-06 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-06T00:00:00+08:00">2014-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2014/09/06/untangle-list-use-recursive-yield/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2014/09/06/untangle-list-use-recursive-yield/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今天有一个同事给我出了一个这样的问题:</p>
-<pre><code>你如何把list of list 变成list 比如[[1,2],[3]] --&gt; [1,2,3]
-</code></pre>
-<p>程序的目的就是将一个递归的列表转化为一个普通的”单”列表</p>
-<p>本来这个程序是可以使用一个简单的方法来实现的：</p>
-<p>先定义一个全局的列表，然后遍历列表中的元素，如果是元素就加入到全局列表，<br>但如果是列表，那就用递归或是迭代的方式继续遍历它。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/09/06/untangle-list-use-recursive-yield/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -902,7 +910,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">243</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

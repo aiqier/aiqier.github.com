@@ -163,6 +163,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/12/26/from-python-to-java-design-pattern-strategy-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/12/26/from-python-to-java-design-pattern-strategy-pattern/" class="post-title-link" itemprop="url">从python到java之设计模式策略模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-12-26 00:00:00" itemprop="dateCreated datePublished" datetime="2016-12-26T00:00:00+08:00">2016-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-25 17:08:15" itemprop="dateModified" datetime="2022-09-25T17:08:15+08:00">2022-09-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/12/26/from-python-to-java-design-pattern-strategy-pattern/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/12/26/from-python-to-java-design-pattern-strategy-pattern/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="starting"><a href="#starting" class="headerlink" title="starting"></a>starting</h2><p>比较先从一个最简单的模式，策略模式说起。</p>
+<p>策略模式是指把策略的实现放到具体的类中，而不是直接写死到同一块<code>if...else</code>上。</p>
+<p>在oop的实现中，策略被抽象成一个接口，也就是说这些策略类都要实现同一个策略接口。这样的好处是，使用策略和策略本身是解耦的，而且策略之间也是彼此独立的封装。新的策略可以随意被替换进来，而使用者“几乎”不用改什么代码。</p>
+<p>在使用策略的类中，策略类作为使用策略类的一个属性，使用类直接调用策略类的execute方法，而这个策略到底被设置成了什么，此时此刻使用者并不知道，也并不需要知道。</p>
+<p>我一直在想策略模式中，为啥要把策略做成一个属性，而非直接当成一个变量去使用，我想是因为属性能提供更多的功能吧，包括装饰器或者像spring的bean一样可以被配置。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/12/26/from-python-to-java-design-pattern-strategy-pattern/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/12/17/from-python-to-java-design-pattern-oop-start/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -771,106 +870,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2016/11/05/how-to-fix-hexo-dont-show-blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/11/05/how-to-fix-hexo-dont-show-blog/" class="post-title-link" itemprop="url">如何解决hexo无法展示博客内容的问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-11-05 00:00:00" itemprop="dateCreated datePublished" datetime="2016-11-05T00:00:00+08:00">2016-11-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-25 17:14:01" itemprop="dateModified" datetime="2022-09-25T17:14:01+08:00">2022-09-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">日志</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/05/how-to-fix-hexo-dont-show-blog/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>今天写了一篇博客，然后更新到github上就不展示了，整个页面的框架还在，但是就是文章不展示，在经过一番折腾之后，我终于又让自己的博客回复正常了，这里分享下我是如何解决的。</p>
-<p>先说明环境，我使用的是hexo的next主题，而且我是眼睁睁的看着，我发布文章之后，旧的页面是好的，一刷新是坏的，我想到了是不是自己发布坏了，但是我在本地启动<code>hexo server</code>没有任何问题，然后我又试着<code>hexo clean</code>后发布，依旧没什么用。</p>
-<p>我看了下自己主页的源码，发现了一个问题，就是</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text/css&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这条连接点不进去了，出现了github page 404的页面，然后我去自己的github看了一下，这个路径有的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/11/05/how-to-fix-hexo-dont-show-blog/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -940,7 +939,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">243</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

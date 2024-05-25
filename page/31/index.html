@@ -163,6 +163,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/09/06/untangle-list-use-recursive-yield/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aiqier">
+      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pulpcode">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/09/06/untangle-list-use-recursive-yield/" class="post-title-link" itemprop="url">一个递归列表解引用为单列表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2014-09-06 00:00:00" itemprop="dateCreated datePublished" datetime="2014-09-06T00:00:00+08:00">2014-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2014/09/06/untangle-list-use-recursive-yield/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2014/09/06/untangle-list-use-recursive-yield/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天有一个同事给我出了一个这样的问题:</p>
+<pre><code>你如何把list of list 变成list 比如[[1,2],[3]] --&gt; [1,2,3]
+</code></pre>
+<p>程序的目的就是将一个递归的列表转化为一个普通的”单”列表</p>
+<p>本来这个程序是可以使用一个简单的方法来实现的：</p>
+<p>先定义一个全局的列表，然后遍历列表中的元素，如果是元素就加入到全局列表，<br>但如果是列表，那就用递归或是迭代的方式继续遍历它。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2014/09/06/untangle-list-use-recursive-yield/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/09/05/how-to-use-tab-key/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -753,102 +844,6 @@ dogdog    catcat    rabbit    monkey
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.pulpcode.cn/2014/07/15/local-value-name/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aiqier">
-      <meta itemprop="description" content="捕获，搅碎，拼接，吞咽">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pulpcode">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/07/15/local-value-name/" class="post-title-link" itemprop="url">临时变量应该叫啥?</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-07-15 00:00:00" itemprop="dateCreated datePublished" datetime="2014-07-15T00:00:00+08:00">2014-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2016-09-24 17:56:35" itemprop="dateModified" datetime="2016-09-24T17:56:35+08:00">2016-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2014/07/15/local-value-name/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2014/07/15/local-value-name/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>没有什么比给变量命名更头痛的。类名，成员变量，全剧变量，函数还好。但是那些只用一次的变量给它们命名简直令人头痛。<br>同时那些a1,a2,aa,bb, 的命名方式又是很欠打的。其实对于这种只用一次的变量，真的需要一个好的方式来为他们命名。</p>
-<p>我记得王垠大神曾经写过一篇blog，叫“解决问题和消灭问题”，而消灭问题明显要比解决问题更加的”上档次”。<br>如果说给临时变量一个好的命名算是处理问题，那么什么才算是消灭问题呢？我觉得就是<strong>大多数临时变量就没必要命名</strong>。<br>等你明白我的这句话，就会发现你<strong>命名的好坏，表示你会不会用临时变量，而这临时变量又和你的代码结构，代码的简练程度息息相关</strong>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/07/15/local-value-name/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -918,7 +913,7 @@ dogdog    catcat    rabbit    monkey
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">243</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
